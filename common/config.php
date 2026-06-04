@@ -19,6 +19,11 @@ function smartcms_config(): array
     return $config;
 }
 
+function smartcms_config_local_path(): string
+{
+    return SMARTCMS_ROOT . '/config.local.php';
+}
+
 function smartcms_array_merge(array $base, array $override): array
 {
     foreach ($override as $key => $value) {
@@ -66,4 +71,23 @@ function smartcms_h(mixed $value): string
 function smartcms_install_locked(): bool
 {
     return is_file(SMARTCMS_ROOT . '/install.lock');
+}
+
+function smartcms_write_local_config(array $settings): bool
+{
+    $config = [
+        'project_key' => trim((string)($settings['project_key'] ?? 'smartcms')),
+        'base_url' => rtrim(trim((string)($settings['base_url'] ?? '')), '/'),
+        'table_prefix' => preg_replace('/[^a-zA-Z0-9_]/', '', (string)($settings['table_prefix'] ?? '')),
+        'db' => [
+            'host' => trim((string)($settings['db']['host'] ?? 'localhost')),
+            'name' => trim((string)($settings['db']['name'] ?? '')),
+            'user' => trim((string)($settings['db']['user'] ?? '')),
+            'pass' => (string)($settings['db']['pass'] ?? ''),
+            'charset' => trim((string)($settings['db']['charset'] ?? 'utf8mb4')),
+        ],
+    ];
+
+    $contents = "<?php\nreturn " . var_export($config, true) . ";\n";
+    return file_put_contents(smartcms_config_local_path(), $contents, LOCK_EX) !== false;
 }

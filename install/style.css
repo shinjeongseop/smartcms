@@ -33,3 +33,9 @@
   padding: 10px 16px;
   text-decoration: none;
 }
+
+.smartcms-link-btn--primary {
+  background: var(--smartcms-primary);
+  border-color: var(--smartcms-primary);
+  color: #fff;
+}

@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common/schema.php';
+require_once __DIR__ . '/../common/ui/layout.php';
+require_once __DIR__ . '/../common/ui/components.php';
 
 if (smartcms_install_locked()) {
     http_response_code(403);
@@ -9,10 +11,32 @@ if (smartcms_install_locked()) {
     exit;
 }
 
+$message = '';
+$message_type = 'info';
+
 try {
     smartcms_create_schema();
-    echo 'Schema created.';
+    $message = '기본 테이블을 생성했습니다.';
+    $message_type = 'success';
 } catch (Throwable $e) {
-    http_response_code(500);
-    echo $e->getMessage();
+    $message = '테이블 생성에 실패했습니다: ' . $e->getMessage();
+    $message_type = 'error';
 }
+
+smartcms_render_head([
+    'title' => '테이블 생성',
+    'body_class' => 'smartcms-install',
+    'stylesheets' => [smartcms_base_url('/install/style.css')],
+]);
+?>
+<main class="smartcms-panel">
+  <h1 class="smartcms-title">테이블 생성</h1>
+  <p class="smartcms-text-muted">회원, 권한, 게시판, 로그 저장에 필요한 기본 테이블을 준비합니다.</p>
+  <?= smartcms_alert($message, $message_type) ?>
+  <?php if ($message_type === 'success'): ?>
+    <p><a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/install/create_admin.php')) ?>">다음: 최초 관리자 생성</a></p>
+  <?php else: ?>
+    <p><a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">DB 설정 다시 확인</a></p>
+  <?php endif; ?>
+</main>
+<?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>

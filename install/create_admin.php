@@ -72,7 +72,7 @@ smartcms_render_head([
   <?php if ($message !== ''): ?>
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
-  <?php if (!$admin || $message_type === 'success'): ?>
+  <?php if (!$admin): ?>
     <form class="smartcms-grid" method="post">
       <div class="smartcms-field">
         <label for="email">관리자 이메일</label>
@@ -89,8 +89,8 @@ smartcms_render_head([
       <?= smartcms_button('관리자 생성', 'submit') ?>
     </form>
   <?php else: ?>
-    <?= smartcms_alert('이미 최고 관리자 계정이 있어 추가 생성이 차단됩니다.', 'info') ?>
+    <?= smartcms_alert('최고 관리자 계정이 준비되었습니다.', 'info') ?>
+    <p><a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/install/finish.php')) ?>">다음: 설치 잠금 처리</a></p>
   <?php endif; ?>
-  <p><a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/install/finish.php')) ?>">설치 잠금 처리</a></p>
 </main>
 <?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>
