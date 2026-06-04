@@ -1,4 +1,4 @@
-# 공통 회원관리 모듈 기획
+# smartcms-core 기획
 
 ## 1. 개요
 
@@ -832,7 +832,7 @@ AND role IN ('admin', 'manager')
 다음 PDCA 단계는 설계 문서 작성이다.
 
 ```text
-$pdca design common-auth-module
+$pdca design smartcms-core
 ```
 
 설계 단계에서는 실제 테이블 DDL, 함수명, 관리자 URL 구조, 권한 검증 흐름, 게시판 DB 저장소 전환 방식을 확정한다.

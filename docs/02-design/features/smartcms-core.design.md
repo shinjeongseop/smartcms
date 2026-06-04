@@ -1,13 +1,13 @@
-# common-auth-module Design Document
+# smartcms-core Design Document
 
 > **Summary**: 여러 PHP 프로젝트에 독립 이식 가능한 회원/권한/게시판/CMS 코어 설계
 >
-> **Project**: Independent PHP Auth Builder Core
+> **Project**: smartcms
 > **Version**: 0.1
 > **Author**: Codex
 > **Date**: 2026-06-04
 > **Status**: Draft
-> **Planning Doc**: [common-auth-module.plan.md](../../01-plan/features/common-auth-module.plan.md)
+> **Planning Doc**: [smartcms-core.plan.md](../../01-plan/features/smartcms-core.plan.md)
 
 ---
 
