@@ -1,0 +1,35 @@
+.smartcms-check-list {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.smartcms-check {
+  align-items: center;
+  border: 1px solid var(--smartcms-line);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+}
+
+.smartcms-check.is-ok {
+  border-color: #86efac;
+}
+
+.smartcms-check.is-fail {
+  border-color: #fca5a5;
+}
+
+.smartcms-link-btn {
+  align-items: center;
+  border: 1px solid var(--smartcms-line);
+  border-radius: 999px;
+  display: inline-flex;
+  font-weight: 800;
+  justify-content: center;
+  margin-top: 14px;
+  padding: 10px 16px;
+  text-decoration: none;
+}
