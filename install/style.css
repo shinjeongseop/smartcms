@@ -22,6 +22,14 @@
   border-color: #fca5a5;
 }
 
+.smartcms-next-step {
+  border: 1px solid #86efac;
+  border-radius: 16px;
+  background: #f0fdf4;
+  margin: 18px 0;
+  padding: 16px;
+}
+
 .smartcms-install-steps {
   display: grid;
   gap: 8px;

@@ -34,9 +34,9 @@ smartcms_render_head([
   <p class="smartcms-text-muted">회원, 권한, 게시판, 로그 저장에 필요한 기본 테이블을 준비합니다.</p>
   <?= smartcms_alert($message, $message_type) ?>
   <?php if ($message_type === 'success'): ?>
-    <p><a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/install/create_admin.php')) ?>">다음: 최초 관리자 생성</a></p>
+    <p><a class="smartcms-link-btn smartcms-link-btn--primary" href="./create_admin.php">다음: 최초 관리자 생성</a></p>
   <?php else: ?>
-    <p><a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">DB 설정 다시 확인</a></p>
+    <p><a class="smartcms-link-btn" href="./">DB 설정 다시 확인</a></p>
   <?php endif; ?>
 </main>
 <?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>

@@ -78,11 +78,11 @@ smartcms_render_head([
       <?= smartcms_csrf_input() ?>
       <div class="smartcms-field">
         <label for="email">관리자 이메일</label>
-        <input class="smartcms-input" id="email" name="email" type="email" required>
+        <input class="smartcms-input" id="email" name="email" type="email" value="admin@smartcms.com" required>
       </div>
       <div class="smartcms-field">
         <label for="name">관리자 이름</label>
-        <input class="smartcms-input" id="name" name="name" required>
+        <input class="smartcms-input" id="name" name="name" value="최고관리자" required>
       </div>
       <div class="smartcms-field">
         <label for="password">비밀번호</label>
@@ -92,7 +92,7 @@ smartcms_render_head([
     </form>
   <?php else: ?>
     <?= smartcms_alert('최고 관리자 계정이 준비되었습니다.', 'info') ?>
-    <p><a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/install/finish.php')) ?>">다음: 설치 잠금 처리</a></p>
+    <p><a class="smartcms-link-btn smartcms-link-btn--primary" href="./finish.php">다음: 설치 잠금 처리</a></p>
   <?php endif; ?>
 </main>
 <?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>

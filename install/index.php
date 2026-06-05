@@ -77,7 +77,10 @@ smartcms_render_head([
       <?= smartcms_alert($message, $message_type) ?>
     <?php endif; ?>
     <?php if ($saved): ?>
-      <p><a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/install/schema.php')) ?>">다음: 테이블 생성</a></p>
+      <div class="smartcms-next-step">
+        <a class="smartcms-link-btn smartcms-link-btn--primary" href="./schema.php">다음: 테이블 생성</a>
+        <p class="smartcms-text-muted">DB 설정 저장이 완료되었습니다. 다음 단계로 이동해 테이블을 생성하세요.</p>
+      </div>
     <?php endif; ?>
 
     <form class="smartcms-grid" method="post">
