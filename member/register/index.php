@@ -46,23 +46,23 @@ smartcms_render_head([
       <?= smartcms_alert($message, $message_type) ?>
     <?php endif; ?>
 
-    <form class="smartcms-grid" method="post">
+    <form class="smartcms-grid" method="post" autocomplete="off">
       <?= smartcms_csrf_input() ?>
       <div class="smartcms-field">
         <label for="email">이메일</label>
-        <input class="smartcms-input" id="email" name="email" type="email" value="<?= smartcms_h($form['email']) ?>" required>
+        <input class="smartcms-input" id="email" name="email" type="email" value="<?= smartcms_h($form['email']) ?>" autocomplete="off" required>
       </div>
       <div class="smartcms-field">
         <label for="name">이름</label>
-        <input class="smartcms-input" id="name" name="name" value="<?= smartcms_h($form['name']) ?>" required>
+        <input class="smartcms-input" id="name" name="name" value="<?= smartcms_h($form['name']) ?>" autocomplete="off" required>
       </div>
       <div class="smartcms-field">
         <label for="company_name">회사명</label>
-        <input class="smartcms-input" id="company_name" name="company_name" value="<?= smartcms_h($form['company_name']) ?>">
+        <input class="smartcms-input" id="company_name" name="company_name" value="<?= smartcms_h($form['company_name']) ?>" autocomplete="off">
       </div>
       <div class="smartcms-field">
         <label for="password">비밀번호</label>
-        <input class="smartcms-input" id="password" name="password" type="password" minlength="8" required>
+        <input class="smartcms-input" id="password" name="password" type="password" minlength="8" autocomplete="new-password" required>
       </div>
       <?= smartcms_button('가입하기', 'submit') ?>
     </form>
