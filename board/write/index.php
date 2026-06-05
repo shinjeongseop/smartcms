@@ -49,6 +49,13 @@ smartcms_render_head([
     'title' => '글쓰기',
     'body_class' => 'smartcms-board-page',
 ]);
+$form_action = 'create';
+$form_enctype = 'multipart/form-data';
+$form_values = ['title' => '', 'content' => '', 'is_notice' => false, 'is_secret' => false];
+$show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
+$submit_label = '등록하기';
+$back_url = smartcms_board_url((string)$board['board_key']);
+$back_label = '목록으로';
 ?>
 <main class="smartcms-content-shell">
   <header class="smartcms-page-hero">
@@ -61,41 +68,6 @@ smartcms_render_head([
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <section class="smartcms-panel smartcms-admin-panel">
-    <form class="smartcms-grid" method="post" enctype="multipart/form-data">
-      <?= smartcms_csrf_input() ?>
-      <div class="smartcms-field">
-        <label for="title">제목</label>
-        <input class="smartcms-input" id="title" name="title" required>
-      </div>
-      <div class="smartcms-field">
-        <label for="content">내용</label>
-        <textarea class="smartcms-textarea" id="content" name="content" rows="12" required></textarea>
-      </div>
-      <div class="smartcms-actions">
-        <?php if (smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user)): ?>
-          <label class="smartcms-check-field">
-            <input type="checkbox" name="is_notice" value="1">
-            공지글
-          </label>
-        <?php endif; ?>
-        <label class="smartcms-check-field">
-          <input type="checkbox" name="is_secret" value="1">
-          비밀글
-        </label>
-      </div>
-      <?php if ((int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user)): ?>
-        <div class="smartcms-field">
-          <label for="attachments">첨부파일</label>
-          <input class="smartcms-input" id="attachments" name="attachments[]" type="file" multiple>
-          <p class="smartcms-text-muted">파일당 <?= smartcms_h(smartcms_setting_int('upload_max_mb', 10)) ?>MB 이하로 업로드할 수 있습니다.</p>
-        </div>
-      <?php endif; ?>
-      <div class="smartcms-actions">
-        <?= smartcms_button('등록하기', 'submit') ?>
-        <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">목록으로</a>
-      </div>
-    </form>
-  </section>
+  <?php require smartcms_board_skin_template($board, 'form'); ?>
 </main>
 <?php smartcms_render_foot(); ?>

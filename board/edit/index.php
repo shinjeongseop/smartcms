@@ -64,6 +64,18 @@ smartcms_render_head([
     'title' => '글 수정',
     'body_class' => 'smartcms-board-page',
 ]);
+$form_action = 'update';
+$form_values = [
+    'title' => (string)$post['title'],
+    'content' => (string)$post['content'],
+    'is_notice' => (int)$post['is_notice'] === 1,
+    'is_secret' => (int)$post['is_secret'] === 1,
+];
+$show_attachments = false;
+$show_hide_form = true;
+$submit_label = '수정 저장';
+$back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);
+$back_label = '상세로';
 ?>
 <main class="smartcms-content-shell">
   <header class="smartcms-page-hero">
@@ -76,42 +88,6 @@ smartcms_render_head([
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <section class="smartcms-panel smartcms-admin-panel">
-    <form class="smartcms-grid" method="post">
-      <?= smartcms_csrf_input() ?>
-      <input type="hidden" name="action" value="update">
-      <div class="smartcms-field">
-        <label for="title">제목</label>
-        <input class="smartcms-input" id="title" name="title" value="<?= smartcms_h($post['title']) ?>" required>
-      </div>
-      <div class="smartcms-field">
-        <label for="content">내용</label>
-        <textarea class="smartcms-textarea" id="content" name="content" rows="12" required><?= smartcms_h($post['content']) ?></textarea>
-      </div>
-      <div class="smartcms-actions">
-        <?php if (smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user)): ?>
-          <label class="smartcms-check-field">
-            <input type="checkbox" name="is_notice" value="1" <?= (int)$post['is_notice'] === 1 ? 'checked' : '' ?>>
-            공지글
-          </label>
-        <?php endif; ?>
-        <label class="smartcms-check-field">
-          <input type="checkbox" name="is_secret" value="1" <?= (int)$post['is_secret'] === 1 ? 'checked' : '' ?>>
-          비밀글
-        </label>
-      </div>
-      <div class="smartcms-actions">
-        <?= smartcms_button('수정 저장', 'submit') ?>
-        <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id'])) ?>">상세로</a>
-      </div>
-    </form>
-
-    <form class="smartcms-danger-form" method="post">
-      <?= smartcms_csrf_input() ?>
-      <input type="hidden" name="action" value="hide">
-      <button class="smartcms-danger-btn" type="submit">글 숨김 처리</button>
-      <p class="smartcms-text-muted">데이터는 삭제하지 않고 목록에서 숨깁니다.</p>
-    </form>
-  </section>
+  <?php require smartcms_board_skin_template($board, 'form'); ?>
 </main>
 <?php smartcms_render_foot(); ?>

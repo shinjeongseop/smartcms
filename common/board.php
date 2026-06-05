@@ -13,6 +13,17 @@ function smartcms_board_url(string $board_key, string $path = '/board/'): string
     return smartcms_base_url($path) . '?board=' . rawurlencode($board_key);
 }
 
+function smartcms_board_skin_template(?array $board, string $template): string
+{
+    $skin = $board ? preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($board['skin'] ?? 'default')) : 'default';
+    $path = SMARTCMS_ROOT . '/skins/board/' . ($skin !== '' ? $skin : 'default') . '/' . $template . '.php';
+    if (is_file($path)) {
+        return $path;
+    }
+
+    return SMARTCMS_ROOT . '/skins/board/default/' . $template . '.php';
+}
+
 function smartcms_board_post_url(string $board_key, int $post_id): string
 {
     return smartcms_board_url($board_key, '/board/view/') . '&id=' . rawurlencode((string)$post_id);
