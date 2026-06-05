@@ -41,3 +41,20 @@ function smartcms_site_nav(string $active = ''): string
 
     return $html;
 }
+
+function smartcms_site_header(string $active = '', string $shell_class = 'smartcms-content-shell'): string
+{
+    return '<main class="' . smartcms_h($shell_class) . '">' . PHP_EOL . smartcms_site_nav($active);
+}
+
+function smartcms_site_footer(): string
+{
+    $year = date('Y');
+    return '<footer class="smartcms-site-footer">
+        <div>
+          <strong>smartcms</strong>
+          <span>회원, 권한, 게시판을 조합하는 경량 커뮤니티 CMS</span>
+        </div>
+        <small>&copy; ' . smartcms_h($year) . ' smartcms</small>
+      </footer>';
+}

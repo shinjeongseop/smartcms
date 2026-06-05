@@ -58,8 +58,7 @@ smartcms_render_head([
     'body_class' => 'smartcms-admin-page',
 ]);
 ?>
-<main class="smartcms-admin-shell">
-  <?= smartcms_admin_header($admin, '관리자 대시보드', 'dashboard') ?>
+<?= smartcms_admin_page_header($admin, '관리자 대시보드', 'dashboard') ?>
 
   <?php if ($message !== ''): ?>
     <?= smartcms_alert($message, 'error') ?>
@@ -130,5 +129,6 @@ smartcms_render_head([
       </div>
     </article>
   </section>
+  <?= smartcms_admin_footer() ?>
 </main>
 <?php smartcms_render_foot(); ?>

@@ -58,8 +58,7 @@ $submit_label = '등록하기';
 $back_url = smartcms_board_url((string)$board['board_key']);
 $back_label = '목록으로';
 ?>
-<main class="smartcms-content-shell">
-  <?= smartcms_site_nav((string)$board['board_key']) ?>
+<?= smartcms_site_header((string)$board['board_key']) ?>
 
   <header class="smartcms-page-hero">
     <p class="smartcms-eyebrow">Write</p>
@@ -72,5 +71,6 @@ $back_label = '목록으로';
   <?php endif; ?>
 
   <?php require smartcms_board_skin_template($board, 'form'); ?>
+  <?= smartcms_site_footer() ?>
 </main>
 <?php smartcms_render_foot(); ?>

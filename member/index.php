@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../common/auth.php';
 require_once __DIR__ . '/../common/ui/layout.php';
+require_once __DIR__ . '/../common/ui/navigation.php';
 
 $user = smartcms_current_user();
 
@@ -11,7 +12,7 @@ smartcms_render_head([
     'body_class' => 'smartcms-board-page',
 ]);
 ?>
-<main class="smartcms-content-shell">
+<?= smartcms_site_header('') ?>
   <header class="smartcms-page-hero">
     <p class="smartcms-eyebrow">Member</p>
     <h1 class="smartcms-title">회원 센터</h1>
@@ -43,5 +44,6 @@ smartcms_render_head([
       </a>
     <?php endif; ?>
   </section>
+  <?= smartcms_site_footer() ?>
 </main>
 <?php smartcms_render_foot(); ?>

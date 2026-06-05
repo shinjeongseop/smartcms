@@ -78,8 +78,7 @@ $submit_label = '수정 저장';
 $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);
 $back_label = '상세로';
 ?>
-<main class="smartcms-content-shell">
-  <?= smartcms_site_nav((string)$board['board_key']) ?>
+<?= smartcms_site_header((string)$board['board_key']) ?>
 
   <header class="smartcms-page-hero">
     <p class="smartcms-eyebrow">Edit</p>
@@ -92,5 +91,6 @@ $back_label = '상세로';
   <?php endif; ?>
 
   <?php require smartcms_board_skin_template($board, 'form'); ?>
+  <?= smartcms_site_footer() ?>
 </main>
 <?php smartcms_render_foot(); ?>

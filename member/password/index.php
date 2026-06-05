@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../common/auth.php';
 require_once __DIR__ . '/../../common/ui/layout.php';
 require_once __DIR__ . '/../../common/ui/components.php';
+require_once __DIR__ . '/../../common/ui/navigation.php';
 
 $user = smartcms_require_login();
 $message = '';
@@ -26,34 +27,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 smartcms_render_head([
     'title' => '비밀번호 변경',
-    'body_class' => 'smartcms-auth-page',
+    'body_class' => 'smartcms-board-page',
 ]);
 ?>
-<main class="smartcms-panel smartcms-auth-panel">
-  <h1 class="smartcms-title">비밀번호 변경</h1>
-  <p class="smartcms-text-muted"><?= smartcms_h($user['email']) ?> 계정의 비밀번호를 변경합니다.</p>
+<?= smartcms_site_header('') ?>
+  <section class="smartcms-panel smartcms-auth-panel">
+    <h1 class="smartcms-title">비밀번호 변경</h1>
+    <p class="smartcms-text-muted"><?= smartcms_h($user['email']) ?> 계정의 비밀번호를 변경합니다.</p>
 
-  <?php if ($message !== ''): ?>
-    <?= smartcms_alert($message, $message_type) ?>
-  <?php endif; ?>
+    <?php if ($message !== ''): ?>
+      <?= smartcms_alert($message, $message_type) ?>
+    <?php endif; ?>
 
-  <form class="smartcms-grid" method="post">
-    <?= smartcms_csrf_input() ?>
-    <div class="smartcms-field">
-      <label for="current_password">현재 비밀번호</label>
-      <input class="smartcms-input" id="current_password" name="current_password" type="password" required>
-    </div>
-    <div class="smartcms-field">
-      <label for="new_password">새 비밀번호</label>
-      <input class="smartcms-input" id="new_password" name="new_password" type="password" minlength="8" required>
-    </div>
-    <div class="smartcms-field">
-      <label for="confirm_password">새 비밀번호 확인</label>
-      <input class="smartcms-input" id="confirm_password" name="confirm_password" type="password" minlength="8" required>
-    </div>
-    <?= smartcms_button('비밀번호 변경', 'submit') ?>
-  </form>
+    <form class="smartcms-grid" method="post">
+      <?= smartcms_csrf_input() ?>
+      <div class="smartcms-field">
+        <label for="current_password">현재 비밀번호</label>
+        <input class="smartcms-input" id="current_password" name="current_password" type="password" required>
+      </div>
+      <div class="smartcms-field">
+        <label for="new_password">새 비밀번호</label>
+        <input class="smartcms-input" id="new_password" name="new_password" type="password" minlength="8" required>
+      </div>
+      <div class="smartcms-field">
+        <label for="confirm_password">새 비밀번호 확인</label>
+        <input class="smartcms-input" id="confirm_password" name="confirm_password" type="password" minlength="8" required>
+      </div>
+      <?= smartcms_button('비밀번호 변경', 'submit') ?>
+    </form>
 
-  <p><a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지로 이동</a></p>
+    <p><a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지로 이동</a></p>
+  </section>
+  <?= smartcms_site_footer() ?>
 </main>
 <?php smartcms_render_foot(); ?>

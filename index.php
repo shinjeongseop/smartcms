@@ -67,8 +67,7 @@ smartcms_render_head([
     'body_class' => 'smartcms-site-home',
 ]);
 ?>
-<main class="smartcms-home-shell">
-  <?= smartcms_site_nav('home') ?>
+<?= smartcms_site_header('home', 'smartcms-home-shell') ?>
 
   <?php if (!$installed): ?>
     <section class="smartcms-home-hero smartcms-home-hero--setup">
@@ -251,5 +250,6 @@ smartcms_render_head([
       </aside>
     </section>
   <?php endif; ?>
+  <?= smartcms_site_footer() ?>
 </main>
 <?php smartcms_render_foot(); ?>

@@ -154,12 +154,114 @@ a {
 
 .smartcms-admin-page {
   min-height: 100vh;
-  padding: 32px 16px;
+  background: #f5f5f9;
 }
 
 .smartcms-admin-shell {
-  width: min(1120px, 100%);
-  margin: 0 auto;
+  min-height: 100vh;
+  padding: 0;
+}
+
+.smartcms-admin-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.smartcms-admin-sidebar {
+  background: #fff;
+  border-right: 1px solid #e7e7ef;
+  box-shadow: 0 2px 18px rgba(67, 89, 113, 0.08);
+  padding: 24px 18px;
+}
+
+.smartcms-admin-brand {
+  align-items: center;
+  color: #566a7f;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+  text-decoration: none;
+}
+
+.smartcms-admin-brand span {
+  align-items: center;
+  background: #696cff;
+  border-radius: 12px;
+  color: #fff;
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.smartcms-admin-brand strong {
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.smartcms-admin-menu-label {
+  color: #a1acb8;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+
+.smartcms-admin-workspace {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 24px;
+}
+
+.smartcms-admin-content {
+  display: grid;
+  gap: 22px;
+}
+
+.smartcms-admin-topbar {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  box-shadow: 0 2px 18px rgba(67, 89, 113, 0.1);
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 16px 18px;
+}
+
+.smartcms-admin-page-title {
+  color: #566a7f;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.smartcms-admin-profile {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.smartcms-admin-profile small {
+  color: #a1acb8;
+  display: block;
+  font-weight: 800;
+}
+
+.smartcms-admin-avatar {
+  align-items: center;
+  background: #e7e7ff;
+  border-radius: 50%;
+  color: #696cff;
+  display: inline-flex;
+  font-weight: 900;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
 }
 
 .smartcms-content-shell {
@@ -236,6 +338,25 @@ a {
 
 .smartcms-site-navbar .navbar-toggler {
   border-radius: 14px;
+}
+
+.smartcms-site-footer {
+  align-items: center;
+  color: var(--smartcms-muted);
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  margin-top: 28px;
+  padding: 18px 4px 0;
+}
+
+.smartcms-site-footer div {
+  display: grid;
+  gap: 2px;
+}
+
+.smartcms-site-footer strong {
+  color: var(--smartcms-text);
 }
 
 .smartcms-home-hero--portal,
@@ -518,33 +639,37 @@ a {
   margin-bottom: 24px;
 }
 
-.smartcms-admin-header {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 24px;
+.smartcms-admin-nav {
+  display: block;
 }
 
-.smartcms-admin-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 24px;
+.smartcms-admin-nav ul {
+  display: grid;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .smartcms-admin-nav-link {
-  border: 1px solid var(--smartcms-line);
-  border-radius: 999px;
-  color: var(--smartcms-muted);
-  font-weight: 800;
-  padding: 10px 14px;
+  align-items: center;
+  border-radius: 10px;
+  color: #697a8d;
+  display: flex;
+  gap: 12px;
+  font-weight: 900;
+  padding: 11px 12px;
   text-decoration: none;
 }
 
+.smartcms-admin-nav-link:hover {
+  background: #f5f5f9;
+  color: #696cff;
+}
+
 .smartcms-admin-nav-link.is-active {
-  background: var(--smartcms-primary);
-  border-color: var(--smartcms-primary);
+  background: linear-gradient(90deg, #696cff 0%, #8c8fff 100%);
+  box-shadow: 0 2px 6px rgba(105, 108, 255, 0.3);
   color: #fff;
 }
 
@@ -558,6 +683,9 @@ a {
 
 .smartcms-admin-panel {
   width: 100%;
+  border: 0;
+  border-radius: 18px;
+  box-shadow: 0 2px 18px rgba(67, 89, 113, 0.08);
 }
 
 .smartcms-stat-grid {
@@ -569,8 +697,9 @@ a {
 
 .smartcms-stat-card {
   background: var(--smartcms-surface);
-  border: 1px solid var(--smartcms-line);
-  border-radius: var(--smartcms-radius);
+  border: 0;
+  border-radius: 18px;
+  box-shadow: 0 2px 18px rgba(67, 89, 113, 0.08);
   display: grid;
   gap: 8px;
   padding: 22px;
@@ -583,6 +712,7 @@ a {
 }
 
 .smartcms-stat-card strong {
+  color: #566a7f;
   font-size: clamp(28px, 4vw, 42px);
   line-height: 1;
 }
@@ -595,6 +725,22 @@ a {
 
 .smartcms-dashboard-grid .smartcms-panel:first-child {
   grid-column: 1 / -1;
+}
+
+.smartcms-admin-footer {
+  align-items: center;
+  color: #a1acb8;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding: 10px 4px;
+}
+
+.smartcms-admin-footer a {
+  color: #696cff;
+  font-weight: 900;
+  text-decoration: none;
 }
 
 .smartcms-community-grid {
@@ -840,6 +986,11 @@ a {
     padding-top: 12px;
   }
 
+  .smartcms-site-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .smartcms-home-hero--portal,
   .smartcms-home-hero--setup {
     border-radius: 22px;
@@ -874,7 +1025,30 @@ a {
     width: fit-content;
   }
 
-  .smartcms-admin-header {
+  .smartcms-admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .smartcms-admin-sidebar {
+    border-right: 0;
+    padding: 18px 14px;
+  }
+
+  .smartcms-admin-workspace {
+    padding: 16px 10px 28px;
+  }
+
+  .smartcms-admin-topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .smartcms-admin-profile {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .smartcms-admin-footer {
     align-items: flex-start;
     flex-direction: column;
   }

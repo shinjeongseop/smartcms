@@ -63,8 +63,7 @@ smartcms_render_head([
     'body_class' => 'smartcms-admin-page',
 ]);
 ?>
-<main class="smartcms-admin-shell">
-  <?= smartcms_admin_header($admin, '페이지 권한', 'pages') ?>
+<?= smartcms_admin_page_header($admin, '페이지 권한', 'pages') ?>
 
   <?php if ($message !== ''): ?>
     <?= smartcms_alert($message, $message_type) ?>
@@ -137,5 +136,6 @@ smartcms_render_head([
       </table>
     </div>
   </section>
+  <?= smartcms_admin_footer() ?>
 </main>
 <?php smartcms_render_foot(); ?>

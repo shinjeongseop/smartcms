@@ -35,8 +35,7 @@ smartcms_render_head([
     'body_class' => 'smartcms-board-page',
 ]);
 ?>
-<main class="smartcms-content-shell">
-  <?= smartcms_site_nav($board ? (string)$board['board_key'] : '') ?>
+<?= smartcms_site_header($board ? (string)$board['board_key'] : '') ?>
 
   <header class="smartcms-page-hero">
     <p class="smartcms-eyebrow">Board</p>
@@ -53,5 +52,6 @@ smartcms_render_head([
   <?php else: ?>
     <?php require smartcms_board_skin_template($board, 'list'); ?>
   <?php endif; ?>
+  <?= smartcms_site_footer() ?>
 </main>
 <?php smartcms_render_foot(); ?>
