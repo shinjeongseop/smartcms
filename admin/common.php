@@ -16,6 +16,7 @@ function smartcms_admin_nav(string $active = ''): string
         'boards' => ['label' => '게시판 관리', 'href' => '/admin/boards/'],
         'pages' => ['label' => '페이지 권한', 'href' => '/admin/pages/'],
         'logs' => ['label' => '접속 로그', 'href' => '/admin/logs/'],
+        'database' => ['label' => 'DB 관리', 'href' => '/admin/database/'],
         'settings' => ['label' => '환경 설정', 'href' => '/admin/settings/'],
     ];
 

@@ -293,6 +293,12 @@ a {
   grid-column: 1 / -1;
 }
 
+.smartcms-community-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 0.8fr);
+}
+
 .smartcms-mini-list {
   display: grid;
   gap: 10px;
@@ -445,6 +451,10 @@ a {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+.smartcms-card-grid--compact {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
 .smartcms-card-link {
   background: var(--smartcms-surface);
   border: 1px solid var(--smartcms-line);
@@ -570,7 +580,8 @@ a {
   }
 
   .smartcms-stat-grid,
-  .smartcms-dashboard-grid {
+  .smartcms-dashboard-grid,
+  .smartcms-community-grid {
     grid-template-columns: 1fr;
   }
 

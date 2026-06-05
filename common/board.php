@@ -397,6 +397,45 @@ function smartcms_board_create(string $board_key, string $board_name, string $de
     return ['ok' => true, 'message' => '게시판을 생성했습니다.'];
 }
 
+function smartcms_board_seed_defaults(int $created_by): array
+{
+    $defaults = [
+        ['free', '자유게시판', '자유롭게 이야기를 나누는 게시판입니다.'],
+        ['notice', '공지사항', '사이트 공지와 안내를 게시합니다.'],
+        ['qna', 'Q&A', '질문과 답변을 남기는 게시판입니다.'],
+    ];
+    $created = 0;
+
+    foreach ($defaults as [$key, $name, $description]) {
+        $result = smartcms_board_create($key, $name, $description, $created_by);
+        if ($result['ok']) {
+            $created++;
+        }
+    }
+
+    return [
+        'ok' => true,
+        'message' => $created > 0 ? '기본 게시판 ' . $created . '개를 생성했습니다.' : '기본 게시판이 이미 준비되어 있습니다.',
+        'created' => $created,
+    ];
+}
+
+function smartcms_board_recent_posts(int $limit = 12): array
+{
+    $stmt = smartcms_db()->prepare(
+        "SELECT p.id, p.title, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name
+         FROM " . smartcms_table('board_posts') . " p
+         INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         WHERE p.is_hidden = 0 AND b.status <> 'disabled'
+         ORDER BY p.id DESC
+         LIMIT :limit"
+    );
+    $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+}
+
 function smartcms_board_create_post(array $board, array $user, string $title, string $content, bool $is_notice = false, bool $is_secret = false): array
 {
     $title = trim($title);
