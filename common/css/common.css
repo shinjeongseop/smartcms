@@ -182,6 +182,28 @@ a {
   margin-bottom: 24px;
 }
 
+.smartcms-admin-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.smartcms-admin-nav-link {
+  border: 1px solid var(--smartcms-line);
+  border-radius: 999px;
+  color: var(--smartcms-muted);
+  font-weight: 800;
+  padding: 10px 14px;
+  text-decoration: none;
+}
+
+.smartcms-admin-nav-link.is-active {
+  background: var(--smartcms-primary);
+  border-color: var(--smartcms-primary);
+  color: #fff;
+}
+
 .smartcms-eyebrow {
   color: var(--smartcms-primary);
   font-weight: 900;
@@ -192,6 +214,10 @@ a {
 
 .smartcms-admin-panel {
   width: 100%;
+}
+
+.smartcms-stack-panel {
+  margin-top: 20px;
 }
 
 .smartcms-section-title {
@@ -220,6 +246,40 @@ a {
 .smartcms-table th {
   color: var(--smartcms-muted);
   font-size: 14px;
+}
+
+.smartcms-inline-form {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.smartcms-select {
+  border: 1px solid var(--smartcms-line);
+  border-radius: 10px;
+  font: inherit;
+  min-height: 38px;
+  padding: 7px 10px;
+}
+
+.smartcms-small-btn {
+  border: 0;
+  border-radius: 10px;
+  background: var(--smartcms-primary);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  min-height: 38px;
+  padding: 7px 12px;
+}
+
+.smartcms-check-field {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+  font-weight: 700;
 }
 
 @media (max-width: 720px) {
