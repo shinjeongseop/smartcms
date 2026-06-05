@@ -2,7 +2,7 @@
 return [
     'project_key' => 'smartcms',
     'base_url' => '',
-    'table_prefix' => '',
+    'table_prefix' => 'sc_',
     'session_name' => 'smartcms_session',
     'cookie_path' => '/',
     'default_member_level' => 2,

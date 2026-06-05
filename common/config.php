@@ -78,7 +78,7 @@ function smartcms_write_local_config(array $settings): bool
     $config = [
         'project_key' => trim((string)($settings['project_key'] ?? 'smartcms')),
         'base_url' => rtrim(trim((string)($settings['base_url'] ?? '')), '/'),
-        'table_prefix' => preg_replace('/[^a-zA-Z0-9_]/', '', (string)($settings['table_prefix'] ?? '')),
+        'table_prefix' => preg_replace('/[^a-zA-Z0-9_]/', '', (string)($settings['table_prefix'] ?? 'sc_')) ?: 'sc_',
         'db' => [
             'host' => trim((string)($settings['db']['host'] ?? 'localhost')),
             'name' => trim((string)($settings['db']['name'] ?? '')),

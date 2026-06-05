@@ -13,7 +13,7 @@ $saved = false;
 $auto_project_key = 'smartcms';
 $form = [
     'base_url' => (string)smartcms_config_value('base_url', ''),
-    'table_prefix' => (string)smartcms_config_value('table_prefix', ''),
+    'table_prefix' => (string)smartcms_config_value('table_prefix', 'sc_'),
     'db_host' => (string)smartcms_config_value('db.host', 'localhost'),
     'db_name' => (string)smartcms_config_value('db.name', ''),
     'db_user' => (string)smartcms_config_value('db.user', ''),
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$locked) {
     smartcms_verify_csrf_or_fail();
     $form = [
         'base_url' => trim((string)($_POST['base_url'] ?? '')),
-        'table_prefix' => trim((string)($_POST['table_prefix'] ?? '')),
+        'table_prefix' => trim((string)($_POST['table_prefix'] ?? 'sc_')) ?: 'sc_',
         'db_host' => trim((string)($_POST['db_host'] ?? 'localhost')),
         'db_name' => trim((string)($_POST['db_name'] ?? '')),
         'db_user' => trim((string)($_POST['db_user'] ?? '')),
@@ -84,11 +84,13 @@ smartcms_render_head([
       <?= smartcms_csrf_input() ?>
       <div class="smartcms-field">
         <label for="base_url">Base URL</label>
-        <input class="smartcms-input" id="base_url" name="base_url" value="<?= smartcms_h($form['base_url']) ?>" placeholder="예: https://example.com">
+        <input class="smartcms-input" id="base_url" name="base_url" value="<?= smartcms_h($form['base_url']) ?>" placeholder="선택 사항, 예: https://example.com">
+        <p class="smartcms-text-muted">비워두면 상대 경로로 동작합니다. 도메인을 고정하고 싶을 때만 입력하세요.</p>
       </div>
       <div class="smartcms-field">
         <label for="table_prefix">Table Prefix</label>
-        <input class="smartcms-input" id="table_prefix" name="table_prefix" value="<?= smartcms_h($form['table_prefix']) ?>" placeholder="선택 사항">
+        <input class="smartcms-input" id="table_prefix" name="table_prefix" value="<?= smartcms_h($form['table_prefix']) ?>" placeholder="기본값 sc_">
+        <p class="smartcms-text-muted">기본값은 sc_ 입니다. 같은 DB에 여러 시스템을 함께 쓸 때 테이블명을 구분합니다.</p>
       </div>
       <div class="smartcms-field">
         <label for="db_host">DB Host</label>
