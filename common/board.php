@@ -436,6 +436,58 @@ function smartcms_board_recent_posts(int $limit = 12): array
     return $stmt->fetchAll();
 }
 
+function smartcms_board_recent_posts_by_key(string $board_key, int $limit = 5): array
+{
+    $stmt = smartcms_db()->prepare(
+        "SELECT p.id, p.title, p.author_name, p.comment_count, p.attachment_count, p.view_count, p.created_at,
+                b.board_key, b.board_name
+         FROM " . smartcms_table('board_posts') . " p
+         INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         WHERE p.is_hidden = 0 AND b.status <> 'disabled' AND b.board_key = :board_key
+         ORDER BY p.is_notice DESC, p.id DESC
+         LIMIT :limit"
+    );
+    $stmt->bindValue('board_key', $board_key);
+    $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+}
+
+function smartcms_board_popular_posts(int $limit = 5): array
+{
+    $stmt = smartcms_db()->prepare(
+        "SELECT p.id, p.title, p.author_name, p.comment_count, p.view_count, p.created_at, b.board_key, b.board_name
+         FROM " . smartcms_table('board_posts') . " p
+         INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         WHERE p.is_hidden = 0 AND b.status <> 'disabled'
+         ORDER BY p.view_count DESC, p.comment_count DESC, p.id DESC
+         LIMIT :limit"
+    );
+    $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+}
+
+function smartcms_board_post_counts(): array
+{
+    $stmt = smartcms_db()->query(
+        "SELECT b.board_key, COUNT(p.id) AS post_count
+         FROM " . smartcms_table('boards') . " b
+         LEFT JOIN " . smartcms_table('board_posts') . " p ON p.board_id = b.id AND p.is_hidden = 0
+         WHERE b.status <> 'disabled'
+         GROUP BY b.board_key"
+    );
+    $counts = [];
+
+    foreach ($stmt->fetchAll() as $row) {
+        $counts[(string)$row['board_key']] = (int)$row['post_count'];
+    }
+
+    return $counts;
+}
+
 function smartcms_board_create_post(array $board, array $user, string $title, string $content, bool $is_notice = false, bool $is_secret = false): array
 {
     $title = trim($title);

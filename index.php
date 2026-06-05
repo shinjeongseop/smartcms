@@ -5,10 +5,25 @@ require_once __DIR__ . '/common/config.php';
 require_once __DIR__ . '/common/ui/layout.php';
 require_once __DIR__ . '/common/ui/components.php';
 
+function smartcms_home_date(?string $value): string
+{
+    if (!$value) {
+        return '';
+    }
+
+    $timestamp = strtotime($value);
+    return $timestamp ? date('m.d', $timestamp) : $value;
+}
+
 $installed = is_file(smartcms_config_local_path()) && smartcms_install_locked();
 $user = null;
 $boards = [];
+$board_map = [];
+$board_counts = [];
 $recent_posts = [];
+$popular_posts = [];
+$notice_posts = [];
+$board_widgets = [];
 $message = '';
 
 if ($installed) {
@@ -17,7 +32,30 @@ if ($installed) {
 
     try {
         $boards = smartcms_board_list();
-        $recent_posts = smartcms_board_recent_posts(12);
+        foreach ($boards as $board) {
+            $board_map[(string)$board['board_key']] = $board;
+        }
+
+        $board_counts = smartcms_board_post_counts();
+        $recent_posts = smartcms_board_recent_posts(8);
+        $popular_posts = smartcms_board_popular_posts(5);
+        $notice_posts = smartcms_board_recent_posts_by_key('notice', 4);
+
+        foreach ([
+            'free' => '자유롭게 이야기를 나누는 공간',
+            'qna' => '궁금한 점을 남기고 답을 찾는 공간',
+            'notice' => '운영 소식과 중요한 안내',
+        ] as $board_key => $summary) {
+            if (!isset($board_map[$board_key])) {
+                continue;
+            }
+
+            $board_widgets[] = [
+                'board' => $board_map[$board_key],
+                'summary' => $summary,
+                'posts' => smartcms_board_recent_posts_by_key($board_key, 5),
+            ];
+        }
     } catch (Throwable $e) {
         $message = '커뮤니티 데이터를 불러오지 못했습니다: ' . $e->getMessage();
     }
@@ -28,83 +66,201 @@ smartcms_render_head([
     'body_class' => 'smartcms-site-home',
 ]);
 ?>
-<main class="smartcms-content-shell">
-  <section class="smartcms-home-hero">
-    <p class="smartcms-eyebrow">smartcms</p>
-    <?php if (!$installed): ?>
-      <h1 class="smartcms-title">설치가 필요합니다</h1>
-      <p class="smartcms-text-muted">DB 설정과 최초 관리자 계정 생성을 마치면 smartcms를 사용할 수 있습니다.</p>
-      <div class="smartcms-actions">
-        <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 마법사 시작</a>
-        <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/install/check.php')) ?>">서버 환경 확인</a>
-      </div>
-    <?php else: ?>
-      <h1 class="smartcms-title">스마트 커뮤니티</h1>
-      <p class="smartcms-text-muted">공지사항, 자유게시판, Q&A를 중심으로 운영되는 기본 커뮤니티 홈입니다.</p>
-      <div class="smartcms-actions">
-        <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">전체 게시판</a>
-        <?php if ($user): ?>
-          <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지</a>
-        <?php else: ?>
-          <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인</a>
-        <?php endif; ?>
-        <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/admin/')) ?>">관리자</a>
-      </div>
-    <?php endif; ?>
-  </section>
+<main class="smartcms-home-shell">
+  <header class="smartcms-home-topbar">
+    <a class="smartcms-home-brand" href="<?= smartcms_h(smartcms_base_url('/')) ?>">
+      <span>SC</span>
+      <strong>smartcms</strong>
+    </a>
+    <nav class="smartcms-home-nav" aria-label="홈 메뉴">
+      <?php if ($installed): ?>
+        <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>">공지사항</a>
+        <a href="<?= smartcms_h(smartcms_base_url('/board/?board=free')) ?>">자유게시판</a>
+        <a href="<?= smartcms_h(smartcms_base_url('/board/?board=qna')) ?>">Q&A</a>
+      <?php endif; ?>
+      <a class="smartcms-home-nav-primary" href="<?= smartcms_h(smartcms_base_url($installed ? '/admin/' : '/install/')) ?>"><?= $installed ? '관리자' : '설치하기' ?></a>
+    </nav>
+  </header>
 
   <?php if (!$installed): ?>
-    <section class="smartcms-card-grid">
-      <a class="smartcms-card-link" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">
-        <strong>1 설치 마법사</strong>
-        <span>DB 연결 정보를 입력하고 설정 파일을 생성합니다.</span>
-      </a>
-      <a class="smartcms-card-link" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">
-        <strong>2 테이블 생성</strong>
-        <span>DB 설정 후 회원, 권한, 게시판, 로그 테이블을 준비합니다.</span>
-      </a>
-      <a class="smartcms-card-link" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">
-        <strong>3 관리자 계정 생성</strong>
-        <span>테이블 생성 후 최초 level 10 관리자 계정을 생성합니다.</span>
-      </a>
+    <section class="smartcms-home-hero smartcms-home-hero--setup">
+      <div>
+        <p class="smartcms-eyebrow">Setup Required</p>
+        <h1 class="smartcms-title">설치 마법사로 smartcms를 시작하세요</h1>
+        <p class="smartcms-text-muted">DB 설정, 테이블 생성, 최초 관리자 계정 생성을 순서대로 완료하면 커뮤니티 홈과 관리자 기능을 사용할 수 있습니다.</p>
+        <div class="smartcms-actions">
+          <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 마법사 시작</a>
+          <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/install/check.php')) ?>">서버 환경 확인</a>
+        </div>
+      </div>
+      <div class="smartcms-home-setup-card">
+        <span>01</span>
+        <strong>DB 연결</strong>
+        <span>02</span>
+        <strong>스키마 생성</strong>
+        <span>03</span>
+        <strong>관리자 생성</strong>
+      </div>
     </section>
   <?php else: ?>
     <?php if ($message !== ''): ?>
       <?= smartcms_alert($message, 'error') ?>
     <?php endif; ?>
 
-    <section class="smartcms-community-grid">
-      <article class="smartcms-panel smartcms-admin-panel">
-        <h2 class="smartcms-section-title">게시판</h2>
-        <div class="smartcms-card-grid smartcms-card-grid--compact">
-          <?php foreach ($boards as $board): ?>
-            <?php if ((string)$board['status'] !== 'hidden'): ?>
-              <a class="smartcms-card-link" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
-                <strong><?= smartcms_h($board['board_name']) ?></strong>
-                <span><?= smartcms_h($board['description'] ?? '게시판으로 이동') ?></span>
-              </a>
-            <?php endif; ?>
-          <?php endforeach; ?>
-          <?php if (!$boards): ?>
-            <p class="smartcms-text-muted">생성된 게시판이 없습니다.</p>
-          <?php endif; ?>
+    <section class="smartcms-home-hero smartcms-home-hero--portal">
+      <div class="smartcms-home-hero-copy">
+        <p class="smartcms-eyebrow">Community Builder</p>
+        <h1 class="smartcms-title">게시판과 회원 기능을 한 화면에 모은 커뮤니티 홈</h1>
+        <p class="smartcms-text-muted">공지, 자유게시판, Q&A를 위젯처럼 조합해 사이트 첫 화면을 빠르게 구성합니다.</p>
+        <div class="smartcms-actions">
+          <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">전체 게시판 보기</a>
+          <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url($user ? '/board/write/?board=free' : '/member/login/')) ?>"><?= $user ? '글쓰기' : '로그인' ?></a>
         </div>
-      </article>
+      </div>
+      <div class="smartcms-home-hero-board">
+        <div>
+          <span>Boards</span>
+          <strong><?= count($boards) ?></strong>
+        </div>
+        <div>
+          <span>Recent</span>
+          <strong><?= count($recent_posts) ?></strong>
+        </div>
+        <div>
+          <span>Members</span>
+          <strong><?= $user ? 'ON' : 'Guest' ?></strong>
+        </div>
+      </div>
+    </section>
 
-      <article class="smartcms-panel smartcms-admin-panel">
-        <h2 class="smartcms-section-title">최근글</h2>
-        <div class="smartcms-mini-list">
-          <?php foreach ($recent_posts as $post): ?>
-            <a href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-              <strong><?= smartcms_h($post['title']) ?></strong>
-              <span><?= smartcms_h($post['board_name']) ?> · <?= smartcms_h($post['author_name']) ?> · <?= smartcms_h($post['created_at']) ?></span>
-            </a>
+    <section class="smartcms-home-notice">
+      <strong>공지</strong>
+      <?php if ($notice_posts): ?>
+        <?php $notice = $notice_posts[0]; ?>
+        <a href="<?= smartcms_h(smartcms_board_post_url((string)$notice['board_key'], (int)$notice['id'])) ?>">
+          <?= smartcms_h($notice['title']) ?>
+        </a>
+        <span><?= smartcms_h(smartcms_home_date((string)$notice['created_at'])) ?></span>
+      <?php else: ?>
+        <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>">아직 등록된 공지사항이 없습니다.</a>
+        <span>준비중</span>
+      <?php endif; ?>
+    </section>
+
+    <section class="smartcms-home-layout">
+      <div class="smartcms-home-main">
+        <section class="smartcms-home-widget smartcms-home-widget--wide">
+          <div class="smartcms-home-widget-head">
+            <div>
+              <p class="smartcms-eyebrow">Latest</p>
+              <h2>전체 최신글</h2>
+            </div>
+            <a href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">더보기</a>
+          </div>
+          <div class="smartcms-home-list smartcms-home-list--featured">
+            <?php foreach ($recent_posts as $post): ?>
+              <a href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
+                <span class="smartcms-home-board-badge"><?= smartcms_h($post['board_name']) ?></span>
+                <strong><?= smartcms_h($post['title']) ?></strong>
+                <em><?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?></em>
+              </a>
+            <?php endforeach; ?>
+            <?php if (!$recent_posts): ?>
+              <p class="smartcms-home-empty">아직 게시글이 없습니다. 첫 글을 남겨보세요.</p>
+            <?php endif; ?>
+          </div>
+        </section>
+
+        <div class="smartcms-home-widget-grid">
+          <?php foreach ($board_widgets as $widget): ?>
+            <?php $board = $widget['board']; ?>
+            <section class="smartcms-home-widget">
+              <div class="smartcms-home-widget-head">
+                <div>
+                  <p class="smartcms-eyebrow"><?= smartcms_h($board['board_key']) ?></p>
+                  <h2><?= smartcms_h($board['board_name']) ?></h2>
+                  <span><?= smartcms_h($widget['summary']) ?></span>
+                </div>
+                <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">더보기</a>
+              </div>
+              <div class="smartcms-home-list">
+                <?php foreach ($widget['posts'] as $post): ?>
+                  <a href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
+                    <strong><?= smartcms_h($post['title']) ?></strong>
+                    <em><?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?></em>
+                  </a>
+                <?php endforeach; ?>
+                <?php if (!$widget['posts']): ?>
+                  <p class="smartcms-home-empty">등록된 글이 없습니다.</p>
+                <?php endif; ?>
+              </div>
+            </section>
           <?php endforeach; ?>
-          <?php if (!$recent_posts): ?>
-            <p class="smartcms-text-muted">최근 게시글이 없습니다.</p>
-          <?php endif; ?>
         </div>
-      </article>
+      </div>
+
+      <aside class="smartcms-home-side">
+        <section class="smartcms-home-member-card">
+          <?php if ($user): ?>
+            <p class="smartcms-eyebrow">Member</p>
+            <h2><?= smartcms_h($user['name']) ?>님</h2>
+            <p>현재 level <?= smartcms_h($user['level']) ?> 권한으로 이용 중입니다.</p>
+            <div class="smartcms-actions">
+              <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지</a>
+              <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
+            </div>
+          <?php else: ?>
+            <p class="smartcms-eyebrow">Welcome</p>
+            <h2>로그인하고 커뮤니티에 참여하세요</h2>
+            <p>회원가입 후 글쓰기, 댓글, 마이페이지 기능을 사용할 수 있습니다.</p>
+            <div class="smartcms-actions">
+              <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인</a>
+              <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>">회원가입</a>
+            </div>
+          <?php endif; ?>
+        </section>
+
+        <section class="smartcms-home-widget">
+          <div class="smartcms-home-widget-head">
+            <div>
+              <p class="smartcms-eyebrow">Popular</p>
+              <h2>인기글</h2>
+            </div>
+          </div>
+          <div class="smartcms-home-rank-list">
+            <?php foreach ($popular_posts as $index => $post): ?>
+              <a href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
+                <span><?= $index + 1 ?></span>
+                <strong><?= smartcms_h($post['title']) ?></strong>
+                <em>조회 <?= smartcms_h($post['view_count']) ?></em>
+              </a>
+            <?php endforeach; ?>
+            <?php if (!$popular_posts): ?>
+              <p class="smartcms-home-empty">인기글 집계 전입니다.</p>
+            <?php endif; ?>
+          </div>
+        </section>
+
+        <section class="smartcms-home-widget">
+          <div class="smartcms-home-widget-head">
+            <div>
+              <p class="smartcms-eyebrow">Boards</p>
+              <h2>바로가기</h2>
+            </div>
+          </div>
+          <div class="smartcms-home-shortcuts">
+            <?php foreach ($boards as $board): ?>
+              <?php if ((string)$board['status'] === 'hidden'): ?>
+                <?php continue; ?>
+              <?php endif; ?>
+              <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
+                <strong><?= smartcms_h($board['board_name']) ?></strong>
+                <span><?= (int)($board_counts[(string)$board['board_key']] ?? 0) ?> posts</span>
+              </a>
+            <?php endforeach; ?>
+          </div>
+        </section>
+      </aside>
     </section>
   <?php endif; ?>
 </main>
