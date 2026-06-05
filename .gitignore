@@ -1,2 +1,4 @@
 config.local.php
 install.lock
+uploads/*
+!uploads/.gitkeep

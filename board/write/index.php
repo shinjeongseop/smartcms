@@ -31,7 +31,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_type = $result['ok'] ? 'success' : 'error';
 
     if ($result['ok']) {
-        smartcms_redirect('/board/?board=' . rawurlencode((string)$board['board_key']));
+        if (isset($_FILES['attachments'])) {
+            $file_result = smartcms_board_store_uploads($board, (int)$result['post_id'], $user, $_FILES['attachments']);
+            if (!$file_result['ok']) {
+                $message = $file_result['message'];
+                $message_type = 'error';
+            }
+        }
+        if ($message_type === 'success') {
+            smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$result['post_id']));
+        }
     }
 }
 
@@ -52,7 +61,7 @@ smartcms_render_head([
   <?php endif; ?>
 
   <section class="smartcms-panel smartcms-admin-panel">
-    <form class="smartcms-grid" method="post">
+    <form class="smartcms-grid" method="post" enctype="multipart/form-data">
       <div class="smartcms-field">
         <label for="title">제목</label>
         <input class="smartcms-input" id="title" name="title" required>
@@ -73,6 +82,13 @@ smartcms_render_head([
           비밀글
         </label>
       </div>
+      <?php if ((int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user)): ?>
+        <div class="smartcms-field">
+          <label for="attachments">첨부파일</label>
+          <input class="smartcms-input" id="attachments" name="attachments[]" type="file" multiple>
+          <p class="smartcms-text-muted">파일당 10MB 이하로 업로드할 수 있습니다.</p>
+        </div>
+      <?php endif; ?>
       <div class="smartcms-actions">
         <?= smartcms_button('등록하기', 'submit') ?>
         <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">목록으로</a>

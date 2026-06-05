@@ -13,6 +13,11 @@ function smartcms_board_url(string $board_key, string $path = '/board/'): string
     return smartcms_base_url($path) . '?board=' . rawurlencode($board_key);
 }
 
+function smartcms_board_post_url(string $board_key, int $post_id): string
+{
+    return smartcms_board_url($board_key, '/board/view/') . '&id=' . rawurlencode((string)$post_id);
+}
+
 function smartcms_board_excerpt(string $content, int $length = 200): string
 {
     $plain = strip_tags($content);
@@ -92,20 +97,56 @@ function smartcms_require_board_access(array $board, string $action): ?array
     return $user;
 }
 
-function smartcms_board_posts(int $board_id, int $limit = 30): array
+function smartcms_board_search_term(string $keyword): string
 {
-    $stmt = smartcms_db()->prepare(
-        "SELECT id, title, author_name, is_notice, is_secret, view_count, comment_count, created_at
+    return trim(str_replace(['%', '_'], ['\\%', '\\_'], $keyword));
+}
+
+function smartcms_board_posts(int $board_id, int $page = 1, int $per_page = 10, string $keyword = ''): array
+{
+    $page = max(1, $page);
+    $per_page = max(1, min(100, $per_page));
+    $offset = ($page - 1) * $per_page;
+    $keyword = smartcms_board_search_term($keyword);
+    $where = "board_id = :board_id AND is_hidden = 0";
+    $params = ['board_id' => $board_id];
+
+    if ($keyword !== '') {
+        $where .= " AND (title LIKE :keyword OR content LIKE :keyword OR author_name LIKE :keyword)";
+        $params['keyword'] = '%' . $keyword . '%';
+    }
+
+    $count_stmt = smartcms_db()->prepare(
+        "SELECT COUNT(*) AS cnt
          FROM " . smartcms_table('board_posts') . "
-         WHERE board_id = :board_id AND is_hidden = 0
+         WHERE {$where}"
+    );
+    $count_stmt->execute($params);
+    $total = (int)($count_stmt->fetch()['cnt'] ?? 0);
+
+    $stmt = smartcms_db()->prepare(
+        "SELECT id, title, author_name, is_notice, is_secret, view_count, comment_count, attachment_count, created_at
+         FROM " . smartcms_table('board_posts') . "
+         WHERE {$where}
          ORDER BY is_notice DESC, id DESC
-         LIMIT :limit"
+         LIMIT :limit OFFSET :offset"
     );
     $stmt->bindValue('board_id', $board_id, PDO::PARAM_INT);
-    $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+    if ($keyword !== '') {
+        $stmt->bindValue('keyword', '%' . $keyword . '%', PDO::PARAM_STR);
+    }
+    $stmt->bindValue('limit', $per_page, PDO::PARAM_INT);
+    $stmt->bindValue('offset', $offset, PDO::PARAM_INT);
     $stmt->execute();
 
-    return $stmt->fetchAll();
+    return [
+        'items' => $stmt->fetchAll(),
+        'total' => $total,
+        'page' => $page,
+        'per_page' => $per_page,
+        'pages' => max(1, (int)ceil($total / $per_page)),
+        'keyword' => $keyword,
+    ];
 }
 
 function smartcms_board_post_find(int $board_id, int $post_id): ?array
@@ -141,6 +182,34 @@ function smartcms_board_comments(int $post_id): array
     $stmt->execute(['post_id' => $post_id]);
 
     return $stmt->fetchAll();
+}
+
+function smartcms_board_files(int $post_id): array
+{
+    $stmt = smartcms_db()->prepare(
+        "SELECT id, original_name, file_size, download_count, created_at
+         FROM " . smartcms_table('board_files') . "
+         WHERE post_id = :post_id
+         ORDER BY id ASC"
+    );
+    $stmt->execute(['post_id' => $post_id]);
+
+    return $stmt->fetchAll();
+}
+
+function smartcms_board_file_find(int $file_id): ?array
+{
+    return smartcms_fetch_one(
+        "SELECT f.*, p.title, p.author_id, p.is_secret, p.is_hidden, b.board_key, b.board_name, b.status AS board_status,
+                bp.board_view_level, bp.board_manage_level, bp.allow_guest_view, bp.status AS permission_status
+         FROM " . smartcms_table('board_files') . " f
+         INNER JOIN " . smartcms_table('board_posts') . " p ON p.id = f.post_id
+         INNER JOIN " . smartcms_table('boards') . " b ON b.id = f.board_id
+         LEFT JOIN " . smartcms_table('board_permissions') . " bp ON bp.board_key = b.board_key
+         WHERE f.id = :id
+         LIMIT 1",
+        ['id' => $file_id]
+    );
 }
 
 function smartcms_board_can_manage_post(array $board, array $post, ?array $user): bool
@@ -345,5 +414,81 @@ function smartcms_board_create_post(array $board, array $user, string $title, st
         'id' => (int)smartcms_db()->lastInsertId(),
     ];
     smartcms_board_audit($board, $post, $user, 'post_create', '게시글을 등록했습니다.');
-    return ['ok' => true, 'message' => '글을 등록했습니다.'];
+    return ['ok' => true, 'message' => '글을 등록했습니다.', 'post_id' => $post['id']];
+}
+
+function smartcms_board_store_uploads(array $board, int $post_id, array $user, array $files): array
+{
+    if (empty($files['name']) || (int)($board['use_attachments'] ?? 1) !== 1) {
+        return ['ok' => true, 'message' => '첨부할 파일이 없습니다.', 'count' => 0];
+    }
+
+    if (!smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user)) {
+        return ['ok' => false, 'message' => '첨부파일 업로드 권한이 없습니다.', 'count' => 0];
+    }
+
+    $names = is_array($files['name']) ? $files['name'] : [$files['name']];
+    $tmp_names = is_array($files['tmp_name']) ? $files['tmp_name'] : [$files['tmp_name']];
+    $sizes = is_array($files['size']) ? $files['size'] : [$files['size']];
+    $errors = is_array($files['error']) ? $files['error'] : [$files['error']];
+    $types = is_array($files['type']) ? $files['type'] : [$files['type']];
+    $stored_count = 0;
+    $upload_root = SMARTCMS_ROOT . '/uploads/board';
+
+    if (!is_dir($upload_root)) {
+        mkdir($upload_root, 0755, true);
+    }
+
+    foreach ($names as $index => $name) {
+        if ((int)$errors[$index] === UPLOAD_ERR_NO_FILE) {
+            continue;
+        }
+        if ((int)$errors[$index] !== UPLOAD_ERR_OK) {
+            return ['ok' => false, 'message' => '파일 업로드 중 오류가 발생했습니다.', 'count' => $stored_count];
+        }
+
+        $size = (int)$sizes[$index];
+        if ($size > 10 * 1024 * 1024) {
+            return ['ok' => false, 'message' => '첨부파일은 10MB 이하만 업로드할 수 있습니다.', 'count' => $stored_count];
+        }
+
+        $original_name = basename((string)$name);
+        $extension = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+        $stored_name = date('YmdHis') . '_' . bin2hex(random_bytes(8)) . ($extension !== '' ? '.' . $extension : '');
+        $target_path = $upload_root . '/' . $stored_name;
+
+        if (!move_uploaded_file((string)$tmp_names[$index], $target_path)) {
+            return ['ok' => false, 'message' => '첨부파일 저장에 실패했습니다.', 'count' => $stored_count];
+        }
+
+        smartcms_execute(
+            "INSERT INTO " . smartcms_table('board_files') . "
+             (board_id, post_id, original_name, stored_name, file_path, file_size, mime_type, uploaded_by)
+             VALUES (:board_id, :post_id, :original_name, :stored_name, :file_path, :file_size, :mime_type, :uploaded_by)",
+            [
+                'board_id' => (int)$board['id'],
+                'post_id' => $post_id,
+                'original_name' => $original_name,
+                'stored_name' => $stored_name,
+                'file_path' => 'uploads/board/' . $stored_name,
+                'file_size' => $size,
+                'mime_type' => substr((string)$types[$index], 0, 120),
+                'uploaded_by' => (int)$user['id'],
+            ]
+        );
+        $stored_count++;
+    }
+
+    if ($stored_count > 0) {
+        smartcms_execute(
+            "UPDATE " . smartcms_table('board_posts') . " SET attachment_count = attachment_count + :count WHERE id = :id",
+            [
+                'count' => $stored_count,
+                'id' => $post_id,
+            ]
+        );
+        smartcms_board_audit($board, ['id' => $post_id], $user, 'file_upload', '첨부파일을 업로드했습니다.');
+    }
+
+    return ['ok' => true, 'message' => '첨부파일을 저장했습니다.', 'count' => $stored_count];
 }

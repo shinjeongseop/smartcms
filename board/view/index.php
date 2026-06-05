@@ -66,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 smartcms_board_increment_view((int)$post['id']);
 $post['view_count'] = (int)$post['view_count'] + 1;
 $comments = smartcms_board_comments((int)$post['id']);
+$files = smartcms_board_files((int)$post['id']);
 
 smartcms_render_head([
     'title' => (string)$post['title'],
@@ -96,6 +97,17 @@ smartcms_render_head([
       <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/board/edit/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id'])) ?>">수정</a>
     <?php endif; ?>
     <div class="smartcms-post-content"><?= nl2br(smartcms_h($post['content'])) ?></div>
+    <?php if ($files): ?>
+      <div class="smartcms-file-list">
+        <h2 class="smartcms-section-title">첨부파일</h2>
+        <?php foreach ($files as $file): ?>
+          <a class="smartcms-file-link" href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>">
+            <?= smartcms_h($file['original_name']) ?>
+            <span><?= number_format((int)$file['file_size']) ?> bytes · 다운로드 <?= smartcms_h($file['download_count']) ?></span>
+          </a>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
   </article>
 
   <section class="smartcms-panel smartcms-admin-panel smartcms-stack-panel">

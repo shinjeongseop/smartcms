@@ -9,14 +9,18 @@ $board_key = smartcms_board_key((string)($_GET['board'] ?? ''));
 $board = $board_key !== '' ? smartcms_board_find($board_key) : null;
 $boards = [];
 $posts = [];
+$pagination = ['items' => [], 'total' => 0, 'page' => 1, 'per_page' => 10, 'pages' => 1, 'keyword' => ''];
 $message = '';
 $message_type = 'info';
 $user = null;
+$page = max(1, (int)($_GET['page'] ?? 1));
+$keyword = trim((string)($_GET['q'] ?? ''));
 
 try {
     if ($board) {
         $user = smartcms_require_board_access($board, 'list');
-        $posts = smartcms_board_posts((int)$board['id'], (int)$board['items_per_page']);
+        $pagination = smartcms_board_posts((int)$board['id'], $page, (int)$board['items_per_page'], $keyword);
+        $posts = $pagination['items'];
     } else {
         $boards = smartcms_board_list();
     }
@@ -63,6 +67,14 @@ smartcms_render_head([
           <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">글쓰기</a>
         <?php endif; ?>
       </div>
+      <form class="smartcms-search-form" method="get">
+        <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
+        <input class="smartcms-input" name="q" value="<?= smartcms_h($pagination['keyword']) ?>" placeholder="제목, 내용, 작성자 검색">
+        <button class="smartcms-small-btn" type="submit">검색</button>
+        <?php if ($pagination['keyword'] !== ''): ?>
+          <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">초기화</a>
+        <?php endif; ?>
+      </form>
       <div class="smartcms-table-wrap">
         <table class="smartcms-table">
           <thead>
@@ -85,6 +97,9 @@ smartcms_render_head([
                     <?php if ((int)$post['comment_count'] > 0): ?>
                       <span class="smartcms-text-muted">(<?= smartcms_h($post['comment_count']) ?>)</span>
                     <?php endif; ?>
+                    <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?>
+                      <span class="smartcms-badge smartcms-badge--muted">첨부</span>
+                    <?php endif; ?>
                   </a>
                 </td>
                 <td><?= smartcms_h($post['author_name']) ?></td>
@@ -100,6 +115,13 @@ smartcms_render_head([
           </tbody>
         </table>
       </div>
+      <?php if ($pagination['pages'] > 1): ?>
+        <nav class="smartcms-pagination" aria-label="게시글 페이지">
+          <?php for ($i = 1; $i <= (int)$pagination['pages']; $i++): ?>
+            <a class="smartcms-page-link <?= $i === (int)$pagination['page'] ? 'is-active' : '' ?>" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key']) . '&page=' . $i . '&q=' . rawurlencode((string)$pagination['keyword'])) ?>"><?= $i ?></a>
+          <?php endfor; ?>
+        </nav>
+      <?php endif; ?>
     </section>
   <?php endif; ?>
 </main>
