@@ -5,7 +5,7 @@ require_once __DIR__ . '/../common/auth.php';
 
 function smartcms_admin_user(): array
 {
-    return smartcms_require_level((int)smartcms_config_value('admin_level', 8), (string)smartcms_config_value('admin_login_url', '/admin/login/'));
+    return smartcms_require_level(smartcms_setting_int('admin_level', (int)smartcms_config_value('admin_level', 8)), (string)smartcms_config_value('admin_login_url', '/admin/login/'));
 }
 
 function smartcms_admin_nav(string $active = ''): string
@@ -16,6 +16,7 @@ function smartcms_admin_nav(string $active = ''): string
         'boards' => ['label' => '게시판 관리', 'href' => '/admin/boards/'],
         'pages' => ['label' => '페이지 권한', 'href' => '/admin/pages/'],
         'logs' => ['label' => '접속 로그', 'href' => '/admin/logs/'],
+        'settings' => ['label' => '환경 설정', 'href' => '/admin/settings/'],
     ];
 
     $html = '<nav class="smartcms-admin-nav" aria-label="관리자 메뉴">';

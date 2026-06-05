@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $allowed_statuses = ['active', 'pending', 'blocked', 'left'];
     $allowed_roles = ['admin', 'manager', 'user'];
 
-    if ($user_id === (int)$admin['id'] && $level < (int)smartcms_config_value('admin_level', 8)) {
+    if ($user_id === (int)$admin['id'] && $level < smartcms_setting_int('admin_level', (int)smartcms_config_value('admin_level', 8))) {
         $message = '현재 로그인한 관리자 자신의 레벨을 관리자 기준 아래로 낮출 수 없습니다.';
         $message_type = 'error';
     } elseif (!in_array($status, $allowed_statuses, true) || !in_array($role, $allowed_roles, true)) {

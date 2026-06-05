@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/routes.php';
+require_once __DIR__ . '/settings.php';
 
 function smartcms_session_start(): void
 {
@@ -135,6 +136,10 @@ function smartcms_require_page_view(string $page_key, string $page_path, string 
 
 function smartcms_register_user(string $email, string $password, string $name, ?string $company_name = null): array
 {
+    if (!smartcms_setting_bool('allow_registration', true)) {
+        return ['ok' => false, 'message' => '현재 회원가입이 중지되어 있습니다.'];
+    }
+
     $email = trim($email);
     $name = trim($name);
     $company_name = trim((string)$company_name);
@@ -166,7 +171,7 @@ function smartcms_register_user(string $email, string $password, string $name, ?
             'password_hash' => password_hash($password, PASSWORD_DEFAULT),
             'name' => $name,
             'company_name' => $company_name !== '' ? $company_name : null,
-            'level' => (int)smartcms_config_value('default_member_level', 2),
+            'level' => smartcms_setting_int('default_member_level', (int)smartcms_config_value('default_member_level', 2)),
         ]
     );
 

@@ -38,7 +38,7 @@ smartcms_render_head([
 ?>
 <main class="smartcms-panel smartcms-auth-panel">
   <h1 class="smartcms-title">회원가입</h1>
-  <p class="smartcms-text-muted">기본 회원은 level <?= smartcms_h(smartcms_config_value('default_member_level', 2)) ?> 권한으로 생성됩니다.</p>
+  <p class="smartcms-text-muted">기본 회원은 level <?= smartcms_h(smartcms_setting_int('default_member_level', (int)smartcms_config_value('default_member_level', 2))) ?> 권한으로 생성됩니다.</p>
 
   <?php if ($message !== ''): ?>
     <?= smartcms_alert($message, $message_type) ?>

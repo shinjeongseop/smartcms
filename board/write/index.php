@@ -88,7 +88,7 @@ smartcms_render_head([
         <div class="smartcms-field">
           <label for="attachments">첨부파일</label>
           <input class="smartcms-input" id="attachments" name="attachments[]" type="file" multiple>
-          <p class="smartcms-text-muted">파일당 10MB 이하로 업로드할 수 있습니다.</p>
+          <p class="smartcms-text-muted">파일당 <?= smartcms_h(smartcms_setting_int('upload_max_mb', 10)) ?>MB 이하로 업로드할 수 있습니다.</p>
         </div>
       <?php endif; ?>
       <div class="smartcms-actions">

@@ -344,6 +344,10 @@ a {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.smartcms-form-wide {
+  grid-column: 1 / -1;
+}
+
 .smartcms-table-wrap {
   overflow-x: auto;
 }
@@ -555,6 +559,10 @@ a {
 
   .smartcms-form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .smartcms-form-wide {
+    grid-column: auto;
   }
 
   .smartcms-search-form {

@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_type = $result['ok'] ? 'success' : 'error';
 
     if ($result['ok']) {
-        if (!smartcms_has_level((int)smartcms_config_value('admin_level', 8), $result['user'])) {
+        if (!smartcms_has_level(smartcms_setting_int('admin_level', (int)smartcms_config_value('admin_level', 8)), $result['user'])) {
             smartcms_logout();
             $message = '관리자 권한이 없는 계정입니다.';
             $message_type = 'error';

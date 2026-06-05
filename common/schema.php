@@ -15,6 +15,7 @@ function smartcms_create_schema(): void
     smartcms_create_board_audit_logs_table();
     smartcms_create_login_logs_table();
     smartcms_create_access_logs_table();
+    smartcms_create_site_settings_table();
 }
 
 function smartcms_create_users_table(): void
@@ -225,5 +226,17 @@ function smartcms_create_access_logs_table(): void
         INDEX idx_access_logs_type_created (access_type, created_at),
         INDEX idx_access_logs_target_created (target_type, target_key, created_at),
         INDEX idx_access_logs_ip_created (ip_hash, created_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+}
+
+function smartcms_create_site_settings_table(): void
+{
+    smartcms_db()->exec("CREATE TABLE IF NOT EXISTS " . smartcms_table('site_settings') . " (
+        id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        setting_key VARCHAR(120) NOT NULL,
+        setting_value TEXT NOT NULL,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        UNIQUE KEY uq_site_settings_key (setting_key)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 }

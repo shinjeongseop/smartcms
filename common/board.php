@@ -448,8 +448,9 @@ function smartcms_board_store_uploads(array $board, int $post_id, array $user, a
         }
 
         $size = (int)$sizes[$index];
-        if ($size > 10 * 1024 * 1024) {
-            return ['ok' => false, 'message' => '첨부파일은 10MB 이하만 업로드할 수 있습니다.', 'count' => $stored_count];
+        $max_mb = max(1, smartcms_setting_int('upload_max_mb', 10));
+        if ($size > $max_mb * 1024 * 1024) {
+            return ['ok' => false, 'message' => '첨부파일은 ' . $max_mb . 'MB 이하만 업로드할 수 있습니다.', 'count' => $stored_count];
         }
 
         $original_name = basename((string)$name);
