@@ -11,6 +11,7 @@ function smartcms_admin_user(): array
 function smartcms_admin_nav(string $active = ''): string
 {
     $items = [
+        'dashboard' => ['label' => '대시보드', 'href' => '/admin/dashboard/'],
         'users' => ['label' => '회원 관리', 'href' => '/admin/users/'],
         'boards' => ['label' => '게시판 관리', 'href' => '/admin/boards/'],
         'pages' => ['label' => '페이지 권한', 'href' => '/admin/pages/'],
