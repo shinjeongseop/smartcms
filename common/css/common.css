@@ -291,6 +291,11 @@ a {
   font-size: 14px;
 }
 
+.smartcms-table-link {
+  font-weight: 800;
+  text-decoration: none;
+}
+
 .smartcms-inline-form {
   align-items: center;
   display: flex;
@@ -357,6 +362,40 @@ a {
   font-weight: 900;
   margin-right: 6px;
   padding: 2px 8px;
+}
+
+.smartcms-badge--muted {
+  background: #f3f4f6;
+  color: var(--smartcms-muted);
+}
+
+.smartcms-post-view {
+  line-height: 1.8;
+}
+
+.smartcms-post-content {
+  margin-top: 18px;
+  white-space: normal;
+}
+
+.smartcms-comment-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.smartcms-comment {
+  border-bottom: 1px solid var(--smartcms-line);
+  padding-bottom: 12px;
+}
+
+.smartcms-comment p {
+  margin: 8px 0 0;
+}
+
+.smartcms-comment-form {
+  border-top: 1px solid var(--smartcms-line);
+  padding-top: 18px;
 }
 
 @media (max-width: 720px) {

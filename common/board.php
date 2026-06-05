@@ -108,6 +108,69 @@ function smartcms_board_posts(int $board_id, int $limit = 30): array
     return $stmt->fetchAll();
 }
 
+function smartcms_board_post_find(int $board_id, int $post_id): ?array
+{
+    return smartcms_fetch_one(
+        "SELECT id, board_id, title, content, author_id, author_name, is_notice, is_secret, view_count, comment_count, created_at, updated_at
+         FROM " . smartcms_table('board_posts') . "
+         WHERE board_id = :board_id AND id = :id AND is_hidden = 0
+         LIMIT 1",
+        [
+            'board_id' => $board_id,
+            'id' => $post_id,
+        ]
+    );
+}
+
+function smartcms_board_increment_view(int $post_id): void
+{
+    smartcms_execute(
+        "UPDATE " . smartcms_table('board_posts') . " SET view_count = view_count + 1 WHERE id = :id",
+        ['id' => $post_id]
+    );
+}
+
+function smartcms_board_comments(int $post_id): array
+{
+    $stmt = smartcms_db()->prepare(
+        "SELECT id, author_id, author_name, content, is_hidden, created_at, updated_at
+         FROM " . smartcms_table('board_comments') . "
+         WHERE post_id = :post_id
+         ORDER BY id ASC"
+    );
+    $stmt->execute(['post_id' => $post_id]);
+
+    return $stmt->fetchAll();
+}
+
+function smartcms_board_create_comment(array $board, array $post, array $user, string $content): array
+{
+    $content = trim($content);
+    if ($content === '') {
+        return ['ok' => false, 'message' => '댓글 내용을 입력하세요.'];
+    }
+
+    smartcms_execute(
+        "INSERT INTO " . smartcms_table('board_comments') . "
+         (board_id, post_id, author_id, author_name, content)
+         VALUES (:board_id, :post_id, :author_id, :author_name, :content)",
+        [
+            'board_id' => (int)$board['id'],
+            'post_id' => (int)$post['id'],
+            'author_id' => (int)$user['id'],
+            'author_name' => (string)$user['name'],
+            'content' => $content,
+        ]
+    );
+
+    smartcms_execute(
+        "UPDATE " . smartcms_table('board_posts') . " SET comment_count = comment_count + 1 WHERE id = :id",
+        ['id' => (int)$post['id']]
+    );
+
+    return ['ok' => true, 'message' => '댓글을 등록했습니다.'];
+}
+
 function smartcms_board_create(string $board_key, string $board_name, string $description, int $created_by): array
 {
     $board_key = smartcms_board_key($board_key);

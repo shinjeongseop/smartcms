@@ -80,7 +80,12 @@ smartcms_render_head([
                   <?php if ((int)$post['is_notice'] === 1): ?>
                     <span class="smartcms-badge">공지</span>
                   <?php endif; ?>
-                  <?= (int)$post['is_secret'] === 1 ? '비밀글 ' : '' ?><?= smartcms_h($post['title']) ?>
+                  <a class="smartcms-table-link" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/view/') . '&id=' . rawurlencode((string)$post['id'])) ?>">
+                    <?= (int)$post['is_secret'] === 1 ? '비밀글 ' : '' ?><?= smartcms_h($post['title']) ?>
+                    <?php if ((int)$post['comment_count'] > 0): ?>
+                      <span class="smartcms-text-muted">(<?= smartcms_h($post['comment_count']) ?>)</span>
+                    <?php endif; ?>
+                  </a>
                 </td>
                 <td><?= smartcms_h($post['author_name']) ?></td>
                 <td><?= smartcms_h($post['view_count']) ?></td>
