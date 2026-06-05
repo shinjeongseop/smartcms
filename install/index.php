@@ -21,6 +21,7 @@ $form = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$locked) {
+    smartcms_verify_csrf_or_fail();
     $form = [
         'project_key' => trim((string)($_POST['project_key'] ?? 'smartcms')),
         'base_url' => trim((string)($_POST['base_url'] ?? '')),
@@ -74,6 +75,7 @@ smartcms_render_head([
     <?php endif; ?>
 
     <form class="smartcms-grid" method="post">
+      <?= smartcms_csrf_input() ?>
       <div class="smartcms-field">
         <label for="project_key">Project Key</label>
         <input class="smartcms-input" id="project_key" name="project_key" value="<?= smartcms_h($form['project_key']) ?>" required>

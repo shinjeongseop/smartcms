@@ -27,6 +27,7 @@ try {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $message_type !== 'error') {
+    smartcms_verify_csrf_or_fail();
     $email = trim((string)($_POST['email'] ?? ''));
     $name = trim((string)($_POST['name'] ?? ''));
     $password = (string)($_POST['password'] ?? '');
@@ -74,6 +75,7 @@ smartcms_render_head([
   <?php endif; ?>
   <?php if (!$admin): ?>
     <form class="smartcms-grid" method="post">
+      <?= smartcms_csrf_input() ?>
       <div class="smartcms-field">
         <label for="email">관리자 이메일</label>
         <input class="smartcms-input" id="email" name="email" type="email" required>

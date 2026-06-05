@@ -20,6 +20,7 @@ if (smartcms_current_user()) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    smartcms_verify_csrf_or_fail();
     $result = smartcms_register_user(
         $form['email'],
         (string)($_POST['password'] ?? ''),
@@ -44,6 +45,7 @@ smartcms_render_head([
   <?php endif; ?>
 
   <form class="smartcms-grid" method="post">
+    <?= smartcms_csrf_input() ?>
     <div class="smartcms-field">
       <label for="email">이메일</label>
       <input class="smartcms-input" id="email" name="email" type="email" value="<?= smartcms_h($form['email']) ?>" required>

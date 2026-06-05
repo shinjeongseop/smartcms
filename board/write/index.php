@@ -19,6 +19,7 @@ $message = '';
 $message_type = 'info';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    smartcms_verify_csrf_or_fail();
     $result = smartcms_board_create_post(
         $board,
         $user,
@@ -62,6 +63,7 @@ smartcms_render_head([
 
   <section class="smartcms-panel smartcms-admin-panel">
     <form class="smartcms-grid" method="post" enctype="multipart/form-data">
+      <?= smartcms_csrf_input() ?>
       <div class="smartcms-field">
         <label for="title">제목</label>
         <input class="smartcms-input" id="title" name="title" required>

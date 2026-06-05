@@ -11,6 +11,7 @@ $message = '';
 $message_type = 'info';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    smartcms_verify_csrf_or_fail();
     $user_id = (int)($_POST['user_id'] ?? 0);
     $level = max(1, min(10, (int)($_POST['level'] ?? 1)));
     $status = (string)($_POST['status'] ?? 'active');
@@ -94,6 +95,7 @@ smartcms_render_head([
               <td><?= smartcms_h($user['last_login_at'] ?? '-') ?></td>
               <td>
                 <form class="smartcms-inline-form" method="post">
+                  <?= smartcms_csrf_input() ?>
                   <input type="hidden" name="user_id" value="<?= smartcms_h($user['id']) ?>">
                   <select class="smartcms-select" name="role">
                     <?php foreach (['admin', 'manager', 'user'] as $role): ?>

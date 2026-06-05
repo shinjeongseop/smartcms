@@ -10,6 +10,7 @@ $message = '';
 $message_type = 'info';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    smartcms_verify_csrf_or_fail();
     $id = (int)($_POST['id'] ?? 0);
     $view_level = max(0, min(10, (int)($_POST['page_view_level'] ?? 0)));
     $write_level = max(0, min(10, (int)($_POST['page_write_level'] ?? 8)));
@@ -96,6 +97,7 @@ smartcms_render_head([
               <td><?= smartcms_h($page['page_path']) ?></td>
               <td colspan="6">
                 <form class="smartcms-inline-form" method="post">
+                  <?= smartcms_csrf_input() ?>
                   <input type="hidden" name="id" value="<?= smartcms_h($page['id']) ?>">
                   <select class="smartcms-select" name="page_view_level">
                     <?php for ($level = 0; $level <= 10; $level++): ?>

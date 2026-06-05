@@ -10,6 +10,7 @@ $message = '';
 $message_type = 'info';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    smartcms_verify_csrf_or_fail();
     $new_password = (string)($_POST['new_password'] ?? '');
     $confirm_password = (string)($_POST['confirm_password'] ?? '');
 
@@ -37,6 +38,7 @@ smartcms_render_head([
   <?php endif; ?>
 
   <form class="smartcms-grid" method="post">
+    <?= smartcms_csrf_input() ?>
     <div class="smartcms-field">
       <label for="current_password">현재 비밀번호</label>
       <input class="smartcms-input" id="current_password" name="current_password" type="password" required>

@@ -11,6 +11,7 @@ $message = '';
 $message_type = 'info';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    smartcms_verify_csrf_or_fail();
     $action = (string)($_POST['action'] ?? '');
     if ($action === 'create') {
         $result = smartcms_board_create(
@@ -96,6 +97,7 @@ smartcms_render_head([
   <section class="smartcms-panel smartcms-admin-panel">
     <h2 class="smartcms-section-title">게시판 생성</h2>
     <form class="smartcms-grid smartcms-form-grid" method="post">
+      <?= smartcms_csrf_input() ?>
       <input type="hidden" name="action" value="create">
       <div class="smartcms-field">
         <label for="board_key">게시판 키</label>
@@ -140,6 +142,7 @@ smartcms_render_head([
               <td><?= smartcms_h($board['status']) ?></td>
               <td>
                 <form class="smartcms-inline-form" method="post">
+                  <?= smartcms_csrf_input() ?>
                   <input type="hidden" name="action" value="update">
                   <input type="hidden" name="board_key" value="<?= smartcms_h($board['board_key']) ?>">
                   <input class="smartcms-compact-input" name="board_name" value="<?= smartcms_h($board['board_name']) ?>" required>

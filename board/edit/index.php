@@ -34,6 +34,7 @@ $message = '';
 $message_type = 'info';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    smartcms_verify_csrf_or_fail();
     $action = (string)($_POST['action'] ?? 'update');
     if ($action === 'hide') {
         $result = smartcms_board_hide_post($board, $post, $user);
@@ -77,6 +78,7 @@ smartcms_render_head([
 
   <section class="smartcms-panel smartcms-admin-panel">
     <form class="smartcms-grid" method="post">
+      <?= smartcms_csrf_input() ?>
       <input type="hidden" name="action" value="update">
       <div class="smartcms-field">
         <label for="title">제목</label>
@@ -105,6 +107,7 @@ smartcms_render_head([
     </form>
 
     <form class="smartcms-danger-form" method="post">
+      <?= smartcms_csrf_input() ?>
       <input type="hidden" name="action" value="hide">
       <button class="smartcms-danger-btn" type="submit">글 숨김 처리</button>
       <p class="smartcms-text-muted">데이터는 삭제하지 않고 목록에서 숨깁니다.</p>

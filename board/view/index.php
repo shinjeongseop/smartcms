@@ -37,6 +37,7 @@ if ((int)$post['is_secret'] === 1 && (!$user || ((int)$post['author_id'] !== (in
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    smartcms_verify_csrf_or_fail();
     $action = (string)($_POST['action'] ?? 'comment_create');
     if ($action === 'comment_hide') {
         if (!$can_manage_board || !$user) {
@@ -124,6 +125,7 @@ smartcms_render_head([
           <p><?= nl2br(smartcms_h((int)$comment['is_hidden'] === 1 ? '숨김 처리된 댓글입니다.' : $comment['content'])) ?></p>
           <?php if ($can_manage_board && (int)$comment['is_hidden'] !== 1): ?>
             <form class="smartcms-inline-form" method="post">
+              <?= smartcms_csrf_input() ?>
               <input type="hidden" name="action" value="comment_hide">
               <input type="hidden" name="comment_id" value="<?= smartcms_h($comment['id']) ?>">
               <button class="smartcms-small-muted-btn" type="submit">댓글 숨김</button>
@@ -138,6 +140,7 @@ smartcms_render_head([
 
     <?php if ($can_comment && $user): ?>
       <form class="smartcms-grid smartcms-comment-form" method="post">
+        <?= smartcms_csrf_input() ?>
         <input type="hidden" name="action" value="comment_create">
         <div class="smartcms-field">
           <label for="content">댓글 작성</label>
