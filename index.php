@@ -1,6 +1,13 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/common/config.php';
+
+if (!is_file(smartcms_config_local_path()) || !smartcms_install_locked()) {
+    header('Location: ' . smartcms_base_url('/install/'));
+    exit;
+}
+
 require_once __DIR__ . '/common/auth.php';
 require_once __DIR__ . '/common/ui/layout.php';
 
