@@ -21,21 +21,3 @@
 .smartcms-check.is-fail {
   border-color: #fca5a5;
 }
-
-.smartcms-link-btn {
-  align-items: center;
-  border: 1px solid var(--smartcms-line);
-  border-radius: 999px;
-  display: inline-flex;
-  font-weight: 800;
-  justify-content: center;
-  margin-top: 14px;
-  padding: 10px 16px;
-  text-decoration: none;
-}
-
-.smartcms-link-btn--primary {
-  background: var(--smartcms-primary);
-  border-color: var(--smartcms-primary);
-  color: #fff;
-}
