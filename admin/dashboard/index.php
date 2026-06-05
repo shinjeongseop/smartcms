@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
+require_once __DIR__ . '/../../common/board.php';
 require_once __DIR__ . '/../../common/ui/layout.php';
 require_once __DIR__ . '/../../common/ui/components.php';
 
@@ -27,7 +28,7 @@ try {
         "SELECT p.id, p.title, p.author_name, p.created_at, b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
-         WHERE p.is_hidden = 0
+         WHERE p.is_hidden = 0 AND b.status <> 'disabled'
          ORDER BY p.id DESC
          LIMIT 8"
     );
