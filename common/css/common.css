@@ -103,6 +103,12 @@ a {
   color: #fff;
 }
 
+.smartcms-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .smartcms-alert {
   border-radius: 12px;
   margin: 14px 0;

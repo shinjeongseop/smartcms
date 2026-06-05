@@ -66,9 +66,137 @@ function smartcms_require_level(int $required_level, ?string $redirect_to = null
         return $user;
     }
 
+    smartcms_log_access('permission_denied', 'page', null, 'denied', 403, (int)$user['id']);
     http_response_code(403);
     echo 'Permission denied.';
     exit;
+}
+
+function smartcms_require_page_view(string $page_key, string $page_path, string $title, int $default_view_level = 0): ?array
+{
+    $permission = smartcms_fetch_one(
+        "SELECT page_view_level, allow_guest, status
+         FROM " . smartcms_table('page_permissions') . "
+         WHERE page_key = :page_key
+         LIMIT 1",
+        ['page_key' => $page_key]
+    );
+
+    if (!$permission) {
+        smartcms_execute(
+            "INSERT INTO " . smartcms_table('page_permissions') . "
+             (page_key, page_path, title, page_view_level, allow_guest, status)
+             VALUES (:page_key, :page_path, :title, :page_view_level, :allow_guest, 'active')",
+            [
+                'page_key' => $page_key,
+                'page_path' => $page_path,
+                'title' => $title,
+                'page_view_level' => $default_view_level,
+                'allow_guest' => $default_view_level <= 0 ? 1 : 0,
+            ]
+        );
+        $permission = [
+            'page_view_level' => $default_view_level,
+            'allow_guest' => $default_view_level <= 0 ? 1 : 0,
+            'status' => 'active',
+        ];
+    }
+
+    $required_level = (int)$permission['page_view_level'];
+    $user = smartcms_current_user();
+    $user_id = $user ? (int)$user['id'] : null;
+
+    if ((string)$permission['status'] !== 'active') {
+        smartcms_log_access('permission_denied', 'page', $page_key, 'denied', 403, $user_id);
+        http_response_code(403);
+        echo 'Page disabled.';
+        exit;
+    }
+
+    if ($required_level <= 0 || ((int)$permission['allow_guest'] === 1 && !$user)) {
+        smartcms_log_access('page_view', 'page', $page_key, 'success', 200, $user_id);
+        return $user;
+    }
+
+    if (!$user) {
+        smartcms_redirect((string)smartcms_config_value('login_url', '/member/login/'));
+    }
+
+    if (!smartcms_has_level($required_level, $user)) {
+        smartcms_log_access('permission_denied', 'page', $page_key, 'denied', 403, (int)$user['id']);
+        http_response_code(403);
+        echo 'Permission denied.';
+        exit;
+    }
+
+    smartcms_log_access('page_view', 'page', $page_key, 'success', 200, (int)$user['id']);
+    return $user;
+}
+
+function smartcms_register_user(string $email, string $password, string $name, ?string $company_name = null): array
+{
+    $email = trim($email);
+    $name = trim($name);
+    $company_name = trim((string)$company_name);
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return ['ok' => false, 'message' => '올바른 이메일을 입력하세요.'];
+    }
+    if ($name === '') {
+        return ['ok' => false, 'message' => '이름을 입력하세요.'];
+    }
+    if (strlen($password) < 8) {
+        return ['ok' => false, 'message' => '비밀번호는 8자 이상이어야 합니다.'];
+    }
+
+    $exists = smartcms_fetch_one(
+        "SELECT id FROM " . smartcms_table('users') . " WHERE email = :email LIMIT 1",
+        ['email' => $email]
+    );
+    if ($exists) {
+        return ['ok' => false, 'message' => '이미 가입된 이메일입니다.'];
+    }
+
+    smartcms_execute(
+        "INSERT INTO " . smartcms_table('users') . "
+         (email, password_hash, name, company_name, role, level, status)
+         VALUES (:email, :password_hash, :name, :company_name, 'user', :level, 'active')",
+        [
+            'email' => $email,
+            'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+            'name' => $name,
+            'company_name' => $company_name !== '' ? $company_name : null,
+            'level' => (int)smartcms_config_value('default_member_level', 2),
+        ]
+    );
+
+    return ['ok' => true, 'message' => '회원가입이 완료되었습니다. 로그인하세요.'];
+}
+
+function smartcms_change_password(int $user_id, string $current_password, string $new_password): array
+{
+    if (strlen($new_password) < 8) {
+        return ['ok' => false, 'message' => '새 비밀번호는 8자 이상이어야 합니다.'];
+    }
+
+    $user = smartcms_fetch_one(
+        "SELECT id, password_hash FROM " . smartcms_table('users') . " WHERE id = :id AND status = 'active' LIMIT 1",
+        ['id' => $user_id]
+    );
+
+    if (!$user || !password_verify($current_password, (string)$user['password_hash'])) {
+        return ['ok' => false, 'message' => '현재 비밀번호가 올바르지 않습니다.'];
+    }
+
+    smartcms_execute(
+        "UPDATE " . smartcms_table('users') . " SET password_hash = :password_hash WHERE id = :id",
+        [
+            'id' => $user_id,
+            'password_hash' => password_hash($new_password, PASSWORD_DEFAULT),
+        ]
+    );
+
+    return ['ok' => true, 'message' => '비밀번호를 변경했습니다.'];
 }
 
 function smartcms_login(string $email, string $password): array

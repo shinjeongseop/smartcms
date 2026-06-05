@@ -8,7 +8,7 @@ require_once __DIR__ . '/../../common/ui/components.php';
 $message = '';
 $message_type = 'info';
 $email = trim((string)($_POST['email'] ?? ''));
-$next = (string)($_GET['next'] ?? smartcms_config_value('admin_home_url', '/admin/users/'));
+$next = (string)($_GET['next'] ?? '/member/mypage/');
 
 if (smartcms_current_user()) {
     smartcms_redirect($next);

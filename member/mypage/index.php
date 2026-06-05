@@ -35,6 +35,9 @@ smartcms_render_head([
     </div>
   </dl>
 
-  <p><a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a></p>
+  <div class="smartcms-actions">
+    <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>">비밀번호 변경</a>
+    <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
+  </div>
 </main>
 <?php smartcms_render_foot(); ?>
