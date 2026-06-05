@@ -143,6 +143,15 @@ function smartcms_board_comments(int $post_id): array
     return $stmt->fetchAll();
 }
 
+function smartcms_board_can_manage_post(array $board, array $post, ?array $user): bool
+{
+    if (!$user) {
+        return false;
+    }
+
+    return (int)$post['author_id'] === (int)$user['id'] || smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
+}
+
 function smartcms_board_create_comment(array $board, array $post, array $user, string $content): array
 {
     $content = trim($content);
@@ -168,7 +177,105 @@ function smartcms_board_create_comment(array $board, array $post, array $user, s
         ['id' => (int)$post['id']]
     );
 
+    smartcms_board_audit($board, $post, $user, 'comment_create', '댓글을 등록했습니다.');
     return ['ok' => true, 'message' => '댓글을 등록했습니다.'];
+}
+
+function smartcms_board_update_post(array $board, array $post, array $user, string $title, string $content, bool $is_notice, bool $is_secret): array
+{
+    if (!smartcms_board_can_manage_post($board, $post, $user)) {
+        return ['ok' => false, 'message' => '글 수정 권한이 없습니다.'];
+    }
+
+    $title = trim($title);
+    $content = trim($content);
+    if ($title === '' || $content === '') {
+        return ['ok' => false, 'message' => '제목과 내용을 입력하세요.'];
+    }
+
+    $can_notice = smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
+    smartcms_execute(
+        "UPDATE " . smartcms_table('board_posts') . "
+         SET title = :title,
+             content = :content,
+             excerpt = :excerpt,
+             is_notice = :is_notice,
+             is_secret = :is_secret
+         WHERE id = :id AND board_id = :board_id",
+        [
+            'id' => (int)$post['id'],
+            'board_id' => (int)$board['id'],
+            'title' => $title,
+            'content' => $content,
+            'excerpt' => smartcms_board_excerpt($content),
+            'is_notice' => $can_notice && $is_notice ? 1 : 0,
+            'is_secret' => $is_secret ? 1 : 0,
+        ]
+    );
+
+    smartcms_board_audit($board, $post, $user, 'post_update', '게시글을 수정했습니다.');
+    return ['ok' => true, 'message' => '글을 수정했습니다.'];
+}
+
+function smartcms_board_hide_post(array $board, array $post, array $user): array
+{
+    if (!smartcms_board_can_manage_post($board, $post, $user)) {
+        return ['ok' => false, 'message' => '글 숨김 권한이 없습니다.'];
+    }
+
+    smartcms_execute(
+        "UPDATE " . smartcms_table('board_posts') . " SET is_hidden = 1 WHERE id = :id AND board_id = :board_id",
+        [
+            'id' => (int)$post['id'],
+            'board_id' => (int)$board['id'],
+        ]
+    );
+
+    smartcms_board_audit($board, $post, $user, 'post_hide', '게시글을 숨김 처리했습니다.');
+    return ['ok' => true, 'message' => '글을 숨김 처리했습니다.'];
+}
+
+function smartcms_board_hide_comment(array $board, array $post, array $user, int $comment_id): array
+{
+    if (!smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user)) {
+        return ['ok' => false, 'message' => '댓글 숨김 권한이 없습니다.'];
+    }
+
+    smartcms_execute(
+        "UPDATE " . smartcms_table('board_comments') . "
+         SET is_hidden = 1
+         WHERE id = :id AND post_id = :post_id AND board_id = :board_id",
+        [
+            'id' => $comment_id,
+            'post_id' => (int)$post['id'],
+            'board_id' => (int)$board['id'],
+        ]
+    );
+
+    smartcms_board_audit($board, $post, $user, 'comment_hide', '댓글을 숨김 처리했습니다.');
+    return ['ok' => true, 'message' => '댓글을 숨김 처리했습니다.'];
+}
+
+function smartcms_board_audit(array $board, ?array $post, ?array $user, string $action, string $message): void
+{
+    try {
+        smartcms_execute(
+            "INSERT INTO " . smartcms_table('board_audit_logs') . "
+             (board_id, post_id, user_id, action, message, ip_hash, user_agent)
+             VALUES (:board_id, :post_id, :user_id, :action, :message, :ip_hash, :user_agent)",
+            [
+                'board_id' => (int)$board['id'],
+                'post_id' => $post ? (int)$post['id'] : null,
+                'user_id' => $user ? (int)$user['id'] : null,
+                'action' => $action,
+                'message' => $message,
+                'ip_hash' => smartcms_ip_hash(),
+                'user_agent' => substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 255),
+            ]
+        );
+    } catch (Throwable) {
+        // Audit logging should not break content operations.
+    }
 }
 
 function smartcms_board_create(string $board_key, string $board_name, string $description, int $created_by): array
@@ -234,5 +341,9 @@ function smartcms_board_create_post(array $board, array $user, string $title, st
         ]
     );
 
+    $post = [
+        'id' => (int)smartcms_db()->lastInsertId(),
+    ];
+    smartcms_board_audit($board, $post, $user, 'post_create', '게시글을 등록했습니다.');
     return ['ok' => true, 'message' => '글을 등록했습니다.'];
 }

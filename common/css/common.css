@@ -323,6 +323,35 @@ a {
   padding: 7px 12px;
 }
 
+.smartcms-small-muted-btn {
+  border: 1px solid var(--smartcms-line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--smartcms-muted);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  min-height: 34px;
+  padding: 5px 10px;
+}
+
+.smartcms-danger-form {
+  border-top: 1px solid var(--smartcms-line);
+  margin-top: 24px;
+  padding-top: 18px;
+}
+
+.smartcms-danger-btn {
+  border: 0;
+  border-radius: 10px;
+  background: #dc2626;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+  padding: 10px 14px;
+}
+
 .smartcms-check-field {
   align-items: center;
   display: inline-flex;
