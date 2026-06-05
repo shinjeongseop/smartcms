@@ -10,8 +10,8 @@ $locked = smartcms_install_locked();
 $message = '';
 $message_type = 'info';
 $saved = false;
+$auto_project_key = 'smartcms';
 $form = [
-    'project_key' => (string)smartcms_config_value('project_key', 'smartcms'),
     'base_url' => (string)smartcms_config_value('base_url', ''),
     'table_prefix' => (string)smartcms_config_value('table_prefix', ''),
     'db_host' => (string)smartcms_config_value('db.host', 'localhost'),
@@ -23,7 +23,6 @@ $form = [
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$locked) {
     smartcms_verify_csrf_or_fail();
     $form = [
-        'project_key' => trim((string)($_POST['project_key'] ?? 'smartcms')),
         'base_url' => trim((string)($_POST['base_url'] ?? '')),
         'table_prefix' => trim((string)($_POST['table_prefix'] ?? '')),
         'db_host' => trim((string)($_POST['db_host'] ?? 'localhost')),
@@ -31,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$locked) {
         'db_user' => trim((string)($_POST['db_user'] ?? '')),
         'db_charset' => trim((string)($_POST['db_charset'] ?? 'utf8mb4')),
     ];
+    $auto_project_key = preg_replace('/[^a-zA-Z0-9_]/', '', $form['db_name']) ?: 'smartcms';
     $db = [
         'host' => $form['db_host'],
         'name' => $form['db_name'],
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$locked) {
     $result = smartcms_db_check($db);
     if ($result['ok']) {
         $saved = smartcms_write_local_config([
-            'project_key' => $form['project_key'],
+            'project_key' => $auto_project_key,
             'base_url' => $form['base_url'],
             'table_prefix' => $form['table_prefix'],
             'db' => $db,
@@ -62,7 +62,13 @@ smartcms_render_head([
 ?>
 <main class="smartcms-panel">
   <h1 class="smartcms-title">smartcms 설치 마법사</h1>
-  <p class="smartcms-text-muted">DB 연결을 확인한 뒤 설정 파일을 저장하고 스키마 생성과 최초 관리자 계정 생성을 진행합니다.</p>
+  <p class="smartcms-text-muted">DB 연결, 테이블 생성, 관리자 계정 생성을 순서대로 진행합니다.</p>
+  <ol class="smartcms-install-steps">
+    <li class="is-active">1 DB 설정</li>
+    <li>2 테이블 생성</li>
+    <li>3 관리자 계정</li>
+    <li>4 설치 완료</li>
+  </ol>
 
   <?php if ($locked): ?>
     <?= smartcms_alert('이미 설치가 완료되어 설치 마법사를 사용할 수 없습니다.', 'error') ?>
@@ -76,10 +82,6 @@ smartcms_render_head([
 
     <form class="smartcms-grid" method="post">
       <?= smartcms_csrf_input() ?>
-      <div class="smartcms-field">
-        <label for="project_key">Project Key</label>
-        <input class="smartcms-input" id="project_key" name="project_key" value="<?= smartcms_h($form['project_key']) ?>" required>
-      </div>
       <div class="smartcms-field">
         <label for="base_url">Base URL</label>
         <input class="smartcms-input" id="base_url" name="base_url" value="<?= smartcms_h($form['base_url']) ?>" placeholder="예: https://example.com">
