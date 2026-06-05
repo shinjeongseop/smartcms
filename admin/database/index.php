@@ -133,8 +133,8 @@ smartcms_render_head([
         <input class="smartcms-input" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required>
       </div>
       <div class="smartcms-actions">
-        <button class="smartcms-danger-btn" type="submit">DB 초기화 실행</button>
-        <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 마법사로 이동</a>
+        <button class="btn btn-danger rounded-pill px-4" type="submit">DB 초기화 실행</button>
+        <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 마법사로 이동</a>
       </div>
     </form>
   </section>

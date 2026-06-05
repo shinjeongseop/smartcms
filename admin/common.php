@@ -38,6 +38,6 @@ function smartcms_admin_header(array $admin, string $title, string $active): str
           <h1 class="smartcms-title">' . smartcms_h($title) . '</h1>
           <p class="smartcms-text-muted">' . smartcms_h($admin['name']) . '님이 로그인했습니다.</p>
         </div>
-        <a class="smartcms-link-btn" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '">로그아웃</a>
+        <a class="btn btn-outline-secondary rounded-pill px-4" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '">로그아웃</a>
       </header>' . smartcms_admin_nav($active);
 }

@@ -31,7 +31,7 @@
     <?php endif; ?>
     <div class="smartcms-actions">
       <?= smartcms_button($submit_label ?? '저장', 'submit') ?>
-      <a class="smartcms-link-btn" href="<?= smartcms_h($back_url) ?>"><?= smartcms_h($back_label ?? '목록으로') ?></a>
+      <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h($back_url) ?>"><?= smartcms_h($back_label ?? '목록으로') ?></a>
     </div>
   </form>
 
@@ -39,7 +39,7 @@
     <form class="smartcms-danger-form" method="post">
       <?= smartcms_csrf_input() ?>
       <input type="hidden" name="action" value="hide">
-      <button class="smartcms-danger-btn" type="submit">글 숨김 처리</button>
+      <button class="btn btn-danger rounded-pill px-4" type="submit">글 숨김 처리</button>
       <p class="smartcms-text-muted">데이터는 삭제하지 않고 목록에서 숨깁니다.</p>
     </form>
   <?php endif; ?>

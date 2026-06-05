@@ -54,6 +54,6 @@ smartcms_render_head([
     <?= smartcms_button('비밀번호 변경', 'submit') ?>
   </form>
 
-  <p><a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지로 이동</a></p>
+  <p><a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지로 이동</a></p>
 </main>
 <?php smartcms_render_foot(); ?>

@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../common/board.php';
 require_once __DIR__ . '/../../common/ui/layout.php';
 require_once __DIR__ . '/../../common/ui/components.php';
+require_once __DIR__ . '/../../common/ui/navigation.php';
 
 $board_key = smartcms_board_key((string)($_GET['board'] ?? ''));
 $post_id = (int)($_GET['id'] ?? 0);
@@ -75,6 +76,8 @@ smartcms_render_head([
 ]);
 ?>
 <main class="smartcms-content-shell">
+  <?= smartcms_site_nav((string)$board['board_key']) ?>
+
   <header class="smartcms-page-hero">
     <p class="smartcms-eyebrow"><?= smartcms_h($board['board_name']) ?></p>
     <h1 class="smartcms-title"><?= smartcms_h($post['title']) ?></h1>

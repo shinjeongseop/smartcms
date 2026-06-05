@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../common/board.php';
 require_once __DIR__ . '/../common/ui/layout.php';
 require_once __DIR__ . '/../common/ui/components.php';
+require_once __DIR__ . '/../common/ui/navigation.php';
 
 $board_key = smartcms_board_key((string)($_GET['board'] ?? ''));
 $board = $board_key !== '' ? smartcms_board_find($board_key) : null;
@@ -35,6 +36,8 @@ smartcms_render_head([
 ]);
 ?>
 <main class="smartcms-content-shell">
+  <?= smartcms_site_nav($board ? (string)$board['board_key'] : '') ?>
+
   <header class="smartcms-page-hero">
     <p class="smartcms-eyebrow">Board</p>
     <h1 class="smartcms-title"><?= smartcms_h($board ? $board['board_name'] : '게시판') ?></h1>

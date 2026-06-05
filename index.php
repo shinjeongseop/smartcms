@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/common/config.php';
 require_once __DIR__ . '/common/ui/layout.php';
 require_once __DIR__ . '/common/ui/components.php';
+require_once __DIR__ . '/common/ui/navigation.php';
 
 function smartcms_home_date(?string $value): string
 {
@@ -67,20 +68,7 @@ smartcms_render_head([
 ]);
 ?>
 <main class="smartcms-home-shell">
-  <header class="smartcms-home-topbar">
-    <a class="smartcms-home-brand" href="<?= smartcms_h(smartcms_base_url('/')) ?>">
-      <span>SC</span>
-      <strong>smartcms</strong>
-    </a>
-    <nav class="smartcms-home-nav" aria-label="홈 메뉴">
-      <?php if ($installed): ?>
-        <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>">공지사항</a>
-        <a href="<?= smartcms_h(smartcms_base_url('/board/?board=free')) ?>">자유게시판</a>
-        <a href="<?= smartcms_h(smartcms_base_url('/board/?board=qna')) ?>">Q&A</a>
-      <?php endif; ?>
-      <a class="smartcms-home-nav-primary" href="<?= smartcms_h(smartcms_base_url($installed ? '/admin/' : '/install/')) ?>"><?= $installed ? '관리자' : '설치하기' ?></a>
-    </nav>
-  </header>
+  <?= smartcms_site_nav('home') ?>
 
   <?php if (!$installed): ?>
     <section class="smartcms-home-hero smartcms-home-hero--setup">
@@ -89,8 +77,8 @@ smartcms_render_head([
         <h1 class="smartcms-title">설치 마법사로 smartcms를 시작하세요</h1>
         <p class="smartcms-text-muted">DB 설정, 테이블 생성, 최초 관리자 계정 생성을 순서대로 완료하면 커뮤니티 홈과 관리자 기능을 사용할 수 있습니다.</p>
         <div class="smartcms-actions">
-          <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 마법사 시작</a>
-          <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/install/check.php')) ?>">서버 환경 확인</a>
+          <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>"><i class="bi bi-magic me-1"></i>설치 마법사 시작</a>
+          <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/check.php')) ?>"><i class="bi bi-server me-1"></i>서버 환경 확인</a>
         </div>
       </div>
       <div class="smartcms-home-setup-card">
@@ -113,8 +101,8 @@ smartcms_render_head([
         <h1 class="smartcms-title">게시판과 회원 기능을 한 화면에 모은 커뮤니티 홈</h1>
         <p class="smartcms-text-muted">공지, 자유게시판, Q&A를 위젯처럼 조합해 사이트 첫 화면을 빠르게 구성합니다.</p>
         <div class="smartcms-actions">
-          <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">전체 게시판 보기</a>
-          <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url($user ? '/board/write/?board=free' : '/member/login/')) ?>"><?= $user ? '글쓰기' : '로그인' ?></a>
+          <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>"><i class="bi bi-list-ul me-1"></i>전체 게시판 보기</a>
+          <a class="btn btn-outline-light rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url($user ? '/board/write/?board=free' : '/member/login/')) ?>"><i class="bi <?= $user ? 'bi-pencil-square' : 'bi-box-arrow-in-right' ?> me-1"></i><?= $user ? '글쓰기' : '로그인' ?></a>
         </div>
       </div>
       <div class="smartcms-home-hero-board">
@@ -134,7 +122,7 @@ smartcms_render_head([
     </section>
 
     <section class="smartcms-home-notice">
-      <strong>공지</strong>
+      <strong><i class="bi bi-megaphone me-1"></i>공지</strong>
       <?php if ($notice_posts): ?>
         <?php $notice = $notice_posts[0]; ?>
         <a href="<?= smartcms_h(smartcms_board_post_url((string)$notice['board_key'], (int)$notice['id'])) ?>">
@@ -160,7 +148,7 @@ smartcms_render_head([
           <div class="smartcms-home-list smartcms-home-list--featured">
             <?php foreach ($recent_posts as $post): ?>
               <a href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-                <span class="smartcms-home-board-badge"><?= smartcms_h($post['board_name']) ?></span>
+                <span class="badge rounded-pill text-bg-primary"><?= smartcms_h($post['board_name']) ?></span>
                 <strong><?= smartcms_h($post['title']) ?></strong>
                 <em><?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?></em>
               </a>
@@ -206,16 +194,16 @@ smartcms_render_head([
             <h2><?= smartcms_h($user['name']) ?>님</h2>
             <p>현재 level <?= smartcms_h($user['level']) ?> 권한으로 이용 중입니다.</p>
             <div class="smartcms-actions">
-              <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지</a>
-              <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
+              <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지</a>
+              <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
             </div>
           <?php else: ?>
             <p class="smartcms-eyebrow">Welcome</p>
             <h2>로그인하고 커뮤니티에 참여하세요</h2>
             <p>회원가입 후 글쓰기, 댓글, 마이페이지 기능을 사용할 수 있습니다.</p>
             <div class="smartcms-actions">
-              <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인</a>
-              <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>">회원가입</a>
+              <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인</a>
+              <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>">회원가입</a>
             </div>
           <?php endif; ?>
         </section>

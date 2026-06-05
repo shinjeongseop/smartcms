@@ -48,6 +48,6 @@ smartcms_render_head([
     <?php endforeach; ?>
   </div>
   <?= smartcms_alert($all_ok ? '설치 가능한 환경입니다.' : '설치 전에 실패 항목을 해결해야 합니다.', $all_ok ? 'success' : 'error') ?>
-  <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 화면으로 이동</a>
+  <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 화면으로 이동</a>
 </main>
 <?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>

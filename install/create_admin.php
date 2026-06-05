@@ -92,7 +92,7 @@ smartcms_render_head([
     </form>
   <?php else: ?>
     <?= smartcms_alert('최고 관리자 계정이 준비되었습니다.', 'info') ?>
-    <p><a class="smartcms-link-btn smartcms-link-btn--primary" href="./finish.php">다음: 설치 잠금 처리</a></p>
+    <p><a class="btn btn-primary rounded-pill px-4" href="./finish.php">다음: 설치 잠금 처리</a></p>
   <?php endif; ?>
 </main>
 <?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>

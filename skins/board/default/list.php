@@ -2,15 +2,15 @@
   <div class="smartcms-section-head">
     <h2 class="smartcms-section-title">글 목록</h2>
     <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
-      <a class="smartcms-link-btn smartcms-link-btn--primary" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">글쓰기</a>
+      <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">글쓰기</a>
     <?php endif; ?>
   </div>
   <form class="smartcms-search-form" method="get">
     <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
     <input class="smartcms-input" name="q" value="<?= smartcms_h($pagination['keyword']) ?>" placeholder="제목, 내용, 작성자 검색">
-    <button class="smartcms-small-btn" type="submit">검색</button>
+    <button class="btn btn-primary btn-sm" type="submit">검색</button>
     <?php if ($pagination['keyword'] !== ''): ?>
-      <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">초기화</a>
+      <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">초기화</a>
     <?php endif; ?>
   </form>
   <div class="smartcms-table-wrap">
@@ -28,7 +28,7 @@
           <tr>
             <td>
               <?php if ((int)$post['is_notice'] === 1): ?>
-                <span class="smartcms-badge">공지</span>
+                <span class="badge text-bg-primary">공지</span>
               <?php endif; ?>
               <a class="smartcms-table-link" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                 <?= (int)$post['is_secret'] === 1 ? '비밀글 ' : '' ?><?= smartcms_h($post['title']) ?>
@@ -36,7 +36,7 @@
                   <span class="smartcms-text-muted">(<?= smartcms_h($post['comment_count']) ?>)</span>
                 <?php endif; ?>
                 <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?>
-                  <span class="smartcms-badge smartcms-badge--muted">첨부</span>
+                  <span class="badge text-bg-secondary">첨부</span>
                 <?php endif; ?>
               </a>
             </td>

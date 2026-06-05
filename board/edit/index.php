@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../common/board.php';
 require_once __DIR__ . '/../../common/ui/layout.php';
 require_once __DIR__ . '/../../common/ui/components.php';
+require_once __DIR__ . '/../../common/ui/navigation.php';
 
 $board_key = smartcms_board_key((string)($_GET['board'] ?? ''));
 $post_id = (int)($_GET['id'] ?? 0);
@@ -78,6 +79,8 @@ $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string
 $back_label = '상세로';
 ?>
 <main class="smartcms-content-shell">
+  <?= smartcms_site_nav((string)$board['board_key']) ?>
+
   <header class="smartcms-page-hero">
     <p class="smartcms-eyebrow">Edit</p>
     <h1 class="smartcms-title"><?= smartcms_h($board['board_name']) ?> 글 수정</h1>

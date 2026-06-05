@@ -45,6 +45,6 @@ smartcms_render_head([
   <?php if ($board_message !== ''): ?>
     <?= smartcms_alert($board_message, 'info') ?>
   <?php endif; ?>
-  <p><a class="smartcms-link-btn smartcms-link-btn--primary" href="../">홈으로 이동</a></p>
+  <p><a class="btn btn-primary rounded-pill px-4" href="../">홈으로 이동</a></p>
 </main>
 <?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>

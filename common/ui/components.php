@@ -11,5 +11,5 @@ function smartcms_alert(string $message, string $type = 'info'): string
 
 function smartcms_button(string $label, string $type = 'button'): string
 {
-    return '<button class="smartcms-btn" type="' . smartcms_h($type) . '">' . smartcms_h($label) . '</button>';
+    return '<button class="btn btn-primary rounded-pill px-4" type="' . smartcms_h($type) . '">' . smartcms_h($label) . '</button>';
 }

@@ -1,12 +1,12 @@
 <article class="smartcms-panel smartcms-admin-panel smartcms-post-view">
   <?php if ((int)$post['is_notice'] === 1): ?>
-    <span class="smartcms-badge">공지</span>
+    <span class="badge text-bg-primary">공지</span>
   <?php endif; ?>
   <?php if ((int)$post['is_secret'] === 1): ?>
-    <span class="smartcms-badge smartcms-badge--muted">비밀글</span>
+    <span class="badge text-bg-secondary">비밀글</span>
   <?php endif; ?>
   <?php if ($can_manage_post): ?>
-    <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/board/edit/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id'])) ?>">수정</a>
+    <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/board/edit/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id'])) ?>">수정</a>
   <?php endif; ?>
   <div class="smartcms-post-content"><?= nl2br(smartcms_h($post['content'])) ?></div>
   <?php if ($files): ?>
@@ -25,7 +25,7 @@
 <section class="smartcms-panel smartcms-admin-panel smartcms-stack-panel">
   <div class="smartcms-section-head">
     <h2 class="smartcms-section-title">댓글 <?= smartcms_h(count($comments)) ?></h2>
-    <a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">목록으로</a>
+    <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">목록으로</a>
   </div>
 
   <div class="smartcms-comment-list">

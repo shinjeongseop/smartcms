@@ -172,7 +172,7 @@ smartcms_render_head([
                       <option value="<?= smartcms_h($status) ?>" <?= $status === ($board['permission_status'] ?? 'active') ? 'selected' : '' ?>>권한 <?= smartcms_h($status) ?></option>
                     <?php endforeach; ?>
                   </select>
-                  <button class="smartcms-small-btn" type="submit">저장</button>
+                  <button class="btn btn-primary btn-sm" type="submit">저장</button>
                 </form>
               </td>
             </tr>

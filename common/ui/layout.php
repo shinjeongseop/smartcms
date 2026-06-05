@@ -15,6 +15,8 @@ function smartcms_render_head(array $page = []): void
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= smartcms_h($title) ?></title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="<?= smartcms_h(smartcms_base_url($css_url)) ?>">
   <?php foreach (($page['stylesheets'] ?? []) as $stylesheet): ?>
     <link rel="stylesheet" href="<?= smartcms_h((string)$stylesheet) ?>">
@@ -26,6 +28,7 @@ function smartcms_render_head(array $page = []): void
 
 function smartcms_render_foot(array $page = []): void
 {
+    echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>' . PHP_EOL;
     foreach (($page['scripts'] ?? []) as $script) {
         echo '<script src="' . smartcms_h((string)$script) . '"></script>' . PHP_EOL;
     }

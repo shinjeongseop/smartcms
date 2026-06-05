@@ -91,35 +91,6 @@ a {
   padding: 7px 10px;
 }
 
-.smartcms-btn {
-  border: 0;
-  border-radius: 999px;
-  background: var(--smartcms-primary);
-  color: #fff;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 800;
-  padding: 12px 20px;
-}
-
-.smartcms-link-btn {
-  align-items: center;
-  border: 1px solid var(--smartcms-line);
-  border-radius: 999px;
-  display: inline-flex;
-  font-weight: 800;
-  justify-content: center;
-  margin-top: 14px;
-  padding: 10px 16px;
-  text-decoration: none;
-}
-
-.smartcms-link-btn--primary {
-  background: var(--smartcms-primary);
-  border-color: var(--smartcms-primary);
-  color: #fff;
-}
-
 .smartcms-actions {
   display: flex;
   flex-wrap: wrap;
@@ -220,27 +191,20 @@ a {
   width: min(1180px, 100%);
 }
 
-.smartcms-home-topbar {
-  align-items: center;
+.smartcms-site-navbar {
   background: rgba(255, 255, 255, 0.82);
   border: 1px solid rgba(216, 222, 233, 0.85);
   border-radius: 24px;
   box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
-  display: flex;
-  gap: 18px;
-  justify-content: space-between;
   margin-bottom: 18px;
   padding: 14px 16px;
 }
 
-.smartcms-home-brand {
-  align-items: center;
-  display: inline-flex;
+.smartcms-site-brand {
   gap: 10px;
-  text-decoration: none;
 }
 
-.smartcms-home-brand span {
+.smartcms-site-brand-mark {
   align-items: center;
   background: linear-gradient(135deg, #145df5, #0ea5e9);
   border-radius: 12px;
@@ -252,35 +216,26 @@ a {
   width: 38px;
 }
 
-.smartcms-home-brand strong {
+.smartcms-site-brand strong {
   font-size: 20px;
 }
 
-.smartcms-home-nav {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-}
-
-.smartcms-home-nav a {
-  border: 1px solid transparent;
+.smartcms-site-navbar .nav-link {
   border-radius: 999px;
   color: #344054;
   font-weight: 900;
-  padding: 8px 12px;
-  text-decoration: none;
+  padding-left: 12px;
+  padding-right: 12px;
 }
 
-.smartcms-home-nav a:hover {
+.smartcms-site-navbar .nav-link:hover,
+.smartcms-site-navbar .nav-link.active {
   background: #edf4ff;
-  border-color: #cbdaf8;
+  color: var(--smartcms-primary);
 }
 
-.smartcms-home-nav .smartcms-home-nav-primary {
-  background: #111827;
-  color: #fff;
+.smartcms-site-navbar .navbar-toggler {
+  border-radius: 14px;
 }
 
 .smartcms-home-hero--portal,
@@ -528,14 +483,6 @@ a {
   font-weight: 800;
 }
 
-.smartcms-home-board-badge {
-  background: #eaf1ff;
-  border-radius: 999px;
-  color: #123f91;
-  font-weight: 900;
-  padding: 4px 9px;
-}
-
 .smartcms-home-rank-list a {
   grid-template-columns: 32px minmax(0, 1fr);
 }
@@ -754,18 +701,6 @@ a {
   padding: 7px 10px;
 }
 
-.smartcms-small-btn {
-  border: 0;
-  border-radius: 10px;
-  background: var(--smartcms-primary);
-  color: #fff;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 800;
-  min-height: 38px;
-  padding: 7px 12px;
-}
-
 .smartcms-small-muted-btn {
   border: 1px solid var(--smartcms-line);
   border-radius: 10px;
@@ -782,17 +717,6 @@ a {
   border-top: 1px solid var(--smartcms-line);
   margin-top: 24px;
   padding-top: 18px;
-}
-
-.smartcms-danger-btn {
-  border: 0;
-  border-radius: 10px;
-  background: #dc2626;
-  color: #fff;
-  cursor: pointer;
-  font: inherit;
-  font-weight: 900;
-  padding: 10px 14px;
 }
 
 .smartcms-check-field {
@@ -827,21 +751,6 @@ a {
 }
 
 .smartcms-card-link span {
-  color: var(--smartcms-muted);
-}
-
-.smartcms-badge {
-  background: #eaf1ff;
-  border-radius: 999px;
-  color: #123f91;
-  display: inline-flex;
-  font-weight: 900;
-  margin-right: 6px;
-  padding: 2px 8px;
-}
-
-.smartcms-badge--muted {
-  background: #f3f4f6;
   color: var(--smartcms-muted);
 }
 
@@ -923,14 +832,12 @@ a {
     padding: 14px 10px 32px;
   }
 
-  .smartcms-home-topbar {
-    align-items: stretch;
+  .smartcms-site-navbar {
     border-radius: 18px;
-    flex-direction: column;
   }
 
-  .smartcms-home-nav {
-    justify-content: flex-start;
+  .smartcms-site-navbar .navbar-nav {
+    padding-top: 12px;
   }
 
   .smartcms-home-hero--portal,
@@ -962,7 +869,7 @@ a {
     grid-template-columns: 1fr auto;
   }
 
-  .smartcms-home-list--featured .smartcms-home-board-badge {
+  .smartcms-home-list--featured .badge {
     grid-column: 1 / -1;
     width: fit-content;
   }

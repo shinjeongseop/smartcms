@@ -65,6 +65,6 @@ smartcms_render_head([
     <?= smartcms_button('가입하기', 'submit') ?>
   </form>
 
-  <p><a class="smartcms-link-btn" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인으로 이동</a></p>
+  <p><a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인으로 이동</a></p>
 </main>
 <?php smartcms_render_foot(); ?>
