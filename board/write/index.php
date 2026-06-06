@@ -46,10 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-smartcms_render_head([
-    'title' => '글쓰기',
-    'body_class' => 'smartcms-board-page',
-]);
+smartcms_render_head(['title' => '글쓰기', 'body_class' => 'smartcms-board-page']);
 $form_action = 'create';
 $form_enctype = 'multipart/form-data';
 $form_values = ['title' => '', 'content' => '', 'is_notice' => false, 'is_secret' => false];
@@ -57,6 +54,7 @@ $show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_
 $submit_label = '등록하기';
 $back_url = smartcms_board_url((string)$board['board_key']);
 $back_label = '목록으로';
+$recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_key'], 5);
 ?>
 <?= smartcms_site_header((string)$board['board_key']) ?>
 
@@ -72,7 +70,31 @@ $back_label = '목록으로';
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <?php require smartcms_board_skin_template($board, 'form'); ?>
-  <?= smartcms_site_footer() ?>
-</main>
+  <?= smartcms_two_column_start() ?>
+    <?php require smartcms_board_skin_template($board, 'form'); ?>
+  <?= smartcms_two_column_middle() ?>
+    <?= smartcms_sidebar_card(
+      (string)$board['board_name'],
+      '<p class="mb-0 text-body-secondary">글쓰기 전에 게시판 성격과 공지사항을 확인하세요.</p>',
+      '<div class="d-flex flex-wrap gap-2">'
+      . '<a class="btn btn-outline-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_board_url((string)$board['board_key'])) . '">게시판 보기</a>'
+      . '<a class="btn btn-primary btn-sm rounded-pill" href="' . smartcms_h(smartcms_board_url((string)$board['board_key'])) . '">목록</a>'
+      . '</div>'
+    ) ?>
+    <div class="card border-0 shadow-sm mt-3">
+      <div class="card-body p-4">
+        <h3 class="h6 fw-semibold mb-3">최근 글</h3>
+        <div class="list-group list-group-flush">
+          <?php foreach ($recent_board_posts as $recent): ?>
+            <a class="list-group-item list-group-item-action px-0 text-truncate"
+               href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
+              <?= smartcms_h($recent['title']) ?>
+            </a>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </div>
+  <?= smartcms_two_column_end() ?>
+
+<?= smartcms_site_footer() ?>
 <?php smartcms_render_foot(); ?>

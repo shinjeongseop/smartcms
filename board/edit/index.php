@@ -61,10 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_type = $result['ok'] ? 'success' : 'error';
 }
 
-smartcms_render_head([
-    'title' => '글 수정',
-    'body_class' => 'smartcms-board-page',
-]);
+smartcms_render_head(['title' => '글 수정', 'body_class' => 'smartcms-board-page']);
 $form_action = 'update';
 $form_values = [
     'title' => (string)$post['title'],
@@ -77,6 +74,7 @@ $show_hide_form = true;
 $submit_label = '수정 저장';
 $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);
 $back_label = '상세로';
+$recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_key'], 5);
 ?>
 <?= smartcms_site_header((string)$board['board_key']) ?>
 
@@ -92,7 +90,31 @@ $back_label = '상세로';
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <?php require smartcms_board_skin_template($board, 'form'); ?>
-  <?= smartcms_site_footer() ?>
-</main>
+  <?= smartcms_two_column_start() ?>
+    <?php require smartcms_board_skin_template($board, 'form'); ?>
+  <?= smartcms_two_column_middle() ?>
+    <?= smartcms_sidebar_card(
+      (string)$board['board_name'],
+      '<p class="mb-0 text-body-secondary">수정 후에는 본문과 첨부 파일이 함께 반영됩니다.</p>',
+      '<div class="d-flex flex-wrap gap-2">'
+      . '<a class="btn btn-outline-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_board_url((string)$board['board_key'])) . '">게시판 보기</a>'
+      . '<a class="btn btn-primary btn-sm rounded-pill" href="' . smartcms_h(smartcms_board_url((string)$board['board_key'])) . '">목록</a>'
+      . '</div>'
+    ) ?>
+    <div class="card border-0 shadow-sm mt-3">
+      <div class="card-body p-4">
+        <h3 class="h6 fw-semibold mb-3">최근 글</h3>
+        <div class="list-group list-group-flush">
+          <?php foreach ($recent_board_posts as $recent): ?>
+            <a class="list-group-item list-group-item-action px-0 text-truncate"
+               href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
+              <?= smartcms_h($recent['title']) ?>
+            </a>
+          <?php endforeach; ?>
+        </div>
+      </div>
+    </div>
+  <?= smartcms_two_column_end() ?>
+
+<?= smartcms_site_footer() ?>
 <?php smartcms_render_foot(); ?>

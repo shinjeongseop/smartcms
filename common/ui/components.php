@@ -78,3 +78,49 @@ function smartcms_section_head(string $title, string $action_html = ''): string
     $html .= '</div>';
     return $html;
 }
+
+/**
+ * 본문 2열 레이아웃 시작
+ */
+function smartcms_two_column_start(array $options = []): string
+{
+    $mainClass = trim((string)($options['main_class'] ?? 'col-12 col-xl-8'));
+    return '<div class="row g-4 align-items-start">'
+         . '<div class="' . smartcms_h($mainClass) . '">';
+}
+
+/**
+ * 본문 2열 레이아웃 중간(사이드바 시작)
+ */
+function smartcms_two_column_middle(array $options = []): string
+{
+    $sidebarClass = trim((string)($options['sidebar_class'] ?? 'col-12 col-xl-4'));
+    return '</div><aside class="' . smartcms_h($sidebarClass) . '">';
+}
+
+/**
+ * 본문 2열 레이아웃 끝
+ */
+function smartcms_two_column_end(): string
+{
+    return '</aside></div>';
+}
+
+/**
+ * 사이드바 카드
+ */
+function smartcms_sidebar_card(string $title, string $body_html, string $meta_html = '', string $extra_class = ''): string
+{
+    $cls = trim('card border-0 shadow-sm ' . $extra_class);
+    $html = '<section class="' . smartcms_h($cls) . '">';
+    $html .= '<div class="card-body p-4">';
+    if ($title !== '') {
+        $html .= '<p class="text-uppercase small fw-semibold text-primary mb-2">' . smartcms_h($title) . '</p>';
+    }
+    $html .= $body_html;
+    if ($meta_html !== '') {
+        $html .= '<div class="mt-3 pt-3 border-top text-body-secondary small">' . $meta_html . '</div>';
+    }
+    $html .= '</div></section>';
+    return $html;
+}
