@@ -36,9 +36,9 @@ smartcms_render_head([
     'stylesheets' => ['/install/style.css'],
 ]);
 ?>
-<main class="card smartcms-panel">
-  <h1 class="smartcms-title">환경 점검</h1>
-  <p class="smartcms-text-muted">설치 전 서버 환경을 확인합니다.</p>
+<main class="sc-install-box">
+  <h1 class="sc-section-title" style="font-size:26px;">환경 점검</h1>
+  <p class="sc-muted">설치 전 서버 환경을 확인합니다.</p>
   <div class="smartcms-check-list">
     <?php foreach ($checks as $check): ?>
       <div class="smartcms-check <?= $check['ok'] ? 'is-ok' : 'is-fail' ?>">

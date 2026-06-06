@@ -29,9 +29,9 @@ smartcms_render_head([
     'stylesheets' => ['/install/style.css'],
 ]);
 ?>
-<main class="card smartcms-panel">
-  <h1 class="smartcms-title">테이블 생성</h1>
-  <p class="smartcms-text-muted">회원, 권한, 게시판, 로그 저장에 필요한 기본 테이블을 준비합니다.</p>
+<main class="sc-install-box">
+  <h1 class="sc-section-title" style="font-size:26px;">테이블 생성</h1>
+  <p class="sc-muted">회원, 권한, 게시판, 로그 저장에 필요한 기본 테이블을 준비합니다.</p>
   <?= smartcms_alert($message, $message_type) ?>
   <?php if ($message_type === 'success'): ?>
     <p><a class="btn btn-primary rounded-pill px-4" href="./create_admin.php">다음: 최초 관리자 생성</a></p>

@@ -38,9 +38,9 @@ smartcms_render_head([
     'stylesheets' => ['/install/style.css'],
 ]);
 ?>
-<main class="card smartcms-panel">
-  <h1 class="smartcms-title">설치 완료</h1>
-  <p class="smartcms-text-muted">설치 잠금이 적용되면 설치 마법사는 다시 실행되지 않습니다.</p>
+<main class="sc-install-box">
+  <h1 class="sc-section-title" style="font-size:26px;">설치 완료</h1>
+  <p class="sc-muted">설치 잠금이 적용되면 설치 마법사는 다시 실행되지 않습니다.</p>
   <?= smartcms_alert($message, $message_type) ?>
   <?php if ($board_message !== ''): ?>
     <?= smartcms_alert($board_message, 'info') ?>

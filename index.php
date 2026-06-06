@@ -93,7 +93,7 @@ echo smartcms_site_header('home');
         <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">
           <i class="bi bi-list-ul me-1"></i>전체 게시판
         </a>
-        <a class="btn btn-outline-light rounded-pill px-4"
+        <a class="btn btn-outline-secondary rounded-pill px-4"
            href="<?= smartcms_h(smartcms_base_url($user ? '/board/write/?board=free' : '/member/login/')) ?>">
           <i class="bi <?= $user ? 'bi-pencil-square' : 'bi-box-arrow-in-right' ?> me-1"></i>
           <?= $user ? '글쓰기' : '로그인' ?>
@@ -128,17 +128,17 @@ echo smartcms_site_header('home');
   </div>
 
   <section class="sc-home-strip" aria-label="커뮤니티 요약">
-    <div>
+    <div class="sc-strip-card">
+      <span>총 게시글</span>
+      <strong><?= number_format(array_sum($board_counts)) ?></strong>
+    </div>
+    <div class="sc-strip-card">
       <span>활성 게시판</span>
       <strong><?= number_format(count($boards)) ?></strong>
     </div>
-    <div>
-      <span>최신글 피드</span>
+    <div class="sc-strip-card">
+      <span>최근 7일</span>
       <strong><?= number_format(count($recent_posts)) ?></strong>
-    </div>
-    <div>
-      <span>인기글 집계</span>
-      <strong><?= number_format(count($popular_posts)) ?></strong>
     </div>
   </section>
 
