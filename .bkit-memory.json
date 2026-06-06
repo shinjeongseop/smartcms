@@ -1,7 +1,11 @@
 {
   "currentFeature": "design-system-refactor",
-  "phase": "design",
-  "updatedAt": "2026-06-06T13:20:00+09:00",
+  "phase": "do",
+  "updatedAt": "2026-06-06T18:30:00+09:00",
+  "implementationScope": [
+    "module-1-design-tokens",
+    "module-2-public-home"
+  ],
   "documents": {
     "plan": "docs/01-plan/features/design-system-refactor.plan.md",
     "designSystem": "docs/02-design/features/design-system-refactor.design-system.md",

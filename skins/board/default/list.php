@@ -7,7 +7,7 @@
   <!-- 헤더: 제목 + 글쓰기 버튼 -->
   <div class="sc-section-head">
     <h2 class="sc-section-title">글 목록
-      <span class="badge bg-secondary ms-1" style="font-size:13px;"><?= number_format((int)$pagination['total']) ?></span>
+      <span class="badge bg-secondary ms-1 sc-auth-linkline"><?= number_format((int)$pagination['total']) ?></span>
     </h2>
     <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
       <a class="btn btn-primary rounded-pill px-4"
@@ -38,9 +38,9 @@
       <thead>
         <tr>
           <th>제목</th>
-          <th style="width:100px;">작성자</th>
-          <th style="width:60px;">조회</th>
-          <th style="width:130px;">작성일</th>
+          <th class="sc-table-col-author">작성자</th>
+          <th class="sc-table-col-views">조회</th>
+          <th class="sc-table-col-date">작성일</th>
         </tr>
       </thead>
       <tbody>
@@ -61,9 +61,9 @@
                 <?php endif; ?>
               </a>
             </td>
-            <td class="sc-muted" style="font-size:13px;"><?= smartcms_h($post['author_name']) ?></td>
-            <td class="sc-muted" style="font-size:13px;"><?= number_format((int)$post['view_count']) ?></td>
-            <td class="sc-muted" style="font-size:13px;"><?= smartcms_h($post['created_at']) ?></td>
+            <td class="sc-table-meta"><?= smartcms_h($post['author_name']) ?></td>
+            <td class="sc-table-meta"><?= number_format((int)$post['view_count']) ?></td>
+            <td class="sc-table-meta"><?= smartcms_h($post['created_at']) ?></td>
           </tr>
         <?php endforeach; ?>
         <?php if (!$posts): ?>

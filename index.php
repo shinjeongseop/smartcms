@@ -72,9 +72,9 @@ echo smartcms_site_header('home');
       </div>
     </div>
     <div class="sc-hero-stats">
-      <div class="sc-hero-stat--light"><span>STEP 01</span><strong style="font-size:18px;">DB 연결</strong></div>
-      <div class="sc-hero-stat--light"><span>STEP 02</span><strong style="font-size:18px;">스키마 생성</strong></div>
-      <div class="sc-hero-stat--light"><span>STEP 03</span><strong style="font-size:18px;">관리자 생성</strong></div>
+      <div class="sc-hero-stat--light"><span>STEP 01</span><strong class="sc-hero-step-title">DB 연결</strong></div>
+      <div class="sc-hero-stat--light"><span>STEP 02</span><strong class="sc-hero-step-title">스키마 생성</strong></div>
+      <div class="sc-hero-stat--light"><span>STEP 03</span><strong class="sc-hero-step-title">관리자 생성</strong></div>
     </div>
   </section>
 
@@ -85,7 +85,7 @@ echo smartcms_site_header('home');
 
   <!-- 설치 완료 히어로 -->
   <section class="sc-hero sc-hero--portal">
-    <div style="position:relative;z-index:1;">
+    <div class="sc-hero-content">
       <p class="sc-eyebrow">Community Builder</p>
       <h1 class="sc-title">게시판과 회원 기능을 한 화면에</h1>
       <p class="sc-subtitle">공지, 자유게시판, Q&A를 위젯처럼 조합해 사이트 첫 화면을 구성합니다.</p>
@@ -100,10 +100,10 @@ echo smartcms_site_header('home');
         </a>
       </div>
     </div>
-    <div class="sc-hero-stats" style="position:relative;z-index:1;">
+    <div class="sc-hero-stats sc-hero-stats--float">
       <div class="sc-hero-stat"><span>Boards</span><strong><?= count($boards) ?></strong></div>
       <div class="sc-hero-stat"><span>Recent</span><strong><?= count($recent_posts) ?></strong></div>
-      <div class="sc-hero-stat"><span>Status</span><strong style="font-size:20px;"><?= $user ? 'ON' : 'Guest' ?></strong></div>
+      <div class="sc-hero-stat"><span>Status</span><strong class="sc-hero-status"><?= $user ? 'ON' : 'Guest' ?></strong></div>
     </div>
   </section>
 
@@ -139,7 +139,7 @@ echo smartcms_site_header('home');
         <div class="sc-post-list sc-post-list--featured">
           <?php foreach ($recent_posts as $post): ?>
             <a class="sc-post-list-item" href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-              <span class="badge text-bg-primary rounded-pill" style="font-size:11px;"><?= smartcms_h($post['board_name']) ?></span>
+              <span class="badge text-bg-primary rounded-pill sc-board-badge"><?= smartcms_h($post['board_name']) ?></span>
               <strong><?= smartcms_h($post['title']) ?></strong>
               <em><?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?></em>
             </a>
@@ -160,7 +160,7 @@ echo smartcms_site_header('home');
                 <div>
                   <p class="sc-eyebrow"><?= smartcms_h($wb['board_key']) ?></p>
                   <h2><?= smartcms_h($wb['board_name']) ?></h2>
-                  <p class="sc-muted mb-0" style="font-size:12px;"><?= smartcms_h($widget['summary']) ?></p>
+                  <p class="sc-widget-summary"><?= smartcms_h($widget['summary']) ?></p>
                 </div>
                 <a class="sc-widget-more" href="<?= smartcms_h(smartcms_board_url((string)$wb['board_key'])) ?>">더보기</a>
               </div>

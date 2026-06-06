@@ -5,16 +5,39 @@
 
 /* ── 1. CSS 변수 ── */
 :root {
-  --sc-bg:        #f4f7fb;
-  --sc-surface:   #ffffff;
-  --sc-text:      #111827;
-  --sc-muted:     #6b7280;
-  --sc-line:      #e2e8f0;
-  --sc-primary:   #145df5;
-  --sc-radius:    16px;
+  --sc-bg: #f5f7fb;
+  --sc-admin-bg: #f5f5f9;
+  --sc-surface: #ffffff;
+  --sc-surface-soft: #f8fafc;
+  --sc-text: #172033;
+  --sc-muted: #6b7280;
+  --sc-line: #e2e8f0;
+  --sc-primary: #2563eb;
+  --sc-primary-dark: #1d4ed8;
+  --sc-accent: #0ea5e9;
+  --sc-success: #16a34a;
+  --sc-warning: #f59e0b;
+  --sc-danger: #dc2626;
+  --sc-admin-primary: #696cff;
+  --sc-font-base: "Noto Sans KR", "Pretendard", sans-serif;
+  --sc-text-xs: 12px;
+  --sc-text-sm: 14px;
+  --sc-text-md: 15px;
+  --sc-text-lg: 18px;
+  --sc-space-1: 4px;
+  --sc-space-2: 8px;
+  --sc-space-3: 12px;
+  --sc-space-4: 16px;
+  --sc-space-6: 24px;
+  --sc-space-8: 32px;
+  --sc-space-12: 48px;
+  --sc-radius: 16px;
   --sc-radius-sm: 10px;
-  --sc-shadow:    0 4px 24px rgba(15,23,42,0.08);
-  --sc-shadow-lg: 0 20px 60px rgba(15,23,42,0.10);
+  --sc-radius-lg: 24px;
+  --sc-radius-pill: 999px;
+  --sc-shadow: 0 8px 30px rgba(15,23,42,0.08);
+  --sc-shadow-lg: 0 24px 70px rgba(15,23,42,0.12);
+  --sc-shadow-hover: 0 18px 45px rgba(37,99,235,0.14);
 }
 
 /* ── 2. 기본 리셋 ── */
@@ -25,8 +48,8 @@ body {
   min-width: 320px;
   background: var(--sc-bg);
   color: var(--sc-text);
-  font-family: "Noto Sans KR", "Pretendard", sans-serif;
-  font-size: 14px;
+  font-family: var(--sc-font-base);
+  font-size: var(--sc-text-sm);
   line-height: 1.65;
 }
 
@@ -36,7 +59,10 @@ a { color: inherit; }
 /* 사이트 페이지용 (게시판, 회원 등) */
 .sc-page {
   min-height: 100vh;
-  background: var(--sc-bg);
+  background:
+    radial-gradient(circle at top left, rgba(37,99,235,0.08), transparent 34rem),
+    radial-gradient(circle at 86% 8%, rgba(14,165,233,0.07), transparent 28rem),
+    linear-gradient(180deg, #ffffff 0, var(--sc-bg) 22rem);
 }
 
 .sc-container {
@@ -46,7 +72,7 @@ a { color: inherit; }
 }
 
 .sc-content-wrap {
-  padding: 32px 0 64px;
+  padding: var(--sc-space-8) 0 64px;
 }
 
 /* 인증 페이지용 (로그인, 회원가입) */
@@ -90,7 +116,7 @@ a { color: inherit; }
 
 /* ── 4. 내비게이션 ── */
 .sc-navbar {
-  background: rgba(255,255,255,0.88);
+  background: rgba(255,255,255,0.9);
   border: 1px solid rgba(226,232,240,0.9);
   border-radius: 20px;
   box-shadow: var(--sc-shadow);
@@ -110,7 +136,7 @@ a { color: inherit; }
 .sc-brand-icon {
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, #145df5, #0ea5e9);
+  background: linear-gradient(135deg, var(--sc-primary), var(--sc-accent));
   border-radius: 10px;
   display: inline-flex;
   align-items: center;
@@ -142,6 +168,7 @@ a { color: inherit; }
   border-radius: var(--sc-radius);
   box-shadow: var(--sc-shadow);
   padding: 28px;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
 }
 
 .sc-panel + .sc-panel { margin-top: 20px; }
@@ -167,7 +194,7 @@ a { color: inherit; }
 .sc-select:focus {
   border-color: var(--sc-primary);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(20,93,245,0.12);
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
 }
 
 .sc-textarea { resize: vertical; }
@@ -229,6 +256,8 @@ a { color: inherit; }
 
 .sc-muted { color: var(--sc-muted); }
 .sc-section-title { font-size: 20px; font-weight: 800; margin: 0 0 16px; }
+.sc-section-title--sm { font-size: 16px; }
+.sc-section-title--xs { font-size: 15px; }
 
 /* ── 9. 섹션 헤더 ── */
 .sc-section-head {
@@ -281,6 +310,11 @@ a { color: inherit; }
   border-bottom: 1px solid var(--sc-line);
   vertical-align: middle;
 }
+
+.sc-table-col-author { width: 100px; }
+.sc-table-col-views { width: 60px; }
+.sc-table-col-date { width: 130px; }
+.sc-table-meta { color: var(--sc-muted); font-size: 13px; }
 
 .sc-table tbody tr:last-child td { border-bottom: none; }
 
@@ -421,13 +455,15 @@ a { color: inherit; }
 
 /* ── 16. 홈 히어로 ── */
 .sc-hero {
-  border-radius: 24px;
-  margin-bottom: 24px;
+  border-radius: var(--sc-radius-lg);
+  margin-bottom: var(--sc-space-6);
   overflow: hidden;
 }
 
 .sc-hero--setup {
-  background: linear-gradient(135deg, #fff 0%, #eaf1ff 100%);
+  background:
+    linear-gradient(135deg, #fff 0%, #eaf1ff 100%),
+    radial-gradient(circle at 88% 16%, rgba(14,165,233,0.16), transparent 16rem);
   border: 1px solid var(--sc-line);
   box-shadow: var(--sc-shadow-lg);
   padding: clamp(28px, 5vw, 56px);
@@ -438,7 +474,9 @@ a { color: inherit; }
 }
 
 .sc-hero--portal {
-  background: linear-gradient(135deg, rgba(10,20,45,0.96), rgba(20,93,245,0.85));
+  background:
+    radial-gradient(circle at 86% 18%, rgba(14,165,233,0.35), transparent 18rem),
+    linear-gradient(135deg, rgba(15,23,42,0.98), rgba(37,99,235,0.9));
   color: #fff;
   padding: clamp(28px, 5vw, 56px);
   display: grid;
@@ -460,6 +498,12 @@ a { color: inherit; }
 .sc-hero--portal .sc-eyebrow { color: rgba(255,255,255,0.7); }
 .sc-hero--portal .sc-subtitle { color: rgba(255,255,255,0.75); }
 
+.sc-hero-content,
+.sc-hero-stats--float {
+  position: relative;
+  z-index: 1;
+}
+
 .sc-hero-stats {
   display: grid;
   gap: 12px;
@@ -475,10 +519,11 @@ a { color: inherit; }
 }
 
 .sc-hero-stat--light {
-  background: #f4f7fb;
+  background: rgba(255,255,255,0.78);
   border-color: var(--sc-line);
   border-radius: 16px;
   padding: 14px 18px;
+  box-shadow: 0 10px 26px rgba(37,99,235,0.08);
 }
 
 .sc-hero-stat span {
@@ -500,18 +545,22 @@ a { color: inherit; }
   line-height: 1;
 }
 
+.sc-hero-step-title { font-size: var(--sc-text-lg); }
+.sc-hero-status { font-size: 20px; }
+
 /* ── 17. 홈 공지 배너 ── */
 .sc-notice-bar {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: #fff;
+  background: rgba(255,255,255,0.92);
   border: 1px solid var(--sc-line);
   border-radius: 14px;
   padding: 12px 18px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 12px rgba(15,23,42,0.05);
+  box-shadow: var(--sc-shadow);
   overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
 .sc-notice-bar .badge { flex-shrink: 0; }
@@ -522,19 +571,26 @@ a { color: inherit; }
 .sc-home-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 20px;
+  gap: var(--sc-space-6);
   align-items: start;
 }
 
-.sc-home-main, .sc-home-side { display: grid; gap: 20px; }
+.sc-home-main, .sc-home-side { display: grid; gap: var(--sc-space-6); }
 
 /* ── 19. 위젯 ── */
 .sc-widget {
-  background: #fff;
+  background: rgba(255,255,255,0.94);
   border: 1px solid var(--sc-line);
   border-radius: 20px;
   box-shadow: var(--sc-shadow);
   padding: 22px;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+  backdrop-filter: blur(10px);
+}
+
+.sc-widget:hover {
+  border-color: rgba(37,99,235,0.22);
+  box-shadow: var(--sc-shadow-hover);
 }
 
 .sc-widget-head {
@@ -562,6 +618,12 @@ a { color: inherit; }
 
 .sc-widget-more:hover { border-color: var(--sc-primary); color: var(--sc-primary); }
 
+.sc-widget-summary {
+  color: var(--sc-muted);
+  font-size: var(--sc-text-xs);
+  margin: 0;
+}
+
 /* ── 20. 포스트 리스트 ── */
 .sc-post-list { display: grid; gap: 2px; }
 
@@ -573,12 +635,14 @@ a { color: inherit; }
   border-radius: 10px;
   text-decoration: none;
   color: var(--sc-text);
-  transition: background 0.12s;
+  transition: background 0.12s, transform 0.12s;
 }
 
-.sc-post-list-item:hover { background: #f4f7fb; }
+.sc-post-list-item:hover { background: #f4f7fb; transform: translateX(2px); }
 .sc-post-list-item strong { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 700; }
 .sc-post-list-item em { font-style: normal; font-size: 12px; color: var(--sc-muted); font-weight: 700; flex-shrink: 0; }
+
+.sc-board-badge { font-size: 11px; }
 
 .sc-post-list--featured .sc-post-list-item {
   grid-template-columns: auto 1fr auto;
@@ -627,7 +691,7 @@ a { color: inherit; }
   justify-content: space-between;
   gap: 10px;
   padding: 10px 12px;
-  background: #f8fafc;
+  background: var(--sc-surface-soft);
   border: 1px solid transparent;
   border-radius: 10px;
   text-decoration: none;
@@ -646,7 +710,9 @@ a { color: inherit; }
 
 /* ── 23. 멤버 카드 ── */
 .sc-member-card {
-  background: linear-gradient(160deg, #fff 0%, #eff6ff 100%);
+  background:
+    radial-gradient(circle at top right, rgba(37,99,235,0.14), transparent 13rem),
+    linear-gradient(160deg, #fff 0%, #eff6ff 100%);
   border: 1px solid var(--sc-line);
   border-radius: 20px;
   box-shadow: var(--sc-shadow);
@@ -675,7 +741,7 @@ a { color: inherit; }
 /* ── 25. 관리자 레이아웃 ── */
 .sc-admin-page {
   min-height: 100vh;
-  background: #f5f5f9;
+  background: var(--sc-admin-bg);
 }
 
 .sc-admin-layout {
@@ -708,7 +774,7 @@ a { color: inherit; }
 .sc-admin-brand-icon {
   width: 38px;
   height: 38px;
-  background: #696cff;
+  background: var(--sc-admin-primary);
   border-radius: 10px;
   display: inline-flex;
   align-items: center;
@@ -750,10 +816,10 @@ a { color: inherit; }
   transition: all 0.15s;
 }
 
-.sc-admin-nav-link:hover { background: #f5f5f9; color: #696cff; }
+.sc-admin-nav-link:hover { background: var(--sc-admin-bg); color: var(--sc-admin-primary); }
 
 .sc-admin-nav-link.is-active {
-  background: linear-gradient(90deg, #696cff, #8c8fff);
+  background: linear-gradient(90deg, var(--sc-admin-primary), #8c8fff);
   color: #fff;
   box-shadow: 0 2px 8px rgba(105,108,255,0.3);
 }
@@ -927,7 +993,12 @@ a { color: inherit; }
 .sc-card-link strong { font-size: 16px; font-weight: 800; }
 .sc-card-link span { font-size: 13px; color: var(--sc-muted); }
 
-/* ── 34. 위젯 2열 그리드 ── */
+/* ── 34. 인증/회원 보조 요소 ── */
+.sc-auth-title { font-size: 28px; }
+.sc-auth-linkline { font-size: 13px; }
+.sc-danger-note { color: var(--sc-muted); font-size: 13px; }
+
+/* ── 35. 위젯 2열 그리드 ── */
 .sc-widget-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -936,7 +1007,7 @@ a { color: inherit; }
 
 .sc-widget-grid .sc-widget:first-child { grid-column: 1 / -1; }
 
-/* ── 35. 빈 상태 ── */
+/* ── 36. 빈 상태 ── */
 .sc-empty {
   color: var(--sc-muted);
   text-align: center;
@@ -945,7 +1016,7 @@ a { color: inherit; }
   margin: 0;
 }
 
-/* ── 36. 반응형 ── */
+/* ── 37. 반응형 ── */
 @media (max-width: 991px) {
   .sc-admin-layout { grid-template-columns: 1fr; }
   .sc-admin-sidebar { position: static; height: auto; border-right: none; border-bottom: 1px solid #e7e7ef; }
@@ -976,7 +1047,7 @@ a { color: inherit; }
   .sc-hero-stats { grid-template-columns: 1fr; }
 }
 
-/* ── 37. 하위 호환 (구 클래스명 브릿지) ── */
+/* ── 38. 하위 호환 (구 클래스명 브릿지) ── */
 /* 기존 PHP에서 사용 중인 구 클래스들을 새 클래스로 포워딩 */
 .smartcms-alert           { }
 .smartcms-alert--info     { }

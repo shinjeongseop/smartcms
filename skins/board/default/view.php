@@ -39,7 +39,7 @@
   <!-- 첨부파일 -->
   <?php if ($files): ?>
     <div class="sc-file-list">
-      <h3 class="sc-section-title" style="font-size:16px;">첨부파일</h3>
+      <h3 class="sc-section-title sc-section-title--sm">첨부파일</h3>
       <?php foreach ($files as $file): ?>
         <a class="sc-file-item"
            href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>">
@@ -91,7 +91,7 @@
   <!-- 댓글 작성 -->
   <?php if ($can_comment && $user): ?>
     <div class="sc-comment-form">
-      <h3 class="sc-section-title" style="font-size:16px;">댓글 작성</h3>
+      <h3 class="sc-section-title sc-section-title--sm">댓글 작성</h3>
       <form class="sc-form-grid" method="post">
         <?= smartcms_csrf_input() ?>
         <input type="hidden" name="action" value="comment_create">

@@ -31,7 +31,7 @@ smartcms_render_head(['title' => '로그인']);
 <div class="sc-auth-wrap">
   <div class="sc-auth-box">
     <p class="sc-eyebrow">Welcome back</p>
-    <h1 class="sc-title" style="font-size:28px;">로그인</h1>
+    <h1 class="sc-title sc-auth-title">로그인</h1>
     <p class="sc-subtitle">smartcms 커뮤니티에 로그인하세요.</p>
 
     <?php if ($message !== ''): ?>
@@ -55,7 +55,7 @@ smartcms_render_head(['title' => '로그인']);
       </div>
     </form>
 
-    <p class="text-center mt-3 mb-0" style="font-size:13px;">
+    <p class="text-center mt-3 mb-0 sc-auth-linkline">
       계정이 없으신가요?
       <a href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>" class="fw-bold">회원가입</a>
     </p>

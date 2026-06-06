@@ -34,7 +34,7 @@ smartcms_render_head(['title' => '회원가입']);
 <div class="sc-auth-wrap">
   <div class="sc-auth-box">
     <p class="sc-eyebrow">Join us</p>
-    <h1 class="sc-title" style="font-size:28px;">회원가입</h1>
+    <h1 class="sc-title sc-auth-title">회원가입</h1>
     <p class="sc-subtitle">가입 후 level <?= smartcms_h($default_level) ?> 권한이 부여됩니다.</p>
 
     <?php if ($message !== ''): ?>
@@ -69,7 +69,7 @@ smartcms_render_head(['title' => '회원가입']);
       </div>
     </form>
 
-    <p class="text-center mt-3 mb-0" style="font-size:13px;">
+    <p class="text-center mt-3 mb-0 sc-auth-linkline">
       이미 계정이 있으신가요?
       <a href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>" class="fw-bold">로그인</a>
     </p>

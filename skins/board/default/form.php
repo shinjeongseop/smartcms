@@ -61,12 +61,12 @@
   <!-- 숨김 처리 (수정 페이지) -->
   <?php if (!empty($show_hide_form)): ?>
     <div class="sc-danger-zone">
-      <h3 class="sc-section-title text-danger" style="font-size:15px;">위험 영역</h3>
+      <h3 class="sc-section-title sc-section-title--xs text-danger">위험 영역</h3>
       <form class="sc-inline-form" method="post">
         <?= smartcms_csrf_input() ?>
         <input type="hidden" name="action" value="hide">
         <button class="btn btn-outline-danger rounded-pill px-4" type="submit">글 숨김 처리</button>
-        <span class="sc-muted" style="font-size:13px;">데이터는 삭제하지 않고 목록에서 숨깁니다.</span>
+        <span class="sc-danger-note">데이터는 삭제하지 않고 목록에서 숨깁니다.</span>
       </form>
     </div>
   <?php endif; ?>
