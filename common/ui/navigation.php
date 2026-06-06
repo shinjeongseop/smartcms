@@ -25,12 +25,12 @@ function smartcms_site_nav(string $active = ''): string
     $base   = static fn(string $href): string => smartcms_h(smartcms_base_url($href));
     $h      = 'smartcms_h';
 
-    $html  = '<nav class="navbar navbar-expand-lg sc-navbar" aria-label="사이트 메뉴">';
-    $html .= '<div class="container-fluid px-0">';
+    $html  = '<nav class="navbar navbar-expand-lg bg-body border-bottom sticky-top shadow-sm mb-4" aria-label="사이트 메뉴">';
+    $html .= '<div class="container py-2">';
 
     // 브랜드
-    $html .= '<a class="navbar-brand sc-brand" href="' . $base('/') . '">';
-    $html .= '<span class="sc-brand-icon"><i class="bi bi-grid-3x3-gap-fill"></i></span>';
+    $html .= '<a class="navbar-brand d-inline-flex align-items-center gap-2 text-decoration-none text-primary fw-semibold" href="' . $base('/') . '">';
+    $html .= '<span class="badge text-bg-primary rounded-3 p-2"><i class="bi bi-grid-3x3-gap-fill"></i></span>';
     $html .= '<strong>smartcms</strong></a>';
 
     // 토글 버튼 (모바일)
@@ -41,10 +41,10 @@ function smartcms_site_nav(string $active = ''): string
 
     // 내비 링크
     $html .= '<div class="collapse navbar-collapse" id="scSiteNav">';
-    $html .= '<ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">';
+    $html .= '<ul class="navbar-nav ms-lg-auto align-items-lg-center gap-lg-1">';
 
     foreach ($items as $key => $item) {
-        $cls  = 'nav-link' . ($key === $active ? ' active' : '');
+        $cls  = 'nav-link px-3' . ($key === $active ? ' active fw-semibold text-primary' : '');
         $html .= '<li class="nav-item">'
                . '<a class="' . $h($cls) . '" href="' . $base($item['href']) . '">'
                . '<i class="bi ' . $h($item['icon']) . ' me-1"></i>'
@@ -73,9 +73,9 @@ function smartcms_site_nav(string $active = ''): string
  */
 function smartcms_site_header(string $active = '', string $extra_class = ''): string
 {
-    $cls = trim('sc-page ' . $extra_class);
-    return '<main class="' . smartcms_h($cls) . '">'
-         . '<div class="sc-container sc-content-wrap">'
+    $cls = trim($extra_class);
+    return '<main class="bg-body min-vh-100">'
+         . '<div class="container py-4">'
          . smartcms_site_nav($active);
 }
 
@@ -85,9 +85,9 @@ function smartcms_site_header(string $active = '', string $extra_class = ''): st
 function smartcms_site_footer(): string
 {
     $year = date('Y');
-    return '<footer class="sc-footer">'
-         . '<div><strong>smartcms</strong><span>경량 커뮤니티 CMS</span></div>'
+    return '<footer class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-5 pt-4 border-top text-muted small">'
+         . '<div><strong class="text-body">smartcms</strong><span class="d-block">경량 커뮤니티 CMS</span></div>'
          . '<small>&copy; ' . smartcms_h($year) . ' smartcms</small>'
          . '</footer>'
-         . '</div></main>'; // .sc-container + .sc-page 닫기
+         . '</div></main>';
 }

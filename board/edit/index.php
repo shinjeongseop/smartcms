@@ -80,10 +80,12 @@ $back_label = '상세로';
 ?>
 <?= smartcms_site_header((string)$board['board_key']) ?>
 
-  <header class="smartcms-page-hero">
-    <p class="smartcms-eyebrow">Edit</p>
-    <h1 class="smartcms-title"><?= smartcms_h($board['board_name']) ?> 글 수정</h1>
-    <p class="smartcms-text-muted">작성자 또는 게시판 관리자만 글을 수정할 수 있습니다.</p>
+  <header class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4 p-lg-5">
+      <p class="text-uppercase small fw-semibold text-primary mb-2">Edit</p>
+      <h1 class="display-6 fw-bold mb-2"><?= smartcms_h($board['board_name']) ?> 글 수정</h1>
+      <p class="text-body-secondary mb-0">작성자 또는 게시판 관리자만 글을 수정할 수 있습니다.</p>
+    </div>
   </header>
 
   <?php if ($message !== ''): ?>

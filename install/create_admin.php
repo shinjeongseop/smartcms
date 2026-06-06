@@ -67,32 +67,40 @@ smartcms_render_head([
     'stylesheets' => ['/install/style.css'],
 ]);
 ?>
-<main class="sc-install-box">
-  <h1 class="sc-section-title" style="font-size:26px;">최초 관리자 생성</h1>
-  <p class="sc-muted">설치 후 사용할 level 10 최고 관리자 계정을 만듭니다.</p>
-  <?php if ($message !== ''): ?>
-    <?= smartcms_alert($message, $message_type) ?>
-  <?php endif; ?>
-  <?php if (!$admin): ?>
-    <form class="sc-form-grid" method="post">
-      <?= smartcms_csrf_input() ?>
-      <div class="sc-field">
-        <label for="email">관리자 이메일</label>
-        <input class="form-control sc-input" id="email" name="email" type="email" value="admin@smartcms.com" required>
-      </div>
-      <div class="sc-field">
-        <label for="name">관리자 이름</label>
-        <input class="form-control sc-input" id="name" name="name" value="최고관리자" required>
-      </div>
-      <div class="sc-field">
-        <label for="password">비밀번호</label>
-        <input class="form-control sc-input" id="password" name="password" type="password" minlength="8" required>
-      </div>
-      <?= smartcms_button('관리자 생성', 'submit') ?>
-    </form>
-  <?php else: ?>
-    <?= smartcms_alert('최고 관리자 계정이 준비되었습니다.', 'info') ?>
-    <p><a class="btn btn-primary rounded-pill px-4" href="./finish.php">다음: 설치 잠금 처리</a></p>
-  <?php endif; ?>
-</main>
+<div class="container py-4 py-md-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-8">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+      <h1 class="h3 fw-bold mb-2">최초 관리자 생성</h1>
+      <p class="text-body-secondary">설치 후 사용할 level 10 최고 관리자 계정을 만듭니다.</p>
+      <?php if ($message !== ''): ?>
+        <?= smartcms_alert($message, $message_type) ?>
+      <?php endif; ?>
+      <?php if (!$admin): ?>
+        <form class="d-grid gap-3" method="post">
+          <?= smartcms_csrf_input() ?>
+          <div>
+            <label for="email" class="form-label">관리자 이메일</label>
+            <input class="form-control" id="email" name="email" type="email" value="admin@smartcms.com" required>
+          </div>
+          <div>
+            <label for="name" class="form-label">관리자 이름</label>
+            <input class="form-control" id="name" name="name" value="최고관리자" required>
+          </div>
+          <div>
+            <label for="password" class="form-label">비밀번호</label>
+            <input class="form-control" id="password" name="password" type="password" minlength="8" required>
+          </div>
+          <?= smartcms_button('관리자 생성', 'submit') ?>
+        </form>
+      <?php else: ?>
+        <?= smartcms_alert('최고 관리자 계정이 준비되었습니다.', 'info') ?>
+        <p class="mb-0"><a class="btn btn-primary rounded-pill px-4" href="./finish.php">다음: 설치 잠금 처리</a></p>
+      <?php endif; ?>
+    </div>
+  </div>
+    </div>
+  </div>
+</div>
 <?php smartcms_render_foot(['scripts' => ['/install/app.js']]); ?>

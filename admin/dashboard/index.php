@@ -28,14 +28,10 @@ try {
     );
     $recent_posts = $stmt->fetchAll();
 
-    $stmt = smartcms_db()->query(
-        "SELECT email, result, created_at FROM " . smartcms_table('login_logs') . " ORDER BY id DESC LIMIT 8"
-    );
+    $stmt = smartcms_db()->query("SELECT email, result, created_at FROM " . smartcms_table('login_logs') . " ORDER BY id DESC LIMIT 8");
     $recent_logins = $stmt->fetchAll();
 
-    $stmt = smartcms_db()->query(
-        "SELECT action, message, created_at FROM " . smartcms_table('board_audit_logs') . " ORDER BY id DESC LIMIT 8"
-    );
+    $stmt = smartcms_db()->query("SELECT action, message, created_at FROM " . smartcms_table('board_audit_logs') . " ORDER BY id DESC LIMIT 8");
     $recent_audits = $stmt->fetchAll();
 } catch (Throwable $e) {
     $message = '대시보드 데이터를 불러오지 못했습니다: ' . $e->getMessage();
@@ -49,74 +45,104 @@ echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
   <?= smartcms_alert($message, 'error') ?>
 <?php endif; ?>
 
-<!-- 통계 카드 -->
-<div class="sc-stat-grid">
-  <a class="card sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/admin/users/')) ?>">
-    <span><i class="bi bi-people me-1"></i>회원</span>
-    <strong><?= number_format($stats['users']) ?></strong>
-  </a>
-  <a class="card sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/admin/boards/')) ?>">
-    <span><i class="bi bi-layout-text-window me-1"></i>게시판</span>
-    <strong><?= number_format($stats['boards']) ?></strong>
-  </a>
-  <a class="card sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">
-    <span><i class="bi bi-file-text me-1"></i>게시글</span>
-    <strong><?= number_format($stats['posts']) ?></strong>
-  </a>
-  <a class="card sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/admin/logs/')) ?>">
-    <span><i class="bi bi-chat me-1"></i>댓글</span>
-    <strong><?= number_format($stats['comments']) ?></strong>
-  </a>
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-3 mb-4">
+  <div class="col">
+    <a class="card h-100 text-decoration-none border-0 shadow-sm" href="<?= smartcms_h(smartcms_base_url('/admin/users/')) ?>">
+      <div class="card-body">
+        <p class="text-body-secondary small mb-1"><i class="bi bi-people me-1"></i>회원</p>
+        <div class="h2 fw-bold mb-0"><?= number_format($stats['users']) ?></div>
+      </div>
+    </a>
+  </div>
+  <div class="col">
+    <a class="card h-100 text-decoration-none border-0 shadow-sm" href="<?= smartcms_h(smartcms_base_url('/admin/boards/')) ?>">
+      <div class="card-body">
+        <p class="text-body-secondary small mb-1"><i class="bi bi-layout-text-window me-1"></i>게시판</p>
+        <div class="h2 fw-bold mb-0"><?= number_format($stats['boards']) ?></div>
+      </div>
+    </a>
+  </div>
+  <div class="col">
+    <a class="card h-100 text-decoration-none border-0 shadow-sm" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">
+      <div class="card-body">
+        <p class="text-body-secondary small mb-1"><i class="bi bi-file-text me-1"></i>게시글</p>
+        <div class="h2 fw-bold mb-0"><?= number_format($stats['posts']) ?></div>
+      </div>
+    </a>
+  </div>
+  <div class="col">
+    <a class="card h-100 text-decoration-none border-0 shadow-sm" href="<?= smartcms_h(smartcms_base_url('/admin/logs/')) ?>">
+      <div class="card-body">
+        <p class="text-body-secondary small mb-1"><i class="bi bi-chat me-1"></i>댓글</p>
+        <div class="h2 fw-bold mb-0"><?= number_format($stats['comments']) ?></div>
+      </div>
+    </a>
+  </div>
 </div>
 
-<!-- 대시보드 그리드 -->
-<div class="sc-dashboard-grid">
-  <article class="card sc-panel">
-    <h2 class="sc-section-title">최근 게시글</h2>
-    <div class="sc-mini-list">
-      <?php foreach ($recent_posts as $post): ?>
-        <a class="sc-mini-list-item"
-           href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-          <strong><?= smartcms_h($post['title']) ?></strong>
-          <span><?= smartcms_h($post['board_name']) ?> · <?= smartcms_h($post['author_name']) ?> · <?= smartcms_h($post['created_at']) ?></span>
-        </a>
-      <?php endforeach; ?>
-      <?php if (!$recent_posts): ?>
-        <p class="sc-empty">최근 게시글이 없습니다.</p>
-      <?php endif; ?>
-    </div>
-  </article>
-
-  <article class="card sc-panel">
-    <h2 class="sc-section-title">최근 로그인</h2>
-    <div class="sc-mini-list">
-      <?php foreach ($recent_logins as $login): ?>
-        <div class="sc-mini-list-item">
-          <strong><?= smartcms_h($login['email']) ?></strong>
-          <span><?= smartcms_h($login['result']) ?> · <?= smartcms_h($login['created_at']) ?></span>
+<div class="row g-3">
+  <div class="col-12">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4">
+        <h2 class="h5 fw-bold mb-3">최근 게시글</h2>
+        <div class="list-group list-group-flush">
+          <?php foreach ($recent_posts as $post): ?>
+            <a class="list-group-item list-group-item-action d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2"
+               href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
+              <div>
+                <div class="fw-semibold"><?= smartcms_h($post['title']) ?></div>
+                <small class="text-body-secondary"><?= smartcms_h($post['board_name']) ?> · <?= smartcms_h($post['author_name']) ?></small>
+              </div>
+              <small class="text-body-secondary"><?= smartcms_h($post['created_at']) ?></small>
+            </a>
+          <?php endforeach; ?>
+          <?php if (!$recent_posts): ?>
+            <div class="list-group-item text-body-secondary">최근 게시글이 없습니다.</div>
+          <?php endif; ?>
         </div>
-      <?php endforeach; ?>
-      <?php if (!$recent_logins): ?>
-        <p class="sc-empty">최근 로그인 기록이 없습니다.</p>
-      <?php endif; ?>
+      </div>
     </div>
-  </article>
+  </div>
 
-  <article class="card sc-panel">
-    <h2 class="sc-section-title">게시판 감사 로그</h2>
-    <div class="sc-mini-list">
-      <?php foreach ($recent_audits as $audit): ?>
-        <div class="sc-mini-list-item">
-          <strong><?= smartcms_h($audit['action']) ?></strong>
-          <span><?= smartcms_h($audit['message']) ?> · <?= smartcms_h($audit['created_at']) ?></span>
+  <div class="col-12 col-xl-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body p-4">
+        <h2 class="h5 fw-bold mb-3">최근 로그인</h2>
+        <div class="list-group list-group-flush">
+          <?php foreach ($recent_logins as $login): ?>
+            <div class="list-group-item px-0">
+              <div class="fw-semibold"><?= smartcms_h($login['email']) ?></div>
+              <small class="text-body-secondary"><?= smartcms_h($login['result']) ?> · <?= smartcms_h($login['created_at']) ?></small>
+            </div>
+          <?php endforeach; ?>
+          <?php if (!$recent_logins): ?>
+            <div class="list-group-item px-0 text-body-secondary">최근 로그인 기록이 없습니다.</div>
+          <?php endif; ?>
         </div>
-      <?php endforeach; ?>
-      <?php if (!$recent_audits): ?>
-        <p class="sc-empty">최근 감사 로그가 없습니다.</p>
-      <?php endif; ?>
+      </div>
     </div>
-  </article>
+  </div>
+
+  <div class="col-12 col-xl-4">
+    <div class="card border-0 shadow-sm h-100">
+      <div class="card-body p-4">
+        <h2 class="h5 fw-bold mb-3">게시판 감사 로그</h2>
+        <div class="list-group list-group-flush">
+          <?php foreach ($recent_audits as $audit): ?>
+            <div class="list-group-item px-0">
+              <div class="fw-semibold"><?= smartcms_h($audit['action']) ?></div>
+              <small class="text-body-secondary"><?= smartcms_h($audit['message']) ?> · <?= smartcms_h($audit['created_at']) ?></small>
+            </div>
+          <?php endforeach; ?>
+          <?php if (!$recent_audits): ?>
+            <div class="list-group-item px-0 text-body-secondary">최근 감사 로그가 없습니다.</div>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <?= smartcms_admin_footer() ?>
+</main>
 <?php smartcms_render_foot(); ?>

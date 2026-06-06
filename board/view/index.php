@@ -77,12 +77,14 @@ smartcms_render_head([
 ?>
 <?= smartcms_site_header((string)$board['board_key']) ?>
 
-  <header class="smartcms-page-hero">
-    <p class="smartcms-eyebrow"><?= smartcms_h($board['board_name']) ?></p>
-    <h1 class="smartcms-title"><?= smartcms_h($post['title']) ?></h1>
-    <p class="smartcms-text-muted">
-      <?= smartcms_h($post['author_name']) ?> · 조회 <?= smartcms_h($post['view_count']) ?> · <?= smartcms_h($post['created_at']) ?>
-    </p>
+  <header class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4 p-lg-5">
+      <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
+      <h1 class="display-6 fw-bold mb-2"><?= smartcms_h($post['title']) ?></h1>
+      <p class="text-body-secondary mb-0">
+        <?= smartcms_h($post['author_name']) ?> · 조회 <?= smartcms_h($post['view_count']) ?> · <?= smartcms_h($post['created_at']) ?>
+      </p>
+    </div>
   </header>
 
   <?php if ($message !== ''): ?>

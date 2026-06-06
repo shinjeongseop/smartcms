@@ -60,10 +60,12 @@ $back_label = '목록으로';
 ?>
 <?= smartcms_site_header((string)$board['board_key']) ?>
 
-  <header class="smartcms-page-hero">
-    <p class="smartcms-eyebrow">Write</p>
-    <h1 class="smartcms-title"><?= smartcms_h($board['board_name']) ?> 글쓰기</h1>
-    <p class="smartcms-text-muted">게시판 권한에 맞는 회원만 글을 작성할 수 있습니다.</p>
+  <header class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4 p-lg-5">
+      <p class="text-uppercase small fw-semibold text-primary mb-2">Write</p>
+      <h1 class="display-6 fw-bold mb-2"><?= smartcms_h($board['board_name']) ?> 글쓰기</h1>
+      <p class="text-body-secondary mb-0">게시판 권한에 맞는 회원만 글을 작성할 수 있습니다.</p>
+    </div>
   </header>
 
   <?php if ($message !== ''): ?>

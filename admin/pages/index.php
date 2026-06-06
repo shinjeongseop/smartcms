@@ -58,22 +58,20 @@ try {
     $message_type = 'error';
 }
 
-smartcms_render_head([
-    'title' => '페이지 권한',
-    'body_class' => 'smartcms-admin-page',
-]);
+smartcms_render_head(['title' => '페이지 권한', 'body_class' => 'smartcms-admin-page']);
+echo smartcms_admin_page_header($admin, '페이지 권한', 'pages');
 ?>
-<?= smartcms_admin_page_header($admin, '페이지 권한', 'pages') ?>
 
-  <?php if ($message !== ''): ?>
-    <?= smartcms_alert($message, $message_type) ?>
-  <?php endif; ?>
+<?php if ($message !== ''): ?>
+  <?= smartcms_alert($message, $message_type) ?>
+<?php endif; ?>
 
-  <section class="card smartcms-panel smartcms-admin-panel">
-    <h2 class="smartcms-section-title">등록된 페이지 권한</h2>
-    <p class="smartcms-text-muted">페이지가 `smartcms_require_page_view()`를 호출하면 여기에 자동 등록됩니다.</p>
-    <div class="table-responsive smartcms-table-wrap">
-      <table class="table table-hover align-middle smartcms-table">
+<div class="card border-0 shadow-sm">
+  <div class="card-body p-4">
+    <h2 class="h5 fw-bold mb-2">등록된 페이지 권한</h2>
+    <p class="text-body-secondary mb-4">페이지가 `smartcms_require_page_view()`를 호출하면 여기에 자동 등록됩니다.</p>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
         <thead>
           <tr>
             <th>페이지</th>
@@ -90,52 +88,66 @@ smartcms_render_head([
           <?php foreach ($pages as $page): ?>
             <tr>
               <td>
-                <strong><?= smartcms_h($page['title']) ?></strong><br>
-                <span class="smartcms-text-muted"><?= smartcms_h($page['page_key']) ?></span>
+                <div class="fw-semibold"><?= smartcms_h($page['title']) ?></div>
+                <small class="text-body-secondary"><?= smartcms_h($page['page_key']) ?></small>
               </td>
               <td><?= smartcms_h($page['page_path']) ?></td>
               <td colspan="6">
-                <form class="smartcms-inline-form" method="post">
+                <form class="row g-2 align-items-center" method="post">
                   <?= smartcms_csrf_input() ?>
                   <input type="hidden" name="id" value="<?= smartcms_h($page['id']) ?>">
-                  <select class="form-select form-select-sm smartcms-select" name="page_view_level">
-                    <?php for ($level = 0; $level <= 10; $level++): ?>
-                      <option value="<?= $level ?>" <?= $level === (int)$page['page_view_level'] ? 'selected' : '' ?>>보기 <?= $level ?></option>
-                    <?php endfor; ?>
-                  </select>
-                  <select class="form-select form-select-sm smartcms-select" name="page_write_level">
-                    <?php for ($level = 0; $level <= 10; $level++): ?>
-                      <option value="<?= $level ?>" <?= $level === (int)$page['page_write_level'] ? 'selected' : '' ?>>쓰기 <?= $level ?></option>
-                    <?php endfor; ?>
-                  </select>
-                  <select class="form-select form-select-sm smartcms-select" name="page_manage_level">
-                    <?php for ($level = 0; $level <= 10; $level++): ?>
-                      <option value="<?= $level ?>" <?= $level === (int)$page['page_manage_level'] ? 'selected' : '' ?>>관리 <?= $level ?></option>
-                    <?php endfor; ?>
-                  </select>
-                  <label class="smartcms-check-field">
-                    <input type="checkbox" name="allow_guest" value="1" <?= (int)$page['allow_guest'] === 1 ? 'checked' : '' ?>>
-                    게스트
-                  </label>
-                  <select class="form-select form-select-sm smartcms-select" name="status">
-                    <?php foreach (['active', 'disabled'] as $status): ?>
-                      <option value="<?= smartcms_h($status) ?>" <?= $status === $page['status'] ? 'selected' : '' ?>><?= smartcms_h($status) ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                  <button class="btn btn-primary btn-sm" type="submit">저장</button>
+                  <div class="col-6 col-xl-2">
+                    <select class="form-select form-select-sm" name="page_view_level">
+                      <?php for ($level = 0; $level <= 10; $level++): ?>
+                        <option value="<?= $level ?>" <?= $level === (int)$page['page_view_level'] ? 'selected' : '' ?>>보기 <?= $level ?></option>
+                      <?php endfor; ?>
+                    </select>
+                  </div>
+                  <div class="col-6 col-xl-2">
+                    <select class="form-select form-select-sm" name="page_write_level">
+                      <?php for ($level = 0; $level <= 10; $level++): ?>
+                        <option value="<?= $level ?>" <?= $level === (int)$page['page_write_level'] ? 'selected' : '' ?>>쓰기 <?= $level ?></option>
+                      <?php endfor; ?>
+                    </select>
+                  </div>
+                  <div class="col-6 col-xl-2">
+                    <select class="form-select form-select-sm" name="page_manage_level">
+                      <?php for ($level = 0; $level <= 10; $level++): ?>
+                        <option value="<?= $level ?>" <?= $level === (int)$page['page_manage_level'] ? 'selected' : '' ?>>관리 <?= $level ?></option>
+                      <?php endfor; ?>
+                    </select>
+                  </div>
+                  <div class="col-6 col-xl-2">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" name="allow_guest" value="1" id="allow_guest_<?= smartcms_h($page['id']) ?>" <?= (int)$page['allow_guest'] === 1 ? 'checked' : '' ?>>
+                      <label class="form-check-label" for="allow_guest_<?= smartcms_h($page['id']) ?>">게스트</label>
+                    </div>
+                  </div>
+                  <div class="col-6 col-xl-2">
+                    <select class="form-select form-select-sm" name="status">
+                      <?php foreach (['active', 'disabled'] as $status): ?>
+                        <option value="<?= smartcms_h($status) ?>" <?= $status === $page['status'] ? 'selected' : '' ?>><?= smartcms_h($status) ?></option>
+                      <?php endforeach; ?>
+                    </select>
+                  </div>
+                  <div class="col-6 col-xl-2">
+                    <button class="btn btn-primary btn-sm w-100" type="submit">저장</button>
+                  </div>
                 </form>
               </td>
             </tr>
           <?php endforeach; ?>
           <?php if (!$pages): ?>
             <tr>
-              <td colspan="8">등록된 페이지 권한이 없습니다.</td>
+              <td colspan="8" class="text-body-secondary">등록된 페이지 권한이 없습니다.</td>
             </tr>
           <?php endif; ?>
         </tbody>
       </table>
     </div>
-  </section>
-  <?= smartcms_admin_footer() ?>
+  </div>
+</div>
+
+<?= smartcms_admin_footer() ?>
 </main>
 <?php smartcms_render_foot(); ?>

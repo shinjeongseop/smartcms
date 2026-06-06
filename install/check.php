@@ -36,18 +36,26 @@ smartcms_render_head([
     'stylesheets' => ['/install/style.css'],
 ]);
 ?>
-<main class="sc-install-box">
-  <h1 class="sc-section-title" style="font-size:26px;">환경 점검</h1>
-  <p class="sc-muted">설치 전 서버 환경을 확인합니다.</p>
-  <div class="smartcms-check-list">
-    <?php foreach ($checks as $check): ?>
-      <div class="smartcms-check <?= $check['ok'] ? 'is-ok' : 'is-fail' ?>">
-        <strong><?= smartcms_h($check['label']) ?></strong>
-        <span><?= smartcms_h((string)$check['value']) ?></span>
+<div class="container py-4 py-md-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-8">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+      <h1 class="h3 fw-bold mb-2">환경 점검</h1>
+      <p class="text-body-secondary">설치 전 서버 환경을 확인합니다.</p>
+      <div class="list-group mb-4">
+        <?php foreach ($checks as $check): ?>
+          <div class="list-group-item d-flex justify-content-between align-items-center">
+            <strong><?= smartcms_h($check['label']) ?></strong>
+            <span class="badge <?= $check['ok'] ? 'text-bg-success' : 'text-bg-danger' ?>"><?= smartcms_h((string)$check['value']) ?></span>
+          </div>
+        <?php endforeach; ?>
       </div>
-    <?php endforeach; ?>
+      <?= smartcms_alert($all_ok ? '설치 가능한 환경입니다.' : '설치 전에 실패 항목을 해결해야 합니다.', $all_ok ? 'success' : 'error') ?>
+      <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 화면으로 이동</a>
+    </div>
   </div>
-  <?= smartcms_alert($all_ok ? '설치 가능한 환경입니다.' : '설치 전에 실패 항목을 해결해야 합니다.', $all_ok ? 'success' : 'error') ?>
-  <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 화면으로 이동</a>
-</main>
+    </div>
+  </div>
+</div>
 <?php smartcms_render_foot(['scripts' => ['/install/app.js']]); ?>

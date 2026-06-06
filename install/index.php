@@ -60,64 +60,73 @@ smartcms_render_head([
     'stylesheets' => ['/install/style.css'],
 ]);
 ?>
-<main class="sc-install-box">
-  <h1 class="sc-section-title" style="font-size:26px;">smartcms 설치 마법사</h1>
-  <p class="sc-muted">DB 연결, 테이블 생성, 관리자 계정 생성을 순서대로 진행합니다.</p>
-  <ol class="smartcms-install-steps">
-    <li class="is-active">1 DB 설정</li>
-    <li>2 테이블 생성</li>
-    <li>3 관리자 계정</li>
-    <li>4 설치 완료</li>
-  </ol>
+<div class="container py-4 py-md-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+      <h1 class="h3 fw-bold mb-2">smartcms 설치 마법사</h1>
+      <p class="text-body-secondary">DB 연결, 테이블 생성, 관리자 계정 생성을 순서대로 진행합니다.</p>
+      <ol class="list-group list-group-horizontal-md mb-4 overflow-auto">
+        <li class="list-group-item flex-fill text-center active">1 DB 설정</li>
+        <li class="list-group-item flex-fill text-center">2 테이블 생성</li>
+        <li class="list-group-item flex-fill text-center">3 관리자 계정</li>
+        <li class="list-group-item flex-fill text-center">4 설치 완료</li>
+      </ol>
 
-  <?php if ($locked): ?>
-    <?= smartcms_alert('이미 설치가 완료되어 설치 마법사를 사용할 수 없습니다.', 'error') ?>
-  <?php else: ?>
-    <?php if ($message !== ''): ?>
-      <?= smartcms_alert($message, $message_type) ?>
-    <?php endif; ?>
-    <?php if ($saved): ?>
-      <div class="mb-3">
-        <a class="btn btn-primary rounded-pill px-4" href="./schema.php">다음: 테이블 생성</a>
-        <p class="sc-muted">DB 설정 저장이 완료되었습니다. 다음 단계로 이동해 테이블을 생성하세요.</p>
-      </div>
-    <?php endif; ?>
+      <?php if ($locked): ?>
+        <?= smartcms_alert('이미 설치가 완료되어 설치 마법사를 사용할 수 없습니다.', 'error') ?>
+      <?php else: ?>
+        <?php if ($message !== ''): ?>
+          <?= smartcms_alert($message, $message_type) ?>
+        <?php endif; ?>
+        <?php if ($saved): ?>
+          <div class="mb-3">
+            <a class="btn btn-primary rounded-pill px-4" href="./schema.php">다음: 테이블 생성</a>
+            <p class="text-body-secondary mt-2 mb-0">DB 설정 저장이 완료되었습니다. 다음 단계로 이동해 테이블을 생성하세요.</p>
+          </div>
+        <?php endif; ?>
 
-    <form class="sc-form-grid" method="post">
-      <?= smartcms_csrf_input() ?>
-      <div class="sc-field">
-        <label for="base_url">Base URL</label>
-        <input class="form-control sc-input" id="base_url" name="base_url" value="<?= smartcms_h($form['base_url']) ?>" placeholder="선택 사항, 예: https://example.com">
-        <p class="sc-muted">비워두면 상대 경로로 동작합니다. 도메인을 고정하고 싶을 때만 입력하세요.</p>
-      </div>
-      <div class="sc-field">
-        <label for="table_prefix">Table Prefix</label>
-        <input class="form-control sc-input" id="table_prefix" name="table_prefix" value="<?= smartcms_h($form['table_prefix']) ?>" placeholder="기본값 sc_">
-        <p class="sc-muted">기본값은 sc_ 입니다. 같은 DB에 여러 시스템을 함께 쓸 때 테이블명을 구분합니다.</p>
-      </div>
-      <div class="sc-field">
-        <label for="db_host">DB Host</label>
-        <input class="form-control sc-input" id="db_host" name="db_host" value="<?= smartcms_h($form['db_host']) ?>" required>
-      </div>
-      <div class="sc-field">
-        <label for="db_name">DB Name</label>
-        <input class="form-control sc-input" id="db_name" name="db_name" value="<?= smartcms_h($form['db_name']) ?>" required>
-      </div>
-      <div class="sc-field">
-        <label for="db_user">DB User</label>
-        <input class="form-control sc-input" id="db_user" name="db_user" value="<?= smartcms_h($form['db_user']) ?>" required>
-      </div>
-      <div class="sc-field">
-        <label for="db_pass">DB Password</label>
-        <input class="form-control sc-input" id="db_pass" name="db_pass" type="password">
-      </div>
-      <div class="sc-field">
-        <label for="db_charset">Charset</label>
-        <input class="form-control sc-input" id="db_charset" name="db_charset" value="<?= smartcms_h($form['db_charset']) ?>" required>
-      </div>
-      <?= smartcms_button('DB 연결 확인', 'submit') ?>
-    </form>
-  <?php endif; ?>
-</main>
-</div></div>
+        <form class="d-grid gap-3" method="post">
+          <?= smartcms_csrf_input() ?>
+          <div>
+            <label for="base_url" class="form-label">Base URL</label>
+            <input class="form-control" id="base_url" name="base_url" value="<?= smartcms_h($form['base_url']) ?>" placeholder="선택 사항, 예: https://example.com">
+            <div class="form-text">비워두면 상대 경로로 동작합니다. 도메인을 고정하고 싶을 때만 입력하세요.</div>
+          </div>
+          <div>
+            <label for="table_prefix" class="form-label">Table Prefix</label>
+            <input class="form-control" id="table_prefix" name="table_prefix" value="<?= smartcms_h($form['table_prefix']) ?>" placeholder="기본값 sc_">
+            <div class="form-text">기본값은 sc_ 입니다. 같은 DB에 여러 시스템을 함께 쓸 때 테이블명을 구분합니다.</div>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="db_host" class="form-label">DB Host</label>
+              <input class="form-control" id="db_host" name="db_host" value="<?= smartcms_h($form['db_host']) ?>" required>
+            </div>
+            <div class="col-md-6">
+              <label for="db_name" class="form-label">DB Name</label>
+              <input class="form-control" id="db_name" name="db_name" value="<?= smartcms_h($form['db_name']) ?>" required>
+            </div>
+            <div class="col-md-6">
+              <label for="db_user" class="form-label">DB User</label>
+              <input class="form-control" id="db_user" name="db_user" value="<?= smartcms_h($form['db_user']) ?>" required>
+            </div>
+            <div class="col-md-6">
+              <label for="db_pass" class="form-label">DB Password</label>
+              <input class="form-control" id="db_pass" name="db_pass" type="password">
+            </div>
+            <div class="col-md-6">
+              <label for="db_charset" class="form-label">Charset</label>
+              <input class="form-control" id="db_charset" name="db_charset" value="<?= smartcms_h($form['db_charset']) ?>" required>
+            </div>
+          </div>
+          <?= smartcms_button('DB 연결 확인', 'submit') ?>
+        </form>
+      <?php endif; ?>
+    </div>
+  </div>
+    </div>
+  </div>
+</div>
 <?php smartcms_render_foot(["scripts"=>["/install/app.js"]]); ?>

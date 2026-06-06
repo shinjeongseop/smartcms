@@ -55,21 +55,19 @@ try {
     $message_type = 'error';
 }
 
-smartcms_render_head([
-    'title' => '회원 관리',
-    'body_class' => 'smartcms-admin-page',
-]);
+smartcms_render_head(['title' => '회원 관리', 'body_class' => 'smartcms-admin-page']);
+echo smartcms_admin_page_header($admin, '회원 관리', 'users');
 ?>
-<?= smartcms_admin_page_header($admin, '회원 관리', 'users') ?>
 
-  <?php if ($message !== ''): ?>
-    <?= smartcms_alert($message, $message_type) ?>
-  <?php endif; ?>
+<?php if ($message !== ''): ?>
+  <?= smartcms_alert($message, $message_type) ?>
+<?php endif; ?>
 
-  <section class="card smartcms-panel smartcms-admin-panel">
-    <h2 class="smartcms-section-title">최근 회원</h2>
-    <div class="table-responsive smartcms-table-wrap">
-      <table class="table table-hover align-middle smartcms-table">
+<div class="card border-0 shadow-sm">
+  <div class="card-body p-4 p-lg-5">
+    <h2 class="h5 fw-bold mb-4">최근 회원</h2>
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
         <thead>
           <tr>
             <th>ID</th>
@@ -93,20 +91,20 @@ smartcms_render_head([
               <td><?= smartcms_h($user['status']) ?></td>
               <td><?= smartcms_h($user['last_login_at'] ?? '-') ?></td>
               <td>
-                <form class="smartcms-inline-form" method="post">
+                <form class="d-flex flex-wrap gap-2" method="post">
                   <?= smartcms_csrf_input() ?>
                   <input type="hidden" name="user_id" value="<?= smartcms_h($user['id']) ?>">
-                  <select class="form-select form-select-sm smartcms-select" name="role">
+                  <select class="form-select form-select-sm" name="role">
                     <?php foreach (['admin', 'manager', 'user'] as $role): ?>
                       <option value="<?= smartcms_h($role) ?>" <?= $role === $user['role'] ? 'selected' : '' ?>><?= smartcms_h($role) ?></option>
                     <?php endforeach; ?>
                   </select>
-                  <select class="form-select form-select-sm smartcms-select" name="level">
+                  <select class="form-select form-select-sm" name="level">
                     <?php for ($level = 1; $level <= 10; $level++): ?>
                       <option value="<?= $level ?>" <?= $level === (int)$user['level'] ? 'selected' : '' ?>><?= $level ?></option>
                     <?php endfor; ?>
                   </select>
-                  <select class="form-select form-select-sm smartcms-select" name="status">
+                  <select class="form-select form-select-sm" name="status">
                     <?php foreach (['active', 'pending', 'blocked', 'left'] as $status): ?>
                       <option value="<?= smartcms_h($status) ?>" <?= $status === $user['status'] ? 'selected' : '' ?>><?= smartcms_h($status) ?></option>
                     <?php endforeach; ?>
@@ -124,7 +122,9 @@ smartcms_render_head([
         </tbody>
       </table>
     </div>
-  </section>
-  <?= smartcms_admin_footer() ?>
+  </div>
+</div>
+
+<?= smartcms_admin_footer() ?>
 </main>
 <?php smartcms_render_foot(); ?>

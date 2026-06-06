@@ -36,11 +36,12 @@ smartcms_render_head(['title' => $page_title]);
 echo smartcms_site_header($board ? (string)$board['board_key'] : '');
 ?>
 
-  <!-- 페이지 히어로 -->
-  <header class="mb-4">
-    <p class="sc-eyebrow">Board</p>
-    <h1 class="sc-title"><?= smartcms_h($page_title) ?></h1>
-    <p class="sc-subtitle"><?= smartcms_h($board ? ($board['description'] ?? '게시글을 확인하세요.') : '사용 가능한 게시판을 선택하세요.') ?></p>
+  <header class="card border-0 shadow-sm mb-4">
+    <div class="card-body p-4 p-lg-5">
+      <p class="text-uppercase small fw-semibold text-primary mb-2">Board</p>
+      <h1 class="display-6 fw-bold mb-3"><?= smartcms_h($page_title) ?></h1>
+      <p class="lead text-body-secondary mb-0"><?= smartcms_h($board ? ($board['description'] ?? '게시글을 확인하세요.') : '사용 가능한 게시판을 선택하세요.') ?></p>
+    </div>
   </header>
 
   <?php if ($message !== ''): ?>

@@ -11,34 +11,40 @@ $user = smartcms_require_login();
 smartcms_render_head(['title' => '마이페이지']);
 echo smartcms_site_header('');
 ?>
-  <div class="sc-panel" style="max-width:560px;">
-    <p class="sc-eyebrow">My Account</p>
-    <h1 class="sc-section-title"><?= smartcms_h($user['name']) ?>님의 마이페이지</h1>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8 col-xxl-6">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+      <p class="text-uppercase text-muted small fw-semibold mb-1">My Account</p>
+      <h1 class="h3 fw-bold mb-4"><?= smartcms_h($user['name']) ?>님의 마이페이지</h1>
 
-    <dl class="smartcms-summary-list mb-4">
-      <div>
-        <dt>이름</dt>
-        <dd><?= smartcms_h($user['name']) ?></dd>
-      </div>
-      <div>
-        <dt>이메일</dt>
-        <dd><?= smartcms_h($user['email']) ?></dd>
-      </div>
-      <div>
-        <dt>권한 레벨</dt>
-        <dd>level <?= smartcms_h($user['level']) ?></dd>
-      </div>
-      <div>
-        <dt>역할</dt>
-        <dd><?= smartcms_h($user['role']) ?></dd>
-      </div>
-    </dl>
+      <dl class="row g-3 mb-4">
+        <div class="col-12 col-md-6">
+          <dt class="text-muted small">이름</dt>
+          <dd class="fw-semibold mb-0"><?= smartcms_h($user['name']) ?></dd>
+        </div>
+        <div class="col-12 col-md-6">
+          <dt class="text-muted small">이메일</dt>
+          <dd class="fw-semibold mb-0"><?= smartcms_h($user['email']) ?></dd>
+        </div>
+        <div class="col-12 col-md-6">
+          <dt class="text-muted small">권한 레벨</dt>
+          <dd class="fw-semibold mb-0">level <?= smartcms_h($user['level']) ?></dd>
+        </div>
+        <div class="col-12 col-md-6">
+          <dt class="text-muted small">역할</dt>
+          <dd class="fw-semibold mb-0"><?= smartcms_h($user['role']) ?></dd>
+        </div>
+      </dl>
 
-    <div class="d-flex gap-2 flex-wrap">
-      <a class="btn btn-primary rounded-pill px-4"
-         href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>">비밀번호 변경</a>
-      <a class="btn btn-outline-secondary rounded-pill px-4"
-         href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
+      <div class="d-flex gap-2 flex-wrap">
+        <a class="btn btn-primary rounded-pill px-4"
+           href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>">비밀번호 변경</a>
+        <a class="btn btn-outline-secondary rounded-pill px-4"
+           href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
+      </div>
+    </div>
+  </div>
     </div>
   </div>
 

@@ -14,17 +14,17 @@ require_once dirname(__DIR__) . '/security.php';
  */
 function smartcms_alert(string $message, string $type = 'info'): string
 {
-    $icons = [
-        'info'    => 'bi-info-circle-fill',
-        'success' => 'bi-check-circle-fill',
-        'error'   => 'bi-exclamation-triangle-fill',
-        'warning' => 'bi-exclamation-circle-fill',
+    $classes = [
+        'info' => 'alert-info',
+        'success' => 'alert-success',
+        'error' => 'alert-danger',
+        'warning' => 'alert-warning',
     ];
-    $icon = $icons[$type] ?? 'bi-info-circle-fill';
+    $class = $classes[$type] ?? 'alert-info';
 
-    return '<div class="sc-alert sc-alert--' . smartcms_h($type) . '">'
-         . '<i class="bi ' . $icon . '"></i>'
-         . '<span>' . smartcms_h($message) . '</span>'
+    return '<div class="alert ' . $class . ' d-flex align-items-start gap-2" role="alert">'
+         . '<i class="bi bi-info-circle-fill mt-1"></i>'
+         . '<div>' . smartcms_h($message) . '</div>'
          . '</div>';
 }
 
@@ -48,8 +48,9 @@ function smartcms_button(string $label, string $type = 'button', string $extra_c
  */
 function smartcms_auth_header(string $active = ''): string
 {
-    return '<div class="sc-auth-wrap">'
-         . '<div class="sc-auth-box">';
+    return '<main class="container min-vh-100 d-flex align-items-center py-5">'
+         . '<div class="row justify-content-center w-100">'
+         . '<div class="col-12 col-md-10 col-lg-7 col-xl-6">';
 }
 
 /**
@@ -57,7 +58,7 @@ function smartcms_auth_header(string $active = ''): string
  */
 function smartcms_auth_footer(): string
 {
-    return '</div></div>';
+    return '</div></div></main>';
 }
 
 /* ─────────────────────────────────────────
@@ -69,8 +70,8 @@ function smartcms_auth_footer(): string
  */
 function smartcms_section_head(string $title, string $action_html = ''): string
 {
-    $html = '<div class="sc-section-head">';
-    $html .= '<h2 class="sc-section-title">' . smartcms_h($title) . '</h2>';
+    $html = '<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">';
+    $html .= '<h2 class="h5 mb-0 fw-semibold text-body">' . smartcms_h($title) . '</h2>';
     if ($action_html !== '') {
         $html .= $action_html;
     }

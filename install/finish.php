@@ -38,13 +38,21 @@ smartcms_render_head([
     'stylesheets' => ['/install/style.css'],
 ]);
 ?>
-<main class="sc-install-box">
-  <h1 class="sc-section-title" style="font-size:26px;">설치 완료</h1>
-  <p class="sc-muted">설치 잠금이 적용되면 설치 마법사는 다시 실행되지 않습니다.</p>
-  <?= smartcms_alert($message, $message_type) ?>
-  <?php if ($board_message !== ''): ?>
-    <?= smartcms_alert($board_message, 'info') ?>
-  <?php endif; ?>
-  <p><a class="btn btn-primary rounded-pill px-4" href="../">홈으로 이동</a></p>
-</main>
+<div class="container py-4 py-md-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-10 col-xl-8">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+      <h1 class="h3 fw-bold mb-2">설치 완료</h1>
+      <p class="text-body-secondary">설치 잠금이 적용되면 설치 마법사는 다시 실행되지 않습니다.</p>
+      <?= smartcms_alert($message, $message_type) ?>
+      <?php if ($board_message !== ''): ?>
+        <?= smartcms_alert($board_message, 'info') ?>
+      <?php endif; ?>
+      <p class="mb-0"><a class="btn btn-primary rounded-pill px-4" href="../">홈으로 이동</a></p>
+    </div>
+  </div>
+    </div>
+  </div>
+</div>
 <?php smartcms_render_foot(['scripts' => ['/install/app.js']]); ?>

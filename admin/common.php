@@ -42,16 +42,16 @@ function smartcms_admin_nav(string $active = ''): string
         'settings'  => ['label' => '환경 설정',   'href' => '/admin/settings/',  'icon' => 'bi-gear-fill'],
     ];
 
-    $html = '<nav class="sc-admin-nav" aria-label="관리자 메뉴"><ul>';
+    $html = '<nav class="list-group list-group-flush rounded-3 overflow-hidden" aria-label="관리자 메뉴">';
     foreach ($items as $key => $item) {
-        $cls  = 'sc-admin-nav-link' . ($key === $active ? ' is-active' : '');
+        $cls  = 'list-group-item list-group-item-action d-flex align-items-center gap-2 border-0' . ($key === $active ? ' active' : '');
         $href = smartcms_h(smartcms_base_url($item['href']));
-        $html .= '<li><a class="' . smartcms_h($cls) . '" href="' . $href . '">'
+        $html .= '<a class="' . smartcms_h($cls) . '" href="' . $href . '">'
                . '<i class="bi ' . smartcms_h($item['icon']) . '"></i>'
                . '<span>' . smartcms_h($item['label']) . '</span>'
-               . '</a></li>';
+               . '</a>';
     }
-    $html .= '</ul></nav>';
+    $html .= '</nav>';
     return $html;
 }
 
@@ -62,29 +62,28 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
 {
     $initial = smartcms_admin_initial((string)$admin['name']);
 
-    $html  = '<main class="sc-admin-page">';
-    $html .= '<div class="sc-admin-layout">';
+    $html  = '<main class="container-fluid min-vh-100 bg-body">';
+    $html .= '<div class="row g-0 min-vh-100">';
 
-    // 사이드바
-    $html .= '<aside class="sc-admin-sidebar">';
-    $html .= '<a class="sc-admin-brand" href="' . smartcms_h(smartcms_base_url('/admin/dashboard/')) . '">';
-    $html .= '<span class="sc-admin-brand-icon"><i class="bi bi-grid-3x3-gap-fill"></i></span>';
+    $html .= '<aside class="col-12 col-lg-3 col-xxl-2 border-end bg-white p-3 p-lg-4">';
+    $html .= '<a class="d-flex align-items-center gap-2 text-decoration-none text-body mb-4" href="' . smartcms_h(smartcms_base_url('/admin/dashboard/')) . '">';
+    $html .= '<span class="badge text-bg-primary rounded-3 p-2"><i class="bi bi-grid-3x3-gap-fill"></i></span>';
     $html .= '<strong>smartcms</strong></a>';
-    $html .= '<p class="sc-admin-menu-label">Admin Menu</p>';
+    $html .= '<p class="text-uppercase small fw-semibold text-muted mb-3">Admin Menu</p>';
     $html .= smartcms_admin_nav($active);
     $html .= '</aside>';
 
-    // 워크스페이스
-    $html .= '<section class="sc-admin-workspace">';
-    $html .= '<header class="sc-admin-topbar">';
-    $html .= '<div><p class="sc-eyebrow mb-0">Admin Console</p><h1 class="sc-admin-page-title">' . smartcms_h($title) . '</h1></div>';
-    $html .= '<div class="sc-admin-profile">';
-    $html .= '<span class="sc-admin-avatar">' . smartcms_h($initial) . '</span>';
-    $html .= '<div><strong>' . smartcms_h($admin['name']) . '</strong><small>level ' . smartcms_h($admin['level']) . '</small></div>';
+    $html .= '<section class="col-12 col-lg-9 col-xxl-10 p-3 p-lg-4">';
+    $html .= '<header class="card border-0 shadow-sm mb-4">';
+    $html .= '<div class="card-body d-flex flex-column flex-xl-row align-items-xl-center justify-content-between gap-3">';
+    $html .= '<div><p class="text-uppercase text-muted small fw-semibold mb-1">Admin Console</p><h1 class="h3 mb-0 text-body">' . smartcms_h($title) . '</h1></div>';
+    $html .= '<div class="d-flex align-items-center gap-3">';
+    $html .= '<span class="badge text-bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center p-3 lh-1">' . smartcms_h($initial) . '</span>';
+    $html .= '<div><strong class="d-block text-body">' . smartcms_h($admin['name']) . '</strong><small class="text-muted d-block">level ' . smartcms_h($admin['level']) . '</small></div>';
     $html .= '<a class="btn btn-outline-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '">';
     $html .= '<i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
-    $html .= '</div></header>';
-    $html .= '<div class="sc-admin-content">';
+    $html .= '</div></div></header>';
+    $html .= '<div class="d-grid gap-4">';
 
     return $html;
 }
@@ -94,12 +93,12 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
  */
 function smartcms_admin_footer(): string
 {
-    return '</div>'   // .sc-admin-content
-         . '<footer class="sc-admin-footer">'
+    return '</div>'
+         . '<footer class="d-flex justify-content-between gap-2 mt-4 pt-3 border-top small text-muted">'
          . '<span>&copy; ' . smartcms_h(date('Y')) . ' smartcms admin</span>'
-         . '<a href="' . smartcms_h(smartcms_base_url('/')) . '">사이트 홈</a>'
+         . '<a href="' . smartcms_h(smartcms_base_url('/')) . '" class="text-decoration-none">사이트 홈</a>'
          . '</footer>'
-         . '</section>'  // .sc-admin-workspace
-         . '</div>'      // .sc-admin-layout
-         . '</main>';    // .sc-admin-page
+         . '</section>'
+         . '</div>'
+         . '</main>';
 }
