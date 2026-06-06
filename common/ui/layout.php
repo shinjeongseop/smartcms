@@ -26,9 +26,10 @@ function smartcms_render_head(array $page = []): void
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <!-- Noto Sans KR -->
+  <!-- Editorial sans + Korean fallback + code mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;800;900&display=swap">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+KR:wght@400;500;600&display=swap">
   <!-- smartcms 공통 스타일 -->
   <link rel="stylesheet" href="<?= smartcms_h(smartcms_asset_url($css_url)) ?>">
   <?php foreach (($page['stylesheets'] ?? []) as $stylesheet): ?>

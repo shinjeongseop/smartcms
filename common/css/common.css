@@ -5,24 +5,36 @@
 
 /* ── 1. CSS 변수 ── */
 :root {
-  --sc-bg: #f5f7fb;
-  --sc-admin-bg: #f5f5f9;
+  --sc-bg: #f7f7f4;
+  --sc-admin-bg: #f7f7f4;
   --sc-surface: #ffffff;
-  --sc-surface-soft: #f8fafc;
-  --sc-text: #172033;
-  --sc-muted: #6b7280;
-  --sc-line: #e2e8f0;
-  --sc-primary: #2563eb;
-  --sc-primary-dark: #1d4ed8;
-  --sc-accent: #0ea5e9;
-  --sc-success: #16a34a;
-  --sc-warning: #f59e0b;
-  --sc-danger: #dc2626;
-  --sc-admin-primary: #696cff;
-  --sc-font-base: "Noto Sans KR", "Pretendard", sans-serif;
-  --sc-text-xs: 12px;
+  --sc-surface-soft: #fafaf7;
+  --sc-surface-strong: #e6e5e0;
+  --sc-text: #26251e;
+  --sc-body: #5a5852;
+  --sc-muted: #807d72;
+  --sc-muted-soft: #a09c92;
+  --sc-line: #e6e5e0;
+  --sc-line-soft: #efeee8;
+  --sc-line-strong: #cfcdc4;
+  --sc-primary: #f54e00;
+  --sc-primary-dark: #d04200;
+  --sc-on-primary: #ffffff;
+  --sc-accent: #f54e00;
+  --sc-success: #1f8a65;
+  --sc-warning: #c08532;
+  --sc-danger: #cf2d56;
+  --sc-admin-primary: #f54e00;
+  --sc-timeline-thinking: #dfa88f;
+  --sc-timeline-grep: #9fc9a2;
+  --sc-timeline-read: #9fbbe0;
+  --sc-timeline-edit: #c0a8dd;
+  --sc-timeline-done: #c08532;
+  --sc-font-base: "CursorGothic", "Inter", "Noto Sans KR", system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --sc-font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  --sc-text-xs: 13px;
   --sc-text-sm: 14px;
-  --sc-text-md: 15px;
+  --sc-text-md: 16px;
   --sc-text-lg: 18px;
   --sc-space-1: 4px;
   --sc-space-2: 8px;
@@ -31,14 +43,15 @@
   --sc-space-6: 24px;
   --sc-space-8: 32px;
   --sc-space-12: 48px;
-  --sc-radius: 16px;
-  --sc-radius-sm: 10px;
-  --sc-radius-lg: 24px;
-  --sc-radius-pill: 999px;
-  --sc-shadow: 0 8px 30px rgba(15,23,42,0.08);
-  --sc-shadow-lg: 0 24px 70px rgba(15,23,42,0.12);
-  --sc-shadow-hover: 0 18px 45px rgba(37,99,235,0.14);
-  --sc-gradient-brand: linear-gradient(135deg, #172033 0%, #1d4ed8 58%, #0ea5e9 100%);
+  --sc-space-section: 80px;
+  --sc-radius: 12px;
+  --sc-radius-sm: 8px;
+  --sc-radius-lg: 12px;
+  --sc-radius-pill: 9999px;
+  --sc-shadow: none;
+  --sc-shadow-lg: none;
+  --sc-shadow-hover: none;
+  --sc-gradient-brand: none;
 }
 
 /* ── 2. 기본 리셋 ── */
@@ -48,22 +61,60 @@ body {
   margin: 0;
   min-width: 320px;
   background: var(--sc-bg);
-  color: var(--sc-text);
+  color: var(--sc-body);
   font-family: var(--sc-font-base);
-  font-size: var(--sc-text-sm);
-  line-height: 1.65;
+  font-size: var(--sc-text-md);
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 a { color: inherit; }
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--sc-font-mono);
+}
+
+.btn {
+  border-radius: var(--sc-radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.btn-primary,
+.text-bg-primary {
+  background-color: var(--sc-primary) !important;
+  border-color: var(--sc-primary) !important;
+  color: #fff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--sc-primary-dark) !important;
+  border-color: var(--sc-primary-dark) !important;
+}
+
+.btn-outline-secondary,
+.btn-outline-light {
+  background: var(--sc-surface) !important;
+  border-color: var(--sc-line-strong) !important;
+  color: var(--sc-text) !important;
+}
+
+.badge {
+  border-radius: var(--sc-radius-pill);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
 
 /* ── 3. 공통 레이아웃 쉘 ── */
 /* 사이트 페이지용 (게시판, 회원 등) */
 .sc-page {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, rgba(37,99,235,0.08), transparent 34rem),
-    radial-gradient(circle at 86% 8%, rgba(14,165,233,0.07), transparent 28rem),
-    linear-gradient(180deg, #ffffff 0, var(--sc-bg) 22rem);
+  background: var(--sc-bg);
 }
 
 .sc-container {
@@ -73,7 +124,7 @@ a { color: inherit; }
 }
 
 .sc-content-wrap {
-  padding: 20px 0 72px;
+  padding: 0 0 var(--sc-space-section);
 }
 
 /* 인증 페이지용 (로그인, 회원가입) */
@@ -83,20 +134,16 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(37,99,235,0.12), transparent 38%),
-    radial-gradient(circle at 84% 72%, rgba(14,165,233,0.10), transparent 34%),
-    var(--sc-bg);
+  background: var(--sc-bg);
 }
 
 .sc-auth-box {
   width: min(480px, 100%);
-  background: rgba(255,255,255,0.9);
-  border: 1px solid rgba(226,232,240,0.9);
-  border-radius: 28px;
+  background: var(--sc-surface);
+  border: 1px solid var(--sc-line);
+  border-radius: var(--sc-radius-lg);
   box-shadow: var(--sc-shadow-lg);
   padding: 44px 38px;
-  backdrop-filter: blur(14px);
 }
 
 /* 설치 페이지용 */
@@ -119,15 +166,16 @@ a { color: inherit; }
 
 /* ── 4. 내비게이션 ── */
 .sc-navbar {
-  background: rgba(255,255,255,0.82);
-  border: 1px solid rgba(226,232,240,0.78);
-  border-radius: 26px;
-  box-shadow: 0 18px 50px rgba(15,23,42,0.08);
-  padding: 14px 18px;
-  margin-bottom: 28px;
-  backdrop-filter: blur(18px);
-  position: sticky;
-  top: 14px;
+  min-height: 64px;
+  background: var(--sc-bg);
+  border: 0;
+  border-bottom: 1px solid var(--sc-line);
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: var(--sc-space-section);
+  position: relative;
+  top: auto;
   z-index: 20;
 }
 
@@ -140,44 +188,48 @@ a { color: inherit; }
 }
 
 .sc-brand-icon {
-  width: 42px;
-  height: 42px;
-  background: var(--sc-gradient-brand);
-  border-radius: 14px;
+  width: 32px;
+  height: 32px;
+  background: var(--sc-primary);
+  border-radius: var(--sc-radius-sm);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 18px;
-  box-shadow: 0 12px 26px rgba(37,99,235,0.28);
+  font-size: 15px;
+  box-shadow: none;
 }
 
-.sc-brand strong { font-size: 20px; letter-spacing: -0.04em; }
+.sc-brand strong {
+  color: var(--sc-primary);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
 
 .sc-navbar .navbar-nav .nav-link {
-  color: #344054;
-  font-weight: 700;
-  border-radius: var(--sc-radius-pill);
-  padding: 8px 15px;
-  transition: background 0.15s, color 0.15s, transform 0.15s;
+  color: var(--sc-text);
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: var(--sc-radius-sm);
+  padding: 8px 12px;
+  transition: color 0.15s;
 }
 
 .sc-navbar .navbar-nav .nav-link:hover,
 .sc-navbar .navbar-nav .nav-link.active {
-  background: #eaf2ff;
+  background: transparent;
   color: var(--sc-primary);
-  transform: translateY(-1px);
 }
 
 /* ── 5. 패널 (카드) ── */
 .sc-panel {
-  background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(226,232,240,0.92);
+  background: var(--sc-surface);
+  border: 1px solid var(--sc-line);
   border-radius: var(--sc-radius-lg);
   box-shadow: var(--sc-shadow);
-  padding: 30px;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
-  backdrop-filter: blur(10px);
+  padding: 24px;
+  transition: border-color 0.15s;
 }
 
 .sc-panel + .sc-panel { margin-top: 20px; }
@@ -187,12 +239,12 @@ a { color: inherit; }
 .sc-textarea,
 .sc-select {
   width: 100%;
-  border: 1.5px solid var(--sc-line);
+  border: 1px solid var(--sc-line-strong);
   border-radius: var(--sc-radius-sm);
-  padding: 10px 14px;
+  padding: 12px 16px;
   font: inherit;
-  font-size: 14px;
-  background: #fff;
+  font-size: 16px;
+  background: var(--sc-surface);
   color: var(--sc-text);
   transition: border-color 0.15s, box-shadow 0.15s;
   appearance: none;
@@ -203,7 +255,7 @@ a { color: inherit; }
 .sc-select:focus {
   border-color: var(--sc-primary);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+  box-shadow: none;
 }
 
 .sc-textarea { resize: vertical; }
@@ -234,27 +286,28 @@ a { color: inherit; }
   gap: 8px;
 }
 
-.sc-alert--info    { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
-.sc-alert--success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-.sc-alert--error   { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
-.sc-alert--warning { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+.sc-alert--info    { background: var(--sc-surface); color: var(--sc-body); border: 1px solid var(--sc-line); }
+.sc-alert--success { background: var(--sc-surface); color: var(--sc-success); border: 1px solid var(--sc-line); }
+.sc-alert--error   { background: var(--sc-surface); color: var(--sc-danger); border: 1px solid var(--sc-line); }
+.sc-alert--warning { background: var(--sc-surface); color: var(--sc-warning); border: 1px solid var(--sc-line); }
 
 /* ── 8. 타이포그래피 유틸 ── */
 .sc-eyebrow {
   color: var(--sc-primary);
-  font-weight: 800;
+  font-weight: 600;
   font-size: 11px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.88px;
   text-transform: uppercase;
   margin: 0 0 4px;
 }
 
 .sc-title {
   margin: 0 0 6px;
-  font-size: clamp(28px, 4vw, 44px);
-  line-height: 1.18;
-  font-weight: 900;
-  letter-spacing: -0.045em;
+  color: var(--sc-text);
+  font-size: clamp(32px, 5vw, 72px);
+  line-height: 1.1;
+  font-weight: 400;
+  letter-spacing: -0.03em;
 }
 
 .sc-subtitle {
@@ -339,8 +392,8 @@ a { color: inherit; }
 .sc-table-meta { color: var(--sc-muted); font-size: 13px; }
 
 .sc-table tbody tr:hover td {
-  background: #f8fbff;
-  border-color: rgba(37,99,235,0.18);
+  background: var(--sc-surface-soft);
+  border-color: var(--sc-line);
 }
 
 .sc-table-link {
@@ -380,7 +433,7 @@ a { color: inherit; }
 .sc-page-link:hover {
   border-color: var(--sc-primary);
   color: var(--sc-primary);
-  background: #eff6ff;
+  background: var(--sc-surface);
 }
 
 .sc-page-link.is-active {
@@ -484,9 +537,7 @@ a { color: inherit; }
 }
 
 .sc-hero--setup {
-  background:
-    linear-gradient(135deg, #fff 0%, #eaf1ff 100%),
-    radial-gradient(circle at 88% 16%, rgba(14,165,233,0.16), transparent 16rem);
+  background: var(--sc-bg);
   border: 1px solid var(--sc-line);
   box-shadow: var(--sc-shadow-lg);
   padding: clamp(28px, 5vw, 56px);
@@ -497,11 +548,8 @@ a { color: inherit; }
 }
 
 .sc-hero--portal {
-  background:
-    radial-gradient(circle at 82% 18%, rgba(14,165,233,0.42), transparent 20rem),
-    radial-gradient(circle at 18% 92%, rgba(255,255,255,0.16), transparent 18rem),
-    var(--sc-gradient-brand);
-  color: #fff;
+  background: var(--sc-bg);
+  color: var(--sc-text);
   padding: clamp(42px, 6vw, 76px);
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
@@ -512,25 +560,17 @@ a { color: inherit; }
 }
 
 .sc-hero--portal::before {
-  content: '';
-  position: absolute;
-  top: 0; right: 0;
-  width: 48%;
-  height: 100%;
-  background:
-    linear-gradient(90deg, transparent, rgba(255,255,255,0.08)),
-    repeating-linear-gradient(135deg, rgba(255,255,255,0.13) 0 1px, transparent 1px 18px);
-  pointer-events: none;
+  display: none;
 }
 
-.sc-hero--portal .sc-eyebrow { color: rgba(255,255,255,0.7); }
+.sc-hero--portal .sc-eyebrow { color: var(--sc-primary); }
 .sc-hero--portal .sc-title {
   max-width: 720px;
   font-size: clamp(40px, 6vw, 68px);
   line-height: 1.05;
 }
 .sc-hero--portal .sc-subtitle {
-  color: rgba(255,255,255,0.78);
+  color: var(--sc-body);
   max-width: 560px;
   font-size: clamp(16px, 2vw, 19px);
 }
@@ -547,7 +587,7 @@ a { color: inherit; }
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 24px;
-  color: rgba(255,255,255,0.78);
+  color: var(--sc-body);
   font-weight: 700;
 }
 
@@ -556,9 +596,9 @@ a { color: inherit; }
   align-items: center;
   gap: 6px;
   padding: 7px 12px;
-  border: 1px solid rgba(255,255,255,0.18);
+  border: 1px solid var(--sc-line);
   border-radius: var(--sc-radius-pill);
-  background: rgba(255,255,255,0.08);
+  background: var(--sc-surface);
 }
 
 .sc-hero-content,
@@ -1169,3 +1209,185 @@ a { color: inherit; }
 .smartcms-alert--info     { }
 .smartcms-alert--error    { }
 .smartcms-alert--success  { }
+
+/* ── 39. DESIGN.md 기반 Cursor editorial 시스템 오버라이드 ── */
+.sc-section-title,
+.sc-widget-head h2,
+.sc-admin-page-title,
+.sc-card-link strong,
+.sc-member-card h2 {
+  color: var(--sc-text);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.sc-section-title { font-size: 22px; }
+.sc-widget-head h2 { font-size: 22px; }
+
+.sc-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.sc-table th {
+  font-weight: 600;
+}
+
+.sc-table td {
+  background: transparent;
+  border-top: 1px solid var(--sc-line);
+  border-bottom: 1px solid var(--sc-line);
+}
+
+.sc-table td:first-child,
+.sc-table td:last-child {
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+}
+
+.sc-table tbody tr:hover td {
+  background: var(--sc-surface-soft);
+  border-color: var(--sc-line);
+}
+
+.sc-page-link:hover {
+  background: var(--sc-surface);
+}
+
+.sc-page-link.is-active {
+  background: var(--sc-primary);
+  border-color: var(--sc-primary);
+  color: var(--sc-on-primary, #fff);
+}
+
+.sc-hero--setup,
+.sc-hero--portal {
+  background: var(--sc-bg);
+  border: 1px solid var(--sc-line);
+  border-radius: var(--sc-radius-lg);
+  box-shadow: none;
+  color: var(--sc-text);
+  min-height: auto;
+}
+
+.sc-hero--portal::before {
+  display: none;
+}
+
+.sc-hero--portal .sc-eyebrow {
+  color: var(--sc-primary);
+}
+
+.sc-hero--portal .sc-title {
+  color: var(--sc-text);
+  font-size: clamp(36px, 6vw, 72px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.sc-hero--portal .sc-subtitle {
+  color: var(--sc-body);
+  font-size: 16px;
+}
+
+.sc-hero-points {
+  color: var(--sc-body);
+}
+
+.sc-hero-points span,
+.sc-hero-stat,
+.sc-hero-stat--light,
+.sc-home-strip div,
+.sc-notice-bar,
+.sc-widget,
+.sc-member-card,
+.sc-footer,
+.sc-card-link,
+.sc-stat-card,
+.sc-admin-topbar {
+  background: var(--sc-surface);
+  border: 1px solid var(--sc-line);
+  border-radius: var(--sc-radius-lg);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.sc-hero-points span {
+  color: var(--sc-body);
+  padding: 4px 10px;
+}
+
+.sc-hero-stat span,
+.sc-hero-stat--light span {
+  color: var(--sc-muted);
+}
+
+.sc-hero-stat strong,
+.sc-home-strip strong,
+.sc-stat-card strong {
+  color: var(--sc-text);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.sc-widget:hover,
+.sc-card-link:hover,
+.sc-stat-card:hover {
+  border-color: var(--sc-line-strong);
+  box-shadow: none;
+  transform: none;
+}
+
+.sc-post-list-item:hover,
+.sc-rank-list-item:hover,
+.sc-shortcut-item:hover {
+  background: var(--sc-surface-soft);
+  color: var(--sc-primary);
+  transform: none;
+}
+
+.sc-rank-num {
+  background: var(--sc-surface-strong);
+  color: var(--sc-text);
+  border-radius: var(--sc-radius-sm);
+}
+
+.sc-member-card {
+  color: var(--sc-text);
+}
+
+.sc-member-card .sc-eyebrow {
+  color: var(--sc-primary);
+}
+
+.sc-member-card p {
+  color: var(--sc-body);
+}
+
+.sc-admin-sidebar {
+  background: var(--sc-surface);
+  border-right: 1px solid var(--sc-line);
+}
+
+.sc-admin-brand-icon,
+.sc-admin-nav-link.is-active {
+  background: var(--sc-primary);
+  box-shadow: none;
+}
+
+.sc-admin-nav-link,
+.sc-admin-profile small,
+.sc-admin-footer {
+  color: var(--sc-body);
+}
+
+.sc-admin-nav-link:hover {
+  background: var(--sc-surface-soft);
+  color: var(--sc-primary);
+}
+
+.sc-admin-footer a {
+  color: var(--sc-primary);
+}
