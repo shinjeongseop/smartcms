@@ -6,10 +6,10 @@ require_once __DIR__ . '/../../common/ui/layout.php';
 require_once __DIR__ . '/../../common/ui/components.php';
 require_once __DIR__ . '/../../common/ui/navigation.php';
 
-$message = '';
+$message      = '';
 $message_type = 'info';
-$email = trim((string)($_POST['email'] ?? ''));
-$next = (string)($_GET['next'] ?? '/member/mypage/');
+$email        = trim((string)($_POST['email'] ?? ''));
+$next         = (string)($_GET['next'] ?? '/member/mypage/');
 
 if (smartcms_current_user()) {
     smartcms_redirect($next);
@@ -17,8 +17,8 @@ if (smartcms_current_user()) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
-    $result = smartcms_login($email, (string)($_POST['password'] ?? ''));
-    $message = $result['message'];
+    $result       = smartcms_login($email, (string)($_POST['password'] ?? ''));
+    $message      = $result['message'];
     $message_type = $result['ok'] ? 'success' : 'error';
 
     if ($result['ok']) {
@@ -26,33 +26,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-smartcms_render_head([
-    'title' => '로그인',
-    'body_class' => 'smartcms-board-page',
-]);
+smartcms_render_head(['title' => '로그인']);
 ?>
-<?= smartcms_site_header('') ?>
-  <section class="smartcms-panel smartcms-auth-panel">
-    <h1 class="smartcms-title">로그인</h1>
-    <p class="smartcms-text-muted">smartcms 관리자와 회원 기능을 사용하려면 로그인하세요.</p>
+<div class="sc-auth-wrap">
+  <div class="sc-auth-box">
+    <p class="sc-eyebrow">Welcome back</p>
+    <h1 class="sc-title" style="font-size:28px;">로그인</h1>
+    <p class="sc-subtitle">smartcms 커뮤니티에 로그인하세요.</p>
 
     <?php if ($message !== ''): ?>
       <?= smartcms_alert($message, $message_type) ?>
     <?php endif; ?>
 
-    <form class="smartcms-grid" method="post">
+    <form class="sc-form-grid" method="post">
       <?= smartcms_csrf_input() ?>
-      <div class="smartcms-field">
+      <div class="sc-field">
         <label for="email">이메일</label>
-        <input class="smartcms-input" id="email" name="email" type="email" value="<?= smartcms_h($email) ?>" required>
+        <input class="sc-input" id="email" name="email" type="email"
+               value="<?= smartcms_h($email) ?>" autocomplete="email" required>
       </div>
-      <div class="smartcms-field">
+      <div class="sc-field">
         <label for="password">비밀번호</label>
-        <input class="smartcms-input" id="password" name="password" type="password" required>
+        <input class="sc-input" id="password" name="password" type="password"
+               autocomplete="current-password" required>
       </div>
-      <?= smartcms_button('로그인', 'submit') ?>
+      <div class="d-grid mt-2">
+        <?= smartcms_button('로그인', 'submit', 'w-100') ?>
+      </div>
     </form>
-  </section>
-  <?= smartcms_site_footer() ?>
-</main>
+
+    <p class="text-center mt-3 mb-0" style="font-size:13px;">
+      계정이 없으신가요?
+      <a href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>" class="fw-bold">회원가입</a>
+    </p>
+  </div>
+</div>
 <?php smartcms_render_foot(); ?>

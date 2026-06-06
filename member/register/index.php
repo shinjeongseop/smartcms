@@ -8,11 +8,11 @@ require_once __DIR__ . '/../../common/ui/navigation.php';
 
 smartcms_require_page_view('member_register', '/member/register/', '회원가입', 0);
 
-$message = '';
+$message      = '';
 $message_type = 'info';
 $form = [
-    'email' => trim((string)($_POST['email'] ?? '')),
-    'name' => trim((string)($_POST['name'] ?? '')),
+    'email'        => trim((string)($_POST['email']        ?? '')),
+    'name'         => trim((string)($_POST['name']         ?? '')),
     'company_name' => trim((string)($_POST['company_name'] ?? '')),
 ];
 
@@ -22,53 +22,57 @@ if (smartcms_current_user()) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
-    $result = smartcms_register_user(
-        $form['email'],
-        (string)($_POST['password'] ?? ''),
-        $form['name'],
-        $form['company_name']
-    );
-    $message = $result['message'];
+    $result       = smartcms_register_user($form['email'], (string)($_POST['password'] ?? ''), $form['name'], $form['company_name']);
+    $message      = $result['message'];
     $message_type = $result['ok'] ? 'success' : 'error';
 }
 
-smartcms_render_head([
-    'title' => '회원가입',
-    'body_class' => 'smartcms-board-page',
-]);
+$default_level = smartcms_setting_int('default_member_level', (int)smartcms_config_value('default_member_level', 2));
+
+smartcms_render_head(['title' => '회원가입']);
 ?>
-<?= smartcms_site_header('') ?>
-  <section class="smartcms-panel smartcms-auth-panel">
-    <h1 class="smartcms-title">회원가입</h1>
-    <p class="smartcms-text-muted">기본 회원은 level <?= smartcms_h(smartcms_setting_int('default_member_level', (int)smartcms_config_value('default_member_level', 2))) ?> 권한으로 생성됩니다.</p>
+<div class="sc-auth-wrap">
+  <div class="sc-auth-box">
+    <p class="sc-eyebrow">Join us</p>
+    <h1 class="sc-title" style="font-size:28px;">회원가입</h1>
+    <p class="sc-subtitle">가입 후 level <?= smartcms_h($default_level) ?> 권한이 부여됩니다.</p>
 
     <?php if ($message !== ''): ?>
       <?= smartcms_alert($message, $message_type) ?>
     <?php endif; ?>
 
-    <form class="smartcms-grid" method="post" autocomplete="off">
+    <form class="sc-form-grid" method="post" autocomplete="off">
       <?= smartcms_csrf_input() ?>
-      <div class="smartcms-field">
-        <label for="email">이메일</label>
-        <input class="smartcms-input" id="email" name="email" type="email" value="<?= smartcms_h($form['email']) ?>" autocomplete="off" required>
+      <div class="sc-field">
+        <label for="email">이메일 <span class="text-danger">*</span></label>
+        <input class="sc-input" id="email" name="email" type="email"
+               value="<?= smartcms_h($form['email']) ?>" autocomplete="off" required>
       </div>
-      <div class="smartcms-field">
-        <label for="name">이름</label>
-        <input class="smartcms-input" id="name" name="name" value="<?= smartcms_h($form['name']) ?>" autocomplete="off" required>
+      <div class="sc-field">
+        <label for="name">이름 <span class="text-danger">*</span></label>
+        <input class="sc-input" id="name" name="name"
+               value="<?= smartcms_h($form['name']) ?>" autocomplete="off" required>
       </div>
-      <div class="smartcms-field">
+      <div class="sc-field">
         <label for="company_name">회사명</label>
-        <input class="smartcms-input" id="company_name" name="company_name" value="<?= smartcms_h($form['company_name']) ?>" autocomplete="off">
+        <input class="sc-input" id="company_name" name="company_name"
+               value="<?= smartcms_h($form['company_name']) ?>" autocomplete="off">
       </div>
-      <div class="smartcms-field">
-        <label for="password">비밀번호</label>
-        <input class="smartcms-input" id="password" name="password" type="password" minlength="8" autocomplete="new-password" required>
+      <div class="sc-field">
+        <label for="password">비밀번호 <span class="text-danger">*</span></label>
+        <input class="sc-input" id="password" name="password" type="password"
+               minlength="8" autocomplete="new-password" required>
+        <p class="sc-field-hint">8자 이상 입력하세요.</p>
       </div>
-      <?= smartcms_button('가입하기', 'submit') ?>
+      <div class="d-grid mt-2">
+        <?= smartcms_button('가입하기', 'submit', 'w-100') ?>
+      </div>
     </form>
 
-    <p><a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인으로 이동</a></p>
-  </section>
-  <?= smartcms_site_footer() ?>
-</main>
+    <p class="text-center mt-3 mb-0" style="font-size:13px;">
+      이미 계정이 있으신가요?
+      <a href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>" class="fw-bold">로그인</a>
+    </p>
+  </div>
+</div>
 <?php smartcms_render_foot(); ?>
