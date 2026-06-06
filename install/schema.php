@@ -26,7 +26,7 @@ try {
 smartcms_render_head([
     'title' => '테이블 생성',
     'body_class' => 'smartcms-install',
-    'stylesheets' => [smartcms_base_url('/install/style.css')],
+    'stylesheets' => ['/install/style.css'],
 ]);
 ?>
 <main class="smartcms-panel">
@@ -39,4 +39,4 @@ smartcms_render_head([
     <p><a class="btn btn-outline-secondary rounded-pill px-4" href="./">DB 설정 다시 확인</a></p>
   <?php endif; ?>
 </main>
-<?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>
+<?php smartcms_render_foot(['scripts' => ['/install/app.js']]); ?>

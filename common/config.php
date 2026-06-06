@@ -63,6 +63,15 @@ function smartcms_base_url(string $path = ''): string
     return $base . '/' . ltrim($path, '/');
 }
 
+function smartcms_asset_url(string $path): string
+{
+    if (preg_match('#^(https?:)?//#', $path) === 1 || str_starts_with($path, 'data:')) {
+        return $path;
+    }
+
+    return '/' . ltrim($path, '/');
+}
+
 function smartcms_h(mixed $value): string
 {
     return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');

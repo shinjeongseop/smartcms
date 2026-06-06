@@ -33,7 +33,7 @@ $all_ok = !in_array(false, array_column($checks, 'ok'), true);
 smartcms_render_head([
     'title' => 'smartcms 설치 점검',
     'body_class' => 'smartcms-install',
-    'stylesheets' => [smartcms_base_url('/install/style.css')],
+    'stylesheets' => ['/install/style.css'],
 ]);
 ?>
 <main class="smartcms-panel">
@@ -50,4 +50,4 @@ smartcms_render_head([
   <?= smartcms_alert($all_ok ? '설치 가능한 환경입니다.' : '설치 전에 실패 항목을 해결해야 합니다.', $all_ok ? 'success' : 'error') ?>
   <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 화면으로 이동</a>
 </main>
-<?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>
+<?php smartcms_render_foot(['scripts' => ['/install/app.js']]); ?>

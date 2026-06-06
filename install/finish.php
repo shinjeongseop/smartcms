@@ -35,7 +35,7 @@ if (!$locked) {
 smartcms_render_head([
     'title' => '설치 완료',
     'body_class' => 'smartcms-install',
-    'stylesheets' => [smartcms_base_url('/install/style.css')],
+    'stylesheets' => ['/install/style.css'],
 ]);
 ?>
 <main class="smartcms-panel">
@@ -47,4 +47,4 @@ smartcms_render_head([
   <?php endif; ?>
   <p><a class="btn btn-primary rounded-pill px-4" href="../">홈으로 이동</a></p>
 </main>
-<?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>
+<?php smartcms_render_foot(['scripts' => ['/install/app.js']]); ?>

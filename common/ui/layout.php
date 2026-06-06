@@ -30,9 +30,9 @@ function smartcms_render_head(array $page = []): void
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;800;900&display=swap">
   <!-- smartcms 공통 스타일 -->
-  <link rel="stylesheet" href="<?= smartcms_h(smartcms_base_url($css_url)) ?>">
+  <link rel="stylesheet" href="<?= smartcms_h(smartcms_asset_url($css_url)) ?>">
   <?php foreach (($page['stylesheets'] ?? []) as $stylesheet): ?>
-    <link rel="stylesheet" href="<?= smartcms_h((string)$stylesheet) ?>">
+    <link rel="stylesheet" href="<?= smartcms_h(smartcms_asset_url((string)$stylesheet)) ?>">
   <?php endforeach; ?>
 </head>
 <body class="<?= smartcms_h($body_class) ?>">
@@ -46,7 +46,7 @@ function smartcms_render_foot(array $page = []): void
 {
     echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>' . PHP_EOL;
     foreach (($page['scripts'] ?? []) as $script) {
-        echo '<script src="' . smartcms_h((string)$script) . '"></script>' . PHP_EOL;
+        echo '<script src="' . smartcms_h(smartcms_asset_url((string)$script)) . '"></script>' . PHP_EOL;
     }
     echo '</body></html>';
 }

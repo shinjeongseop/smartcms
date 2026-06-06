@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $message_type !== 'error') {
 smartcms_render_head([
     'title' => '최초 관리자 생성',
     'body_class' => 'smartcms-install',
-    'stylesheets' => [smartcms_base_url('/install/style.css')],
+    'stylesheets' => ['/install/style.css'],
 ]);
 ?>
 <main class="smartcms-panel">
@@ -95,4 +95,4 @@ smartcms_render_head([
     <p><a class="btn btn-primary rounded-pill px-4" href="./finish.php">다음: 설치 잠금 처리</a></p>
   <?php endif; ?>
 </main>
-<?php smartcms_render_foot(['scripts' => [smartcms_base_url('/install/app.js')]]); ?>
+<?php smartcms_render_foot(['scripts' => ['/install/app.js']]); ?>
