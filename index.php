@@ -86,10 +86,10 @@ echo smartcms_site_header('home');
   <!-- 설치 완료 히어로 -->
   <section class="sc-hero sc-hero--portal">
     <div class="sc-hero-content">
-      <p class="sc-eyebrow">Community Builder</p>
-      <h1 class="sc-title">게시판과 회원 기능을 한 화면에</h1>
-      <p class="sc-subtitle">공지, 자유게시판, Q&A를 위젯처럼 조합해 사이트 첫 화면을 구성합니다.</p>
-      <div class="d-flex gap-2 flex-wrap">
+      <p class="sc-eyebrow">Smart Community OS</p>
+      <h1 class="sc-title">가볍게 설치하고, 바로 운영하는 커뮤니티 CMS</h1>
+      <p class="sc-subtitle">공지, 자유게시판, Q&A와 회원 기능을 하나의 포털 화면으로 정리했습니다.</p>
+      <div class="sc-hero-actions">
         <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">
           <i class="bi bi-list-ul me-1"></i>전체 게시판
         </a>
@@ -98,6 +98,11 @@ echo smartcms_site_header('home');
           <i class="bi <?= $user ? 'bi-pencil-square' : 'bi-box-arrow-in-right' ?> me-1"></i>
           <?= $user ? '글쓰기' : '로그인' ?>
         </a>
+      </div>
+      <div class="sc-hero-points">
+        <span><i class="bi bi-check2-circle"></i> 회원 레벨 권한</span>
+        <span><i class="bi bi-check2-circle"></i> 게시판 스킨</span>
+        <span><i class="bi bi-check2-circle"></i> 관리자 대시보드</span>
       </div>
     </div>
     <div class="sc-hero-stats sc-hero-stats--float">
@@ -121,6 +126,21 @@ echo smartcms_site_header('home');
       <time>준비중</time>
     <?php endif; ?>
   </div>
+
+  <section class="sc-home-strip" aria-label="커뮤니티 요약">
+    <div>
+      <span>활성 게시판</span>
+      <strong><?= number_format(count($boards)) ?></strong>
+    </div>
+    <div>
+      <span>최신글 피드</span>
+      <strong><?= number_format(count($recent_posts)) ?></strong>
+    </div>
+    <div>
+      <span>인기글 집계</span>
+      <strong><?= number_format(count($popular_posts)) ?></strong>
+    </div>
+  </section>
 
   <!-- 메인 레이아웃 -->
   <div class="sc-home-layout">
