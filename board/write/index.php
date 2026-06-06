@@ -58,6 +58,7 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
 ?>
 <?= smartcms_site_header((string)$board['board_key']) ?>
 
+<div class="container-fluid container-xxl py-4">
   <header class="card border-0 shadow-sm mb-4">
     <div class="card-body p-4 p-lg-5">
       <p class="text-uppercase small fw-semibold text-primary mb-2">Write</p>
@@ -96,5 +97,6 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
     </div>
   <?= smartcms_two_column_end() ?>
 
+  </div>
 <?= smartcms_site_footer() ?>
 <?php smartcms_render_foot(); ?>

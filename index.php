@@ -55,85 +55,91 @@ smartcms_render_head(['title' => 'smartcms', 'body_class' => 'bg-body']);
 echo smartcms_site_header('home');
 ?>
 
-<div class="py-4 py-lg-5">
-  <?php if (!$installed): ?>
-    <div class="card border-0 shadow-sm mb-4">
-      <div class="card-body p-4 p-lg-5">
-        <p class="text-uppercase small fw-semibold text-primary mb-2">Setup Required</p>
-        <div class="row g-4 align-items-center">
-          <div class="col-12 col-lg-8">
-            <h1 class="display-5 fw-bold mb-3">설치 마법사로 smartcms를 시작하세요</h1>
-            <p class="lead text-body-secondary mb-4">DB 설정, 테이블 생성, 최초 관리자 계정 생성을 순서대로 완료하면 커뮤니티 기능을 사용할 수 있습니다.</p>
-            <div class="d-flex flex-wrap gap-2">
-              <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>"><i class="bi bi-magic me-1"></i>설치 마법사 시작</a>
-              <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/check.php')) ?>"><i class="bi bi-server me-1"></i>서버 환경 확인</a>
+<?php if (!$installed): ?>
+  <section class="bg-body-tertiary border-bottom">
+    <div class="container-fluid container-xxl py-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-lg-5">
+          <p class="text-uppercase small fw-semibold text-primary mb-2">Setup Required</p>
+          <div class="row g-4 align-items-center">
+            <div class="col-12 col-lg-8">
+              <h1 class="display-5 fw-bold mb-3">설치 마법사로 smartcms를 시작하세요</h1>
+              <p class="lead text-body-secondary mb-4">DB 설정, 테이블 생성, 최초 관리자 계정 생성을 순서대로 완료하면 커뮤니티 기능을 사용할 수 있습니다.</p>
+              <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>"><i class="bi bi-magic me-1"></i>설치 마법사 시작</a>
+                <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/check.php')) ?>"><i class="bi bi-server me-1"></i>서버 환경 확인</a>
+              </div>
             </div>
-          </div>
-          <div class="col-12 col-lg-4">
-            <div class="list-group">
-              <div class="list-group-item d-flex justify-content-between align-items-center"><span>STEP 01</span><strong>DB 연결</strong></div>
-              <div class="list-group-item d-flex justify-content-between align-items-center"><span>STEP 02</span><strong>스키마 생성</strong></div>
-              <div class="list-group-item d-flex justify-content-between align-items-center"><span>STEP 03</span><strong>관리자 생성</strong></div>
+            <div class="col-12 col-lg-4">
+              <div class="list-group">
+                <div class="list-group-item d-flex justify-content-between align-items-center"><span>STEP 01</span><strong>DB 연결</strong></div>
+                <div class="list-group-item d-flex justify-content-between align-items-center"><span>STEP 02</span><strong>스키마 생성</strong></div>
+                <div class="list-group-item d-flex justify-content-between align-items-center"><span>STEP 03</span><strong>관리자 생성</strong></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </section>
+<?php else: ?>
+  <section class="bg-body-tertiary border-bottom">
+    <div class="container-fluid container-xxl py-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-lg-5">
+          <p class="text-uppercase small fw-semibold text-primary mb-2">Smart Community OS</p>
+          <div class="row g-4 align-items-center">
+            <div class="col-12 col-lg-8">
+              <h1 class="display-5 fw-bold mb-3">가볍게 설치하고, 바로 운영하는 커뮤니티 CMS</h1>
+              <p class="lead text-body-secondary mb-4">공지, 자유게시판, Q&A와 회원 기능을 하나의 포털 화면으로 정리했습니다.</p>
+              <div class="d-flex flex-wrap gap-2">
+                <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>"><i class="bi bi-list-ul me-1"></i>전체 게시판</a>
+                <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url($user ? '/board/write/?board=free' : '/member/login/')) ?>">
+                  <i class="bi <?= $user ? 'bi-pencil-square' : 'bi-box-arrow-in-right' ?> me-1"></i><?= $user ? '글쓰기' : '로그인' ?>
+                </a>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="row g-3">
+                <div class="col-12">
+                  <div class="card bg-body-tertiary border-0">
+                    <div class="card-body">
+                      <div class="text-body-secondary small">Boards</div>
+                      <div class="h2 fw-bold mb-0"><?= count($boards) ?></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="card bg-body-tertiary border-0">
+                    <div class="card-body">
+                      <div class="text-body-secondary small">Recent</div>
+                      <div class="h2 fw-bold mb-0"><?= count($recent_posts) ?></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="card bg-body-tertiary border-0">
+                    <div class="card-body">
+                      <div class="text-body-secondary small">Status</div>
+                      <div class="h2 fw-bold mb-0"><?= $user ? 'ON' : 'Guest' ?></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<?php endif; ?>
+
+<div class="container-fluid container-xxl py-4 py-lg-5">
+  <?php if (!$installed): ?>
   <?php else: ?>
     <?php if ($message !== ''): ?>
       <?= smartcms_alert($message, 'error') ?>
     <?php endif; ?>
-
-    <div class="card border-0 shadow-sm mb-4">
-      <div class="card-body p-4 p-lg-5">
-        <p class="text-uppercase small fw-semibold text-primary mb-2">Smart Community OS</p>
-        <div class="row g-4 align-items-center">
-          <div class="col-12 col-lg-8">
-            <h1 class="display-5 fw-bold mb-3">가볍게 설치하고, 바로 운영하는 커뮤니티 CMS</h1>
-            <p class="lead text-body-secondary mb-4">공지, 자유게시판, Q&A와 회원 기능을 하나의 포털 화면으로 정리했습니다.</p>
-            <div class="d-flex flex-wrap gap-2">
-              <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>"><i class="bi bi-list-ul me-1"></i>전체 게시판</a>
-              <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url($user ? '/board/write/?board=free' : '/member/login/')) ?>">
-                <i class="bi <?= $user ? 'bi-pencil-square' : 'bi-box-arrow-in-right' ?> me-1"></i><?= $user ? '글쓰기' : '로그인' ?>
-              </a>
-            </div>
-            <div class="d-flex flex-wrap gap-2 mt-3">
-              <span class="badge text-bg-light border text-body-secondary">회원 레벨 권한</span>
-              <span class="badge text-bg-light border text-body-secondary">게시판 스킨</span>
-              <span class="badge text-bg-light border text-body-secondary">관리자 대시보드</span>
-            </div>
-          </div>
-          <div class="col-12 col-lg-4">
-            <div class="row g-3">
-              <div class="col-12">
-                <div class="card bg-body-tertiary border-0">
-                  <div class="card-body">
-                    <div class="text-body-secondary small">Boards</div>
-                    <div class="h2 fw-bold mb-0"><?= count($boards) ?></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="card bg-body-tertiary border-0">
-                  <div class="card-body">
-                    <div class="text-body-secondary small">Recent</div>
-                    <div class="h2 fw-bold mb-0"><?= count($recent_posts) ?></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="card bg-body-tertiary border-0">
-                  <div class="card-body">
-                    <div class="text-body-secondary small">Status</div>
-                    <div class="h2 fw-bold mb-0"><?= $user ? 'ON' : 'Guest' ?></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <div class="card border-0 shadow-sm mb-4">
       <div class="card-body d-flex flex-wrap align-items-center justify-content-between gap-3">

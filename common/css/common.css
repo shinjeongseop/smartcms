@@ -227,3 +227,14 @@ samp {
 .navbar .nav-link.active {
   color: var(--sc-primary);
 }
+
+@media (min-width: 992px) {
+  .navbar .navbar-toggler {
+    display: none !important;
+  }
+
+  .navbar .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto;
+  }
+}

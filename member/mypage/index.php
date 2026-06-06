@@ -11,6 +11,7 @@ $user = smartcms_require_login();
 smartcms_render_head(['title' => '마이페이지']);
 echo smartcms_site_header('');
 ?>
+<div class="container-fluid container-xxl py-4">
   <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-8 col-xxl-6">
   <div class="card border-0 shadow-sm">
@@ -45,8 +46,9 @@ echo smartcms_site_header('');
       </div>
     </div>
   </div>
-    </div>
   </div>
+</div>
 
+  </div>
 <?= smartcms_site_footer() ?>
 <?php smartcms_render_foot(); ?>

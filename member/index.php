@@ -13,6 +13,7 @@ smartcms_render_head([
 ]);
 ?>
 <?= smartcms_site_header('') ?>
+<div class="container-fluid container-xxl py-4">
   <header class="mb-4">
     <p class="text-uppercase text-muted small fw-semibold mb-1">Member</p>
     <h1 class="h2 fw-bold mb-2">회원 센터</h1>
@@ -62,7 +63,8 @@ smartcms_render_head([
           </div>
         </a>
       </div>
-    <?php endif; ?>
+  <?php endif; ?>
   </section>
-  <?= smartcms_site_footer() ?>
+</div>
+<?= smartcms_site_footer() ?>
 <?php smartcms_render_foot(); ?>

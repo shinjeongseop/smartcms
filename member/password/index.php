@@ -31,6 +31,7 @@ smartcms_render_head([
 ]);
 ?>
 <?= smartcms_site_header('') ?>
+<div class="container-fluid container-xxl py-4">
   <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-8">
   <section class="card border-0 shadow-sm">
@@ -64,5 +65,6 @@ smartcms_render_head([
   </section>
     </div>
   </div>
-  <?= smartcms_site_footer() ?>
+</div>
+<?= smartcms_site_footer() ?>
 <?php smartcms_render_foot(); ?>
