@@ -55,7 +55,7 @@ smartcms_render_head(['title' => 'smartcms', 'body_class' => 'bg-body']);
 echo smartcms_site_header('home');
 ?>
 
-<div class="container py-4 py-lg-5">
+<div class="py-4 py-lg-5">
   <?php if (!$installed): ?>
     <div class="card border-0 shadow-sm mb-4">
       <div class="card-body p-4 p-lg-5">

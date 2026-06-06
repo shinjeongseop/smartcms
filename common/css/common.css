@@ -175,6 +175,7 @@ samp {
 .table > :not(caption) > * > * {
   border-color: var(--sc-line);
   padding: 12px 12px;
+  white-space: nowrap;
 }
 
 .table thead th {

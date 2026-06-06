@@ -62,7 +62,7 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
 {
     $initial = smartcms_admin_initial((string)$admin['name']);
 
-    $html  = '<main class="container-fluid min-vh-100 bg-body">';
+    $html  = '<main class="container-xxl min-vh-100 bg-body">';
     $html .= '<div class="row g-0 min-vh-100">';
 
     $html .= '<aside class="col-12 col-lg-3 col-xxl-2 border-end bg-white p-3 p-lg-4">';

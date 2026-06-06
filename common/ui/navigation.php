@@ -75,7 +75,7 @@ function smartcms_site_header(string $active = '', string $extra_class = ''): st
 {
     $cls = trim($extra_class);
     return '<main class="bg-body min-vh-100">'
-         . '<div class="container py-4">'
+         . '<div class="container-xxl py-4">'
          . smartcms_site_nav($active);
 }
 

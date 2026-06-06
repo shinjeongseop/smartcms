@@ -53,7 +53,7 @@ echo smartcms_site_header($board ? (string)$board['board_key'] : '');
   <?php endif; ?>
 
   <?php if (!$board): ?>
-    <?= smartcms_two_column_start(['main_class' => 'col-12 col-xl-8']) ?>
+    <?= smartcms_two_column_start(['main_class' => 'col-12 col-lg-8']) ?>
       <div class="card border-0 shadow-sm">
         <div class="card-body p-4 p-lg-5">
           <?php require smartcms_board_skin_template(null, 'boards'); ?>
