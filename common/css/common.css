@@ -52,6 +52,9 @@
   --sc-shadow-lg: none;
   --sc-shadow-hover: none;
   --sc-gradient-brand: none;
+  --smartcms-primary: var(--sc-primary);
+  --smartcms-line: var(--sc-line);
+  --smartcms-muted: var(--sc-muted);
 }
 
 /* ── 2. 기본 리셋 ── */
@@ -108,6 +111,198 @@ samp {
   border-radius: var(--sc-radius-pill);
   font-weight: 600;
   letter-spacing: 0.04em;
+}
+
+.form-control,
+.form-select,
+.sc-input,
+.sc-textarea,
+.sc-select,
+.smartcms-input,
+.smartcms-select,
+.smartcms-compact-input {
+  background-color: var(--sc-surface);
+  border: 1px solid var(--sc-line-strong);
+  border-radius: var(--sc-radius-sm);
+  color: var(--sc-text);
+  font-family: var(--sc-font-base);
+  font-size: 16px;
+  min-height: 44px;
+  box-shadow: none;
+}
+
+.form-control:focus,
+.form-select:focus,
+.sc-input:focus,
+.sc-textarea:focus,
+.sc-select:focus,
+.smartcms-input:focus,
+.smartcms-select:focus,
+.smartcms-compact-input:focus {
+  background-color: var(--sc-surface);
+  border-color: var(--sc-primary);
+  box-shadow: none;
+  color: var(--sc-text);
+}
+
+.form-label,
+.smartcms-field label,
+.sc-field label {
+  color: var(--sc-text);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.card,
+.sc-panel,
+.sc-widget,
+.smartcms-panel,
+.smartcms-admin-panel,
+.smartcms-auth-panel {
+  background-color: var(--sc-surface);
+  border: 1px solid var(--sc-line);
+  border-radius: var(--sc-radius-lg);
+  box-shadow: none;
+  color: var(--sc-body);
+}
+
+.smartcms-panel,
+.smartcms-admin-panel,
+.smartcms-auth-panel,
+.sc-panel,
+.sc-widget {
+  padding: 24px;
+}
+
+.smartcms-title,
+.smartcms-section-title,
+.smartcms-page-hero h1 {
+  color: var(--sc-text);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.smartcms-text-muted {
+  color: var(--sc-muted);
+}
+
+.table,
+.sc-table,
+.smartcms-table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--sc-body);
+  --bs-table-border-color: var(--sc-line);
+  --bs-table-hover-bg: var(--sc-surface-soft);
+  color: var(--sc-body);
+  margin-bottom: 0;
+}
+
+.table > :not(caption) > * > *,
+.sc-table th,
+.sc-table td,
+.smartcms-table th,
+.smartcms-table td {
+  border-color: var(--sc-line);
+  padding: 14px 12px;
+}
+
+.table thead th,
+.sc-table th,
+.smartcms-table th {
+  color: var(--sc-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.table-responsive,
+.sc-table-wrap,
+.smartcms-table-wrap {
+  overflow-x: auto;
+}
+
+.smartcms-grid,
+.smartcms-form-grid,
+.sc-form-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.smartcms-form-grid,
+.sc-form-2col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.smartcms-form-wide,
+.sc-form-fullwidth {
+  grid-column: 1 / -1;
+}
+
+.smartcms-field,
+.sc-field {
+  display: grid;
+  gap: 6px;
+}
+
+.smartcms-inline-form,
+.sc-inline-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.smartcms-check-field,
+.sc-check-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.smartcms-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.smartcms-card-grid,
+.sc-card-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.smartcms-card-link,
+.sc-card-link {
+  padding: 24px;
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+
+.smartcms-card-link:hover,
+.sc-card-link:hover {
+  border-color: var(--sc-line-strong);
+}
+
+.smartcms-card-link strong,
+.sc-card-link strong {
+  color: var(--sc-text);
+  display: block;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.smartcms-card-link span,
+.sc-card-link span {
+  color: var(--sc-body);
+  display: block;
+  font-size: 14px;
+  margin-top: 6px;
 }
 
 /* ── 3. 공통 레이아웃 쉘 ── */

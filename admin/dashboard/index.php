@@ -51,19 +51,19 @@ echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
 
 <!-- 통계 카드 -->
 <div class="sc-stat-grid">
-  <a class="sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/admin/users/')) ?>">
+  <a class="card sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/admin/users/')) ?>">
     <span><i class="bi bi-people me-1"></i>회원</span>
     <strong><?= number_format($stats['users']) ?></strong>
   </a>
-  <a class="sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/admin/boards/')) ?>">
+  <a class="card sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/admin/boards/')) ?>">
     <span><i class="bi bi-layout-text-window me-1"></i>게시판</span>
     <strong><?= number_format($stats['boards']) ?></strong>
   </a>
-  <a class="sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">
+  <a class="card sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">
     <span><i class="bi bi-file-text me-1"></i>게시글</span>
     <strong><?= number_format($stats['posts']) ?></strong>
   </a>
-  <a class="sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/admin/logs/')) ?>">
+  <a class="card sc-stat-card" href="<?= smartcms_h(smartcms_base_url('/admin/logs/')) ?>">
     <span><i class="bi bi-chat me-1"></i>댓글</span>
     <strong><?= number_format($stats['comments']) ?></strong>
   </a>
@@ -71,7 +71,7 @@ echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
 
 <!-- 대시보드 그리드 -->
 <div class="sc-dashboard-grid">
-  <article class="sc-panel">
+  <article class="card sc-panel">
     <h2 class="sc-section-title">최근 게시글</h2>
     <div class="sc-mini-list">
       <?php foreach ($recent_posts as $post): ?>
@@ -87,7 +87,7 @@ echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
     </div>
   </article>
 
-  <article class="sc-panel">
+  <article class="card sc-panel">
     <h2 class="sc-section-title">최근 로그인</h2>
     <div class="sc-mini-list">
       <?php foreach ($recent_logins as $login): ?>
@@ -102,7 +102,7 @@ echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
     </div>
   </article>
 
-  <article class="sc-panel">
+  <article class="card sc-panel">
     <h2 class="sc-section-title">게시판 감사 로그</h2>
     <div class="sc-mini-list">
       <?php foreach ($recent_audits as $audit): ?>

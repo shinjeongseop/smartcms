@@ -45,22 +45,22 @@ smartcms_render_head(['title' => '회원가입']);
       <?= smartcms_csrf_input() ?>
       <div class="sc-field">
         <label for="email">이메일 <span class="text-danger">*</span></label>
-        <input class="sc-input" id="email" name="email" type="email"
+        <input class="form-control sc-input" id="email" name="email" type="email"
                value="<?= smartcms_h($form['email']) ?>" autocomplete="off" required>
       </div>
       <div class="sc-field">
         <label for="name">이름 <span class="text-danger">*</span></label>
-        <input class="sc-input" id="name" name="name"
+        <input class="form-control sc-input" id="name" name="name"
                value="<?= smartcms_h($form['name']) ?>" autocomplete="off" required>
       </div>
       <div class="sc-field">
         <label for="company_name">회사명</label>
-        <input class="sc-input" id="company_name" name="company_name"
+        <input class="form-control sc-input" id="company_name" name="company_name"
                value="<?= smartcms_h($form['company_name']) ?>" autocomplete="off">
       </div>
       <div class="sc-field">
         <label for="password">비밀번호 <span class="text-danger">*</span></label>
-        <input class="sc-input" id="password" name="password" type="password"
+        <input class="form-control sc-input" id="password" name="password" type="password"
                minlength="8" autocomplete="new-password" required>
         <p class="sc-field-hint">8자 이상 입력하세요.</p>
       </div>

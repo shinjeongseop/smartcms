@@ -4,7 +4,7 @@
  *                 $submit_label, $back_url, $back_label, $show_attachments, $show_hide_form
  */
 ?>
-<div class="sc-panel">
+<div class="card sc-panel">
   <form class="sc-form-grid" method="post"
         enctype="<?= smartcms_h($form_enctype ?? 'application/x-www-form-urlencoded') ?>">
     <?= smartcms_csrf_input() ?>
@@ -13,7 +13,7 @@
     <!-- 제목 -->
     <div class="sc-field">
       <label for="title">제목 <span class="text-danger">*</span></label>
-      <input class="sc-input" id="title" name="title"
+      <input class="form-control sc-input" id="title" name="title"
              value="<?= smartcms_h($form_values['title'] ?? '') ?>"
              placeholder="제목을 입력하세요." required>
     </div>
@@ -37,7 +37,7 @@
     <!-- 내용 -->
     <div class="sc-field">
       <label for="content">내용 <span class="text-danger">*</span></label>
-      <textarea class="sc-textarea" id="content" name="content" rows="14"
+      <textarea class="form-control sc-textarea" id="content" name="content" rows="14"
                 placeholder="내용을 입력하세요." required><?= smartcms_h($form_values['content'] ?? '') ?></textarea>
     </div>
 
@@ -45,7 +45,7 @@
     <?php if (!empty($show_attachments)): ?>
       <div class="sc-field">
         <label for="attachments">첨부파일</label>
-        <input class="sc-input" id="attachments" name="attachments[]" type="file" multiple>
+        <input class="form-control sc-input" id="attachments" name="attachments[]" type="file" multiple>
         <p class="sc-field-hint">파일당 <?= smartcms_h(smartcms_setting_int('upload_max_mb', 10)) ?>MB 이하</p>
       </div>
     <?php endif; ?>

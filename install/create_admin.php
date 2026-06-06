@@ -67,7 +67,7 @@ smartcms_render_head([
     'stylesheets' => ['/install/style.css'],
 ]);
 ?>
-<main class="smartcms-panel">
+<main class="card smartcms-panel">
   <h1 class="smartcms-title">최초 관리자 생성</h1>
   <p class="smartcms-text-muted">설치 후 사용할 level 10 최고 관리자 계정을 만듭니다.</p>
   <?php if ($message !== ''): ?>
@@ -78,15 +78,15 @@ smartcms_render_head([
       <?= smartcms_csrf_input() ?>
       <div class="smartcms-field">
         <label for="email">관리자 이메일</label>
-        <input class="smartcms-input" id="email" name="email" type="email" value="admin@smartcms.com" required>
+        <input class="form-control smartcms-input" id="email" name="email" type="email" value="admin@smartcms.com" required>
       </div>
       <div class="smartcms-field">
         <label for="name">관리자 이름</label>
-        <input class="smartcms-input" id="name" name="name" value="최고관리자" required>
+        <input class="form-control smartcms-input" id="name" name="name" value="최고관리자" required>
       </div>
       <div class="smartcms-field">
         <label for="password">비밀번호</label>
-        <input class="smartcms-input" id="password" name="password" type="password" minlength="8" required>
+        <input class="form-control smartcms-input" id="password" name="password" type="password" minlength="8" required>
       </div>
       <?= smartcms_button('관리자 생성', 'submit') ?>
     </form>

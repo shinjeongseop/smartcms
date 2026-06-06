@@ -48,17 +48,17 @@ smartcms_render_head([
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <section class="smartcms-panel smartcms-admin-panel">
+  <section class="card smartcms-panel smartcms-admin-panel">
     <h2 class="smartcms-section-title">기본 설정</h2>
     <form class="smartcms-grid smartcms-form-grid" method="post">
       <?= smartcms_csrf_input() ?>
       <div class="smartcms-field">
         <label for="site_name">사이트명</label>
-        <input class="smartcms-input" id="site_name" name="site_name" value="<?= smartcms_h($settings['site_name'] ?? 'smartcms') ?>" required>
+        <input class="form-control smartcms-input" id="site_name" name="site_name" value="<?= smartcms_h($settings['site_name'] ?? 'smartcms') ?>" required>
       </div>
       <div class="smartcms-field">
         <label for="default_member_level">기본 회원 레벨</label>
-        <select class="smartcms-select" id="default_member_level" name="default_member_level">
+        <select class="form-select smartcms-select" id="default_member_level" name="default_member_level">
           <?php for ($level = 1; $level <= 10; $level++): ?>
             <option value="<?= $level ?>" <?= $level === (int)($settings['default_member_level'] ?? 2) ? 'selected' : '' ?>><?= $level ?></option>
           <?php endfor; ?>
@@ -66,7 +66,7 @@ smartcms_render_head([
       </div>
       <div class="smartcms-field">
         <label for="admin_level">관리자 기준 레벨</label>
-        <select class="smartcms-select" id="admin_level" name="admin_level">
+        <select class="form-select smartcms-select" id="admin_level" name="admin_level">
           <?php for ($level = 8; $level <= 10; $level++): ?>
             <option value="<?= $level ?>" <?= $level === (int)($settings['admin_level'] ?? 8) ? 'selected' : '' ?>><?= $level ?></option>
           <?php endfor; ?>
@@ -74,7 +74,7 @@ smartcms_render_head([
       </div>
       <div class="smartcms-field">
         <label for="upload_max_mb">첨부파일 최대 용량 MB</label>
-        <input class="smartcms-input" id="upload_max_mb" name="upload_max_mb" type="number" min="1" max="100" value="<?= smartcms_h($settings['upload_max_mb'] ?? '10') ?>" required>
+        <input class="form-control smartcms-input" id="upload_max_mb" name="upload_max_mb" type="number" min="1" max="100" value="<?= smartcms_h($settings['upload_max_mb'] ?? '10') ?>" required>
       </div>
       <label class="smartcms-check-field smartcms-form-wide">
         <input type="checkbox" name="allow_registration" value="1" <?= (string)($settings['allow_registration'] ?? '1') === '1' ? 'checked' : '' ?>>

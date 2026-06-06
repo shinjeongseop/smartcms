@@ -66,10 +66,10 @@ smartcms_render_head([
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <section class="smartcms-panel smartcms-admin-panel">
+  <section class="card smartcms-panel smartcms-admin-panel">
     <h2 class="smartcms-section-title">최근 회원</h2>
-    <div class="smartcms-table-wrap">
-      <table class="smartcms-table">
+    <div class="table-responsive smartcms-table-wrap">
+      <table class="table table-hover align-middle smartcms-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -96,17 +96,17 @@ smartcms_render_head([
                 <form class="smartcms-inline-form" method="post">
                   <?= smartcms_csrf_input() ?>
                   <input type="hidden" name="user_id" value="<?= smartcms_h($user['id']) ?>">
-                  <select class="smartcms-select" name="role">
+                  <select class="form-select form-select-sm smartcms-select" name="role">
                     <?php foreach (['admin', 'manager', 'user'] as $role): ?>
                       <option value="<?= smartcms_h($role) ?>" <?= $role === $user['role'] ? 'selected' : '' ?>><?= smartcms_h($role) ?></option>
                     <?php endforeach; ?>
                   </select>
-                  <select class="smartcms-select" name="level">
+                  <select class="form-select form-select-sm smartcms-select" name="level">
                     <?php for ($level = 1; $level <= 10; $level++): ?>
                       <option value="<?= $level ?>" <?= $level === (int)$user['level'] ? 'selected' : '' ?>><?= $level ?></option>
                     <?php endfor; ?>
                   </select>
-                  <select class="smartcms-select" name="status">
+                  <select class="form-select form-select-sm smartcms-select" name="status">
                     <?php foreach (['active', 'pending', 'blocked', 'left'] as $status): ?>
                       <option value="<?= smartcms_h($status) ?>" <?= $status === $user['status'] ? 'selected' : '' ?>><?= smartcms_h($status) ?></option>
                     <?php endforeach; ?>

@@ -52,10 +52,10 @@ smartcms_render_head([
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <section class="smartcms-panel smartcms-admin-panel">
+  <section class="card smartcms-panel smartcms-admin-panel">
     <h2 class="smartcms-section-title">최근 접속 로그</h2>
-    <div class="smartcms-table-wrap">
-      <table class="smartcms-table">
+    <div class="table-responsive smartcms-table-wrap">
+      <table class="table table-hover align-middle smartcms-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -89,10 +89,10 @@ smartcms_render_head([
     </div>
   </section>
 
-  <section class="smartcms-panel smartcms-admin-panel smartcms-stack-panel">
+  <section class="card smartcms-panel smartcms-admin-panel smartcms-stack-panel">
     <h2 class="smartcms-section-title">최근 로그인 로그</h2>
-    <div class="smartcms-table-wrap">
-      <table class="smartcms-table">
+    <div class="table-responsive smartcms-table-wrap">
+      <table class="table table-hover align-middle smartcms-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -122,10 +122,10 @@ smartcms_render_head([
     </div>
   </section>
 
-  <section class="smartcms-panel smartcms-admin-panel smartcms-stack-panel">
+  <section class="card smartcms-panel smartcms-admin-panel smartcms-stack-panel">
     <h2 class="smartcms-section-title">최근 게시판 감사 로그</h2>
-    <div class="smartcms-table-wrap">
-      <table class="smartcms-table">
+    <div class="table-responsive smartcms-table-wrap">
+      <table class="table table-hover align-middle smartcms-table">
         <thead>
           <tr>
             <th>ID</th>

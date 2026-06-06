@@ -95,7 +95,7 @@ smartcms_render_head([
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <section class="smartcms-panel smartcms-admin-panel">
+  <section class="card smartcms-panel smartcms-admin-panel">
     <h2 class="smartcms-section-title">DB 백업</h2>
     <p class="smartcms-text-muted">현재 prefix <strong><?= smartcms_h($prefix) ?></strong>로 시작하는 SmartCMS 테이블을 SQL 파일로 내려받습니다.</p>
     <form class="smartcms-actions" method="post">
@@ -105,7 +105,7 @@ smartcms_render_head([
     </form>
   </section>
 
-  <section class="smartcms-panel smartcms-admin-panel">
+  <section class="card smartcms-panel smartcms-admin-panel">
     <h2 class="smartcms-section-title">DB 복구</h2>
     <p class="smartcms-text-muted">SmartCMS 백업 SQL 파일을 업로드해 복구합니다. 복구 전 현재 DB 백업을 먼저 다운로드하는 것을 권장합니다.</p>
     <form class="smartcms-grid smartcms-form-grid" method="post" enctype="multipart/form-data">
@@ -113,7 +113,7 @@ smartcms_render_head([
       <input type="hidden" name="action" value="restore">
       <div class="smartcms-field smartcms-form-wide">
         <label for="backup_file">SQL 백업 파일</label>
-        <input class="smartcms-input" id="backup_file" name="backup_file" type="file" accept=".sql" required>
+        <input class="form-control smartcms-input" id="backup_file" name="backup_file" type="file" accept=".sql" required>
       </div>
       <div class="smartcms-actions smartcms-form-wide">
         <?= smartcms_button('SQL 복구 실행', 'submit') ?>
@@ -121,7 +121,7 @@ smartcms_render_head([
     </form>
   </section>
 
-  <section class="smartcms-panel smartcms-admin-panel">
+  <section class="card smartcms-panel smartcms-admin-panel">
     <h2 class="smartcms-section-title">DB 초기화</h2>
     <p class="smartcms-text-muted">현재 prefix <strong><?= smartcms_h($prefix) ?></strong>로 시작하는 테이블 <?= count($tables) ?>개를 삭제하고 설치 잠금 파일을 해제합니다.</p>
     <form class="smartcms-danger-form" method="post">
@@ -129,7 +129,7 @@ smartcms_render_head([
       <input type="hidden" name="action" value="reset">
       <div class="smartcms-field">
         <label for="confirm_text">확인 문구</label>
-        <input class="smartcms-input" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required>
+        <input class="form-control smartcms-input" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required>
       </div>
       <div class="smartcms-actions">
         <button class="btn btn-danger rounded-pill px-4" type="submit">DB 초기화 실행</button>

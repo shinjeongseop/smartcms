@@ -3,7 +3,7 @@
  * 사용 가능 변수: $board, $posts, $pagination, $user
  */
 ?>
-<div class="sc-panel">
+<div class="card sc-panel">
   <!-- 헤더: 제목 + 글쓰기 버튼 -->
   <div class="sc-section-head">
     <h2 class="sc-section-title">글 목록
@@ -20,7 +20,7 @@
   <!-- 검색 -->
   <form class="sc-search-form" method="get">
     <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
-    <input class="sc-input" name="q"
+    <input class="form-control sc-input" name="q"
            value="<?= smartcms_h($pagination['keyword']) ?>"
            placeholder="제목, 내용, 작성자 검색">
     <button class="btn btn-primary px-3" type="submit">
@@ -33,8 +33,8 @@
   </form>
 
   <!-- 테이블 -->
-  <div class="sc-table-wrap">
-    <table class="sc-table">
+  <div class="table-responsive sc-table-wrap">
+    <table class="table table-hover align-middle sc-table">
       <thead>
         <tr>
           <th>제목</th>

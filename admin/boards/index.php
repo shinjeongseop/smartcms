@@ -93,31 +93,31 @@ smartcms_render_head([
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <section class="smartcms-panel smartcms-admin-panel">
+  <section class="card smartcms-panel smartcms-admin-panel">
     <h2 class="smartcms-section-title">게시판 생성</h2>
     <form class="smartcms-grid smartcms-form-grid" method="post">
       <?= smartcms_csrf_input() ?>
       <input type="hidden" name="action" value="create">
       <div class="smartcms-field">
         <label for="board_key">게시판 키</label>
-        <input class="smartcms-input" id="board_key" name="board_key" placeholder="notice" required>
+        <input class="form-control smartcms-input" id="board_key" name="board_key" placeholder="notice" required>
       </div>
       <div class="smartcms-field">
         <label for="board_name">게시판 이름</label>
-        <input class="smartcms-input" id="board_name" name="board_name" placeholder="공지사항" required>
+        <input class="form-control smartcms-input" id="board_name" name="board_name" placeholder="공지사항" required>
       </div>
       <div class="smartcms-field">
         <label for="description">설명</label>
-        <input class="smartcms-input" id="description" name="description">
+        <input class="form-control smartcms-input" id="description" name="description">
       </div>
       <?= smartcms_button('게시판 생성', 'submit') ?>
     </form>
   </section>
 
-  <section class="smartcms-panel smartcms-admin-panel smartcms-stack-panel">
+  <section class="card smartcms-panel smartcms-admin-panel smartcms-stack-panel">
     <h2 class="smartcms-section-title">게시판 목록</h2>
-    <div class="smartcms-table-wrap">
-      <table class="smartcms-table">
+    <div class="table-responsive smartcms-table-wrap">
+      <table class="table table-hover align-middle smartcms-table">
         <thead>
           <tr>
             <th>게시판</th>
@@ -144,10 +144,10 @@ smartcms_render_head([
                   <?= smartcms_csrf_input() ?>
                   <input type="hidden" name="action" value="update">
                   <input type="hidden" name="board_key" value="<?= smartcms_h($board['board_key']) ?>">
-                  <input class="smartcms-compact-input" name="board_name" value="<?= smartcms_h($board['board_name']) ?>" required>
-                  <input class="smartcms-compact-input" name="description" value="<?= smartcms_h($board['description'] ?? '') ?>" placeholder="설명">
+                  <input class="form-control form-control-sm smartcms-compact-input" name="board_name" value="<?= smartcms_h($board['board_name']) ?>" required>
+                  <input class="form-control form-control-sm smartcms-compact-input" name="description" value="<?= smartcms_h($board['description'] ?? '') ?>" placeholder="설명">
                   <?php foreach (['board_list_level' => '목록', 'board_view_level' => '보기', 'board_write_level' => '쓰기', 'board_comment_level' => '댓글'] as $field => $label): ?>
-                    <select class="smartcms-select" name="<?= smartcms_h($field) ?>">
+                    <select class="form-select form-select-sm smartcms-select" name="<?= smartcms_h($field) ?>">
                       <?php for ($level = 0; $level <= 10; $level++): ?>
                         <option value="<?= $level ?>" <?= $level === (int)($board[$field] ?? 0) ? 'selected' : '' ?>><?= smartcms_h($label) ?> <?= $level ?></option>
                       <?php endfor; ?>
@@ -161,12 +161,12 @@ smartcms_render_head([
                     <input type="checkbox" name="allow_guest_view" value="1" <?= (int)($board['allow_guest_view'] ?? 0) === 1 ? 'checked' : '' ?>>
                     보기 게스트
                   </label>
-                  <select class="smartcms-select" name="status">
+                  <select class="form-select form-select-sm smartcms-select" name="status">
                     <?php foreach (['active', 'hidden', 'disabled'] as $status): ?>
                       <option value="<?= smartcms_h($status) ?>" <?= $status === $board['status'] ? 'selected' : '' ?>><?= smartcms_h($status) ?></option>
                     <?php endforeach; ?>
                   </select>
-                  <select class="smartcms-select" name="permission_status">
+                  <select class="form-select form-select-sm smartcms-select" name="permission_status">
                     <?php foreach (['active', 'disabled'] as $status): ?>
                       <option value="<?= smartcms_h($status) ?>" <?= $status === ($board['permission_status'] ?? 'active') ? 'selected' : '' ?>>권한 <?= smartcms_h($status) ?></option>
                     <?php endforeach; ?>

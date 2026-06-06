@@ -69,11 +69,11 @@ smartcms_render_head([
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <section class="smartcms-panel smartcms-admin-panel">
+  <section class="card smartcms-panel smartcms-admin-panel">
     <h2 class="smartcms-section-title">등록된 페이지 권한</h2>
     <p class="smartcms-text-muted">페이지가 `smartcms_require_page_view()`를 호출하면 여기에 자동 등록됩니다.</p>
-    <div class="smartcms-table-wrap">
-      <table class="smartcms-table">
+    <div class="table-responsive smartcms-table-wrap">
+      <table class="table table-hover align-middle smartcms-table">
         <thead>
           <tr>
             <th>페이지</th>
@@ -98,17 +98,17 @@ smartcms_render_head([
                 <form class="smartcms-inline-form" method="post">
                   <?= smartcms_csrf_input() ?>
                   <input type="hidden" name="id" value="<?= smartcms_h($page['id']) ?>">
-                  <select class="smartcms-select" name="page_view_level">
+                  <select class="form-select form-select-sm smartcms-select" name="page_view_level">
                     <?php for ($level = 0; $level <= 10; $level++): ?>
                       <option value="<?= $level ?>" <?= $level === (int)$page['page_view_level'] ? 'selected' : '' ?>>보기 <?= $level ?></option>
                     <?php endfor; ?>
                   </select>
-                  <select class="smartcms-select" name="page_write_level">
+                  <select class="form-select form-select-sm smartcms-select" name="page_write_level">
                     <?php for ($level = 0; $level <= 10; $level++): ?>
                       <option value="<?= $level ?>" <?= $level === (int)$page['page_write_level'] ? 'selected' : '' ?>>쓰기 <?= $level ?></option>
                     <?php endfor; ?>
                   </select>
-                  <select class="smartcms-select" name="page_manage_level">
+                  <select class="form-select form-select-sm smartcms-select" name="page_manage_level">
                     <?php for ($level = 0; $level <= 10; $level++): ?>
                       <option value="<?= $level ?>" <?= $level === (int)$page['page_manage_level'] ? 'selected' : '' ?>>관리 <?= $level ?></option>
                     <?php endfor; ?>
@@ -117,7 +117,7 @@ smartcms_render_head([
                     <input type="checkbox" name="allow_guest" value="1" <?= (int)$page['allow_guest'] === 1 ? 'checked' : '' ?>>
                     게스트
                   </label>
-                  <select class="smartcms-select" name="status">
+                  <select class="form-select form-select-sm smartcms-select" name="status">
                     <?php foreach (['active', 'disabled'] as $status): ?>
                       <option value="<?= smartcms_h($status) ?>" <?= $status === $page['status'] ? 'selected' : '' ?>><?= smartcms_h($status) ?></option>
                     <?php endforeach; ?>

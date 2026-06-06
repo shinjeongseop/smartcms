@@ -36,7 +36,7 @@ smartcms_render_head([
     'body_class' => 'smartcms-auth-page',
 ]);
 ?>
-<main class="smartcms-panel smartcms-auth-panel">
+<main class="card smartcms-panel smartcms-auth-panel">
   <h1 class="smartcms-title">관리자 로그인</h1>
   <p class="smartcms-text-muted">level 8 이상의 관리자 계정으로 접근할 수 있습니다.</p>
 
@@ -48,11 +48,11 @@ smartcms_render_head([
     <?= smartcms_csrf_input() ?>
     <div class="smartcms-field">
       <label for="email">이메일</label>
-      <input class="smartcms-input" id="email" name="email" type="email" value="<?= smartcms_h($email) ?>" required>
+      <input class="form-control smartcms-input" id="email" name="email" type="email" value="<?= smartcms_h($email) ?>" required>
     </div>
     <div class="smartcms-field">
       <label for="password">비밀번호</label>
-      <input class="smartcms-input" id="password" name="password" type="password" required>
+      <input class="form-control smartcms-input" id="password" name="password" type="password" required>
     </div>
     <?= smartcms_button('관리자 로그인', 'submit') ?>
   </form>

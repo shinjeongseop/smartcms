@@ -6,7 +6,7 @@
 <div class="sc-card-grid">
   <?php foreach ($boards as $board): ?>
     <?php if ((string)$board['status'] === 'hidden') continue; ?>
-    <a class="sc-card-link"
+    <a class="card sc-card-link"
        href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
       <span class="sc-eyebrow"><?= smartcms_h($board['board_key']) ?></span>
       <strong><?= smartcms_h($board['board_name']) ?></strong>

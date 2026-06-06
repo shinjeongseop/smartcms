@@ -42,12 +42,12 @@ smartcms_render_head(['title' => '로그인']);
       <?= smartcms_csrf_input() ?>
       <div class="sc-field">
         <label for="email">이메일</label>
-        <input class="sc-input" id="email" name="email" type="email"
+        <input class="form-control sc-input" id="email" name="email" type="email"
                value="<?= smartcms_h($email) ?>" autocomplete="email" required>
       </div>
       <div class="sc-field">
         <label for="password">비밀번호</label>
-        <input class="sc-input" id="password" name="password" type="password"
+        <input class="form-control sc-input" id="password" name="password" type="password"
                autocomplete="current-password" required>
       </div>
       <div class="d-grid mt-2">

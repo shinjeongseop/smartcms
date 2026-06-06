@@ -148,7 +148,7 @@ echo smartcms_site_header('home');
     <div class="sc-home-main">
 
       <!-- 전체 최신글 -->
-      <section class="sc-widget">
+      <section class="card sc-widget">
         <div class="sc-widget-head">
           <div>
             <p class="sc-eyebrow">Latest</p>
@@ -175,7 +175,7 @@ echo smartcms_site_header('home');
         <div class="sc-widget-grid">
           <?php foreach ($board_widgets as $widget): ?>
             <?php $wb = $widget['board']; ?>
-            <section class="sc-widget">
+            <section class="card sc-widget">
               <div class="sc-widget-head">
                 <div>
                   <p class="sc-eyebrow"><?= smartcms_h($wb['board_key']) ?></p>
@@ -205,7 +205,7 @@ echo smartcms_site_header('home');
     <aside class="sc-home-side">
 
       <!-- 멤버 카드 -->
-      <section class="sc-member-card">
+      <section class="card sc-member-card">
         <?php if ($user): ?>
           <p class="sc-eyebrow">Member</p>
           <h2><?= smartcms_h($user['name']) ?>님</h2>
@@ -226,7 +226,7 @@ echo smartcms_site_header('home');
       </section>
 
       <!-- 인기글 -->
-      <section class="sc-widget">
+      <section class="card sc-widget">
         <div class="sc-widget-head">
           <div><p class="sc-eyebrow">Popular</p><h2>인기글</h2></div>
         </div>
@@ -245,7 +245,7 @@ echo smartcms_site_header('home');
       </section>
 
       <!-- 게시판 바로가기 -->
-      <section class="sc-widget">
+      <section class="card sc-widget">
         <div class="sc-widget-head">
           <div><p class="sc-eyebrow">Boards</p><h2>바로가기</h2></div>
         </div>

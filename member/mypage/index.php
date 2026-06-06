@@ -14,7 +14,7 @@ smartcms_render_head([
 ]);
 ?>
 <?= smartcms_site_header('') ?>
-  <section class="smartcms-panel smartcms-auth-panel">
+  <section class="card smartcms-panel smartcms-auth-panel">
     <h1 class="smartcms-title">마이페이지</h1>
     <p class="smartcms-text-muted">현재 로그인한 회원 정보를 확인합니다.</p>
 

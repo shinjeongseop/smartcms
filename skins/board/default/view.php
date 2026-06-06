@@ -4,7 +4,7 @@
  */
 ?>
 <!-- 게시글 본문 -->
-<article class="sc-panel">
+<article class="card sc-panel">
   <div class="d-flex align-items-start justify-content-between gap-2 mb-3">
     <div>
       <?php if ((int)$post['is_notice'] === 1): ?>
@@ -61,7 +61,7 @@
 </article>
 
 <!-- 댓글 -->
-<section class="sc-panel mt-4">
+<section class="card sc-panel mt-4">
   <h2 class="sc-section-title">댓글 <span class="text-muted fw-normal"><?= count($comments) ?></span></h2>
 
   <?php if ($comments): ?>
@@ -96,7 +96,7 @@
         <?= smartcms_csrf_input() ?>
         <input type="hidden" name="action" value="comment_create">
         <div class="sc-field">
-          <textarea class="sc-textarea" id="content" name="content" rows="4" required
+          <textarea class="form-control sc-textarea" id="content" name="content" rows="4" required
                     placeholder="댓글을 입력하세요."></textarea>
         </div>
         <?= smartcms_button('댓글 등록', 'submit') ?>
