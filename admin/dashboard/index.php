@@ -80,68 +80,53 @@ echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
   </div>
 </div>
 
-<div class="row g-3">
-  <div class="col-12">
-    <div class="card border-0 shadow-sm">
-      <div class="card-body p-4">
-        <h2 class="h5 fw-bold mb-3">최근 게시글</h2>
-        <div class="list-group list-group-flush">
-          <?php foreach ($recent_posts as $post): ?>
-            <a class="list-group-item list-group-item-action d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2"
-               href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-              <div>
-                <div class="fw-semibold"><?= smartcms_h($post['title']) ?></div>
-                <small class="text-body-secondary"><?= smartcms_h($post['board_name']) ?> · <?= smartcms_h($post['author_name']) ?></small>
-              </div>
-              <small class="text-body-secondary"><?= smartcms_h($post['created_at']) ?></small>
-            </a>
-          <?php endforeach; ?>
-          <?php if (!$recent_posts): ?>
-            <div class="list-group-item text-body-secondary">최근 게시글이 없습니다.</div>
-          <?php endif; ?>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-12 col-xl-4">
-    <div class="card border-0 shadow-sm h-100">
-      <div class="card-body p-4">
-        <h2 class="h5 fw-bold mb-3">최근 로그인</h2>
-        <div class="list-group list-group-flush">
-          <?php foreach ($recent_logins as $login): ?>
-            <div class="list-group-item px-0">
-              <div class="fw-semibold"><?= smartcms_h($login['email']) ?></div>
-              <small class="text-body-secondary"><?= smartcms_h($login['result']) ?> · <?= smartcms_h($login['created_at']) ?></small>
+<?= smartcms_two_column_start() ?>
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <h2 class="h5 fw-bold mb-3">최근 게시글</h2>
+      <div class="list-group list-group-flush">
+        <?php foreach ($recent_posts as $post): ?>
+          <a class="list-group-item list-group-item-action d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2"
+             href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
+            <div>
+              <div class="fw-semibold"><?= smartcms_h($post['title']) ?></div>
+              <small class="text-body-secondary"><?= smartcms_h($post['board_name']) ?> · <?= smartcms_h($post['author_name']) ?></small>
             </div>
-          <?php endforeach; ?>
-          <?php if (!$recent_logins): ?>
-            <div class="list-group-item px-0 text-body-secondary">최근 로그인 기록이 없습니다.</div>
-          <?php endif; ?>
-        </div>
+            <small class="text-body-secondary"><?= smartcms_h($post['created_at']) ?></small>
+          </a>
+        <?php endforeach; ?>
+        <?php if (!$recent_posts): ?>
+          <div class="list-group-item text-body-secondary">최근 게시글이 없습니다.</div>
+        <?php endif; ?>
       </div>
     </div>
   </div>
-
-  <div class="col-12 col-xl-4">
-    <div class="card border-0 shadow-sm h-100">
-      <div class="card-body p-4">
-        <h2 class="h5 fw-bold mb-3">게시판 감사 로그</h2>
-        <div class="list-group list-group-flush">
-          <?php foreach ($recent_audits as $audit): ?>
-            <div class="list-group-item px-0">
-              <div class="fw-semibold"><?= smartcms_h($audit['action']) ?></div>
-              <small class="text-body-secondary"><?= smartcms_h($audit['message']) ?> · <?= smartcms_h($audit['created_at']) ?></small>
-            </div>
-          <?php endforeach; ?>
-          <?php if (!$recent_audits): ?>
-            <div class="list-group-item px-0 text-body-secondary">최근 감사 로그가 없습니다.</div>
-          <?php endif; ?>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<?= smartcms_two_column_middle() ?>
+  <?= smartcms_sidebar_card(
+    '최근 로그인',
+    '<div class="list-group list-group-flush">'
+    . implode('', array_map(static function (array $login): string {
+        return '<div class="list-group-item px-0">'
+            . '<div class="fw-semibold">' . smartcms_h($login['email']) . '</div>'
+            . '<small class="text-body-secondary">' . smartcms_h($login['result']) . ' · ' . smartcms_h($login['created_at']) . '</small>'
+            . '</div>';
+    }, $recent_logins))
+    . '</div>',
+    $recent_logins ? '' : '최근 로그인 기록이 없습니다.'
+  ) ?>
+  <?= smartcms_sidebar_card(
+    '게시판 감사 로그',
+    '<div class="list-group list-group-flush">'
+    . implode('', array_map(static function (array $audit): string {
+        return '<div class="list-group-item px-0">'
+            . '<div class="fw-semibold">' . smartcms_h($audit['action']) . '</div>'
+            . '<small class="text-body-secondary">' . smartcms_h($audit['message']) . ' · ' . smartcms_h($audit['created_at']) . '</small>'
+            . '</div>';
+    }, $recent_audits))
+    . '</div>',
+    $recent_audits ? '' : '최근 감사 로그가 없습니다.'
+  ) ?>
+<?= smartcms_two_column_end() ?>
 
 <?= smartcms_admin_footer() ?>
 </main>

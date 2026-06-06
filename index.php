@@ -177,133 +177,120 @@ echo smartcms_site_header('home');
       </div>
     </div>
 
-    <div class="row g-4">
-      <div class="col-12 col-xl-8">
-        <div class="card border-0 shadow-sm mb-4">
-          <div class="card-body p-4">
-            <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
-              <div>
-                <p class="text-uppercase small fw-semibold text-primary mb-1">Latest</p>
-                <h2 class="h5 fw-bold mb-0">전체 최신글</h2>
-              </div>
-              <a class="btn btn-outline-secondary btn-sm" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">더보기</a>
+    <?= smartcms_two_column_start() ?>
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+          <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+            <div>
+              <p class="text-uppercase small fw-semibold text-primary mb-1">Latest</p>
+              <h2 class="h5 fw-bold mb-0">전체 최신글</h2>
             </div>
-            <div class="list-group list-group-flush">
-              <?php foreach ($recent_posts as $post): ?>
-                <a class="list-group-item list-group-item-action d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2"
-                   href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-                  <div class="d-flex flex-wrap align-items-center gap-2">
-                    <span class="badge text-bg-primary rounded-pill"><?= smartcms_h($post['board_name']) ?></span>
-                    <strong><?= smartcms_h($post['title']) ?></strong>
-                  </div>
-                  <small class="text-body-secondary"><?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?></small>
-                </a>
-              <?php endforeach; ?>
-              <?php if (!$recent_posts): ?>
-                <div class="list-group-item text-body-secondary">아직 게시글이 없습니다. 첫 글을 남겨보세요.</div>
-              <?php endif; ?>
-            </div>
+            <a class="btn btn-outline-secondary btn-sm" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">더보기</a>
           </div>
-        </div>
-
-        <?php if ($board_widgets): ?>
-          <div class="row g-3">
-            <?php foreach ($board_widgets as $widget): ?>
-              <?php $wb = $widget['board']; ?>
-              <div class="col-12 col-lg-6">
-                <div class="card border-0 shadow-sm h-100">
-                  <div class="card-body p-4">
-                    <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
-                      <div>
-                        <p class="text-uppercase small fw-semibold text-primary mb-1"><?= smartcms_h($wb['board_key']) ?></p>
-                        <h3 class="h5 fw-bold mb-1"><?= smartcms_h($wb['board_name']) ?></h3>
-                        <p class="text-body-secondary mb-0"><?= smartcms_h($widget['summary']) ?></p>
-                      </div>
-                      <a class="btn btn-outline-secondary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$wb['board_key'])) ?>">더보기</a>
-                    </div>
-                    <div class="list-group list-group-flush">
-                      <?php foreach ($widget['posts'] as $post): ?>
-                        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2 px-0"
-                           href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-                          <span class="text-truncate"><?= smartcms_h($post['title']) ?></span>
-                          <small class="text-body-secondary flex-shrink-0"><?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?></small>
-                        </a>
-                      <?php endforeach; ?>
-                      <?php if (!$widget['posts']): ?>
-                        <div class="text-body-secondary">등록된 글이 없습니다.</div>
-                      <?php endif; ?>
-                    </div>
-                  </div>
+          <div class="list-group list-group-flush">
+            <?php foreach ($recent_posts as $post): ?>
+              <a class="list-group-item list-group-item-action d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2"
+                 href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                  <span class="badge text-bg-primary rounded-pill"><?= smartcms_h($post['board_name']) ?></span>
+                  <strong><?= smartcms_h($post['title']) ?></strong>
                 </div>
-              </div>
+                <small class="text-body-secondary"><?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?></small>
+              </a>
             <?php endforeach; ?>
-          </div>
-        <?php endif; ?>
-      </div>
-
-      <div class="col-12 col-xl-4">
-        <div class="card border-0 shadow-sm mb-4">
-          <div class="card-body p-4">
-            <?php if ($user): ?>
-              <p class="text-uppercase small fw-semibold text-primary mb-2">Member</p>
-              <h2 class="h5 fw-bold mb-2"><?= smartcms_h($user['name']) ?>님</h2>
-              <p class="text-body-secondary mb-3">level <?= smartcms_h($user['level']) ?> 권한으로 이용 중</p>
-              <div class="d-flex flex-wrap gap-2">
-                <a class="btn btn-primary btn-sm rounded-pill px-3" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지</a>
-                <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
-              </div>
-            <?php else: ?>
-              <p class="text-uppercase small fw-semibold text-primary mb-2">Welcome</p>
-              <h2 class="h5 fw-bold mb-2">로그인하고 참여하세요</h2>
-              <p class="text-body-secondary mb-3">회원가입 후 글쓰기, 댓글, 마이페이지를 이용할 수 있습니다.</p>
-              <div class="d-flex flex-wrap gap-2">
-                <a class="btn btn-primary btn-sm rounded-pill px-3" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인</a>
-                <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>">회원가입</a>
-              </div>
+            <?php if (!$recent_posts): ?>
+              <div class="list-group-item text-body-secondary">아직 게시글이 없습니다. 첫 글을 남겨보세요.</div>
             <?php endif; ?>
           </div>
         </div>
-
-        <div class="card border-0 shadow-sm mb-4">
-          <div class="card-body p-4">
-            <p class="text-uppercase small fw-semibold text-primary mb-2">Popular</p>
-            <h2 class="h5 fw-bold mb-3">인기글</h2>
-            <div class="list-group list-group-flush">
-              <?php foreach ($popular_posts as $idx => $post): ?>
-                <a class="list-group-item list-group-item-action px-0 d-flex justify-content-between align-items-start gap-2"
-                   href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-                  <span class="d-flex align-items-center gap-2 text-truncate">
-                    <span class="badge text-bg-light border text-body-secondary"><?= $idx + 1 ?></span>
-                    <strong class="text-truncate"><?= smartcms_h($post['title']) ?></strong>
-                  </span>
-                  <small class="text-body-secondary flex-shrink-0">조회 <?= number_format((int)$post['view_count']) ?></small>
-                </a>
-              <?php endforeach; ?>
-              <?php if (!$popular_posts): ?>
-                <div class="text-body-secondary">인기글 집계 전입니다.</div>
-              <?php endif; ?>
-            </div>
-          </div>
-        </div>
-
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4">
-            <p class="text-uppercase small fw-semibold text-primary mb-2">Boards</p>
-            <h2 class="h5 fw-bold mb-3">바로가기</h2>
-            <div class="list-group list-group-flush">
-              <?php foreach ($boards as $board): ?>
-                <?php if ((string)$board['status'] === 'hidden') continue; ?>
-                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2 px-0"
-                   href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
-                  <strong><?= smartcms_h($board['board_name']) ?></strong>
-                  <small class="text-body-secondary"><?= (int)($board_counts[(string)$board['board_key']] ?? 0) ?> posts</small>
-                </a>
-              <?php endforeach; ?>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
+
+      <?php if ($board_widgets): ?>
+        <div class="row g-3">
+          <?php foreach ($board_widgets as $widget): ?>
+            <?php $wb = $widget['board']; ?>
+            <div class="col-12 col-lg-6">
+              <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                  <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                    <div>
+                      <p class="text-uppercase small fw-semibold text-primary mb-1"><?= smartcms_h($wb['board_key']) ?></p>
+                      <h3 class="h5 fw-bold mb-1"><?= smartcms_h($wb['board_name']) ?></h3>
+                      <p class="text-body-secondary mb-0"><?= smartcms_h($widget['summary']) ?></p>
+                    </div>
+                    <a class="btn btn-outline-secondary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$wb['board_key'])) ?>">더보기</a>
+                  </div>
+                  <div class="list-group list-group-flush">
+                    <?php foreach ($widget['posts'] as $post): ?>
+                      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2 px-0"
+                         href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
+                        <span class="text-truncate"><?= smartcms_h($post['title']) ?></span>
+                        <small class="text-body-secondary flex-shrink-0"><?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?></small>
+                      </a>
+                    <?php endforeach; ?>
+                    <?php if (!$widget['posts']): ?>
+                      <div class="text-body-secondary">등록된 글이 없습니다.</div>
+                    <?php endif; ?>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+    <?= smartcms_two_column_middle() ?>
+      <?= smartcms_sidebar_card(
+        $user ? 'Member' : 'Welcome',
+        $user
+          ? '<h2 class="h5 fw-bold mb-2">' . smartcms_h($user['name']) . '님</h2>'
+            . '<p class="text-body-secondary mb-3">level ' . smartcms_h($user['level']) . ' 권한으로 이용 중</p>'
+            . '<div class="d-flex flex-wrap gap-2">'
+            . '<a class="btn btn-primary btn-sm rounded-pill px-3" href="' . smartcms_h(smartcms_base_url('/member/mypage/')) . '">마이페이지</a>'
+            . '<a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '">로그아웃</a>'
+            . '</div>'
+          : '<h2 class="h5 fw-bold mb-2">로그인하고 참여하세요</h2>'
+            . '<p class="text-body-secondary mb-3">회원가입 후 글쓰기, 댓글, 마이페이지를 이용할 수 있습니다.</p>'
+            . '<div class="d-flex flex-wrap gap-2">'
+            . '<a class="btn btn-primary btn-sm rounded-pill px-3" href="' . smartcms_h(smartcms_base_url('/member/login/')) . '">로그인</a>'
+            . '<a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="' . smartcms_h(smartcms_base_url('/member/register/')) . '">회원가입</a>'
+            . '</div>'
+      ) ?>
+      <?= smartcms_sidebar_card(
+        'Boards',
+        '<div class="list-group list-group-flush">'
+        . implode('', array_map(static function (array $board) use ($board_counts): string {
+            if ((string)$board['status'] === 'hidden') {
+                return '';
+            }
+            return '<a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2 px-0" href="'
+                . smartcms_h(smartcms_board_url((string)$board['board_key']))
+                . '"><strong>'
+                . smartcms_h($board['board_name'])
+                . '</strong><small class="text-body-secondary">'
+                . (int)($board_counts[(string)$board['board_key']] ?? 0)
+                . ' posts</small></a>';
+        }, $boards))
+        . '</div>',
+        '게시판 바로가기와 인기글을 한눈에 확인하세요.'
+      ) ?>
+      <?= smartcms_sidebar_card(
+        'Popular',
+        '<div class="list-group list-group-flush">'
+        . implode('', array_map(static function (array $post, int $idx): string {
+            return '<a class="list-group-item list-group-item-action px-0 d-flex justify-content-between align-items-start gap-2" href="'
+                . smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id']))
+                . '"><span class="d-flex align-items-center gap-2 text-truncate"><span class="badge text-bg-light border text-body-secondary">'
+                . ($idx + 1)
+                . '</span><strong class="text-truncate">'
+                . smartcms_h($post['title'])
+                . '</strong></span><small class="text-body-secondary flex-shrink-0">조회 '
+                . number_format((int)$post['view_count'])
+                . '</small></a>';
+        }, $popular_posts, array_keys($popular_posts)))
+        . '</div>',
+        $popular_posts ? '' : '인기글 집계 전입니다.'
+      ) ?>
+    <?= smartcms_two_column_end() ?>
   <?php endif; ?>
 </div>
 
