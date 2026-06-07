@@ -56,7 +56,7 @@ echo smartcms_site_header('home');
 ?>
 
 <?php if (!$installed): ?>
-  <section class="bg-body-tertiary border-bottom">
+  <section class="smartcms-home-hero border-bottom">
     <div class="container-fluid container-xxl pt-0 pb-5">
       <div class="card border-0 shadow-sm">
         <div class="card-body p-4 p-lg-5">
@@ -83,7 +83,7 @@ echo smartcms_site_header('home');
     </div>
   </section>
 <?php else: ?>
-  <section class="bg-body-tertiary border-bottom">
+  <section class="smartcms-home-hero border-bottom">
     <div class="container-fluid container-xxl pt-0 pb-5">
       <div class="card border-0 shadow-sm">
         <div class="card-body p-4 p-lg-5">

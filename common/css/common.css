@@ -228,6 +228,33 @@ samp {
   color: var(--sc-primary);
 }
 
+.smartcms-home-hero {
+  background:
+    radial-gradient(circle at top left, rgba(232, 71, 10, 0.18), transparent 34%),
+    radial-gradient(circle at 85% 20%, rgba(232, 71, 10, 0.08), transparent 30%),
+    linear-gradient(180deg, rgba(232, 71, 10, 0.08) 0%, rgba(247, 247, 244, 0.96) 42%, rgba(247, 247, 244, 1) 100%);
+}
+
+.smartcms-home-hero .card {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(232, 71, 10, 0.14);
+}
+
+.smartcms-home-hero .text-primary,
+.smartcms-home-hero .btn-primary {
+  color: var(--sc-primary);
+}
+
+.smartcms-home-hero .btn-primary {
+  background-color: var(--sc-primary);
+  border-color: var(--sc-primary);
+  color: #fff;
+}
+
+.smartcms-home-hero .btn-outline-secondary {
+  background: rgba(255, 255, 255, 0.92);
+}
+
 @media (min-width: 992px) {
   .navbar .navbar-toggler {
     display: none !important;
