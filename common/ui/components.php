@@ -100,7 +100,7 @@ function smartcms_page_container_end(): string
  */
 function smartcms_two_column_start(array $options = []): string
 {
-    $mainClass = trim((string)($options['main_class'] ?? 'col-12 col-lg-8'));
+    $mainClass = trim((string)($options['main_class'] ?? 'col-12 col-md-8'));
     return '<div class="row g-4 align-items-start">'
          . '<div class="' . smartcms_h($mainClass) . '">';
 }
@@ -110,7 +110,7 @@ function smartcms_two_column_start(array $options = []): string
  */
 function smartcms_two_column_middle(array $options = []): string
 {
-    $sidebarClass = trim((string)($options['sidebar_class'] ?? 'col-12 col-lg-4'));
+    $sidebarClass = trim((string)($options['sidebar_class'] ?? 'col-12 col-md-4'));
     return '</div><aside class="' . smartcms_h($sidebarClass) . '">';
 }
 
