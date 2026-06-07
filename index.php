@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/common/config.php';
-require_once __DIR__ . '/common/ui/layout.php';
+require_once __DIR__ . '/head.php';
 require_once __DIR__ . '/common/ui/components.php';
-require_once __DIR__ . '/common/ui/navigation.php';
+require_once __DIR__ . '/foot.php';
 
 function smartcms_home_date(?string $value): string
 {
@@ -57,24 +57,38 @@ echo smartcms_site_header('home');
 
 <?php if (!$installed): ?>
   <section class="smartcms-home-hero border-bottom">
-    <div class="container-fluid container-xxl pt-0 pb-5">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body p-4 p-lg-5">
-          <p class="text-uppercase small fw-semibold text-primary mb-2">Setup Required</p>
-          <div class="row g-4 align-items-center">
-            <div class="col-12 col-lg-8">
+    <div class="container-fluid container-xxl py-4 py-lg-5">
+      <div class="row g-4 align-items-stretch">
+        <div class="col-12 col-lg-8">
+          <div class="card border-0 h-100">
+            <div class="card-body p-4 p-lg-5">
+              <p class="text-uppercase small fw-semibold text-success mb-2">Setup Required</p>
               <h1 class="display-5 fw-bold mb-3">설치 마법사로 smartcms를 시작하세요</h1>
               <p class="lead text-body-secondary mb-4">DB 설정, 테이블 생성, 최초 관리자 계정 생성을 순서대로 완료하면 커뮤니티 기능을 사용할 수 있습니다.</p>
+              <div class="smartcms-home-search mb-4">
+                <form action="<?= smartcms_h(smartcms_base_url('/install/')) ?>" method="get">
+                  <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-magic"></i></span>
+                    <input class="form-control border-start-0" type="text" value="설치 전 준비 단계" disabled>
+                    <button class="btn btn-primary" type="submit">시작</button>
+                  </div>
+                </form>
+              </div>
               <div class="d-flex flex-wrap gap-2">
                 <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>"><i class="bi bi-magic me-1"></i>설치 마법사 시작</a>
                 <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/check.php')) ?>"><i class="bi bi-server me-1"></i>서버 환경 확인</a>
               </div>
             </div>
-            <div class="col-12 col-lg-4">
-              <div class="list-group">
-                <div class="list-group-item d-flex justify-content-between align-items-center"><span>STEP 01</span><strong>DB 연결</strong></div>
-                <div class="list-group-item d-flex justify-content-between align-items-center"><span>STEP 02</span><strong>스키마 생성</strong></div>
-                <div class="list-group-item d-flex justify-content-between align-items-center"><span>STEP 03</span><strong>관리자 생성</strong></div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="card border-0 h-100">
+            <div class="card-body p-4">
+              <p class="text-uppercase small fw-semibold text-success mb-2">Install Flow</p>
+              <div class="list-group list-group-flush">
+                <div class="list-group-item d-flex justify-content-between align-items-center px-0"><span>STEP 01</span><strong>DB 연결</strong></div>
+                <div class="list-group-item d-flex justify-content-between align-items-center px-0"><span>STEP 02</span><strong>스키마 생성</strong></div>
+                <div class="list-group-item d-flex justify-content-between align-items-center px-0"><span>STEP 03</span><strong>관리자 생성</strong></div>
               </div>
             </div>
           </div>
@@ -84,19 +98,41 @@ echo smartcms_site_header('home');
   </section>
 <?php else: ?>
   <section class="smartcms-home-hero border-bottom">
-    <div class="container-fluid container-xxl pt-0 pb-5">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body p-4 p-lg-5">
-          <p class="text-uppercase small fw-semibold text-primary mb-2">Smart Community OS</p>
-          <div class="row g-4 align-items-center">
-            <div class="col-12 col-lg-8">
+    <div class="container-fluid container-xxl py-4 py-lg-5">
+      <div class="row g-4 align-items-stretch">
+        <div class="col-12 col-lg-8">
+          <div class="card border-0 h-100">
+            <div class="card-body p-4 p-lg-5">
+              <p class="text-uppercase small fw-semibold text-success mb-2">Smart Community OS</p>
               <h1 class="display-5 fw-bold mb-3">가볍게 설치하고, 바로 운영하는 커뮤니티 CMS</h1>
               <p class="lead text-body-secondary mb-4">공지, 자유게시판, Q&A와 회원 기능을 하나의 포털 화면으로 정리했습니다.</p>
+              <div class="smartcms-home-search mb-4">
+                <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get">
+                  <div class="input-group input-group-lg">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+                    <input class="form-control border-start-0" type="search" name="q" placeholder="게시판 이름이나 글 제목을 검색하세요">
+                    <button class="btn btn-primary" type="submit">검색</button>
+                  </div>
+                </form>
+              </div>
               <div class="d-flex flex-wrap gap-2">
                 <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>"><i class="bi bi-list-ul me-1"></i>전체 게시판</a>
                 <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url($user ? '/board/write/?board=free' : '/member/login/')) ?>">
                   <i class="bi <?= $user ? 'bi-pencil-square' : 'bi-box-arrow-in-right' ?> me-1"></i><?= $user ? '글쓰기' : '로그인' ?>
                 </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="card border-0 h-100">
+            <div class="card-body p-4">
+              <p class="text-uppercase small fw-semibold text-success mb-2">Quick Links</p>
+              <div class="vstack gap-2">
+                <a class="btn btn-outline-secondary rounded-pill text-start" href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>">공지사항</a>
+                <a class="btn btn-outline-secondary rounded-pill text-start" href="<?= smartcms_h(smartcms_base_url('/board/?board=free')) ?>">자유게시판</a>
+                <a class="btn btn-outline-secondary rounded-pill text-start" href="<?= smartcms_h(smartcms_base_url('/board/?board=qna')) ?>">Q&A</a>
+                <a class="btn btn-outline-secondary rounded-pill text-start" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>">회원가입</a>
               </div>
             </div>
           </div>

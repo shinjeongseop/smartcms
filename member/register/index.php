@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../common/auth.php';
-require_once __DIR__ . '/../../common/ui/layout.php';
+require_once __DIR__ . '/../../head.php';
 require_once __DIR__ . '/../../common/ui/components.php';
-require_once __DIR__ . '/../../common/ui/navigation.php';
+require_once __DIR__ . '/../../foot.php';
 
 smartcms_require_page_view('member_register', '/member/register/', '회원가입', 0);
 
@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $default_level = smartcms_setting_int('default_member_level', (int)smartcms_config_value('default_member_level', 2));
 
 smartcms_render_head(['title' => '회원가입']);
+echo smartcms_auth_header();
 ?>
 <div class="card border-0 shadow-sm">
   <div class="card-body p-4 p-md-5">
@@ -75,4 +76,5 @@ smartcms_render_head(['title' => '회원가입']);
     </p>
   </div>
 </div>
+<?= smartcms_auth_footer() ?>
 <?php smartcms_render_foot(); ?>

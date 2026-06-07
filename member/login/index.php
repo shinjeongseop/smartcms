@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../common/auth.php';
-require_once __DIR__ . '/../../common/ui/layout.php';
+require_once __DIR__ . '/../../head.php';
 require_once __DIR__ . '/../../common/ui/components.php';
-require_once __DIR__ . '/../../common/ui/navigation.php';
+require_once __DIR__ . '/../../foot.php';
 
 $message      = '';
 $message_type = 'info';
@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 smartcms_render_head(['title' => '로그인']);
+echo smartcms_auth_header();
 ?>
 <div class="card border-0 shadow-sm">
   <div class="card-body p-4 p-md-5">
@@ -61,4 +62,5 @@ smartcms_render_head(['title' => '로그인']);
     </p>
   </div>
 </div>
+<?= smartcms_auth_footer() ?>
 <?php smartcms_render_foot(); ?>

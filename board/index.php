@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common/board.php';
-require_once __DIR__ . '/../common/ui/layout.php';
+require_once __DIR__ . '/../head.php';
 require_once __DIR__ . '/../common/ui/components.php';
-require_once __DIR__ . '/../common/ui/navigation.php';
+require_once __DIR__ . '/../foot.php';
 
 $board_key    = smartcms_board_key((string)($_GET['board'] ?? ''));
 $board        = $board_key !== '' ? smartcms_board_find($board_key) : null;
@@ -28,13 +28,21 @@ try {
     } else {
         $boards = smartcms_board_list();
         $board_counts = smartcms_board_post_counts();
+        if ($keyword !== '') {
+            $needle = function_exists('mb_strtolower') ? mb_strtolower($keyword) : strtolower($keyword);
+            $boards = array_values(array_filter($boards, static function (array $item) use ($needle): bool {
+                $haystack = trim((string)($item['board_key'] ?? '') . ' ' . (string)($item['board_name'] ?? '') . ' ' . (string)($item['description'] ?? ''));
+                $haystack = function_exists('mb_strtolower') ? mb_strtolower($haystack) : strtolower($haystack);
+                return $needle === '' || str_contains($haystack, $needle);
+            }));
+        }
     }
 } catch (Throwable $e) {
     $message      = '게시판을 불러오지 못했습니다: ' . $e->getMessage();
     $message_type = 'error';
 }
 
-$page_title = $board ? (string)$board['board_name'] : '게시판';
+$page_title = $board ? (string)$board['board_name'] : ($keyword !== '' ? '게시판 검색' : '게시판');
 
 smartcms_render_head(['title' => $page_title]);
 echo smartcms_site_header($board ? (string)$board['board_key'] : '');

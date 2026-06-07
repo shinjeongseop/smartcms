@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../common/board.php';
-require_once __DIR__ . '/../../common/ui/layout.php';
+require_once __DIR__ . '/../../head.php';
 require_once __DIR__ . '/../../common/ui/components.php';
-require_once __DIR__ . '/../../common/ui/navigation.php';
+require_once __DIR__ . '/../../foot.php';
 
 $board_key = smartcms_board_key((string)($_GET['board'] ?? ''));
 $post_id = (int)($_GET['id'] ?? 0);
