@@ -40,7 +40,7 @@ smartcms_render_head(['title' => $page_title]);
 echo smartcms_site_header($board ? (string)$board['board_key'] : '');
 ?>
 
-<div class="container-fluid container-xxl py-4">
+<?= smartcms_page_container_start() ?>
   <header class="card border-0 shadow-sm mb-4">
     <div class="card-body p-4 p-lg-5">
       <p class="text-uppercase small fw-semibold text-primary mb-2">Board</p>
@@ -109,6 +109,6 @@ echo smartcms_site_header($board ? (string)$board['board_key'] : '');
     <?= smartcms_two_column_end() ?>
   <?php endif; ?>
 
-  </div>
+  <?= smartcms_page_container_end() ?>
 <?= smartcms_site_footer() ?>
 <?php smartcms_render_foot(); ?>

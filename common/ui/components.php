@@ -80,6 +80,22 @@ function smartcms_section_head(string $title, string $action_html = ''): string
 }
 
 /**
+ * 공통 본문 컨테이너 시작
+ */
+function smartcms_page_container_start(string $class = 'container-fluid container-xxl py-4'): string
+{
+    return '<div class="' . smartcms_h(trim($class)) . '">';
+}
+
+/**
+ * 공통 본문 컨테이너 끝
+ */
+function smartcms_page_container_end(): string
+{
+    return '</div>';
+}
+
+/**
  * 본문 2열 레이아웃 시작
  */
 function smartcms_two_column_start(array $options = []): string

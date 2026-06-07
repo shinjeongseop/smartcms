@@ -78,7 +78,7 @@ smartcms_render_head([
 ?>
 <?= smartcms_site_header((string)$board['board_key']) ?>
 
-<div class="container-fluid container-xxl py-4">
+<?= smartcms_page_container_start() ?>
   <header class="card border-0 shadow-sm mb-4">
     <div class="card-body p-4 p-lg-5">
       <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
@@ -222,6 +222,6 @@ smartcms_render_head([
     </div>
   </section>
 
-  </div>
+  <?= smartcms_page_container_end() ?>
 <?= smartcms_site_footer() ?>
 <?php smartcms_render_foot(); ?>

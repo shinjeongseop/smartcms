@@ -134,7 +134,7 @@ echo smartcms_site_header('home');
   </section>
 <?php endif; ?>
 
-<div class="container-fluid container-xxl py-4 py-lg-5">
+<?= smartcms_page_container_start('container-fluid container-xxl py-4 py-lg-5') ?>
   <?php if (!$installed): ?>
   <?php else: ?>
     <?php if ($message !== ''): ?>
@@ -298,7 +298,7 @@ echo smartcms_site_header('home');
       ) ?>
     <?= smartcms_two_column_end() ?>
   <?php endif; ?>
-</div>
+<?= smartcms_page_container_end() ?>
 
 <?= smartcms_site_footer() ?>
 <?php smartcms_render_foot(); ?>
