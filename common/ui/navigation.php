@@ -25,7 +25,7 @@ function smartcms_site_nav(string $active = ''): string
     $base   = static fn(string $href): string => smartcms_h(smartcms_base_url($href));
     $h      = 'smartcms_h';
 
-    $html  = '<nav class="navbar navbar-expand-lg bg-body border-bottom sticky-top shadow-sm w-100" aria-label="사이트 메뉴" data-bs-theme="light">';
+    $html  = '<nav class="navbar navbar-expand-md bg-body border-bottom sticky-top shadow-sm w-100" aria-label="사이트 메뉴" data-bs-theme="light">';
     $html .= '<div class="container-fluid px-4 px-lg-5 py-2">';
 
     // 브랜드
@@ -41,7 +41,7 @@ function smartcms_site_nav(string $active = ''): string
 
     // 내비 링크
     $html .= '<div class="collapse navbar-collapse" id="scSiteNav">';
-    $html .= '<ul class="navbar-nav ms-lg-auto align-items-lg-center gap-lg-1">';
+    $html .= '<ul class="navbar-nav ms-md-auto align-items-md-center gap-md-1">';
 
     foreach ($items as $key => $item) {
         $cls  = 'nav-link px-3' . ($key === $active ? ' active fw-semibold text-primary' : '');
@@ -57,7 +57,7 @@ function smartcms_site_nav(string $active = ''): string
     $ctaIcon  = $installed ? 'bi-speedometer2' : 'bi-magic';
     $ctaLabel = $installed ? '관리자'      : '설치하기';
 
-    $html .= '<li class="nav-item ms-lg-2">'
+    $html .= '<li class="nav-item ms-md-2">'
            . '<a class="btn btn-primary btn-sm rounded-pill px-3" href="' . $base($ctaHref) . '">'
            . '<i class="bi ' . $ctaIcon . ' me-1"></i>' . $ctaLabel
            . '</a></li>';

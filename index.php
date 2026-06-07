@@ -57,7 +57,7 @@ echo smartcms_site_header('home');
 
 <?php if (!$installed): ?>
   <section class="bg-body-tertiary border-bottom">
-    <div class="container-fluid container-xxl py-5">
+    <div class="container-fluid container-xxl pt-0 pb-5">
       <div class="card border-0 shadow-sm">
         <div class="card-body p-4 p-lg-5">
           <p class="text-uppercase small fw-semibold text-primary mb-2">Setup Required</p>
@@ -84,7 +84,7 @@ echo smartcms_site_header('home');
   </section>
 <?php else: ?>
   <section class="bg-body-tertiary border-bottom">
-    <div class="container-fluid container-xxl py-5">
+    <div class="container-fluid container-xxl pt-0 pb-5">
       <div class="card border-0 shadow-sm">
         <div class="card-body p-4 p-lg-5">
           <p class="text-uppercase small fw-semibold text-primary mb-2">Smart Community OS</p>
@@ -97,34 +97,6 @@ echo smartcms_site_header('home');
                 <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url($user ? '/board/write/?board=free' : '/member/login/')) ?>">
                   <i class="bi <?= $user ? 'bi-pencil-square' : 'bi-box-arrow-in-right' ?> me-1"></i><?= $user ? '글쓰기' : '로그인' ?>
                 </a>
-              </div>
-            </div>
-            <div class="col-12 col-lg-4">
-              <div class="row g-3">
-                <div class="col-12">
-                  <div class="card bg-body-tertiary border-0">
-                    <div class="card-body">
-                      <div class="text-body-secondary small">Boards</div>
-                      <div class="h2 fw-bold mb-0"><?= count($boards) ?></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="card bg-body-tertiary border-0">
-                    <div class="card-body">
-                      <div class="text-body-secondary small">Recent</div>
-                      <div class="h2 fw-bold mb-0"><?= count($recent_posts) ?></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="card bg-body-tertiary border-0">
-                    <div class="card-body">
-                      <div class="text-body-secondary small">Status</div>
-                      <div class="h2 fw-bold mb-0"><?= $user ? 'ON' : 'Guest' ?></div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
