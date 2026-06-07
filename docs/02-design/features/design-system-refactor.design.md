@@ -201,8 +201,8 @@ Member -> Login -> My Page -> Password Change / Logout
 
 | Component | Location | Responsibility |
 |-----------|----------|----------------|
-| `smartcms_render_head()` | `common/ui/layout.php` | Load Bootstrap, fonts, fixed asset CSS |
-| `smartcms_render_foot()` | `common/ui/layout.php` | Load Bootstrap bundle and page scripts |
+| `head.php` | 루트 | Load Bootstrap, fonts, fixed asset CSS, open `<body>` |
+| `foot.php` | 루트 | Load Bootstrap bundle, page scripts, close document |
 | `smartcms_site_header()` | `common/ui/navigation.php` | Public shell open + nav |
 | `smartcms_site_footer()` | `common/ui/navigation.php` | Public shell close + footer |
 | `smartcms_admin_page_header()` | `admin/common.php` | Admin shell open + sidebar + topbar |

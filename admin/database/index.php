@@ -67,12 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             try {
                 $dropped = smartcms_db_drop_managed_tables();
-                $lockPath = SMARTCMS_ROOT . '/install.lock';
-                if (is_file($lockPath)) {
-                    unlink($lockPath);
-                }
-
-                $message = 'DB 초기화를 완료했습니다. 삭제된 테이블 수: ' . $dropped . '개. 설치 잠금 파일도 해제했습니다.';
+                $message = 'DB 초기화를 완료했습니다. 삭제된 테이블 수: ' . $dropped . '개.';
                 $message_type = 'success';
             } catch (Throwable $e) {
                 $message = 'DB 초기화 중 오류가 발생했습니다: ' . $e->getMessage();
@@ -85,7 +80,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $tables = smartcms_db_managed_tables();
 $prefix = (string)smartcms_config_value('table_prefix', 'sc_');
 
-smartcms_render_head(['title' => 'DB 관리', 'body_class' => 'smartcms-admin-page']);
+$SMARTCMS_HEAD = ['title' => 'DB 관리', 'body_class' => 'smartcms-admin-page'];
+require SMARTCMS_ROOT . '/head.php';
 echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
 ?>
 
@@ -132,7 +128,7 @@ echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
     <div class="card border-0 shadow-sm border-danger">
       <div class="card-body p-4">
         <h2 class="h5 fw-bold mb-2 text-danger">DB 초기화</h2>
-        <p class="text-body-secondary mb-3">현재 prefix <strong><?= smartcms_h($prefix) ?></strong>로 시작하는 테이블 <?= count($tables) ?>개를 삭제하고 설치 잠금 파일을 해제합니다.</p>
+        <p class="text-body-secondary mb-3">현재 prefix <strong><?= smartcms_h($prefix) ?></strong>로 시작하는 테이블 <?= count($tables) ?>개를 삭제합니다.</p>
         <form class="row g-3" method="post">
           <?= smartcms_csrf_input() ?>
           <input type="hidden" name="action" value="reset">
@@ -142,7 +138,6 @@ echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
           </div>
           <div class="col-12 d-flex flex-wrap gap-2">
             <button class="btn btn-danger rounded-pill px-4" type="submit">DB 초기화 실행</button>
-            <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/install/')) ?>">설치 마법사로 이동</a>
           </div>
         </form>
       </div>
@@ -151,4 +146,7 @@ echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
 </div>
 
 <?= smartcms_admin_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

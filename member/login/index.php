@@ -26,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-smartcms_render_head(['title' => '로그인']);
+$SMARTCMS_HEAD = ['title' => '로그인'];
+require SMARTCMS_ROOT . '/head.php';
 echo smartcms_auth_header();
 ?>
 <div class="card border-0 shadow-sm">
@@ -63,4 +64,7 @@ echo smartcms_auth_header();
   </div>
 </div>
 <?= smartcms_auth_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

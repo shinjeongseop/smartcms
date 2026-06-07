@@ -8,11 +8,10 @@ require_once __DIR__ . '/../foot.php';
 
 $user = smartcms_current_user();
 
-smartcms_render_head([
+$SMARTCMS_HEAD = [
     'title' => '회원 센터',
     'body_class' => 'smartcms-board-page',
-]);
-?>
+]; require SMARTCMS_ROOT . '/head.php';?>
 <?= smartcms_site_header('') ?>
 <?= smartcms_page_container_start() ?>
   <header class="mb-4">
@@ -68,4 +67,7 @@ smartcms_render_head([
   </section>
 <?= smartcms_page_container_end() ?>
 <?= smartcms_site_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

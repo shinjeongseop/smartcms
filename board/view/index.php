@@ -71,11 +71,10 @@ $comments = smartcms_board_comments((int)$post['id']);
 $files = smartcms_board_files((int)$post['id']);
 $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_key'], 5);
 
-smartcms_render_head([
+$SMARTCMS_HEAD = [
     'title' => (string)$post['title'],
     'body_class' => 'smartcms-board-page',
-]);
-?>
+]; require SMARTCMS_ROOT . '/head.php';?>
 <?= smartcms_site_header((string)$board['board_key']) ?>
 
 <?= smartcms_page_container_start() ?>
@@ -224,4 +223,7 @@ smartcms_render_head([
 
   <?= smartcms_page_container_end() ?>
 <?= smartcms_site_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

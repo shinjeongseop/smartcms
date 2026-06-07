@@ -8,7 +8,8 @@ require_once __DIR__ . '/../../foot.php';
 
 $user = smartcms_require_login();
 
-smartcms_render_head(['title' => '마이페이지']);
+$SMARTCMS_HEAD = ['title' => '마이페이지'];
+require SMARTCMS_ROOT . '/head.php';
 echo smartcms_site_header('');
 ?>
 <?= smartcms_page_container_start() ?>
@@ -48,4 +49,7 @@ echo smartcms_site_header('');
   </div>
 <?= smartcms_page_container_end() ?>
 <?= smartcms_site_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

@@ -29,7 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $default_level = smartcms_setting_int('default_member_level', (int)smartcms_config_value('default_member_level', 2));
 
-smartcms_render_head(['title' => '회원가입']);
+$SMARTCMS_HEAD = ['title' => '회원가입'];
+require SMARTCMS_ROOT . '/head.php';
 echo smartcms_auth_header();
 ?>
 <div class="card border-0 shadow-sm">
@@ -77,4 +78,7 @@ echo smartcms_auth_header();
   </div>
 </div>
 <?= smartcms_auth_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

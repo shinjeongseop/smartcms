@@ -61,8 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_type = $result['ok'] ? 'success' : 'error';
 }
 
-smartcms_render_head(['title' => '글 수정', 'body_class' => 'smartcms-board-page']);
-$form_action = 'update';
+$SMARTCMS_HEAD = ['title' => '글 수정', 'body_class' => 'smartcms-board-page']; require SMARTCMS_ROOT . '/head.php';$form_action = 'update';
 $form_values = [
     'title' => (string)$post['title'],
     'content' => (string)$post['content'],
@@ -119,4 +118,7 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
 
   <?= smartcms_page_container_end() ?>
 <?= smartcms_site_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

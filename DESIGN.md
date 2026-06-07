@@ -195,7 +195,8 @@ Bootstrap `table table-hover` 기반.
 - CSS 변수 (`--sc-*`) 사용, 인라인 hex 금지
 - `sc-*` 컴포넌트 클래스는 Bootstrap 클래스와 병기 (예: `class="card sc-panel"`)
 - 디스플레이 heading weight 600~700, 본문 400
-- 새 페이지는 반드시 `head.php` / `foot.php`를 통해 `smartcms_render_head()` + `smartcms_render_foot()` 사용
+- 새 페이지는 반드시 `head.php` / `foot.php`를 공통 포함해서 사용
+- 상단 공통 레이아웃은 `head.php`, 하단 공통 레이아웃은 `foot.php`에서 관리한다
 
 ## Don't
 

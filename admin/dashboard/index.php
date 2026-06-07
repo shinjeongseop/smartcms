@@ -38,7 +38,8 @@ try {
     $message = '대시보드 데이터를 불러오지 못했습니다: ' . $e->getMessage();
 }
 
-smartcms_render_head(['title' => '관리자 대시보드']);
+$SMARTCMS_HEAD = ['title' => '관리자 대시보드'];
+require SMARTCMS_ROOT . '/head.php';
 echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
 ?>
 
@@ -130,4 +131,7 @@ echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
 <?= smartcms_two_column_end() ?>
 
 <?= smartcms_admin_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

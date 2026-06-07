@@ -4,9 +4,8 @@ Independent PHP CMS core for reusable member management, level permissions, admi
 
 ## Current Features
 
-- PHP install wizard
-- `config.local.php` generation
-- Initial level 10 admin creation
+- `config.local.php` 기반 환경 설정
+- 관리자/회원 로그인과 권한 관리
 - Member login, logout, registration, mypage, password change
 - Admin dashboard
 - 1-10 level permission model
@@ -24,7 +23,6 @@ Independent PHP CMS core for reusable member management, level permissions, admi
 ## Main Routes
 
 - `/` home
-- `/install/` install wizard
 - `/member/` member hub
 - `/member/login/` login
 - `/member/register/` registration
@@ -41,16 +39,12 @@ Independent PHP CMS core for reusable member management, level permissions, admi
 ## Setup
 
 1. Copy the project to a PHP hosting environment.
-2. Open `/install/`.
-3. Enter DB connection information.
-4. Create tables.
-5. Create the first admin account.
-6. Finish installation to create `install.lock`.
+2. Set up `config.local.php` for your database connection if needed.
+3. Prepare the database schema and the first admin account through your deployment process.
 
 ## Local Files Not Committed
 
 - `config.local.php`
-- `install.lock`
 - uploaded files under `uploads/`
 
 ## Security Notes

@@ -25,11 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-smartcms_render_head([
+$SMARTCMS_HEAD = [
     'title' => '비밀번호 변경',
     'body_class' => 'smartcms-board-page',
-]);
-?>
+]; require SMARTCMS_ROOT . '/head.php';?>
 <?= smartcms_site_header('') ?>
 <?= smartcms_page_container_start() ?>
   <div class="row justify-content-center">
@@ -67,4 +66,7 @@ smartcms_render_head([
   </div>
 <?= smartcms_page_container_end() ?>
 <?= smartcms_site_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

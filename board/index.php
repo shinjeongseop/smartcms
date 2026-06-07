@@ -44,7 +44,8 @@ try {
 
 $page_title = $board ? (string)$board['board_name'] : ($keyword !== '' ? '게시판 검색' : '게시판');
 
-smartcms_render_head(['title' => $page_title]);
+$SMARTCMS_HEAD = ['title' => $page_title];
+require SMARTCMS_ROOT . '/head.php';
 echo smartcms_site_header($board ? (string)$board['board_key'] : '');
 ?>
 
@@ -119,4 +120,7 @@ echo smartcms_site_header($board ? (string)$board['board_key'] : '');
 
   <?= smartcms_page_container_end() ?>
 <?= smartcms_site_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

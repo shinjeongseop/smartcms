@@ -83,7 +83,8 @@ try {
     $message_type = 'error';
 }
 
-smartcms_render_head(['title' => '게시판 관리', 'body_class' => 'smartcms-admin-page']);
+$SMARTCMS_HEAD = ['title' => '게시판 관리', 'body_class' => 'smartcms-admin-page'];
+require SMARTCMS_ROOT . '/head.php';
 echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
 ?>
 
@@ -211,4 +212,7 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
 </div>
 
 <?= smartcms_admin_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

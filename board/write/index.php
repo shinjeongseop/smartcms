@@ -46,8 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-smartcms_render_head(['title' => '글쓰기', 'body_class' => 'smartcms-board-page']);
-$form_action = 'create';
+$SMARTCMS_HEAD = ['title' => '글쓰기', 'body_class' => 'smartcms-board-page']; require SMARTCMS_ROOT . '/head.php';$form_action = 'create';
 $form_enctype = 'multipart/form-data';
 $form_values = ['title' => '', 'content' => '', 'is_notice' => false, 'is_secret' => false];
 $show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
@@ -99,4 +98,7 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
 
   <?= smartcms_page_container_end() ?>
 <?= smartcms_site_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

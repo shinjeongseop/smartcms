@@ -38,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $settings = smartcms_settings_all();
 
-smartcms_render_head(['title' => '환경 설정', 'body_class' => 'smartcms-admin-page']);
+$SMARTCMS_HEAD = ['title' => '환경 설정', 'body_class' => 'smartcms-admin-page'];
+require SMARTCMS_ROOT . '/head.php';
 echo smartcms_admin_page_header($admin, '환경 설정', 'settings');
 ?>
 
@@ -89,4 +90,7 @@ echo smartcms_admin_page_header($admin, '환경 설정', 'settings');
 </div>
 
 <?= smartcms_admin_footer() ?>
-<?php smartcms_render_foot(); ?>
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>
