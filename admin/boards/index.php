@@ -210,5 +210,4 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
 </div>
 
 <?= smartcms_admin_footer() ?>
-</main>
 <?php smartcms_render_foot(); ?>

@@ -149,5 +149,4 @@ echo smartcms_admin_page_header($admin, '페이지 권한', 'pages');
 </div>
 
 <?= smartcms_admin_footer() ?>
-</main>
 <?php smartcms_render_foot(); ?>

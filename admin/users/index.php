@@ -126,5 +126,4 @@ echo smartcms_admin_page_header($admin, '회원 관리', 'users');
 </div>
 
 <?= smartcms_admin_footer() ?>
-</main>
 <?php smartcms_render_foot(); ?>

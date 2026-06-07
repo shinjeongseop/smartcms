@@ -150,5 +150,4 @@ echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
 </div>
 
 <?= smartcms_admin_footer() ?>
-</main>
 <?php smartcms_render_foot(); ?>

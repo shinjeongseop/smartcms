@@ -129,5 +129,4 @@ echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
 <?= smartcms_two_column_end() ?>
 
 <?= smartcms_admin_footer() ?>
-</main>
 <?php smartcms_render_foot(); ?>

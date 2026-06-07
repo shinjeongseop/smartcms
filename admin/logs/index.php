@@ -107,5 +107,4 @@ echo smartcms_admin_page_header($admin, '접속 로그', 'logs');
 <?php endforeach; ?>
 
 <?= smartcms_admin_footer() ?>
-</main>
 <?php smartcms_render_foot(); ?>
