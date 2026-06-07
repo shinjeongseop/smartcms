@@ -88,9 +88,30 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
 
     $html  = '<main class="container-xxl min-vh-100 bg-body">';
     $html .= smartcms_admin_mobile_topbar($admin, $title);
+    $html .= '<div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="smartcmsAdminNav" aria-labelledby="smartcmsAdminNavLabel">';
+    $html .= '<div class="offcanvas-header border-bottom">';
+    $html .= '<h2 class="offcanvas-title h5 mb-0" id="smartcmsAdminNavLabel">관리자 메뉴</h2>';
+    $html .= '<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="닫기"></button>';
+    $html .= '</div>';
+    $html .= '<div class="offcanvas-body p-0">';
+    $html .= '<div class="p-3">';
+    $html .= '<a class="d-flex align-items-center gap-2 text-decoration-none text-body mb-4" href="' . smartcms_h(smartcms_base_url('/admin/dashboard/')) . '">';
+    $html .= '<span class="badge text-bg-primary rounded-3 p-2"><i class="bi bi-grid-3x3-gap-fill"></i></span>';
+    $html .= '<strong>smartcms</strong></a>';
+    $html .= smartcms_admin_nav($active);
+    $html .= '<div class="mt-4 rounded-3 border p-3">';
+    $html .= '<div class="d-flex align-items-center gap-2">';
+    $html .= '<span class="badge text-bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center p-3 lh-1">' . smartcms_h($initial) . '</span>';
+    $html .= '<div>';
+    $html .= '<strong class="d-block text-body">' . smartcms_h($admin['name']) . '</strong>';
+    $html .= '<small class="text-muted d-block">level ' . smartcms_h($admin['level']) . '</small>';
+    $html .= '</div></div>';
+    $html .= '<a class="btn btn-outline-secondary btn-sm rounded-pill w-100 mt-3" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '">';
+    $html .= '<i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
+    $html .= '</div></div></div></div>';
     $html .= '<div class="row g-0 min-vh-100">';
 
-    $html .= '<aside class="d-none d-lg-flex col-lg-3 col-xxl-2 border-end bg-white p-3 p-lg-4 flex-column">';
+    $html .= '<aside class="col-12 col-lg-3 col-xxl-2 d-none d-lg-flex border-end bg-white p-3 p-lg-4 flex-column">';
     $html .= '<a class="d-flex align-items-center gap-2 text-decoration-none text-body mb-4" href="' . smartcms_h(smartcms_base_url('/admin/dashboard/')) . '">';
     $html .= '<span class="badge text-bg-primary rounded-3 p-2"><i class="bi bi-grid-3x3-gap-fill"></i></span>';
     $html .= '<strong>smartcms</strong></a>';
@@ -119,27 +140,6 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
     $html .= '<i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
     $html .= '</div></div></header>';
     $html .= '<div class="d-grid gap-4">';
-    $html .= '<div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="smartcmsAdminNav" aria-labelledby="smartcmsAdminNavLabel">';
-    $html .= '<div class="offcanvas-header border-bottom">';
-    $html .= '<h2 class="offcanvas-title h5 mb-0" id="smartcmsAdminNavLabel">관리자 메뉴</h2>';
-    $html .= '<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="닫기"></button>';
-    $html .= '</div>';
-    $html .= '<div class="offcanvas-body p-0">';
-    $html .= '<div class="p-3">';
-    $html .= '<a class="d-flex align-items-center gap-2 text-decoration-none text-body mb-4" href="' . smartcms_h(smartcms_base_url('/admin/dashboard/')) . '">';
-    $html .= '<span class="badge text-bg-primary rounded-3 p-2"><i class="bi bi-grid-3x3-gap-fill"></i></span>';
-    $html .= '<strong>smartcms</strong></a>';
-    $html .= smartcms_admin_nav($active);
-    $html .= '<div class="mt-4 rounded-3 border p-3">';
-    $html .= '<div class="d-flex align-items-center gap-2">';
-    $html .= '<span class="badge text-bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center p-3 lh-1">' . smartcms_h($initial) . '</span>';
-    $html .= '<div>';
-    $html .= '<strong class="d-block text-body">' . smartcms_h($admin['name']) . '</strong>';
-    $html .= '<small class="text-muted d-block">level ' . smartcms_h($admin['level']) . '</small>';
-    $html .= '</div></div>';
-    $html .= '<a class="btn btn-outline-secondary btn-sm rounded-pill w-100 mt-3" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '">';
-    $html .= '<i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
-    $html .= '</div></div></div></div>';
 
     return $html;
 }
