@@ -35,41 +35,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $SMARTCMS_HEAD = ['title' => '관리자 로그인'];
 require SMARTCMS_ROOT . '/head.php';
-echo smartcms_auth_header();
 ?>
-<div class="card border-0 shadow-sm">
-  <div class="card-body p-4 p-md-5">
-    <p class="text-uppercase text-muted small fw-semibold mb-1">Admin</p>
-    <h1 class="h3 fw-bold mb-2">관리자 로그인</h1>
-    <p class="text-body-secondary mb-4">level 8 이상의 계정으로 접근할 수 있습니다.</p>
+<main class="form-signin w-100 m-auto text-center">
+  <form method="post">
+    <?= smartcms_csrf_input() ?>
+    <i class="bi bi-bootstrap-fill mb-4 text-primary smartcms-signin-logo" aria-hidden="true"></i>
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
     <?php if ($message !== ''): ?>
       <?= smartcms_alert($message, $message_type) ?>
     <?php endif; ?>
 
-    <form class="d-grid gap-3" method="post">
-      <?= smartcms_csrf_input() ?>
-      <div>
-        <label for="email" class="form-label">이메일</label>
-        <input class="form-control form-control-lg" id="email" name="email" type="email"
-               value="<?= smartcms_h($email) ?>" autocomplete="email" required>
-      </div>
-      <div>
-        <label for="password" class="form-label">비밀번호</label>
-        <input class="form-control form-control-lg" id="password" name="password" type="password"
-               autocomplete="current-password" required>
-      </div>
-      <div class="d-grid">
-        <?= smartcms_button('관리자 로그인', 'submit', 'w-100') ?>
-      </div>
-    </form>
+    <div class="form-floating">
+      <input class="form-control" id="email" name="email" type="email"
+             value="<?= smartcms_h($email) ?>" placeholder="name@example.com" autocomplete="email" required>
+      <label for="email">Email address</label>
+    </div>
+    <div class="form-floating">
+      <input class="form-control" id="password" name="password" type="password"
+             placeholder="Password" autocomplete="current-password" required>
+      <label for="password">Password</label>
+    </div>
 
-    <p class="text-center mt-3 mb-0 small">
-      <a href="<?= smartcms_h(smartcms_base_url('/')) ?>" class="text-muted">← 사이트 홈으로</a>
-    </p>
-  </div>
-</div>
-<?= smartcms_auth_footer() ?>
+    <div class="form-check text-start my-3">
+      <input class="form-check-input" id="remember" name="remember" type="checkbox" value="1">
+      <label class="form-check-label" for="remember">Remember me</label>
+    </div>
+
+    <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017&ndash;2025</p>
+  </form>
+</main>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';
