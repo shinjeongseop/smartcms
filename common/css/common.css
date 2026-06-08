@@ -223,6 +223,7 @@ samp {
   border-color: var(--sc-line);
   padding: 12px 12px;
   vertical-align: middle;
+  white-space: nowrap;
 }
 
 .table thead th {
