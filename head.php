@@ -100,8 +100,9 @@ if (!function_exists('smartcms_admin_page_header')) {
         $html .= '<span class="sc-brand-mark"><i class="bi bi-n-square-fill"></i></span>';
         $html .= '<span class="sc-brand-text">smartcms</span>';
         $html .= '</a>';
-        $html .= '<button class="btn btn-outline-secondary btn-sm rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#smartcmsAdminNav" aria-controls="smartcmsAdminNav" aria-expanded="false" aria-label="관리자 메뉴 열기">';
-        $html .= '<i class="bi bi-list me-1"></i>메뉴';
+        $html .= '<button class="navbar-toggler border-0 p-0" type="button" data-bs-toggle="collapse" data-bs-target="#smartcmsAdminNav" aria-controls="smartcmsAdminNav" aria-expanded="false" aria-label="관리자 메뉴 열기">';
+        $html .= '<span class="navbar-toggler-icon"></span>';
+        $html .= '<span class="visually-hidden">관리자 메뉴 열기</span>';
         $html .= '</button>';
         $html .= '</div>';
         $html .= '<div class="d-flex align-items-end justify-content-between gap-3 mt-3">';
