@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../../common/auth.php';
 require_once __DIR__ . '/../../head.php';
-require_once __DIR__ . '/../../common/ui/components.php';
 require_once __DIR__ . '/../../foot.php';
+require_once __DIR__ . '/../../common/ui/components.php';
 
 $user = smartcms_require_login();
 $message = '';
@@ -25,18 +25,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$SMARTCMS_HEAD = [
-    'title' => '비밀번호 변경',
-    'body_class' => 'smartcms-board-page',
-]; require SMARTCMS_ROOT . '/head.php';?>
-<?= smartcms_site_header('') ?>
-<?= smartcms_page_container_start() ?>
+$SMARTCMS_HEAD = ['title' => '비밀번호 변경', 'body_class' => 'bg-body'];
+require SMARTCMS_ROOT . '/head.php';
+echo smartcms_site_header('');
+?>
+
+<main class="container-fluid container-xxl py-4 py-lg-5">
   <div class="row justify-content-center">
-    <div class="col-12 col-md-10 col-lg-8">
-      <section class="card border-0 shadow-sm">
+    <div class="col-12 col-md-10 col-lg-8 col-xl-7">
+      <div class="card border-0 shadow-sm">
         <div class="card-body p-4 p-md-5">
-          <h1 class="h3 fw-bold">비밀번호 변경</h1>
-          <p class="text-body-secondary"><?= smartcms_h($user['email']) ?> 계정의 비밀번호를 변경합니다.</p>
+          <p class="text-uppercase text-muted small fw-semibold mb-1">Account</p>
+          <h1 class="h3 fw-bold mb-2">비밀번호 변경</h1>
+          <p class="text-body-secondary mb-4"><?= smartcms_h($user['email']) ?> 계정의 비밀번호를 변경합니다.</p>
 
           <?php if ($message !== ''): ?>
             <?= smartcms_alert($message, $message_type) ?>
@@ -59,12 +60,15 @@ $SMARTCMS_HEAD = [
             <?= smartcms_button('비밀번호 변경', 'submit') ?>
           </form>
 
-          <p class="mt-3 mb-0"><a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지로 이동</a></p>
+          <div class="mt-3">
+            <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지로 이동</a>
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   </div>
-<?= smartcms_page_container_end() ?>
+</main>
+
 <?= smartcms_site_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
