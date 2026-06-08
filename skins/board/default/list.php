@@ -30,7 +30,7 @@
       </div>
       <?php if ($pagination['keyword'] !== ''): ?>
         <div class="col-12 col-lg-auto">
-          <a class="btn btn-outline-secondary w-100"
+          <a class="btn btn-secondary w-100"
              href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">초기화</a>
         </div>
       <?php endif; ?>

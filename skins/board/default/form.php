@@ -46,7 +46,7 @@
 
         <div class="col-12 d-flex flex-wrap gap-2">
           <?= smartcms_button($submit_label ?? '저장', 'submit') ?>
-          <a class="btn btn-outline-secondary" href="<?= smartcms_h($back_url) ?>"><?= smartcms_h($back_label ?? '목록으로') ?></a>
+          <a class="btn btn-secondary" href="<?= smartcms_h($back_url) ?>"><?= smartcms_h($back_label ?? '목록으로') ?></a>
         </div>
       </div>
     </form>
@@ -62,7 +62,7 @@
             <form method="post">
               <?= smartcms_csrf_input() ?>
               <input type="hidden" name="action" value="hide">
-              <button class="btn btn-outline-danger px-4" type="submit">글 숨김 처리</button>
+              <button class="btn btn-danger rounded-pill px-4" type="submit">글 숨김 처리</button>
             </form>
           </div>
         </div>

@@ -28,7 +28,7 @@
 
 1. **Dense but calm** - 화면당 정보량은 높게 유지하되 시각적 소음은 줄인다.
 2. **Single accent** - 액션 색상은 `--sc-primary` 하나만 사용한다.
-3. **No shadow** - 관리자 카드와 패널은 그림자 없이 border로만 구분한다.
+3. **Subtle elevation** - 관리자 카드와 패널은 `shadow-sm` 정도만 허용하고, 무거운 그림자는 쓰지 않는다.
 4. **Readable tables** - 표는 줄바꿈 없이 한 줄 유지가 기본이다.
 5. **Fast scanning** - 상태, 권한, 시간, ID처럼 반복되는 값은 정렬과 간격을 맞춘다.
 
@@ -87,7 +87,7 @@
 ### Buttons
 
 - 기본 동작은 `btn-primary`
-- 보조 동작은 `btn-outline-secondary`
+- 보조 동작은 `btn-secondary`
 - 위험 동작은 `btn-danger`
 - 관리자 화면에서도 보라색, 파란색 등 다른 액션 색상은 쓰지 않는다
 - 버튼은 `btn-sm`, 기본, `btn-lg` 크기를 사용한다.

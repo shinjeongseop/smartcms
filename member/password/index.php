@@ -61,7 +61,7 @@ echo smartcms_site_header('');
           </form>
 
           <div class="mt-3">
-            <a class="btn btn-outline-secondary px-4" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지로 이동</a>
+            <a class="btn btn-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지로 이동</a>
           </div>
         </div>
       </div>

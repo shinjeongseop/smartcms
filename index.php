@@ -61,18 +61,18 @@ echo smartcms_site_header('home');
   <div class="container-fluid container-xxl py-4 py-lg-5">
     <div class="row g-4 align-items-stretch">
       <div class="col-12 col-xl-8">
-        <div class="card border-0 h-100">
-          <div class="card-body p-4 p-lg-5">
-            <p class="text-uppercase small fw-semibold text-success mb-2">Smart Community OS</p>
-            <h1 class="display-5 fw-bold mb-3">가볍게 운영하고, 빠르게 소통하는 커뮤니티 CMS</h1>
-            <p class="lead text-body-secondary mb-4">공지, 자유게시판, Q&A와 회원 기능을 하나의 포털 화면으로 정리했습니다.</p>
+        <div class="card border-0 h-100 bg-primary text-white overflow-hidden position-relative">
+          <div class="card-body p-4 p-lg-5 position-relative">
+            <span class="badge text-bg-light text-primary fw-bold mb-3">Hot Update</span>
+            <h1 class="display-5 fw-bold mb-3">그누보드 감성의 모던 부트스트랩 커뮤니티</h1>
+            <p class="lead mb-4 text-white-50">공지, 자유게시판, Q&A와 회원 기능을 하나의 포털 화면으로 정리했습니다. Bootstrap 기본 컴포넌트와 유틸리티만으로 구성한 가벼운 운영형 레이아웃입니다.</p>
             <div class="d-flex flex-wrap gap-2">
-              <a class="btn btn-primary px-4" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>"><i class="bi bi-list-ul me-1"></i>전체 게시판</a>
-              <a class="btn btn-outline-secondary px-4" href="<?= smartcms_h(smartcms_base_url($user ? '/board/write/?board=free' : '/member/login/')) ?>">
+              <a class="btn btn-light text-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>"><i class="bi bi-list-ul me-1"></i>전체 게시판</a>
+              <a class="btn btn-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url($user ? '/board/write/?board=free' : '/member/login/')) ?>">
                 <i class="bi <?= $user ? 'bi-pencil-square' : 'bi-box-arrow-in-right' ?> me-1"></i><?= $user ? '글쓰기' : '로그인' ?>
               </a>
-              <a class="btn btn-outline-secondary px-4" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>"><i class="bi bi-person-plus me-1"></i>회원가입</a>
-              <a class="btn btn-outline-secondary px-4" href="<?= smartcms_h(smartcms_base_url('/admin/')) ?>"><i class="bi bi-speedometer2 me-1"></i>관리자</a>
+              <a class="btn btn-light rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>"><i class="bi bi-person-plus me-1"></i>회원가입</a>
+              <a class="btn btn-light rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/admin/')) ?>"><i class="bi bi-speedometer2 me-1"></i>관리자</a>
             </div>
           </div>
         </div>
@@ -113,7 +113,7 @@ echo smartcms_site_header('home');
   </div>
 </section>
 
-<?= smartcms_page_container_start('container-fluid container-xxl py-4 py-lg-5') ?>
+<section class="container-fluid container-xxl py-4 py-lg-5">
   <?php if ($message !== ''): ?>
     <?= smartcms_alert($message, 'error') ?>
   <?php endif; ?>
@@ -168,7 +168,7 @@ echo smartcms_site_header('home');
             <p class="text-uppercase small fw-semibold text-primary mb-1">Latest</p>
             <h2 class="h5 fw-bold mb-0">전체 최신글</h2>
           </div>
-          <a class="btn btn-outline-secondary btn-sm" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">더보기</a>
+          <a class="btn btn-secondary btn-sm" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">더보기</a>
         </div>
         <div class="list-group list-group-flush">
           <?php foreach ($recent_posts as $post): ?>
@@ -201,7 +201,7 @@ echo smartcms_site_header('home');
                     <h3 class="h5 fw-bold mb-1"><?= smartcms_h($wb['board_name']) ?></h3>
                     <p class="text-body-secondary mb-0"><?= smartcms_h($widget['summary']) ?></p>
                   </div>
-                  <a class="btn btn-outline-secondary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$wb['board_key'])) ?>">더보기</a>
+                  <a class="btn btn-secondary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$wb['board_key'])) ?>">더보기</a>
                 </div>
                 <div class="list-group list-group-flush">
                   <?php foreach ($widget['posts'] as $post): ?>
@@ -228,14 +228,14 @@ echo smartcms_site_header('home');
         ? '<h2 class="h5 fw-bold mb-2">' . smartcms_h($user['name']) . '님</h2>'
           . '<p class="text-body-secondary mb-3">level ' . smartcms_h($user['level']) . ' 권한으로 이용 중</p>'
           . '<div class="d-flex flex-wrap gap-2">'
-          . '<a class="btn btn-primary btn-sm px-3" href="' . smartcms_h(smartcms_base_url('/member/mypage/')) . '">마이페이지</a>'
-          . '<a class="btn btn-outline-secondary btn-sm px-3" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '">로그아웃</a>'
+          . '<a class="btn btn-primary btn-sm rounded-pill px-3" href="' . smartcms_h(smartcms_base_url('/member/mypage/')) . '">마이페이지</a>'
+          . '<a class="btn btn-secondary btn-sm rounded-pill px-3" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '">로그아웃</a>'
           . '</div>'
         : '<h2 class="h5 fw-bold mb-2">로그인하고 참여하세요</h2>'
           . '<p class="text-body-secondary mb-3">회원가입 후 글쓰기, 댓글, 마이페이지를 이용할 수 있습니다.</p>'
           . '<div class="d-flex flex-wrap gap-2">'
-          . '<a class="btn btn-primary btn-sm px-3" href="' . smartcms_h(smartcms_base_url('/member/login/')) . '">로그인</a>'
-          . '<a class="btn btn-outline-secondary btn-sm px-3" href="' . smartcms_h(smartcms_base_url('/member/register/')) . '">회원가입</a>'
+          . '<a class="btn btn-primary btn-sm rounded-pill px-3" href="' . smartcms_h(smartcms_base_url('/member/login/')) . '">로그인</a>'
+          . '<a class="btn btn-secondary btn-sm rounded-pill px-3" href="' . smartcms_h(smartcms_base_url('/member/register/')) . '">회원가입</a>'
           . '</div>'
     ) ?>
     <?= smartcms_sidebar_card(
@@ -274,7 +274,7 @@ echo smartcms_site_header('home');
       $popular_posts ? '' : '인기글 집계 전입니다.'
     ) ?>
   <?= smartcms_two_column_end() ?>
-<?= smartcms_page_container_end() ?>
+</section>
 
 <?= smartcms_site_footer() ?>
 <?php $SMARTCMS_FOOT = []; require SMARTCMS_ROOT . '/foot.php'; ?>

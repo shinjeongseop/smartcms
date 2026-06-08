@@ -184,15 +184,15 @@ Use Bootstrap buttons with smartcms spacing/radius conventions.
 
 | Type | Class |
 |------|-------|
-| Primary | `btn btn-primary px-4` |
-| Secondary | `btn btn-outline-secondary px-4` |
-| Small primary | `btn btn-primary btn-sm px-3` |
-| Danger | `btn btn-danger px-4` |
+| Primary | `btn btn-primary rounded-pill px-4` |
+| Secondary | `btn btn-secondary rounded-pill px-4` |
+| Small primary | `btn btn-primary btn-sm rounded-pill px-3` |
+| Danger | `btn btn-danger rounded-pill px-4` |
 
 Rules:
 
 - Primary action: one per section.
-- Secondary actions: outline style.
+- Secondary actions: neutral filled style.
 - Destructive action: red/danger and separated from normal actions.
 
 ### 5.2 Cards and Panels
@@ -378,4 +378,3 @@ Design:
 | Keep Bootstrap? | Yes | Speeds form/button/grid consistency. |
 | Use external template code? | No | Reference visual structure only to avoid license/copy issues. |
 | Preserve current PHP route structure? | Yes | Avoid unnecessary backend regression. |
-

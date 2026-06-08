@@ -10,7 +10,7 @@ Bootstrap의 유틸리티·그리드·컴포넌트를 최대한 활용하고,
 브랜드 톤·타이포그래피·색상만 `common/css/common.css`의 CSS 변수로 덮어쓴다.
 
 디자인 방향: **네이버 포털을 연상시키는 선명한 그린 액센트 + 흰 표면 + 정돈된 카드 레이아웃**.
-그림자 대신 `1px hairline + 흰 카드 on 크림 배경`으로 계층을 만든다.
+카드 계층은 `border`와 `shadow-sm`을 조합하되, 무거운 그림자는 쓰지 않는다.
 화면 구성은 Bootstrap 기본 컴포넌트와 유틸리티를 우선하고, 커스텀 UI 컴포넌트는 만들지 않는다.
 
 ## Current Pages
@@ -44,7 +44,7 @@ Bootstrap의 유틸리티·그리드·컴포넌트를 최대한 활용하고,
 1. **Clean canvas** — 페이지 바닥은 연한 그레이, 순백 `#ffffff`는 카드 표면에 쓴다.
 2. **Readable ink** — 본문 텍스트는 다크 그레이, 순검정 사용을 피한다.
 3. **Single CTA** — 액션 색상 `#03c75a` 하나만 사용. 두 번째 CTA 색상 도입 금지.
-4. **No shadows** — 카드·패널에 drop shadow 금지. hairline border + 배경 대비로 깊이 표현.
+4. **Subtle elevation** — `shadow-sm` 정도의 얕은 그림자는 허용하되, 무거운 drop shadow는 금지한다.
 5. **Bootstrap-only UI** — 레이아웃·간격·상호작용은 Bootstrap 기본 컴포넌트와 유틸리티로 구성한다. 커스텀 CSS는 토큰 오버라이드와 최소한의 전역 보정만 허용한다.
 6. **Editorial type** — 디스플레이 헤딩은 weight 600, letter-spacing 음수. 본문은 400.
 7. **Generous rhythm** — 섹션 간 수직 여백 기본 48px, 메이저 섹션 64px.
@@ -140,8 +140,8 @@ Bootstrap `btn` 기반.
 | 종류 | 클래스 | 용도 |
 |---|---|---|
 | Primary | `btn btn-primary` | 주요 액션 (저장, 확인, 글쓰기) |
-| Secondary | `btn btn-outline-secondary` | 보조 액션 (취소, 목록으로) |
-| Danger | `btn btn-outline-danger` | 파괴적 액션 (삭제, 숨김) |
+| Secondary | `btn btn-secondary` | 보조 액션 (취소, 목록으로) |
+| Danger | `btn btn-danger` | 파괴적 액션 (삭제, 숨김) |
 
 - 기본 radius: `rounded` / `rounded-1`
 - 높이 기준: `btn-sm` / 기본 / `btn-lg`
@@ -224,10 +224,11 @@ Bootstrap `alert` 사용.
 
 ### Home Layout
 
-- 히어로 → 공지 배너 → 요약 스트립 → 2열 메인 레이아웃 순서
-- 히어로: `container`, `row`, `col`, `card`, `display-*` 조합
-- 요약 스트립: 3열 카드, 실질적 지표 (총 게시글, 총 회원, 오늘 방문)
-- 위젯: `card` + `list-group` + `table` 조합
+- 상단 유틸리티 바 → 브랜드/검색 → 어두운 메인 내비게이션 → 히어로 → 요약 배너 → 2열 포털 레이아웃 순서
+- 히어로: `card`, `display-*`, `badge`, `btn`, `container-fluid`, `container-xxl` 조합
+- 요약 영역: 공지 배너와 3열 통계 카드
+- 메인 위젯: `card` + `list-group` + `table` 조합
+- 사이드바: 로그인/회원 정보, 실시간 화제, 설문 위젯을 우선 배치
 
 ### Current Composition Rules
 

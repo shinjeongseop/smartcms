@@ -16,7 +16,7 @@
         <h2 class="h3 fw-bold mb-0 d-inline"><?= smartcms_h($post['title']) ?></h2>
       </div>
       <?php if ($can_manage_post): ?>
-        <a class="btn btn-outline-secondary btn-sm flex-shrink-0"
+        <a class="btn btn-secondary btn-sm rounded-pill flex-shrink-0"
            href="<?= smartcms_h(smartcms_base_url('/board/edit/')
                . '?board=' . rawurlencode((string)$board['board_key'])
                . '&id=' . rawurlencode((string)$post['id'])) ?>">
@@ -52,7 +52,7 @@
     <?php endif; ?>
 
     <div class="pt-3 border-top">
-      <a class="btn btn-outline-secondary"
+      <a class="btn btn-secondary rounded-pill"
          href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
         <i class="bi bi-list-ul me-1"></i>목록으로
       </a>
@@ -78,7 +78,7 @@
                 <?= smartcms_csrf_input() ?>
                 <input type="hidden" name="action" value="comment_hide">
                 <input type="hidden" name="comment_id" value="<?= smartcms_h($comment['id']) ?>">
-                <button class="btn btn-outline-danger btn-sm" type="submit">댓글 숨김</button>
+                <button class="btn btn-danger btn-sm rounded-pill" type="submit">댓글 숨김</button>
               </form>
             <?php endif; ?>
           </article>
