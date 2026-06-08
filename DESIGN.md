@@ -11,6 +11,7 @@ Bootstrap의 유틸리티·그리드·컴포넌트를 최대한 활용하고,
 
 디자인 방향: **네이버 포털을 연상시키는 선명한 그린 액센트 + 흰 표면 + 정돈된 카드 레이아웃**.
 그림자 대신 `1px hairline + 흰 카드 on 크림 배경`으로 계층을 만든다.
+화면 구성은 Bootstrap 기본 컴포넌트와 유틸리티를 우선하고, 커스텀 UI 컴포넌트는 만들지 않는다.
 
 ## Current Pages
 
@@ -44,7 +45,7 @@ Bootstrap의 유틸리티·그리드·컴포넌트를 최대한 활용하고,
 2. **Readable ink** — 본문 텍스트는 다크 그레이, 순검정 사용을 피한다.
 3. **Single CTA** — 액션 색상 `#03c75a` 하나만 사용. 두 번째 CTA 색상 도입 금지.
 4. **No shadows** — 카드·패널에 drop shadow 금지. hairline border + 배경 대비로 깊이 표현.
-5. **Bootstrap-first** — 레이아웃·간격은 Bootstrap 유틸리티 사용. 커스텀 CSS는 토큰 오버라이드에 집중.
+5. **Bootstrap-only UI** — 레이아웃·간격·상호작용은 Bootstrap 기본 컴포넌트와 유틸리티로 구성한다. 커스텀 CSS는 토큰 오버라이드와 최소한의 전역 보정만 허용한다.
 6. **Editorial type** — 디스플레이 헤딩은 weight 600, letter-spacing 음수. 본문은 400.
 7. **Generous rhythm** — 섹션 간 수직 여백 기본 48px, 메이저 섹션 64px.
 
@@ -70,6 +71,7 @@ Bootstrap의 유틸리티·그리드·컴포넌트를 최대한 활용하고,
 
 Bootstrap의 `--bs-primary`, `--bs-body-bg` 등은 `common.css`에서 일괄 덮어쓴다.
 페이지별 인라인 style 속성으로 색상 값을 직접 쓰지 않는다.
+새로운 페이지 전용 UI 클래스는 만들지 말고, Bootstrap 기본 클래스 조합으로 해결한다.
 
 ## Typography
 
@@ -126,14 +128,14 @@ Bootstrap의 `--bs-primary`, `--bs-body-bg` 등은 `common.css`에서 일괄 덮
 - Bootstrap `navbar navbar-expand-lg` 기반
 - 배경: `--sc-surface` (흰색), 하단 hairline `--sc-line`
 - 높이 `56px`, 그림자 없음
-- 브랜드 아이콘: `--sc-primary` 배경 + 흰 아이콘
-- 브랜드 텍스트: `--sc-primary` 컬러, weight 700
-- 메뉴 링크: `--sc-text` → hover/active `--sc-primary` (배경 없음)
+- 브랜드 아이콘: Bootstrap 아이콘 + `bg-primary` 또는 기본 배경 조합
+- 브랜드 텍스트: `text-primary` 또는 `fw-bold`
+- 메뉴 링크: 기본 링크 또는 `nav-link`, hover/active는 Bootstrap 상태 클래스
 - CTA 버튼: `btn btn-primary btn-sm`
 
 ### Buttons
 
-Bootstrap `btn` 기반, CSS 변수로 색상만 오버라이드.
+Bootstrap `btn` 기반.
 
 | 종류 | 클래스 | 용도 |
 |---|---|---|
@@ -141,44 +143,44 @@ Bootstrap `btn` 기반, CSS 변수로 색상만 오버라이드.
 | Secondary | `btn btn-outline-secondary` | 보조 액션 (취소, 목록으로) |
 | Danger | `btn btn-outline-danger` | 파괴적 액션 (삭제, 숨김) |
 
-- 기본 radius: `--sc-radius-sm` (6px)
+- 기본 radius: `rounded` / `rounded-1`
 - Pill 스타일: `rounded-pill` 추가 (CTA, 헤더 버튼)
-- 높이 기준: `36px` (sm), `40px` (md, 기본), `44px` (lg)
+- 높이 기준: `btn-sm` / 기본 / `btn-lg`
 
 ### Cards & Panels
 
-Bootstrap `card` 기반 + `.sc-panel` 오버라이드.
+Bootstrap `card` 기반.
 
-- 배경: `--sc-surface` (흰색)
-- 테두리: `1px solid --sc-line`
-- radius: `--sc-radius` (10px)
-- padding: `24px`
-- 그림자: **없음**
-- hover: border-color → `--sc-line-strong` (선택 사항)
+- 배경: `card` 기본 배경
+- 테두리: `border` / `border-1`
+- radius: Bootstrap 기본 라운드 클래스
+- padding: `card-body`, `p-*` 유틸리티
+- 그림자: `shadow-none`
+- hover: 필요할 때만 `border-*` 유틸리티로 보정
 
 ### Forms
 
 Bootstrap `form-control` / `form-select` 기반.
 
-- 배경: `--sc-surface`
-- 테두리: `1px solid --sc-line-strong`
-- radius: `--sc-radius-sm` (6px)
-- 높이: `40px` (기본)
-- focus: border-color `--sc-primary`, box-shadow 없음
-- label: `14px / weight 600 / --sc-text`
+- 배경: 기본 입력 배경
+- 테두리: 기본 입력 테두리
+- radius: Bootstrap 기본
+- 높이: `form-control-sm`, 기본, `form-control-lg`
+- focus: Bootstrap focus 상태 활용
+- label: `form-label`, `fw-semibold`
 
 ### Tables
 
 Bootstrap `table table-hover` 기반.
 
-- 헤더: `12px / uppercase / weight 600 / --sc-muted`
-- 행 경계: hairline `--sc-line`
-- hover: `--sc-surface-soft`
-- 그림자·zebra 금지
+- 헤더: `text-uppercase`, `small`, `fw-semibold`
+- 행 경계: 기본 table border
+- hover: `table-hover`
+- zebra는 기본적으로 사용하지 않음
 
 ### Alerts
 
-`.sc-alert` 클래스 사용 (Bootstrap `alert` 미사용).
+Bootstrap `alert` 사용.
 
 | 타입 | 배경 | 텍스트 | 테두리 |
 |---|---|---|---|
@@ -189,57 +191,58 @@ Bootstrap `table table-hover` 기반.
 
 ### Auth Pages (로그인·회원가입·관리자 로그인)
 
-- 전체 화면 flex 센터 정렬, 배경 `--sc-bg`
-- 박스: `min(460px, 100%)`, padding `40px 36px`
-- 제목: Heading L (28px / 700)
-- 하단 링크: `13px`
+- 전체 화면 flex 센터 정렬, 배경은 Bootstrap 바디 배경 또는 공통 배경
+- 박스: `card`, `p-4 p-md-5`, `w-100`
+- 제목: `h1`, `h3`, `fw-bold`
+- 하단 링크: `small`
 
 ### Admin Layout
 
-- 사이드바 `240px` sticky, 배경 `--sc-surface`, 우측 hairline
-- 워크스페이스: padding `28px`
-- 상단바: 배경 `--sc-surface`, hairline, padding `12px 20px`
-- 사이드바 active 링크: `--sc-primary` 배경, 흰 텍스트, radius `--sc-radius-sm`
-- 통계 카드: Bootstrap `card` + `.sc-stat-card` (hover 시 border-color 강화)
+- 사이드바 `sticky` + `list-group`
+- 워크스페이스: `container-fluid`, `p-*`, `row`, `col-*`
+- 상단바: `navbar`, `border-bottom`, `bg-white`
+- 사이드바 active 링크: Bootstrap active 상태
+- 통계 카드: `card`, `h-100`, `text-decoration-none`
 
 ### Board List
 
 - 검색폼 + 테이블 + 페이지네이션 구조
-- Bootstrap `table table-hover` 사용
-- 페이지네이션: `.sc-pagination` + `.sc-page-link`
+- Bootstrap `form`, `table table-hover`, `pagination` 사용
+- 별도 페이지 전용 카드/테이블 컴포넌트는 만들지 않는다
 
 ### Board Detail & Editor
 
 - 게시글 보기, 글쓰기, 글 수정은 하나의 보드 컨텍스트를 공유한다.
 - 상단에는 게시판명과 핵심 액션을 배치한다.
-- 본문은 카드형 섹션으로 나누고, 첨부파일·댓글·관련 게시글을 분리한다.
+- 본문은 `card`, `list-group`, `table`, `alert`, `badge`를 조합해 분리한다.
 - 편집 화면은 폼 중심, 보기 화면은 콘텐츠 중심으로 구성한다.
 
 ### Member Pages
 
 - 로그인, 회원가입, 비밀번호 재설정, 마이페이지는 인증 중심 화면이다.
-- 인증 화면은 단일 카드, 짧은 폼, 보조 링크 중심으로 유지한다.
+- 인증 화면은 `card`, `form`, `btn`, `small`, `link` 중심으로 유지한다.
 - 회원 페이지는 사이트 공통 헤더와 푸터를 사용한다.
 
 ### Home Layout
 
 - 히어로 → 공지 배너 → 요약 스트립 → 2열 메인 레이아웃 순서
-- 히어로: 밝은 배경, 디스플레이 타이포, 그라디언트·다크배경 금지
+- 히어로: `container`, `row`, `col`, `card`, `display-*` 조합
 - 요약 스트립: 3열 카드, 실질적 지표 (총 게시글, 총 회원, 오늘 방문)
-- 위젯: `.sc-widget` = `.sc-panel` + hover border 강화
+- 위젯: `card` + `list-group` + `table` 조합
 
 ### Current Composition Rules
 
 - 메인 콘텐츠는 의미에 맞는 `main`과 `section`을 우선한다.
 - 보조 네비게이션은 `nav`, 관련 보조 정보는 `aside`로 분리한다.
 - 페이지 상단은 `header`, 하단은 `footer`를 사용한다.
+- 새로운 시각 컴포넌트가 필요하면 Bootstrap 기본 조합으로 해결하고, 새 커스텀 컴포넌트 클래스를 추가하지 않는다.
 - 관리자 화면은 전용 문서 `admin/DESIGN.md`를 우선 참조한다.
 
 ## Do
 
 - Bootstrap 유틸리티 클래스 적극 활용 (`gap-*`, `d-flex`, `mb-*` 등)
 - CSS 변수 (`--sc-*`) 사용, 인라인 hex 금지
-- `sc-*` 컴포넌트 클래스는 Bootstrap 클래스와 병기 (예: `class="card sc-panel"`)
+- Bootstrap 기본 클래스 조합을 우선하고, 새 `sc-*` 시각 컴포넌트 클래스는 추가하지 않는다
 - 디스플레이 heading weight 600~700, 본문 400
 - 새 페이지는 반드시 `head.php` / `foot.php`를 공통 포함해서 사용
 - 상단 공통 레이아웃은 `head.php`, 하단 공통 레이아웃은 `foot.php`에서 관리한다
