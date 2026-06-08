@@ -106,8 +106,8 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
           <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
           <p class="mb-3 text-body-secondary">수정 후에는 본문과 첨부 파일이 함께 반영됩니다.</p>
           <div class="d-flex flex-wrap gap-2">
-            <a class="btn btn-secondary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">게시판 보기</a>
-            <a class="btn btn-primary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">목록</a>
+            <a class="btn btn-secondary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">게시판 보기</a>
+            <a class="btn btn-primary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">목록</a>
           </div>
         </div>
       </div>

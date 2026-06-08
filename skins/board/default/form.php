@@ -62,7 +62,7 @@
             <form method="post">
               <?= smartcms_csrf_input() ?>
               <input type="hidden" name="action" value="hide">
-              <button class="btn btn-outline-danger rounded-pill px-4" type="submit">글 숨김 처리</button>
+              <button class="btn btn-outline-danger px-4" type="submit">글 숨김 처리</button>
             </form>
           </div>
         </div>

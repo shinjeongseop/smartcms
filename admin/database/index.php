@@ -137,7 +137,7 @@ echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
             <input class="form-control" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required>
           </div>
           <div class="col-12 d-flex flex-wrap gap-2">
-            <button class="btn btn-danger rounded-pill px-4" type="submit">DB 초기화 실행</button>
+            <button class="btn btn-danger px-4" type="submit">DB 초기화 실행</button>
           </div>
         </form>
       </div>

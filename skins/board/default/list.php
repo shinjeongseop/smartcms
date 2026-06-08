@@ -11,7 +11,7 @@
         <h2 class="h4 fw-bold mb-0">글 목록 <span class="badge text-bg-secondary align-middle ms-1"><?= number_format((int)$pagination['total']) ?></span></h2>
       </div>
       <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
-        <a class="btn btn-primary rounded-pill px-4"
+        <a class="btn btn-primary px-4"
            href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">
           <i class="bi bi-pencil-square me-1"></i>글쓰기
         </a>

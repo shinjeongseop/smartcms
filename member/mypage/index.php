@@ -40,8 +40,8 @@ echo smartcms_site_header('');
           </dl>
 
           <div class="d-flex gap-2 flex-wrap">
-            <a class="btn btn-primary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>">비밀번호 변경</a>
-            <a class="btn btn-outline-secondary rounded-pill px-4" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
+            <a class="btn btn-primary px-4" href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>">비밀번호 변경</a>
+            <a class="btn btn-outline-secondary px-4" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
           </div>
         </div>
       </div>

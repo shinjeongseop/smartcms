@@ -60,8 +60,8 @@ if (!function_exists('smartcms_site_header')) {
         }
         $html .= '</ul>';
         $html .= '<div class="d-grid gap-2 d-lg-flex">';
-        $html .= '<a class="btn btn-outline-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_base_url('/member/login/')) . '"><i class="bi bi-box-arrow-in-right me-1"></i>로그인</a>';
-        $html .= '<a class="btn btn-primary btn-sm rounded-pill" href="' . smartcms_h(smartcms_base_url('/admin/')) . '"><i class="bi bi-speedometer2 me-1"></i>관리자</a>';
+        $html .= '<a class="btn btn-outline-secondary btn-sm" href="' . smartcms_h(smartcms_base_url('/member/login/')) . '"><i class="bi bi-box-arrow-in-right me-1"></i>로그인</a>';
+        $html .= '<a class="btn btn-primary btn-sm" href="' . smartcms_h(smartcms_base_url('/admin/')) . '"><i class="bi bi-speedometer2 me-1"></i>관리자</a>';
         $html .= '</div>';
         $html .= '</div>';
         $html .= '</div>';
@@ -112,7 +112,7 @@ if (!function_exists('smartcms_admin_page_header')) {
         $html .= '</div>';
         $html .= '</div>';
         $html .= '<div class="d-grid">';
-        $html .= '<a class="btn btn-outline-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '"><i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
+        $html .= '<a class="btn btn-outline-secondary btn-sm" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '"><i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
         $html .= '</div>';
         $html .= '</div>';
         $html .= '</div>';
@@ -145,7 +145,7 @@ if (!function_exists('smartcms_admin_page_header')) {
         $html .= '</div>';
         $html .= '</div>';
         $html .= '<div class="d-grid mt-3">';
-        $html .= '<a class="btn btn-outline-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '"><i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
+        $html .= '<a class="btn btn-outline-secondary btn-sm" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '"><i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
         $html .= '</div>';
         $html .= '</aside>';
 
@@ -157,7 +157,7 @@ if (!function_exists('smartcms_admin_page_header')) {
         $html .= '<div class="d-flex align-items-center gap-3">';
         $html .= '<span class="badge text-bg-primary rounded-circle p-2 lh-1">' . smartcms_h($initial) . '</span>';
         $html .= '<div><strong class="d-block text-body">' . smartcms_h((string)$admin['name']) . '</strong><small class="text-body-secondary d-block">level ' . smartcms_h((string)$admin['level']) . '</small></div>';
-        $html .= '<a class="btn btn-outline-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '"><i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
+        $html .= '<a class="btn btn-outline-secondary btn-sm" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '"><i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
         $html .= '</div>';
         $html .= '</div>';
         $html .= '</div>';

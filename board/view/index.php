@@ -101,7 +101,7 @@ echo smartcms_site_header((string)$board['board_key']);
               <?php if ((int)$post['is_secret'] === 1): ?><span class="badge text-bg-secondary me-1">비밀글</span><?php endif; ?>
             </div>
             <?php if ($can_manage_post): ?>
-              <a class="btn btn-secondary btn-sm rounded-pill flex-shrink-0"
+              <a class="btn btn-secondary btn-sm flex-shrink-0"
                  href="<?= smartcms_h(smartcms_base_url('/board/edit/')
                      . '?board=' . rawurlencode((string)$board['board_key'])
                      . '&id=' . rawurlencode((string)$post['id'])) ?>">
@@ -137,7 +137,7 @@ echo smartcms_site_header((string)$board['board_key']);
           <?php endif; ?>
 
           <div class="pt-3 border-top">
-            <a class="btn btn-secondary rounded-pill"
+            <a class="btn btn-secondary"
                href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
               <i class="bi bi-list-ul me-1"></i>목록으로
             </a>
@@ -152,8 +152,8 @@ echo smartcms_site_header((string)$board['board_key']);
           <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
           <p class="mb-3 text-body-secondary"><?= smartcms_h((string)($board['description'] ?? '게시판을 확인하세요.')) ?></p>
           <div class="d-flex flex-wrap gap-2">
-            <a class="btn btn-primary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">글쓰기</a>
-            <a class="btn btn-secondary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">새로고침</a>
+            <a class="btn btn-primary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">글쓰기</a>
+            <a class="btn btn-secondary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">새로고침</a>
           </div>
         </div>
       </div>
@@ -195,7 +195,7 @@ echo smartcms_site_header((string)$board['board_key']);
                   <?= smartcms_csrf_input() ?>
                   <input type="hidden" name="action" value="comment_hide">
                   <input type="hidden" name="comment_id" value="<?= smartcms_h($comment['id']) ?>">
-                  <button class="btn btn-danger btn-sm rounded-pill" type="submit">댓글 숨김</button>
+                  <button class="btn btn-danger btn-sm" type="submit">댓글 숨김</button>
                 </form>
               <?php endif; ?>
             </article>

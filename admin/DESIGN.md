@@ -90,7 +90,7 @@
 - 보조 동작은 `btn-outline-secondary`
 - 위험 동작은 `btn-danger`
 - 관리자 화면에서도 보라색, 파란색 등 다른 액션 색상은 쓰지 않는다
-- 버튼은 `btn-sm`, 기본, `btn-lg`와 `rounded-pill` 정도만 사용한다.
+- 버튼은 `btn-sm`, 기본, `btn-lg` 크기를 사용한다.
 
 ### Auth Screen
 

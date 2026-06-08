@@ -86,8 +86,8 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
           <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
           <p class="mb-3 text-body-secondary">글쓰기 전에 게시판 성격과 공지사항을 확인하세요.</p>
           <div class="d-flex flex-wrap gap-2">
-            <a class="btn btn-secondary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">게시판 보기</a>
-            <a class="btn btn-primary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">목록</a>
+            <a class="btn btn-secondary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">게시판 보기</a>
+            <a class="btn btn-primary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">목록</a>
           </div>
         </div>
       </div>

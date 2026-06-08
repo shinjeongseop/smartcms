@@ -33,7 +33,7 @@ function smartcms_alert(string $message, string $type = 'info'): string
  */
 function smartcms_button(string $label, string $type = 'button', string $extra_class = ''): string
 {
-    $cls = trim('btn btn-primary rounded-pill px-4 ' . $extra_class);
+    $cls = trim('btn btn-primary px-4 ' . $extra_class);
     return '<button class="' . smartcms_h($cls) . '" type="' . smartcms_h($type) . '">'
          . smartcms_h($label)
          . '</button>';

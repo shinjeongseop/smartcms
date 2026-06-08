@@ -119,7 +119,7 @@ Bootstrap의 `--bs-primary`, `--bs-body-bg` 등은 `common.css`에서 일괄 덮
 | `--sc-radius-sm` | `6px` | 버튼, 입력, 배지, 소형 요소 |
 | `--sc-radius` | `10px` | 카드, 패널, 위젯 기본 |
 | `--sc-radius-lg` | `14px` | 대형 카드, 히어로 |
-| `--sc-radius-pill` | `9999px` | Pill 버튼, 배지 |
+| `--sc-radius-pill` | `9999px` | 배지, pill 네비게이션 |
 
 ## Components
 
@@ -144,7 +144,6 @@ Bootstrap `btn` 기반.
 | Danger | `btn btn-outline-danger` | 파괴적 액션 (삭제, 숨김) |
 
 - 기본 radius: `rounded` / `rounded-1`
-- Pill 스타일: `rounded-pill` 추가 (CTA, 헤더 버튼)
 - 높이 기준: `btn-sm` / 기본 / `btn-lg`
 
 ### Cards & Panels

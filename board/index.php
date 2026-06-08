@@ -107,8 +107,8 @@ echo smartcms_site_header($board ? (string)$board['board_key'] : '');
             <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
             <p class="mb-3 text-body-secondary"><?= smartcms_h((string)($board['description'] ?? '게시판을 확인하세요.')) ?></p>
             <div class="d-flex flex-wrap gap-2">
-              <a class="btn btn-primary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">글쓰기</a>
-              <a class="btn btn-secondary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">새로고침</a>
+              <a class="btn btn-primary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">글쓰기</a>
+              <a class="btn btn-secondary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">새로고침</a>
             </div>
           </div>
         </div>

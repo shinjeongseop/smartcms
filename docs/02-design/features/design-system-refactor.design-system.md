@@ -184,10 +184,10 @@ Use Bootstrap buttons with smartcms spacing/radius conventions.
 
 | Type | Class |
 |------|-------|
-| Primary | `btn btn-primary rounded-pill px-4` |
-| Secondary | `btn btn-outline-secondary rounded-pill px-4` |
-| Small primary | `btn btn-primary btn-sm rounded-pill px-3` |
-| Danger | `btn btn-danger rounded-pill px-4` |
+| Primary | `btn btn-primary px-4` |
+| Secondary | `btn btn-outline-secondary px-4` |
+| Small primary | `btn btn-primary btn-sm px-3` |
+| Danger | `btn btn-danger px-4` |
 
 Rules:
 
