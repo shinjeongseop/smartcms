@@ -68,7 +68,7 @@ echo smartcms_admin_page_header($admin, '회원 관리', 'users');
 <div class="card border-0 shadow-sm">
   <div class="card-body p-4 p-lg-5">
     <h2 class="h5 fw-bold mb-4">최근 회원</h2>
-    <div class="table-responsive">
+    <div class="table-responsive border rounded bg-white">
       <table class="table table-hover align-middle">
         <thead>
           <tr>

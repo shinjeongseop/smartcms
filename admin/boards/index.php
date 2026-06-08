@@ -124,7 +124,7 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
     <div class="card border-0 shadow-sm">
       <div class="card-body p-4">
         <h2 class="h5 fw-bold mb-4">게시판 목록</h2>
-        <div class="table-responsive">
+        <div class="table-responsive border rounded bg-white">
           <table class="table table-hover align-middle">
             <thead>
               <tr>

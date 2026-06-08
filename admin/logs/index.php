@@ -59,7 +59,7 @@ echo smartcms_admin_page_header($admin, '접속 로그', 'logs');
   <div class="card border-0 shadow-sm mb-3">
     <div class="card-body p-4">
       <h2 class="h5 fw-bold mb-3"><?= smartcms_h($section['title']) ?></h2>
-      <div class="table-responsive">
+      <div class="table-responsive border rounded bg-white">
         <table class="table table-hover align-middle">
           <thead>
             <tr>

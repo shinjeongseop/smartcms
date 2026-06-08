@@ -8,13 +8,13 @@ if (!function_exists('smartcms_site_footer')) {
     {
         $year = date('Y');
 
-        $html  = '<footer class="sc-site-footer border-top mt-5">';
+        $html  = '<footer class="mt-auto bg-white border-top">';
         $html .= '<div class="container-xxl py-5">';
         $html .= '<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">';
         $html .= '<div class="col">';
-        $html .= '<a class="sc-brand d-inline-flex align-items-center gap-2 text-decoration-none mb-3" href="' . smartcms_h(smartcms_base_url('/')) . '">';
-        $html .= '<span class="sc-brand-mark"><i class="bi bi-n-square-fill"></i></span>';
-        $html .= '<span class="sc-brand-text">smartcms</span>';
+        $html .= '<a class="navbar-brand d-inline-flex align-items-center gap-2 fw-bold text-primary text-decoration-none mb-3" href="' . smartcms_h(smartcms_base_url('/')) . '">';
+        $html .= '<span class="badge text-bg-primary rounded-circle p-2 lh-1"><i class="bi bi-n-square-fill"></i></span>';
+        $html .= '<span>smartcms</span>';
         $html .= '</a>';
         $html .= '<p class="text-body-secondary small mb-0">가볍고 단단한 커뮤니티 CMS</p>';
         $html .= '</div>';
@@ -48,13 +48,15 @@ if (!function_exists('smartcms_admin_footer')) {
     function smartcms_admin_footer(): string
     {
         return '</div>'
-             . '<footer class="sc-admin-footer d-flex flex-column flex-md-row justify-content-between gap-2 mt-4 pt-3 border-top small text-body-secondary">'
-             . '<span>&copy; ' . smartcms_h(date('Y')) . ' smartcms admin</span>'
-             . '<a href="' . smartcms_h(smartcms_base_url('/')) . '" class="text-decoration-none">사이트 홈</a>'
-             . '</footer>'
              . '</section>'
              . '</div>'
              . '</div>'
+             . '<footer class="mt-auto bg-white border-top">'
+             . '<div class="container-fluid py-3 d-flex flex-column flex-md-row justify-content-between gap-2 small text-body-secondary">'
+             . '<span>&copy; ' . smartcms_h(date('Y')) . ' smartcms admin</span>'
+             . '<a href="' . smartcms_h(smartcms_base_url('/')) . '" class="text-decoration-none">사이트 홈</a>'
+             . '</div>'
+             . '</footer>'
              . '</main>';
     }
 }

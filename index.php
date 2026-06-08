@@ -57,7 +57,7 @@ require SMARTCMS_ROOT . '/head.php';
 echo smartcms_site_header('home');
 ?>
 
-<section class="smartcms-home-hero border-bottom">
+<section class="bg-white border-bottom">
   <div class="container-fluid container-xxl py-4 py-lg-5">
     <div class="row g-4 align-items-stretch">
       <div class="col-12 col-xl-8">

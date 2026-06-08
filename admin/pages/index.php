@@ -72,7 +72,7 @@ echo smartcms_admin_page_header($admin, '페이지 권한', 'pages');
   <div class="card-body p-4">
     <h2 class="h5 fw-bold mb-2">등록된 페이지 권한</h2>
     <p class="text-body-secondary mb-4">페이지가 `smartcms_require_page_view()`를 호출하면 여기에 자동 등록됩니다.</p>
-    <div class="table-responsive">
+    <div class="table-responsive border rounded bg-white">
       <table class="table table-hover align-middle">
         <thead>
           <tr>
