@@ -12,6 +12,32 @@ Bootstrap의 유틸리티·그리드·컴포넌트를 최대한 활용하고,
 디자인 방향: **네이버 포털을 연상시키는 선명한 그린 액센트 + 흰 표면 + 정돈된 카드 레이아웃**.
 그림자 대신 `1px hairline + 흰 카드 on 크림 배경`으로 계층을 만든다.
 
+## Current Pages
+
+프로젝트의 현재 화면 기준으로 문서를 유지한다.
+
+- `/`: 홈
+- `/board/`: 게시판 목록
+- `/board/view/`: 게시글 보기
+- `/board/write/`: 글쓰기
+- `/board/edit/`: 글 수정
+- `/board/download/`: 첨부 다운로드
+- `/member/login/`: 회원 로그인
+- `/member/register/`: 회원가입
+- `/member/password/`: 비밀번호 재설정
+- `/member/mypage/`: 마이페이지
+- `/member/logout/`: 로그아웃
+- `/admin/login/`: 관리자 로그인
+- `/admin/dashboard/`: 관리자 대시보드
+- `/admin/users/`: 회원 관리
+- `/admin/boards/`: 게시판 관리
+- `/admin/pages/`: 페이지 권한
+- `/admin/logs/`: 접속 로그
+- `/admin/database/`: DB 관리
+- `/admin/settings/`: 환경 설정
+
+공통 레이아웃은 `head.php` / `foot.php`를 기반으로 하고, 화면 성격에 따라 사이트 레이아웃과 관리자 레이아웃으로 나뉜다.
+
 ## Design Principles
 
 1. **Clean canvas** — 페이지 바닥은 연한 그레이, 순백 `#ffffff`는 카드 표면에 쓴다.
@@ -182,12 +208,32 @@ Bootstrap `table table-hover` 기반.
 - Bootstrap `table table-hover` 사용
 - 페이지네이션: `.sc-pagination` + `.sc-page-link`
 
+### Board Detail & Editor
+
+- 게시글 보기, 글쓰기, 글 수정은 하나의 보드 컨텍스트를 공유한다.
+- 상단에는 게시판명과 핵심 액션을 배치한다.
+- 본문은 카드형 섹션으로 나누고, 첨부파일·댓글·관련 게시글을 분리한다.
+- 편집 화면은 폼 중심, 보기 화면은 콘텐츠 중심으로 구성한다.
+
+### Member Pages
+
+- 로그인, 회원가입, 비밀번호 재설정, 마이페이지는 인증 중심 화면이다.
+- 인증 화면은 단일 카드, 짧은 폼, 보조 링크 중심으로 유지한다.
+- 회원 페이지는 사이트 공통 헤더와 푸터를 사용한다.
+
 ### Home Layout
 
 - 히어로 → 공지 배너 → 요약 스트립 → 2열 메인 레이아웃 순서
 - 히어로: 밝은 배경, 디스플레이 타이포, 그라디언트·다크배경 금지
 - 요약 스트립: 3열 카드, 실질적 지표 (총 게시글, 총 회원, 오늘 방문)
 - 위젯: `.sc-widget` = `.sc-panel` + hover border 강화
+
+### Current Composition Rules
+
+- 메인 콘텐츠는 의미에 맞는 `main`과 `section`을 우선한다.
+- 보조 네비게이션은 `nav`, 관련 보조 정보는 `aside`로 분리한다.
+- 페이지 상단은 `header`, 하단은 `footer`를 사용한다.
+- 관리자 화면은 전용 문서 `admin/DESIGN.md`를 우선 참조한다.
 
 ## Do
 
