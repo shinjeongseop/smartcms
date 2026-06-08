@@ -100,7 +100,7 @@ if (!function_exists('smartcms_admin_page_header')) {
         $html .= '<span class="sc-brand-mark"><i class="bi bi-n-square-fill"></i></span>';
         $html .= '<span class="sc-brand-text">smartcms</span>';
         $html .= '</a>';
-        $html .= '<button class="btn btn-outline-secondary btn-sm rounded-pill" type="button" data-bs-toggle="offcanvas" data-bs-target="#smartcmsAdminNav" aria-controls="smartcmsAdminNav" aria-label="관리자 메뉴 열기">';
+        $html .= '<button class="btn btn-outline-secondary btn-sm rounded-pill" type="button" data-bs-toggle="collapse" data-bs-target="#smartcmsAdminNav" aria-controls="smartcmsAdminNav" aria-expanded="false" aria-label="관리자 메뉴 열기">';
         $html .= '<i class="bi bi-list me-1"></i>메뉴';
         $html .= '</button>';
         $html .= '</div>';
@@ -108,15 +108,8 @@ if (!function_exists('smartcms_admin_page_header')) {
         $html .= '<div><p class="text-uppercase text-success small fw-semibold mb-1">Admin Console</p><h1 class="h4 mb-0 text-body">' . smartcms_h($title) . '</h1></div>';
         $html .= '<span class="sc-avatar">' . smartcms_h($initial) . '</span>';
         $html .= '</div>';
-        $html .= '</div></div>';
-
-        $html .= '<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="smartcmsAdminNav" aria-labelledby="smartcmsAdminNavLabel">';
-        $html .= '<div class="offcanvas-header border-bottom">';
-        $html .= '<h2 class="offcanvas-title h5 mb-0" id="smartcmsAdminNavLabel">관리자 메뉴</h2>';
-        $html .= '<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="닫기"></button>';
-        $html .= '</div>';
-        $html .= '<div class="offcanvas-body p-0">';
-        $html .= '<div class="p-3">';
+        $html .= '<div class="collapse d-md-none mt-3" id="smartcmsAdminNav">';
+        $html .= '<div class="rounded-4 border bg-white p-3">';
         $html .= '<a class="sc-brand d-inline-flex align-items-center gap-2 text-decoration-none mb-4" href="' . smartcms_h(smartcms_base_url('/admin/dashboard/')) . '">';
         $html .= '<span class="sc-brand-mark"><i class="bi bi-n-square-fill"></i></span>';
         $html .= '<span class="sc-brand-text">smartcms</span>';
@@ -137,7 +130,10 @@ if (!function_exists('smartcms_admin_page_header')) {
         $html .= '<small class="text-body-secondary d-block">level ' . smartcms_h((string)$admin['level']) . '</small>';
         $html .= '</div></div>';
         $html .= '<a class="btn btn-outline-secondary btn-sm rounded-pill w-100 mt-3" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '"><i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
-        $html .= '</div></div></div>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div></div>';
 
         $html .= '<div class="container-fluid">';
         $html .= '<div class="row g-0 min-vh-100">';
