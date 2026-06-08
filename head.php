@@ -183,6 +183,22 @@ if (isset($SMARTCMS_HEAD) && is_array($SMARTCMS_HEAD)) {
     $body_class = trim((string)($SMARTCMS_HEAD['body_class'] ?? ''));
     $css_url = (string)smartcms_config_value('theme.css_url', '/common/css/common.css');
     $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
+    $request_path = (string)(parse_url((string)($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH) ?: '');
+
+    if (str_starts_with($request_path, '/admin/')) {
+        $admin_class = str_starts_with($request_path, '/admin/login/') ? 'smartcms-admin-auth' : 'smartcms-admin-page';
+        $body_classes = preg_split('/\s+/', $body_class, -1, PREG_SPLIT_NO_EMPTY) ?: [];
+
+        if (!in_array($admin_class, $body_classes, true)) {
+            $body_classes[] = $admin_class;
+        }
+
+        $body_class = trim(implode(' ', $body_classes));
+
+        if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
+            $stylesheets[] = '/admin/css/admin.css';
+        }
+    }
 
     ?>
 <!doctype html>
