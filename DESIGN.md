@@ -197,6 +197,7 @@ Bootstrap `table table-hover` 기반.
 - 디스플레이 heading weight 600~700, 본문 400
 - 새 페이지는 반드시 `head.php` / `foot.php`를 공통 포함해서 사용
 - 상단 공통 레이아웃은 `head.php`, 하단 공통 레이아웃은 `foot.php`에서 관리한다
+- 시멘틱 태그를 필수로 사용한다. 문서 구조는 `header`, `main`, `section`, `aside`, `nav`, `footer`를 우선하고, 의미 없는 `div` 남용을 피한다
 
 ## Don't
 
