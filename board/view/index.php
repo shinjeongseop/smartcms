@@ -71,13 +71,12 @@ $comments = smartcms_board_comments((int)$post['id']);
 $files = smartcms_board_files((int)$post['id']);
 $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_key'], 5);
 
-$SMARTCMS_HEAD = [
-    'title' => (string)$post['title'],
-    'body_class' => 'smartcms-board-page',
-]; require SMARTCMS_ROOT . '/head.php';?>
-<?= smartcms_site_header((string)$board['board_key']) ?>
+$SMARTCMS_HEAD = ['title' => (string)$post['title'], 'body_class' => 'bg-body'];
+require SMARTCMS_ROOT . '/head.php';
+echo smartcms_site_header((string)$board['board_key']);
+?>
 
-<?= smartcms_page_container_start() ?>
+<main class="container-fluid container-xxl py-4 py-lg-5">
   <header class="card border-0 shadow-sm mb-4">
     <div class="card-body p-4 p-lg-5">
       <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
@@ -92,84 +91,91 @@ $SMARTCMS_HEAD = [
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <?= smartcms_two_column_start() ?>
-    <article class="card border-0 shadow-sm">
-      <div class="card-body p-4 p-lg-5">
-        <div class="d-flex align-items-start justify-content-between gap-2 mb-3">
-          <div>
-            <?php if ((int)$post['is_notice'] === 1): ?><span class="badge text-bg-primary me-1">공지</span><?php endif; ?>
-            <?php if ((int)$post['is_secret'] === 1): ?><span class="badge text-bg-secondary me-1">비밀글</span><?php endif; ?>
-          </div>
-          <?php if ($can_manage_post): ?>
-            <a class="btn btn-outline-secondary btn-sm rounded-pill flex-shrink-0"
-               href="<?= smartcms_h(smartcms_base_url('/board/edit/')
-                   . '?board=' . rawurlencode((string)$board['board_key'])
-                   . '&id=' . rawurlencode((string)$post['id'])) ?>">
-              <i class="bi bi-pencil me-1"></i>수정
-            </a>
-          <?php endif; ?>
-        </div>
-
-        <div class="d-flex flex-wrap gap-3 py-3 border-top border-bottom text-body-secondary small mb-4">
-          <span><i class="bi bi-person me-1"></i><?= smartcms_h($post['author_name']) ?></span>
-          <span><i class="bi bi-clock me-1"></i><?= smartcms_h($post['created_at']) ?></span>
-          <span><i class="bi bi-eye me-1"></i><?= number_format((int)$post['view_count']) ?></span>
-          <span><i class="bi bi-chat me-1"></i><?= count($comments) ?></span>
-        </div>
-
-        <div class="mb-4 text-break lh-lg">
-          <?= nl2br(smartcms_h($post['content'])) ?>
-        </div>
-
-        <?php if ($files): ?>
-          <div class="mb-4">
-            <h3 class="h6 fw-semibold mb-3">첨부파일</h3>
-            <div class="list-group">
-              <?php foreach ($files as $file): ?>
-                <a class="list-group-item list-group-item-action d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2"
-                   href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>">
-                  <span class="fw-semibold"><i class="bi bi-paperclip me-1"></i><?= smartcms_h($file['original_name']) ?></span>
-                  <small class="text-body-secondary"><?= number_format((int)$file['file_size']) ?> bytes · 다운로드 <?= (int)$file['download_count'] ?>회</small>
-                </a>
-              <?php endforeach; ?>
+  <div class="row g-4 align-items-start">
+    <div class="col-12 col-md-8">
+      <article class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-lg-5">
+          <div class="d-flex align-items-start justify-content-between gap-2 mb-3">
+            <div>
+              <?php if ((int)$post['is_notice'] === 1): ?><span class="badge text-bg-primary me-1">공지</span><?php endif; ?>
+              <?php if ((int)$post['is_secret'] === 1): ?><span class="badge text-bg-secondary me-1">비밀글</span><?php endif; ?>
             </div>
+            <?php if ($can_manage_post): ?>
+              <a class="btn btn-secondary btn-sm rounded-pill flex-shrink-0"
+                 href="<?= smartcms_h(smartcms_base_url('/board/edit/')
+                     . '?board=' . rawurlencode((string)$board['board_key'])
+                     . '&id=' . rawurlencode((string)$post['id'])) ?>">
+                <i class="bi bi-pencil me-1"></i>수정
+              </a>
+            <?php endif; ?>
           </div>
-        <?php endif; ?>
 
-        <div class="pt-3 border-top">
-          <a class="btn btn-outline-secondary rounded-pill"
-             href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
-            <i class="bi bi-list-ul me-1"></i>목록으로
-          </a>
-        </div>
-      </div>
-    </article>
-  <?= smartcms_two_column_middle() ?>
-    <?= smartcms_sidebar_card(
-      (string)$board['board_name'],
-      '<p class="mb-0 text-body-secondary">' . smartcms_h((string)($board['description'] ?? '게시판을 확인하세요.')) . '</p>',
-      '<div class="d-flex flex-wrap gap-2">'
-      . '<a class="btn btn-primary btn-sm rounded-pill" href="' . smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) . '">글쓰기</a>'
-      . '<a class="btn btn-outline-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_board_url((string)$board['board_key'])) . '">새로고침</a>'
-      . '</div>'
-    ) ?>
-    <div class="card border-0 shadow-sm mt-3">
-      <div class="card-body p-4">
-        <h3 class="h6 fw-semibold mb-3">최근 글</h3>
-        <div class="list-group list-group-flush">
-          <?php foreach ($recent_board_posts as $recent): ?>
-            <a class="list-group-item list-group-item-action px-0 text-truncate"
-               href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
-              <?= smartcms_h($recent['title']) ?>
-            </a>
-          <?php endforeach; ?>
-          <?php if (!$recent_board_posts): ?>
-            <div class="text-body-secondary">최근 글이 없습니다.</div>
+          <div class="d-flex flex-wrap gap-3 py-3 border-top border-bottom text-body-secondary small mb-4">
+            <span><i class="bi bi-person me-1"></i><?= smartcms_h($post['author_name']) ?></span>
+            <span><i class="bi bi-clock me-1"></i><?= smartcms_h($post['created_at']) ?></span>
+            <span><i class="bi bi-eye me-1"></i><?= number_format((int)$post['view_count']) ?></span>
+            <span><i class="bi bi-chat me-1"></i><?= count($comments) ?></span>
+          </div>
+
+          <div class="mb-4 text-break lh-lg">
+            <?= nl2br(smartcms_h($post['content'])) ?>
+          </div>
+
+          <?php if ($files): ?>
+            <div class="mb-4">
+              <h3 class="h6 fw-semibold mb-3">첨부파일</h3>
+              <div class="list-group">
+                <?php foreach ($files as $file): ?>
+                  <a class="list-group-item list-group-item-action d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2"
+                     href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>">
+                    <span class="fw-semibold"><i class="bi bi-paperclip me-1"></i><?= smartcms_h($file['original_name']) ?></span>
+                    <small class="text-body-secondary"><?= number_format((int)$file['file_size']) ?> bytes · 다운로드 <?= (int)$file['download_count'] ?>회</small>
+                  </a>
+                <?php endforeach; ?>
+              </div>
+            </div>
           <?php endif; ?>
+
+          <div class="pt-3 border-top">
+            <a class="btn btn-secondary rounded-pill"
+               href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
+              <i class="bi bi-list-ul me-1"></i>목록으로
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <aside class="col-12 col-md-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
+          <p class="mb-3 text-body-secondary"><?= smartcms_h((string)($board['description'] ?? '게시판을 확인하세요.')) ?></p>
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-primary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">글쓰기</a>
+            <a class="btn btn-secondary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">새로고침</a>
+          </div>
         </div>
       </div>
-    </div>
-  <?= smartcms_two_column_end() ?>
+
+      <div class="card border-0 shadow-sm mt-3">
+        <div class="card-body p-4">
+          <h3 class="h6 fw-semibold mb-3">최근 글</h3>
+          <div class="list-group list-group-flush">
+            <?php foreach ($recent_board_posts as $recent): ?>
+              <a class="list-group-item list-group-item-action px-0 text-truncate"
+                 href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
+                <?= smartcms_h($recent['title']) ?>
+              </a>
+            <?php endforeach; ?>
+            <?php if (!$recent_board_posts): ?>
+              <div class="text-body-secondary">최근 글이 없습니다.</div>
+            <?php endif; ?>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
 
   <section class="card border-0 shadow-sm mt-4">
     <div class="card-body p-4 p-lg-5">
@@ -189,7 +195,7 @@ $SMARTCMS_HEAD = [
                   <?= smartcms_csrf_input() ?>
                   <input type="hidden" name="action" value="comment_hide">
                   <input type="hidden" name="comment_id" value="<?= smartcms_h($comment['id']) ?>">
-                  <button class="btn btn-outline-danger btn-sm rounded-pill" type="submit">댓글 숨김</button>
+                  <button class="btn btn-danger btn-sm rounded-pill" type="submit">댓글 숨김</button>
                 </form>
               <?php endif; ?>
             </article>
@@ -220,8 +226,8 @@ $SMARTCMS_HEAD = [
       <?php endif; ?>
     </div>
   </section>
+</main>
 
-  <?= smartcms_page_container_end() ?>
 <?= smartcms_site_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];

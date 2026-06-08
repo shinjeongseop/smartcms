@@ -46,7 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$SMARTCMS_HEAD = ['title' => '글쓰기', 'body_class' => 'smartcms-board-page']; require SMARTCMS_ROOT . '/head.php';$form_action = 'create';
+$SMARTCMS_HEAD = ['title' => '글쓰기', 'body_class' => 'bg-body'];
+require SMARTCMS_ROOT . '/head.php';
+echo smartcms_site_header((string)$board['board_key']);
+$form_action = 'create';
 $form_enctype = 'multipart/form-data';
 $form_values = ['title' => '', 'content' => '', 'is_notice' => false, 'is_secret' => false];
 $show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
@@ -55,9 +58,8 @@ $back_url = smartcms_board_url((string)$board['board_key']);
 $back_label = '목록으로';
 $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_key'], 5);
 ?>
-<?= smartcms_site_header((string)$board['board_key']) ?>
 
-<?= smartcms_page_container_start() ?>
+<main class="container-fluid container-xxl py-4 py-lg-5">
   <header class="card border-0 shadow-sm mb-4">
     <div class="card-body p-4 p-lg-5">
       <p class="text-uppercase small fw-semibold text-primary mb-2">Write</p>
@@ -70,33 +72,46 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
     <?= smartcms_alert($message, $message_type) ?>
   <?php endif; ?>
 
-  <?= smartcms_two_column_start() ?>
-    <?php require smartcms_board_skin_template($board, 'form'); ?>
-  <?= smartcms_two_column_middle() ?>
-    <?= smartcms_sidebar_card(
-      (string)$board['board_name'],
-      '<p class="mb-0 text-body-secondary">글쓰기 전에 게시판 성격과 공지사항을 확인하세요.</p>',
-      '<div class="d-flex flex-wrap gap-2">'
-      . '<a class="btn btn-outline-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_board_url((string)$board['board_key'])) . '">게시판 보기</a>'
-      . '<a class="btn btn-primary btn-sm rounded-pill" href="' . smartcms_h(smartcms_board_url((string)$board['board_key'])) . '">목록</a>'
-      . '</div>'
-    ) ?>
-    <div class="card border-0 shadow-sm mt-3">
-      <div class="card-body p-4">
-        <h3 class="h6 fw-semibold mb-3">최근 글</h3>
-        <div class="list-group list-group-flush">
-          <?php foreach ($recent_board_posts as $recent): ?>
-            <a class="list-group-item list-group-item-action px-0 text-truncate"
-               href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
-              <?= smartcms_h($recent['title']) ?>
-            </a>
-          <?php endforeach; ?>
+  <div class="row g-4 align-items-start">
+    <div class="col-12 col-md-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-lg-5">
+          <?php require smartcms_board_skin_template($board, 'form'); ?>
         </div>
       </div>
     </div>
-  <?= smartcms_two_column_end() ?>
+    <aside class="col-12 col-md-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
+          <p class="mb-3 text-body-secondary">글쓰기 전에 게시판 성격과 공지사항을 확인하세요.</p>
+          <div class="d-flex flex-wrap gap-2">
+            <a class="btn btn-secondary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">게시판 보기</a>
+            <a class="btn btn-primary btn-sm rounded-pill" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">목록</a>
+          </div>
+        </div>
+      </div>
 
-  <?= smartcms_page_container_end() ?>
+      <div class="card border-0 shadow-sm mt-3">
+        <div class="card-body p-4">
+          <h3 class="h6 fw-semibold mb-3">최근 글</h3>
+          <div class="list-group list-group-flush">
+            <?php foreach ($recent_board_posts as $recent): ?>
+              <a class="list-group-item list-group-item-action px-0 text-truncate"
+                 href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
+                <?= smartcms_h($recent['title']) ?>
+              </a>
+            <?php endforeach; ?>
+            <?php if (!$recent_board_posts): ?>
+              <div class="text-body-secondary">최근 글이 없습니다.</div>
+            <?php endif; ?>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
 <?= smartcms_site_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
