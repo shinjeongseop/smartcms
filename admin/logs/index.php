@@ -51,62 +51,118 @@ echo smartcms_admin_page_header($admin, '접속 로그', 'logs');
   <?= smartcms_alert($message, $message_type) ?>
 <?php endif; ?>
 
-<?php foreach ([
-  ['title' => '최근 접속 로그', 'rows' => $access_logs, 'columns' => ['ID', '회원', '유형', '대상', '경로', '결과', '시간']],
-  ['title' => '최근 로그인 로그', 'rows' => $login_logs, 'columns' => ['ID', '회원', '이메일', '결과', '시간']],
-  ['title' => '최근 게시판 감사 로그', 'rows' => $board_logs, 'columns' => ['ID', '게시판', '글', '회원', '액션', '내용', '시간']],
-] as $section): ?>
-  <div class="card border-0 shadow-sm mb-3">
-    <div class="card-body p-4">
-      <h2 class="h5 fw-bold mb-3"><?= smartcms_h($section['title']) ?></h2>
-      <div class="table-responsive border rounded bg-white">
-        <table class="table table-hover align-middle">
-          <thead>
-            <tr>
-              <?php foreach ($section['columns'] as $column): ?>
-                <th><?= smartcms_h($column) ?></th>
-              <?php endforeach; ?>
-            </tr>
-          </thead>
-          <tbody>
-            <?php foreach ($section['rows'] as $row): ?>
-              <tr>
-                <?php if ($section['title'] === '최근 접속 로그'): ?>
-                  <td><?= smartcms_h($row['id']) ?></td>
-                  <td><?= smartcms_h($row['user_id'] ?? '-') ?></td>
-                  <td><?= smartcms_h($row['access_type']) ?></td>
-                  <td><?= smartcms_h($row['target_type']) ?> / <?= smartcms_h($row['target_key'] ?? '-') ?></td>
-                  <td><?= smartcms_h($row['method']) ?> <?= smartcms_h($row['request_path']) ?></td>
-                  <td><?= smartcms_h($row['result']) ?> <?= smartcms_h($row['status_code']) ?></td>
-                  <td><?= smartcms_h($row['created_at']) ?></td>
-                <?php elseif ($section['title'] === '최근 로그인 로그'): ?>
-                  <td><?= smartcms_h($row['id']) ?></td>
-                  <td><?= smartcms_h($row['user_id'] ?? '-') ?></td>
-                  <td><?= smartcms_h($row['email']) ?></td>
-                  <td><?= smartcms_h($row['result']) ?></td>
-                  <td><?= smartcms_h($row['created_at']) ?></td>
-                <?php else: ?>
-                  <td><?= smartcms_h($row['id']) ?></td>
-                  <td><?= smartcms_h($row['board_id'] ?? '-') ?></td>
-                  <td><?= smartcms_h($row['post_id'] ?? '-') ?></td>
-                  <td><?= smartcms_h($row['user_id'] ?? '-') ?></td>
-                  <td><?= smartcms_h($row['action']) ?></td>
-                  <td><?= smartcms_h($row['message']) ?></td>
-                  <td><?= smartcms_h($row['created_at']) ?></td>
-                <?php endif; ?>
-              </tr>
-            <?php endforeach; ?>
-            <?php if (!$section['rows']): ?>
-              <tr>
-                <td colspan="<?= count($section['columns']) ?>" class="text-body-secondary">데이터가 없습니다.</td>
-              </tr>
-            <?php endif; ?>
-          </tbody>
-        </table>
-      </div>
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white border-bottom-0 pt-4 px-4">
+        <ul class="nav nav-tabs card-header-tabs border-bottom-0 gap-2" id="logTab" role="tablist">
+            <li class="nav-item">
+                <button class="nav-link active fw-bold border-0 py-3" id="access-tab" data-bs-toggle="tab" data-bs-target="#access-panel" type="button">접속 로그</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link fw-bold border-0 py-3" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-panel" type="button">로그인 이력</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link fw-bold border-0 py-3" id="audit-tab" data-bs-toggle="tab" data-bs-target="#audit-panel" type="button">게시판 감사</button>
+            </li>
+        </ul>
     </div>
-  </div>
-<?php endforeach; ?>
+    <div class="tab-content">
+        <!-- 접속 로그 패널 -->
+        <div class="tab-pane fade show active" id="access-panel" role="tabpanel" aria-labelledby="access-tab">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-nowrap">
+                    <thead class="bg-light text-secondary small text-uppercase">
+                        <tr>
+                            <th class="ps-4">일시</th>
+                            <th>유형</th>
+                            <th>대상/경로</th>
+                            <th>IP (Hash)</th>
+                            <th class="text-end pe-4">상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($access_logs as $log): ?>
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex flex-column small">
+                                        <span><?= date('Y-m-d', strtotime($log['created_at'])) ?></span>
+                                        <span class="text-secondary opacity-50"><?= date('H:i:s', strtotime($log['created_at'])) ?></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary-subtle text-secondary small text-uppercase" style="font-size:0.65rem;">
+                                        <?= smartcms_h($log['access_type']) ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="fw-medium small"><?= smartcms_h($log['target_type']) ?>: <?= smartcms_h($log['target_key'] ?? '-') ?></div>
+                                    <div class="text-xs text-secondary opacity-75"><?= smartcms_h($log['request_path']) ?></div>
+                                </td>
+                                <td><code class="text-xs text-muted"><?= substr($log['ip_hash'] ?? 'N/A', 0, 10) ?>...</code></td>
+                                <td class="text-end pe-4">
+                                    <span class="badge bg-<?= $log['status_code'] >= 400 ? 'danger' : 'success' ?>-subtle text-<?= $log['status_code'] >= 400 ? 'danger' : 'success' ?>">
+                                        <?= (int)$log['status_code'] ?>
+                                    </span>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 로그인 로그 패널 -->
+        <div class="tab-pane fade" id="login-panel" role="tabpanel" aria-labelledby="login-tab">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-nowrap">
+                    <thead class="bg-light text-secondary small text-uppercase">
+                        <tr>
+                            <th class="ps-4">일시</th>
+                            <th>이메일</th>
+                            <th>결과</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($login_logs as $log): ?>
+                            <tr>
+                                <td class="ps-4"><?= smartcms_h($log['created_at']) ?></td>
+                                <td><?= smartcms_h($log['email']) ?></td>
+                                <td>
+                                    <span class="badge bg-<?= $log['result'] === 'success' ? 'success' : 'danger' ?> text-uppercase" style="font-size:0.7rem;">
+                                        <?= smartcms_h($log['result']) ?>
+                                    </span>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 게시판 감사 로그 패널 -->
+        <div class="tab-pane fade" id="audit-panel" role="tabpanel" aria-labelledby="audit-tab">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-nowrap">
+                    <thead class="bg-light text-secondary small text-uppercase">
+                        <tr>
+                            <th class="ps-4">일시</th>
+                            <th>액션</th>
+                            <th>내용</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($board_logs as $log): ?>
+                            <tr>
+                                <td class="ps-4"><?= smartcms_h($log['created_at']) ?></td>
+                                <td><span class="badge bg-info-subtle text-info border-0"><?= smartcms_h($log['action']) ?></span></td>
+                                <td class="small text-secondary"><?= smartcms_h($log['message']) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?= smartcms_admin_footer() ?>
 <?php

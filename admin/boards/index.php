@@ -94,26 +94,29 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
 
 <div class="row g-3">
   <div class="col-12">
-    <div class="card border-0 shadow-sm">
-      <div class="card-body p-4">
-        <h2 class="h5 fw-bold mb-4">게시판 생성</h2>
+    <div class="card border-0 shadow-sm mb-4 sc-card-accent">
+      <div class="card-body p-4 p-lg-5">
+        <div class="d-flex align-items-center gap-2 mb-4">
+          <div class="p-2 bg-primary-subtle text-primary rounded-3"><i class="bi bi-plus-circle-fill fs-5"></i></div>
+          <h5 class="card-title mb-0 fw-bold">새 게시판 생성</h5>
+        </div>
         <form class="row g-3" method="post">
           <?= smartcms_csrf_input() ?>
           <input type="hidden" name="action" value="create">
           <div class="col-12 col-lg-4">
-            <label for="board_key" class="form-label">게시판 키</label>
-            <input class="form-control" id="board_key" name="board_key" placeholder="notice" required>
+            <label for="board_key" class="form-label fw-semibold small text-secondary">게시판 키 (영문/숫자)</label>
+            <input class="form-control form-control-lg" id="board_key" name="board_key" placeholder="notice" required>
           </div>
           <div class="col-12 col-lg-4">
-            <label for="board_name" class="form-label">게시판 이름</label>
-            <input class="form-control" id="board_name" name="board_name" placeholder="공지사항" required>
+            <label for="board_name" class="form-label fw-semibold small text-secondary">게시판 이름</label>
+            <input class="form-control form-control-lg" id="board_name" name="board_name" placeholder="공지사항" required>
           </div>
           <div class="col-12 col-lg-4">
-            <label for="description" class="form-label">설명</label>
-            <input class="form-control" id="description" name="description">
+            <label for="description" class="form-label fw-semibold small text-secondary">간략 설명</label>
+            <input class="form-control form-control-lg" id="description" name="description">
           </div>
-          <div class="col-12">
-            <?= smartcms_button('게시판 생성', 'submit') ?>
+          <div class="col-12 mt-4">
+            <?= smartcms_button('게시판 생성하기', 'submit', 'btn-lg w-100 py-3 shadow-sm') ?>
           </div>
         </form>
       </div>
@@ -122,78 +125,58 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
 
   <div class="col-12">
     <div class="card border-0 shadow-sm">
-      <div class="card-body p-4">
-        <h2 class="h5 fw-bold mb-4">게시판 목록</h2>
-        <div class="table-responsive border rounded bg-white">
-          <table class="table table-hover align-middle">
-            <thead>
+      <div class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
+        <h5 class="card-title mb-0 fw-bold">운영 중인 게시판</h5>
+        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold"><?= count($boards) ?>개 활성</span>
+      </div>
+      <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0 text-nowrap">
+            <thead class="bg-light text-secondary small text-uppercase">
               <tr>
-                <th>게시판</th>
-                <th>권한</th>
-                <th>상태</th>
-                <th>관리</th>
+                <th class="ps-4 py-3">게시판 정보</th>
+                <th class="py-3">권한 요약 (Level)</th>
+                <th class="py-3">상태</th>
+                <th class="text-end pe-4 py-3">빠른 설정</th>
               </tr>
             </thead>
             <tbody>
               <?php foreach ($boards as $board): ?>
                 <tr>
-                  <td>
-                    <div class="fw-semibold"><?= smartcms_h($board['board_name']) ?></div>
-                    <a class="text-body-secondary text-decoration-none" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>"><?= smartcms_h($board['board_key']) ?></a>
+                  <td class="ps-4 py-3">
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="p-2 bg-light rounded text-primary"><i class="bi bi-chat-dots"></i></div>
+                      <div>
+                        <div class="fw-bold text-emphasis"><?= smartcms_h($board['board_name']) ?></div>
+                        <a class="text-xs text-primary text-decoration-none opacity-75" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" target="_blank">
+                          <i class="bi bi-link-45deg"></i> /board/<?= smartcms_h($board['board_key']) ?>
+                        </a>
+                      </div>
+                    </div>
                   </td>
-                  <td class="text-body-secondary">
-                    목록 <?= smartcms_h($board['board_list_level'] ?? 0) ?> /
-                    보기 <?= smartcms_h($board['board_view_level'] ?? 0) ?> /
-                    쓰기 <?= smartcms_h($board['board_write_level'] ?? 8) ?>
+                  <td class="py-3">
+                    <div class="d-flex gap-2">
+                      <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">목록 <?= $board['board_list_level'] ?></span>
+                      <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">보기 <?= $board['board_view_level'] ?></span>
+                      <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">쓰기 <?= $board['board_write_level'] ?></span>
+                    </div>
                   </td>
-                  <td><?= smartcms_h($board['status']) ?></td>
-                  <td>
-                    <form class="row g-2" method="post">
+                  <td class="py-3">
+                    <span class="badge bg-<?= $board['status'] === 'active' ? 'success' : 'secondary' ?> p-1 rounded-circle me-1" style="width:6px; height:6px; display:inline-block;"></span>
+                    <span class="small text-capitalize"><?= $board['status'] ?></span>
+                  </td>
+                  <td class="text-end pe-4 py-3">
+                    <form class="d-inline-flex gap-2 align-items-center" method="post">
                       <?= smartcms_csrf_input() ?>
                       <input type="hidden" name="action" value="update">
                       <input type="hidden" name="board_key" value="<?= smartcms_h($board['board_key']) ?>">
-                      <div class="col-12 col-xl-3">
-                        <input class="form-control form-control-sm" name="board_name" value="<?= smartcms_h($board['board_name']) ?>" required>
-                      </div>
-                      <div class="col-12 col-xl-3">
-                        <input class="form-control form-control-sm" name="description" value="<?= smartcms_h($board['description'] ?? '') ?>" placeholder="설명">
-                      </div>
-                      <?php foreach (['board_list_level' => '목록', 'board_view_level' => '보기', 'board_write_level' => '쓰기', 'board_comment_level' => '댓글'] as $field => $label): ?>
-                        <div class="col-6 col-xl-2">
-                          <select class="form-select form-select-sm" name="<?= smartcms_h($field) ?>">
-                            <?php for ($level = 0; $level <= 10; $level++): ?>
-                              <option value="<?= $level ?>" <?= $level === (int)($board[$field] ?? 0) ? 'selected' : '' ?>><?= smartcms_h($label) ?> <?= $level ?></option>
-                            <?php endfor; ?>
-                          </select>
-                        </div>
-                      <?php endforeach; ?>
-                      <div class="col-12 col-xl-2">
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="allow_guest_list" value="1" id="guest_list_<?= smartcms_h($board['board_key']) ?>" <?= (int)($board['allow_guest_list'] ?? 0) === 1 ? 'checked' : '' ?>>
-                          <label class="form-check-label" for="guest_list_<?= smartcms_h($board['board_key']) ?>">목록 게스트</label>
-                        </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="checkbox" name="allow_guest_view" value="1" id="guest_view_<?= smartcms_h($board['board_key']) ?>" <?= (int)($board['allow_guest_view'] ?? 0) === 1 ? 'checked' : '' ?>>
-                          <label class="form-check-label" for="guest_view_<?= smartcms_h($board['board_key']) ?>">보기 게스트</label>
-                        </div>
-                      </div>
-                      <div class="col-6 col-xl-2">
-                        <select class="form-select form-select-sm" name="status">
-                          <?php foreach (['active', 'hidden', 'disabled'] as $status): ?>
-                            <option value="<?= smartcms_h($status) ?>" <?= $status === $board['status'] ? 'selected' : '' ?>><?= smartcms_h($status) ?></option>
-                          <?php endforeach; ?>
-                        </select>
-                      </div>
-                      <div class="col-6 col-xl-2">
-                        <select class="form-select form-select-sm" name="permission_status">
-                          <?php foreach (['active', 'disabled'] as $status): ?>
-                            <option value="<?= smartcms_h($status) ?>" <?= $status === ($board['permission_status'] ?? 'active') ? 'selected' : '' ?>>권한 <?= smartcms_h($status) ?></option>
-                          <?php endforeach; ?>
-                        </select>
-                      </div>
-                      <div class="col-12 col-xl-2">
-                        <button class="btn btn-primary btn-sm w-100" type="submit">저장</button>
-                      </div>
+                      <input class="form-control form-control-sm bg-light border-0" name="board_name" value="<?= smartcms_h($board['board_name']) ?>" style="width:130px;" required>
+                      <select class="form-select form-select-sm bg-light border-0" name="status" style="width:100px;">
+                        <?php foreach (['active', 'hidden', 'disabled'] as $status): ?>
+                          <option value="<?= smartcms_h($status) ?>" <?= $status === $board['status'] ? 'selected' : '' ?>><?= $status ?></option>
+                        <?php endforeach; ?>
+                      </select>
+                      <button class="btn btn-primary btn-sm px-3" type="submit">변경</button>
+                      <a href="/admin/boards/settings/?key=<?= urlencode($board['board_key']) ?>" class="btn btn-outline-secondary btn-sm" title="상세 설정"><i class="bi bi-gear-fill"></i></a>
                     </form>
                   </td>
                 </tr>
