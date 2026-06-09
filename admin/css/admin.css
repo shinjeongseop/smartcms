@@ -1,35 +1,62 @@
+body.smartcms-admin-page {
+  background-color: #f5f5f9;
+}
+
+/* Sidebar Customizations */
+.sc-admin-sidebar .nav-link {
+  transition: all 0.2s ease;
+  color: #697a8d;
+}
+
+.sc-admin-sidebar .nav-link:hover {
+  background-color: rgba(105, 108, 255, 0.04);
+  color: #696cff;
+}
+
+.sc-admin-sidebar .nav-link.active {
+  background: linear-gradient(72.47deg, #696cff 22.16%, rgba(105, 108, 255, 0.7) 76.47%);
+  box-shadow: 0px 2px 6px 0px rgba(105, 108, 255, 0.48);
+}
+
+/* Topbar Customizations */
+.sc-admin-topbar .navbar {
+  backdrop-filter: saturate(200%) blur(6px);
+  background-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Card Patterns */
+.sc-admin-card {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px 0 rgba(67, 89, 113, 0.12);
+  background-color: #fff;
+}
+
+.sc-stat-card {
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px 0 rgba(67, 89, 113, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.sc-stat-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Auth Pages (Login) */
 body.smartcms-admin-auth {
   min-height: 100vh;
   display: flex;
   align-items: center;
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: var(--bs-body-bg);
+  background-color: #f5f5f9;
 }
 
 .form-signin {
-  max-width: 330px;
-  padding: 1rem;
-}
-
-.smartcms-signin-logo {
-  display: block;
-  font-size: 57px;
-  line-height: 1;
-}
-
-.form-signin .form-floating:focus-within {
-  z-index: 2;
-}
-
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  max-width: 400px;
+  padding: 2.5rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px 0 rgba(67, 89, 113, 0.1);
 }

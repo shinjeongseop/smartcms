@@ -17,21 +17,6 @@ if (!function_exists('smartcms_site_nav_items')) {
     }
 }
 
-if (!function_exists('smartcms_admin_nav_items')) {
-    function smartcms_admin_nav_items(): array
-    {
-        return [
-            'dashboard' => ['label' => '대시보드', 'href' => '/admin/dashboard/', 'icon' => 'bi-speedometer2'],
-            'users'     => ['label' => '회원 관리', 'href' => '/admin/users/', 'icon' => 'bi-people-fill'],
-            'boards'    => ['label' => '게시판 관리', 'href' => '/admin/boards/', 'icon' => 'bi-layout-text-window'],
-            'pages'     => ['label' => '페이지 권한', 'href' => '/admin/pages/', 'icon' => 'bi-shield-lock-fill'],
-            'logs'      => ['label' => '접속 로그', 'href' => '/admin/logs/', 'icon' => 'bi-activity'],
-            'database'  => ['label' => 'DB 관리', 'href' => '/admin/database/', 'icon' => 'bi-database-fill'],
-            'settings'  => ['label' => '환경 설정', 'href' => '/admin/settings/', 'icon' => 'bi-gear-fill'],
-        ];
-    }
-}
-
 if (!function_exists('smartcms_site_header')) {
     function smartcms_site_header(string $active = '', string $extra_class = ''): string
     {
@@ -113,82 +98,6 @@ if (!function_exists('smartcms_site_header')) {
         $html .= '</div>';
         $html .= '</div>';
         $html .= '</nav>';
-
-        return $html;
-    }
-}
-
-if (!function_exists('smartcms_admin_page_header')) {
-    function smartcms_admin_page_header(array $admin, string $title, string $active): string
-    {
-        $initial = smartcms_admin_initial((string)$admin['name']);
-        $items = smartcms_admin_nav_items();
-
-        $html  = '<main class="min-vh-100 d-flex flex-column bg-body-tertiary">';
-        $html .= '<header class="navbar navbar-expand-md navbar-light bg-white border-bottom sticky-top">';
-        $html .= '<div class="container-fluid px-3 px-lg-4">';
-        $html .= '<a class="navbar-brand d-inline-flex align-items-center gap-2 fw-bold text-primary text-decoration-none" href="' . smartcms_h(smartcms_base_url('/admin/dashboard/')) . '">';
-        $html .= '<span class="badge bg-primary-subtle text-primary rounded p-2 lh-1"><i class="bi bi-app-indicator fs-4"></i></span>';
-        $html .= '<span>smartcms</span>';
-        $html .= '</a>';
-        $html .= '<button class="navbar-toggler border-0 shadow-none d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#smartcmsAdminNav" aria-controls="smartcmsAdminNav" aria-expanded="false" aria-label="관리자 메뉴 열기">';
-        $html .= '<span class="navbar-toggler-icon"></span>';
-        $html .= '</button>';
-        $html .= '<div class="collapse navbar-collapse d-md-none mt-3 mt-md-0" id="smartcmsAdminNav">';
-        $html .= '<div class="container-fluid px-0 py-3 border-top bg-white">';
-        $html .= '<nav class="nav nav-pills flex-column gap-2" aria-label="관리자 메뉴">';
-        foreach ($items as $key => $item) {
-            $activeClass = $key === $active ? ' active shadow-sm' : ' text-secondary';
-            $html .= '<a class="nav-link d-flex align-items-center gap-2 py-2 px-3 rounded-2' . $activeClass . '" href="' . smartcms_h(smartcms_base_url((string)$item['href'])) . '">'
-                  . '<i class="bi ' . smartcms_h((string)$item['icon']) . '"></i>'
-                  . '<span>' . smartcms_h((string)$item['label']) . '</span>'
-                  . '</a>';
-        }
-        $html .= '</nav>';
-        $html .= '</header>';
-
-        $html .= '<div class="container-fluid flex-grow-1 px-0">';
-        $html .= '<div class="row g-0 min-vh-100 align-items-stretch">';
-        $html .= '<aside class="col-12 col-md-3 col-xxl-2 d-none d-md-flex flex-column bg-white border-end p-3 sticky-top" style="height: 100vh; overflow-y: auto;">';
-        $html .= '<a class="navbar-brand d-inline-flex align-items-center gap-2 fw-bold text-primary text-decoration-none mb-4" href="' . smartcms_h(smartcms_base_url('/admin/dashboard/')) . '">';
-        $html .= '<span class="badge bg-primary-subtle text-primary rounded p-2 lh-1"><i class="bi bi-app-indicator fs-4"></i></span>';
-        $html .= '<span class="fs-4">smartcms</span>';
-        $html .= '</a>';
-        $html .= '<p class="text-uppercase small fw-bold text-secondary opacity-50 mb-3 px-2" style="font-size: 0.65rem; letter-spacing: 0.05rem;">Admin Menu</p>';
-        $html .= '<nav class="nav nav-pills flex-column gap-1" aria-label="관리자 메뉴">';
-        foreach ($items as $key => $item) {
-            $activeClass = $key === $active ? ' active shadow-sm fw-bold' : ' text-secondary';
-            $html .= '<a class="nav-link d-flex align-items-center gap-2 py-2 px-3 rounded-2' . $activeClass . '" href="' . smartcms_h(smartcms_base_url((string)$item['href'])) . '">'
-                  . '<i class="bi ' . smartcms_h((string)$item['icon']) . ' fs-5"></i>'
-                  . '<span class="fw-medium">' . smartcms_h((string)$item['label']) . '</span>'
-                  . '</a>';
-        }
-        $html .= '</nav>';
-        $html .= '<div class="card mt-auto border-0 bg-light rounded-3 mb-2">';
-        $html .= '<div class="card-body p-3 d-flex align-items-center gap-2">';
-        $html .= '<span class="badge bg-primary rounded-circle p-2 lh-1" style="width:36px; height:36px; line-height:20px;">' . smartcms_h($initial) . '</span>';
-        $html .= '<div class="min-w-0 flex-grow-1">';
-        $html .= '<strong class="d-block text-body text-truncate small">' . smartcms_h((string)$admin['name']) . '</strong>';
-        $html .= '<small class="text-secondary d-block" style="font-size: 0.7rem;">LV ' . smartcms_h((string)$admin['level']) . ' · Admin</small>';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '<a class="btn btn-outline-danger btn-sm w-100 border-0 text-start px-3" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>';
-
-        $html .= '<section class="col-12 col-md-9 col-xxl-10 p-3 p-lg-4">';
-        $html .= '<header class="card mb-4 d-none d-md-block">';
-        $html .= '<div class="card-body">';
-        $html .= '<div class="d-flex flex-column flex-xl-row align-items-xl-center justify-content-between gap-3">';
-        $html .= '<div><p class="text-uppercase text-success small fw-semibold mb-1">Admin Console</p><h1 class="h2 mb-0 text-body">' . smartcms_h($title) . '</h1></div>';
-        $html .= '<div class="d-flex align-items-center gap-3">';
-        $html .= '<span class="badge text-bg-primary rounded-circle p-2 lh-1">' . smartcms_h($initial) . '</span>';
-        $html .= '<div><strong class="d-block text-body">' . smartcms_h((string)$admin['name']) . '</strong><small class="text-body-secondary d-block">level ' . smartcms_h((string)$admin['level']) . '</small></div>';
-        $html .= '<a class="btn btn-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '"><i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</div>';
-        $html .= '</header>';
-        $html .= '<div class="d-grid gap-4">';
 
         return $html;
     }

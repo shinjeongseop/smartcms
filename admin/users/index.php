@@ -59,7 +59,7 @@ echo smartcms_admin_page_header($admin, '회원 관리', 'users');
   <?= smartcms_alert($message, $message_type) ?>
 <?php endif; ?>
 
-<div class="card border-0 shadow-sm mb-4">
+<div class="sc-admin-card mb-4">
     <div class="card-body p-4">
         <form method="get" class="row g-3 align-items-center">
             <div class="col-12 col-md-6 col-lg-4">
@@ -76,7 +76,7 @@ echo smartcms_admin_page_header($admin, '회원 관리', 'users');
     </div>
 </div>
 
-<div class="card border-0 shadow-sm">
+<div class="sc-admin-card">
     <div class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
         <h5 class="card-title mb-0 fw-bold">전체 회원 목록</h5>
         <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold"><?= number_format($total_users) ?>명 조회됨</span>

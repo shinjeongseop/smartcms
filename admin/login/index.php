@@ -33,37 +33,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$SMARTCMS_HEAD = ['title' => '관리자 로그인'];
+$SMARTCMS_HEAD = ['title' => '관리자 로그인', 'body_class' => 'smartcms-admin-auth'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
-<main class="form-signin w-100 m-auto text-center">
+<main class="form-signin w-100 m-auto">
+  <div class="text-center mb-4">
+    <a href="/" class="d-inline-flex align-items-center gap-2 text-decoration-none fw-bold text-dark fs-2 mb-4">
+      <span class="badge bg-primary p-2 lh-1 rounded-3 shadow-sm"><i class="bi bi-app-indicator fs-3 text-white"></i></span>
+      <span>smartcms</span>
+    </a>
+    <h1 class="h4 fw-bold mb-2">Welcome to Admin Panel! 👋</h1>
+    <p class="text-secondary small">Please sign-in to your account and start the adventure</p>
+  </div>
+
+  <?php if ($message !== ''): ?>
+    <div class="mb-3"><?= smartcms_alert($message, $message_type) ?></div>
+  <?php endif; ?>
+
   <form method="post">
     <?= smartcms_csrf_input() ?>
-    <i class="bi bi-bootstrap-fill mb-4 text-primary smartcms-signin-logo" aria-hidden="true"></i>
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-
-    <?php if ($message !== ''): ?>
-      <?= smartcms_alert($message, $message_type) ?>
-    <?php endif; ?>
-
-    <div class="form-floating">
-      <input class="form-control" id="email" name="email" type="email"
-             value="<?= smartcms_h($email) ?>" placeholder="name@example.com" autocomplete="email" required>
-      <label for="email">Email address</label>
+    
+    <div class="mb-3">
+      <label for="email" class="form-label small fw-bold text-uppercase opacity-75">Email address</label>
+      <input class="form-control form-control-lg fs-6" id="email" name="email" type="email"
+             value="<?= smartcms_h($email) ?>" placeholder="Enter your email" autocomplete="email" required>
     </div>
-    <div class="form-floating">
-      <input class="form-control" id="password" name="password" type="password"
-             placeholder="Password" autocomplete="current-password" required>
-      <label for="password">Password</label>
+    
+    <div class="mb-3">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <label for="password" class="form-label small fw-bold text-uppercase opacity-75 mb-0">Password</label>
+        <a href="#" class="text-primary small text-decoration-none">Forgot Password?</a>
+      </div>
+      <input class="form-control form-control-lg fs-6" id="password" name="password" type="password"
+             placeholder="············" autocomplete="current-password" required>
     </div>
 
-    <div class="form-check text-start my-3">
+    <div class="form-check text-start mb-4">
       <input class="form-check-input" id="remember" name="remember" type="checkbox" value="1">
-      <label class="form-check-label" for="remember">Remember me</label>
+      <label class="form-check-label small" for="remember">Remember me</label>
     </div>
 
-    <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017&ndash;2025</p>
+    <button class="btn btn-primary w-100 py-2 fw-bold shadow-sm" type="submit">LOGIN</button>
+    
+    <div class="text-center mt-4">
+      <p class="mb-0 small text-secondary">New on our platform? <a href="/member/register/" class="text-primary text-decoration-none">Create an account</a></p>
+    </div>
   </form>
 </main>
 <?php

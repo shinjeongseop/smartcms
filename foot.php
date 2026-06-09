@@ -56,23 +56,6 @@ if (!function_exists('smartcms_site_footer')) {
     }
 }
 
-if (!function_exists('smartcms_admin_footer')) {
-    function smartcms_admin_footer(): string
-    {
-        return '</div>'
-             . '</section>'
-             . '</div>'
-             . '</div>'
-             . '<footer class="mt-auto bg-white border-top">'
-             . '<div class="container-fluid py-3 d-flex flex-column flex-md-row justify-content-between gap-2 small text-body-secondary">'
-             . '<span>&copy; ' . smartcms_h(date('Y')) . ' smartcms admin</span>'
-             . '<a href="' . smartcms_h(smartcms_base_url('/')) . '" class="text-decoration-none">사이트 홈</a>'
-             . '</div>'
-             . '</footer>'
-             . '</main>';
-    }
-}
-
 if (isset($SMARTCMS_FOOT) && is_array($SMARTCMS_FOOT)) {
     $scripts = (array)($SMARTCMS_FOOT['scripts'] ?? []);
 

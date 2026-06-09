@@ -94,7 +94,7 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
 
 <div class="row g-3">
   <div class="col-12">
-    <div class="card border-0 shadow-sm mb-4 sc-card-accent">
+    <div class="sc-admin-card mb-4 sc-card-accent">
       <div class="card-body p-4 p-lg-5">
         <div class="d-flex align-items-center gap-2 mb-4">
           <div class="p-2 bg-primary-subtle text-primary rounded-3"><i class="bi bi-plus-circle-fill fs-5"></i></div>
@@ -124,7 +124,7 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
   </div>
 
   <div class="col-12">
-    <div class="card border-0 shadow-sm">
+    <div class="sc-admin-card">
       <div class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
         <h5 class="card-title mb-0 fw-bold">운영 중인 게시판</h5>
         <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold"><?= count($boards) ?>개 활성</span>
