@@ -45,7 +45,7 @@ echo smartcms_auth_header();
       <?= smartcms_csrf_input() ?>
       <div>
         <label for="email" class="form-label fw-bold">이메일 주소</label>
-        <input class="form-control form-control-lg bg-body border-0" id="email" name="email" type="email"
+        <input class="form-control bg-body border-0" id="email" name="email" type="email"
                placeholder="name@example.com" value="<?= smartcms_h($email) ?>" autocomplete="email" required>
       </div>
       <div>
@@ -53,11 +53,11 @@ echo smartcms_auth_header();
           <label for="password" class="form-label fw-bold mb-0">비밀번호</label>
           <a href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>" class="small text-decoration-none">비밀번호 찾기</a>
         </div>
-        <input class="form-control form-control-lg bg-body border-0" id="password" name="password" type="password"
+        <input class="form-control bg-body border-0" id="password" name="password" type="password"
                placeholder="••••••••" autocomplete="current-password" required>
       </div>
       <div class="d-grid pt-2">
-        <?= smartcms_button('로그인하기', 'submit', 'btn-lg rounded-pill') ?>
+        <?= smartcms_button('로그인하기', 'submit', 'rounded-pill') ?>
       </div>
     </form>
 

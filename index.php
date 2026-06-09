@@ -66,8 +66,8 @@ echo smartcms_site_header('home');
         <h1 class="display-4 fw-bold mb-3 ls-tight">더 가볍고, 더 똑똑한<br>차세대 커뮤니티 CMS</h1>
         <p class="lead mb-4 text-white-50 text-wrap">부트스트랩 5의 강력한 유틸리티 엔진으로 구축된 smartcms 2.0입니다. 커스텀 CSS를 최소화하고 웹 표준을 준수하여 압도적인 성능과 유지보수성을 제공합니다.</p>
         <div class="d-flex flex-wrap gap-3">
-          <a class="btn btn-light btn-lg rounded-pill px-5 fw-bold text-primary" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">시작하기</a>
-          <a class="btn btn-outline-light btn-lg rounded-pill px-5" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>">회원가입</a>
+          <a class="btn btn-light rounded-pill px-5 fw-bold text-primary" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">시작하기</a>
+          <a class="btn btn-outline-light rounded-pill px-5" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>">회원가입</a>
         </div>
       </div>
       <div class="col-lg-5 d-none d-lg-block">

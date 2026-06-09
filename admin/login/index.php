@@ -55,7 +55,7 @@ require SMARTCMS_ROOT . '/head.php';
     
     <div class="mb-3">
       <label for="email" class="form-label small fw-bold text-uppercase opacity-75">Email address</label>
-      <input class="form-control form-control-lg fs-6" id="email" name="email" type="email"
+      <input class="form-control fs-6" id="email" name="email" type="email"
              value="<?= smartcms_h($email) ?>" placeholder="Enter your email" autocomplete="email" required>
     </div>
     
@@ -64,7 +64,7 @@ require SMARTCMS_ROOT . '/head.php';
         <label for="password" class="form-label small fw-bold text-uppercase opacity-75 mb-0">Password</label>
         <a href="#" class="text-primary small text-decoration-none">Forgot Password?</a>
       </div>
-      <input class="form-control form-control-lg fs-6" id="password" name="password" type="password"
+      <input class="form-control fs-6" id="password" name="password" type="password"
              placeholder="············" autocomplete="current-password" required>
     </div>
 

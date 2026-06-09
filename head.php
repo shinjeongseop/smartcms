@@ -58,7 +58,7 @@ if (!function_exists('smartcms_site_header')) {
         $html .= '</div>';
         $html .= '<div class="col-12 col-md-6">';
         $html .= '<form action="' . smartcms_h(smartcms_base_url('/board/')) . '" method="get" class="position-relative">';
-        $html .= '<div class="input-group input-group-lg">';
+        $html .= '<div class="input-group">';
         $html .= '<input type="text" name="q" class="form-control bg-body border-0 rounded-pill ps-4" placeholder="궁금한 것을 검색해보세요" aria-label="Search">';
         $html .= '<button class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-primary z-3 me-2" type="submit"><i class="bi bi-search fs-5"></i></button>';
         $html .= '</div>';

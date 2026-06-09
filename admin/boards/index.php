@@ -105,18 +105,18 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
           <input type="hidden" name="action" value="create">
           <div class="col-12 col-lg-4">
             <label for="board_key" class="form-label fw-semibold small text-secondary">게시판 키 (영문/숫자)</label>
-            <input class="form-control form-control-lg" id="board_key" name="board_key" placeholder="notice" required>
+            <input class="form-control" id="board_key" name="board_key" placeholder="notice" required>
           </div>
           <div class="col-12 col-lg-4">
             <label for="board_name" class="form-label fw-semibold small text-secondary">게시판 이름</label>
-            <input class="form-control form-control-lg" id="board_name" name="board_name" placeholder="공지사항" required>
+            <input class="form-control" id="board_name" name="board_name" placeholder="공지사항" required>
           </div>
           <div class="col-12 col-lg-4">
             <label for="description" class="form-label fw-semibold small text-secondary">간략 설명</label>
-            <input class="form-control form-control-lg" id="description" name="description">
+            <input class="form-control" id="description" name="description">
           </div>
           <div class="col-12 mt-4">
-            <?= smartcms_button('게시판 생성하기', 'submit', 'btn-lg w-100 py-3 shadow-sm') ?>
+            <?= smartcms_button('게시판 생성하기', 'submit', 'w-100 py-3 shadow-sm') ?>
           </div>
         </form>
       </div>
