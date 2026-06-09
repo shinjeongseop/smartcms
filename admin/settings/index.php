@@ -88,7 +88,7 @@ echo smartcms_admin_page_header($admin, '환경 설정', 'settings');
     <label class="fw-bold mb-0" style="cursor: pointer;" for="allow_registration">
       신규 회원가입 허용
     </label>
-    <div class="form-check form-switch mb-0 p-2 d-flex align-items-center">
+    <div class="form-check form-switch mb-0 p-3 d-flex align-items-center">
       <!-- 양끝 정렬 시 form-check 내부 패딩을 제거하고 정렬합니다 -->
       <input class="form-check-input m-0" type="checkbox" name="allow_registration" value="1" id="allow_registration" style="cursor: pointer;" <?= (string)($settings['allow_registration'] ?? '1') === '1' ? 'checked' : '' ?>>
     </div>
