@@ -83,14 +83,10 @@ echo smartcms_admin_page_header($admin, '환경 설정', 'settings');
         </select>
       </div>
       <div class="col-12 col-md-4 d-flex align-items-end">
-  <div class="d-flex justify-content-between align-items-center p-0 border rounded-3 bg-light w-100">
-    <!-- label의 cursor 처리를 위해 클래스를 추가하거나 swich 클릭 영역을 넓혀두면 좋습니다 -->
-    <label class="fw-bold mb-0" style="cursor: pointer;" for="allow_registration">
-      신규 회원가입 허용
-    </label>
-    <div class="form-check form-switch mb-0 p-2 d-flex align-items-center">
-      <!-- 양끝 정렬 시 form-check 내부 패딩을 제거하고 정렬합니다 -->
-      <input class="form-check-input m-0" type="checkbox" name="allow_registration" value="1" id="allow_registration" style="cursor: pointer;" <?= (string)($settings['allow_registration'] ?? '1') === '1' ? 'checked' : '' ?>>
+  <div class="p-3 border rounded-3 bg-light w-100">
+    <div class="form-check form-switch mb-0">
+      <input class="form-check-input" type="checkbox" name="allow_registration" value="1" id="allow_registration" <?= (string)($settings['allow_registration'] ?? '1') === '1' ? 'checked' : '' ?>>
+      <label class="form-check-label fw-bold ms-2" for="allow_registration">신규 회원가입 허용</label>
     </div>
   </div>
 </div>
