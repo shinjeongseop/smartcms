@@ -60,6 +60,7 @@ $SMARTCMS_HEAD = [
 ];
 
 require SMARTCMS_ROOT . '/head.php';
+echo smartcms_site_header('home');
 ?>
 
 <header class="bg-primary text-white py-5 py-lg-5">
@@ -302,6 +303,8 @@ require SMARTCMS_ROOT . '/head.php';
     </aside>
   </section>
 </div>
+
+<?= smartcms_site_footer() ?>
 
 <?php
 $SMARTCMS_FOOT = [];
