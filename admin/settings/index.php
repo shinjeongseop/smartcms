@@ -57,18 +57,18 @@ echo smartcms_admin_page_header($admin, '환경 설정', 'settings');
       <?= smartcms_csrf_input() ?>
       <div class="col-12 col-md-6">
         <label for="site_name" class="form-label fw-bold text-secondary small">사이트 이름</label>
-        <input class="form-control form-control-lg" id="site_name" name="site_name" value="<?= smartcms_h($settings['site_name'] ?? 'smartcms') ?>" required>
+        <input class="form-control" id="site_name" name="site_name" value="<?= smartcms_h($settings['site_name'] ?? 'smartcms') ?>" required>
         <div class="form-text text-muted">브라우저 탭 제목 및 사이트 상단 브랜드명으로 노출됩니다.</div>
       </div>
       <div class="col-12 col-md-6">
         <label for="upload_max_mb" class="form-label fw-bold text-secondary small">첨부파일 최대 용량 (MB)</label>
-        <input class="form-control form-control-lg" id="upload_max_mb" name="upload_max_mb" type="number" min="1" max="100" value="<?= smartcms_h($settings['upload_max_mb'] ?? '10') ?>" required>
+        <input class="form-control" id="upload_max_mb" name="upload_max_mb" type="number" min="1" max="100" value="<?= smartcms_h($settings['upload_max_mb'] ?? '10') ?>" required>
         <div class="form-text text-muted">서버 환경(php.ini) 설정을 초과할 수 없습니다.</div>
       </div>
       <div class="col-12"><hr class="my-2 opacity-10"></div>
       <div class="col-12 col-md-4">
         <label for="default_member_level" class="form-label fw-bold text-secondary small">신규 가입 레벨</label>
-        <select class="form-select form-select-lg" id="default_member_level" name="default_member_level">
+        <select class="form-select" id="default_member_level" name="default_member_level">
           <?php for ($level = 1; $level <= 10; $level++): ?>
             <option value="<?= $level ?>" <?= $level === (int)($settings['default_member_level'] ?? 2) ? 'selected' : '' ?>>Level <?= $level ?><?= $level == 2 ? ' (권장)' : '' ?></option>
           <?php endfor; ?>
@@ -76,7 +76,7 @@ echo smartcms_admin_page_header($admin, '환경 설정', 'settings');
       </div>
       <div class="col-12 col-md-4">
         <label for="admin_level" class="form-label fw-bold text-secondary small">관리자 최소 레벨</label>
-        <select class="form-select form-select-lg" id="admin_level" name="admin_level">
+        <select class="form-select" id="admin_level" name="admin_level">
           <?php for ($level = 8; $level <= 10; $level++): ?>
             <option value="<?= $level ?>" <?= $level === (int)($settings['admin_level'] ?? 8) ? 'selected' : '' ?>>Level <?= $level ?><?= $level == 8 ? ' (운영자)' : '' ?></option>
           <?php endfor; ?>
