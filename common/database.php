@@ -63,6 +63,20 @@ function smartcms_fetch_one(string $sql, array $params = []): ?array
     return is_array($row) ? $row : null;
 }
 
+function smartcms_fetch_all(string $sql, array $params = []): array
+{
+    $stmt = smartcms_db()->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchAll();
+}
+
+function smartcms_fetch_value(string $sql, array $params = []): mixed
+{
+    $stmt = smartcms_db()->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchColumn();
+}
+
 function smartcms_execute(string $sql, array $params = []): bool
 {
     $stmt = smartcms_db()->prepare($sql);

@@ -14,6 +14,8 @@ $offset = ($page - 1) * $limit;
 
 $message = '';
 $message_type = 'info';
+$total_users = 0;
+$total_pages = 0;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
