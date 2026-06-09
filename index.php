@@ -165,9 +165,12 @@ echo smartcms_site_header('home');
   <section class="row g-4">
     <div class="col-12 col-lg-8">
       <article class="card border shadow-sm mb-4">
-        <div class="card-header bg-white border-0 p-4 pb-0">
+        <div class="card-header bg-white border-0 p-4">
           <div class="d-flex align-items-center justify-content-between gap-3">
-            <h2 class="h5 fw-bold"><i class="bi bi-clock-history me-2 text-primary"></i>전체 최신글</h2>
+            <h2 class="h5 fw-bold mb-0 d-flex align-items-center gap-2">
+              <i class="bi bi-clock-history text-primary lh-1"></i>
+              <span>전체 최신글</span>
+            </h2>
             <a href="<?= smartcms_h(smartcms_base_url('/board/')) ?>" class="text-decoration-none small text-body-secondary">전체보기 <i class="bi bi-chevron-right"></i></a>
           </div>
         </div>
@@ -195,7 +198,7 @@ echo smartcms_site_header('home');
             <?php $board = $widget['board']; ?>
             <div class="col-12 col-md-6">
               <article class="card border shadow-sm h-100">
-                <div class="card-header bg-white border-0 p-4 pb-0">
+                <div class="card-header bg-white border-0 p-4">
                   <div class="d-flex align-items-center justify-content-between gap-3">
                     <div>
                       <h3 class="h6 fw-bold mb-1 text-primary text-uppercase"><?= smartcms_h($board['board_name']) ?></h3>
@@ -261,8 +264,11 @@ echo smartcms_site_header('home');
       <?php endif; ?>
 
       <article class="card border shadow-sm mb-4">
-        <div class="card-header bg-white border-0 p-4 pb-0">
-          <h3 class="h6 fw-bold mb-0 text-uppercase"><i class="bi bi-fire me-2 text-danger"></i>실시간 인기글</h3>
+        <div class="card-header bg-white border-0 p-4">
+          <h3 class="h6 fw-bold mb-0 d-flex align-items-center gap-2 text-uppercase">
+            <i class="bi bi-fire text-danger lh-1"></i>
+            <span>실시간 인기글</span>
+          </h3>
         </div>
         <div class="card-body p-4 pt-3">
           <div class="list-group list-group-flush">
