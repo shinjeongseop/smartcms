@@ -83,11 +83,13 @@ echo smartcms_admin_page_header($admin, '환경 설정', 'settings');
         </select>
       </div>
       <div class="col-12 col-md-4 d-flex align-items-end">
-        <div class="form-check form-switch p-3 border rounded-3 bg-light w-100 ms-0 d-flex align-items-center">
-          <input class="form-check-input" type="checkbox" name="allow_registration" value="1" id="allow_registration" <?= (string)($settings['allow_registration'] ?? '1') === '1' ? 'checked' : '' ?>>
-          <label class="form-check-label fw-bold ms-3" for="allow_registration">신규 회원가입 허용</label>
-        </div>
-      </div>
+  <div class="p-3 border rounded-3 bg-light w-100">
+    <div class="form-check form-switch mb-0">
+      <input class="form-check-input" type="checkbox" name="allow_registration" value="1" id="allow_registration" <?= (string)($settings['allow_registration'] ?? '1') === '1' ? 'checked' : '' ?>>
+      <label class="form-check-label fw-bold ms-2" for="allow_registration">신규 회원가입 허용</label>
+    </div>
+  </div>
+</div>
       <div class="col-12 mt-4 pt-3">
         <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold shadow-sm">
           <i class="bi bi-check-circle-fill me-2"></i>시스템 설정 저장하기
