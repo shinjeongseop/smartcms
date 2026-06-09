@@ -49,7 +49,7 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
     $html = '<div class="sc-admin-layout d-flex min-vh-100">';
 
     // 1. Sidebar (Fixed on Desktop)
-    $html .= '<aside class="sc-admin-sidebar d-none d-lg-flex flex-column bg-white border-end sticky-top" style="width: 260px; height: 100vh; overflow-y: auto; z-index: 1030;">';
+    $html .= '<aside class="sc-admin-sidebar d-none d-lg-flex flex-column bg-white border-end sticky-top" style="height: 100vh; overflow-y: auto; z-index: 1030;">';
     $html .= '  <div class="px-4 py-4 mb-2">';
     $html .= '    <a class="d-flex align-items-center gap-2 text-decoration-none fw-bold text-dark fs-4" href="' . smartcms_h(smartcms_base_url('/admin/dashboard/')) . '">';
     $html .= '      <span class="badge bg-primary p-2 lh-1 rounded-3"><i class="bi bi-app-indicator fs-4 text-white"></i></span>';

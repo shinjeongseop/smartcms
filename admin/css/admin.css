@@ -2,6 +2,18 @@ body.smartcms-admin-page {
   background-color: #f5f5f9;
 }
 
+/* Layout */
+:root {
+  --sc-sidebar-width: 260px;
+}
+
+.sc-admin-sidebar {
+  width: var(--sc-sidebar-width);
+  min-width: var(--sc-sidebar-width);
+  max-width: var(--sc-sidebar-width);
+  flex-shrink: 0;
+}
+
 /* Sidebar Customizations */
 .sc-admin-sidebar .nav-link {
   transition: all 0.2s ease;
