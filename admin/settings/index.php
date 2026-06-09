@@ -83,7 +83,7 @@ echo smartcms_admin_page_header($admin, '환경 설정', 'settings');
         </select>
       </div>
       <div class="col-12 col-md-4 d-flex align-items-end">
-  <div class="d-flex justify-content-between align-items-center p-3 border rounded-3 bg-light w-100">
+  <div class="d-flex justify-content-between align-items-center p-0 border rounded-3 bg-light w-100">
     <!-- label의 cursor 처리를 위해 클래스를 추가하거나 swich 클릭 영역을 넓혀두면 좋습니다 -->
     <label class="fw-bold mb-0" style="cursor: pointer;" for="allow_registration">
       신규 회원가입 허용
