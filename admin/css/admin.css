@@ -21,13 +21,13 @@ body.smartcms-admin-page {
 }
 
 .sc-admin-sidebar .nav-link:hover {
-  background-color: rgba(105, 108, 255, 0.04);
-  color: #696cff;
+  background-color: rgba(3, 199, 90, 0.04);
+  color: #03c75a;
 }
 
 .sc-admin-sidebar .nav-link.active {
-  background: linear-gradient(72.47deg, #696cff 22.16%, rgba(105, 108, 255, 0.7) 76.47%);
-  box-shadow: 0px 2px 6px 0px rgba(105, 108, 255, 0.48);
+  background: linear-gradient(72.47deg, #03c75a 22.16%, rgba(3, 199, 90, 0.7) 76.47%);
+  box-shadow: 0px 2px 6px 0px rgba(3, 199, 90, 0.48);
 }
 
 /* Topbar Customizations */
