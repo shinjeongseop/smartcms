@@ -11,34 +11,38 @@
   --sc-primary: #03c75a;
   --sc-primary-rgb: 3, 199, 90;
   --sc-primary-dark: #02a74b;
-  
+
   /* Bootstrap Variable Overrides */
   --bs-primary: var(--sc-primary);
   --bs-primary-rgb: var(--sc-primary-rgb);
-  
+
   --bs-body-bg: #f6f7f9;
   --bs-body-color: #444444;
   --bs-emphasis-color: #111111;
   --bs-secondary-color: #767676;
-  
+
   --bs-link-color: var(--sc-primary);
   --bs-link-hover-color: var(--sc-primary-dark);
   --bs-link-decoration: none;
-  
+
   --bs-border-color: #e6e5e0;
   --bs-border-color-translucent: rgba(0, 0, 0, 0.08);
-  
+
   /* Typography */
-  --bs-body-font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, sans-serif;
+  --bs-body-font-family: 'Pretendard', 'Noto Sans KR', system-ui, -apple-system, sans-serif;
   --bs-body-font-size: 1rem;
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.6;
-  
+
   /* Border Radius */
-  --bs-border-radius: 0.5rem; /* 8px */
-  --bs-border-radius-sm: 0.375rem; /* 6px */
-  --bs-border-radius-lg: 1rem; /* 16px */
-  --bs-border-radius-xl: 1.5rem; /* 24px */
+  --bs-border-radius: 0.5rem;
+  /* 8px */
+  --bs-border-radius-sm: 0.375rem;
+  /* 6px */
+  --bs-border-radius-lg: 1rem;
+  /* 16px */
+  --bs-border-radius-xl: 1.5rem;
+  /* 24px */
 }
 
 /* Global Adjustments */
@@ -49,22 +53,34 @@ body {
 }
 
 /* Heading Improvements */
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--bs-emphasis-color);
 }
 
 /* Card Improvements */
-.card {
+/* .card {
   --bs-card-border-width: 0;
   --bs-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
   border: var(--bs-card-border-width) solid var(--bs-card-border-color);
   box-shadow: var(--bs-card-box-shadow);
-}
+} */
 
 /* Form Improvements */
-.form-control:focus, .form-select:focus {
+.form-control:focus,
+.form-select:focus {
   border-color: rgba(var(--sc-primary-rgb), 0.5);
   box-shadow: 0 0 0 0.25rem rgba(var(--sc-primary-rgb), 0.15);
 }
@@ -82,13 +98,37 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 /* Utility Extensions (Minimal) */
-.text-xs { font-size: 0.75rem !important; }
-.text-sm { font-size: 0.875rem !important; }
-.fw-medium { font-weight: 500 !important; }
-.ls-tight { letter-spacing: -0.03em !important; }
+.text-xs {
+  font-size: 0.75rem !important;
+}
+
+.text-sm {
+  font-size: 0.875rem !important;
+}
+
+.fw-medium {
+  font-weight: 500 !important;
+}
+
+.ls-tight {
+  letter-spacing: -0.03em !important;
+}
 
 /* Custom Scrollbar for modern browsers */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: var(--bs-body-bg); }
-::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bs-body-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
