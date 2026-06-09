@@ -30,37 +30,40 @@ $SMARTCMS_HEAD = ['title' => '로그인'];
 require SMARTCMS_ROOT . '/head.php';
 echo smartcms_auth_header();
 ?>
-<div class="card border-0 shadow-sm">
+<div class="card border-0 shadow-sm overflow-hidden">
   <div class="card-body p-4 p-md-5">
-    <p class="text-uppercase text-muted small fw-semibold mb-1">Welcome back</p>
-    <h1 class="h3 fw-bold mb-2">로그인</h1>
-    <p class="text-body-secondary mb-4">smartcms 커뮤니티에 로그인하세요.</p>
+    <div class="text-center mb-5">
+      <a href="<?= smartcms_h(smartcms_base_url('/')) ?>" class="navbar-brand fs-2 fw-bold text-primary">smartcms<span class="text-dark">.</span></a>
+      <p class="text-body-secondary mt-2 mb-0">커뮤니티에 오신 것을 환영합니다</p>
+    </div>
 
     <?php if ($message !== ''): ?>
       <?= smartcms_alert($message, $message_type) ?>
     <?php endif; ?>
 
-    <form class="d-grid gap-3" method="post">
+    <form class="d-grid gap-4" method="post">
       <?= smartcms_csrf_input() ?>
       <div>
-        <label for="email" class="form-label">이메일</label>
-        <input class="form-control form-control-lg" id="email" name="email" type="email"
-               value="<?= smartcms_h($email) ?>" autocomplete="email" required>
+        <label for="email" class="form-label fw-bold">이메일 주소</label>
+        <input class="form-control form-control-lg bg-body border-0" id="email" name="email" type="email"
+               placeholder="name@example.com" value="<?= smartcms_h($email) ?>" autocomplete="email" required>
       </div>
       <div>
-        <label for="password" class="form-label">비밀번호</label>
-        <input class="form-control form-control-lg" id="password" name="password" type="password"
-               autocomplete="current-password" required>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <label for="password" class="form-label fw-bold mb-0">비밀번호</label>
+          <a href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>" class="small text-decoration-none">비밀번호 찾기</a>
+        </div>
+        <input class="form-control form-control-lg bg-body border-0" id="password" name="password" type="password"
+               placeholder="••••••••" autocomplete="current-password" required>
       </div>
-      <div class="d-grid">
-        <?= smartcms_button('로그인', 'submit', 'w-100') ?>
+      <div class="d-grid pt-2">
+        <?= smartcms_button('로그인하기', 'submit', 'btn-lg rounded-pill') ?>
       </div>
     </form>
 
-    <p class="text-center mt-3 mb-0">
-      계정이 없으신가요?
-      <a href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>" class="fw-bold">회원가입</a>
-    </p>
+    <div class="mt-5 text-center">
+      <p class="text-body-secondary small mb-0">계정이 아직 없으신가요? <a href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>" class="fw-bold text-primary text-decoration-none">회원가입</a></p>
+    </div>
   </div>
 </div>
 <?= smartcms_auth_footer() ?>

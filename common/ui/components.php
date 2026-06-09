@@ -48,9 +48,10 @@ function smartcms_button(string $label, string $type = 'button', string $extra_c
  */
 function smartcms_auth_header(string $active = ''): string
 {
-    return '<main class="container min-vh-100 d-flex align-items-center py-5">'
-         . '<div class="row justify-content-center w-100">'
-         . '<div class="col-12 col-md-10 col-lg-7 col-xl-6">';
+    return '<main class="bg-body flex-grow-1 d-flex align-items-center py-5">'
+         . '<div class="container">'
+         . '<div class="row justify-content-center">'
+         . '<div class="col-12 col-md-8 col-lg-5 col-xl-4">';
 }
 
 /**
@@ -58,7 +59,7 @@ function smartcms_auth_header(string $active = ''): string
  */
 function smartcms_auth_footer(): string
 {
-    return '</div></div></main>';
+    return '</div></div></div></main>';
 }
 
 /* ─────────────────────────────────────────

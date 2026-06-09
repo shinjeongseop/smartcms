@@ -33,48 +33,48 @@ $SMARTCMS_HEAD = ['title' => '회원가입'];
 require SMARTCMS_ROOT . '/head.php';
 echo smartcms_auth_header();
 ?>
-<div class="card border-0 shadow-sm">
+<div class="card border-0 shadow-sm overflow-hidden">
   <div class="card-body p-4 p-md-5">
-    <p class="text-uppercase text-muted small fw-semibold mb-1">Join us</p>
-    <h1 class="h3 fw-bold mb-2">회원가입</h1>
-    <p class="text-body-secondary mb-4">가입 후 level <?= smartcms_h($default_level) ?> 권한이 부여됩니다.</p>
+    <div class="text-center mb-5">
+      <a href="<?= smartcms_h(smartcms_base_url('/')) ?>" class="navbar-brand fs-2 fw-bold text-primary">smartcms<span class="text-dark">.</span></a>
+      <p class="text-body-secondary mt-2 mb-0">새로운 시작, 회원가입을 환영합니다</p>
+    </div>
 
     <?php if ($message !== ''): ?>
       <?= smartcms_alert($message, $message_type) ?>
     <?php endif; ?>
 
-    <form class="d-grid gap-3" method="post" autocomplete="off">
+    <form class="d-grid gap-4" method="post" autocomplete="off">
       <?= smartcms_csrf_input() ?>
       <div>
-        <label for="email" class="form-label">이메일 <span class="text-danger">*</span></label>
-        <input class="form-control form-control-lg" id="email" name="email" type="email"
-               value="<?= smartcms_h($form['email']) ?>" autocomplete="off" required>
+        <label for="email" class="form-label fw-bold">이메일 주소 <span class="text-primary">*</span></label>
+        <input class="form-control form-control-lg bg-body border-0" id="email" name="email" type="email"
+               placeholder="name@example.com" value="<?= smartcms_h($form['email']) ?>" autocomplete="off" required>
       </div>
       <div>
-        <label for="name" class="form-label">이름 <span class="text-danger">*</span></label>
-        <input class="form-control form-control-lg" id="name" name="name"
-               value="<?= smartcms_h($form['name']) ?>" autocomplete="off" required>
+        <label for="name" class="form-label fw-bold">사용자 이름 <span class="text-primary">*</span></label>
+        <input class="form-control form-control-lg bg-body border-0" id="name" name="name"
+               placeholder="실명 또는 닉네임" value="<?= smartcms_h($form['name']) ?>" autocomplete="off" required>
       </div>
       <div>
-        <label for="company_name" class="form-label">회사명</label>
-        <input class="form-control form-control-lg" id="company_name" name="company_name"
-               value="<?= smartcms_h($form['company_name']) ?>" autocomplete="off">
+        <label for="company_name" class="form-label fw-bold">회사명 <small class="fw-normal text-muted">(선택)</small></label>
+        <input class="form-control form-control-lg bg-body border-0" id="company_name" name="company_name"
+               placeholder="소속된 조직 이름" value="<?= smartcms_h($form['company_name']) ?>" autocomplete="off">
       </div>
       <div>
-        <label for="password" class="form-label">비밀번호 <span class="text-danger">*</span></label>
-        <input class="form-control form-control-lg" id="password" name="password" type="password"
-               minlength="8" autocomplete="new-password" required>
-        <div class="form-text">8자 이상 입력하세요.</div>
+        <label for="password" class="form-label fw-bold">비밀번호 <span class="text-primary">*</span></label>
+        <input class="form-control form-control-lg bg-body border-0" id="password" name="password" type="password"
+               placeholder="8자 이상의 비밀번호" minlength="8" autocomplete="new-password" required>
+        <div class="form-text text-xs ps-2 pt-1">영문, 숫자, 특수문자 조합을 권장합니다.</div>
       </div>
-      <div class="d-grid">
-        <?= smartcms_button('가입하기', 'submit', 'w-100') ?>
+      <div class="d-grid pt-2">
+        <?= smartcms_button('회원가입 완료하기', 'submit', 'btn-lg rounded-pill') ?>
       </div>
     </form>
 
-    <p class="text-center mt-3 mb-0">
-      이미 계정이 있으신가요?
-      <a href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>" class="fw-bold">로그인</a>
-    </p>
+    <div class="mt-5 text-center border-top pt-4">
+      <p class="text-body-secondary small mb-0">이미 계정이 있으신가요? <a href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>" class="fw-bold text-primary text-decoration-none">로그인</a></p>
+    </div>
   </div>
 </div>
 <?= smartcms_auth_footer() ?>

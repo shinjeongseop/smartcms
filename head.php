@@ -42,108 +42,77 @@ if (!function_exists('smartcms_site_header')) {
 
         $mainClass = trim('min-vh-100 d-flex flex-column ' . $extra_class);
         $html  = '<main class="' . smartcms_h($mainClass) . '">';
-        if ($active === 'home') {
-            $recent_notice = function_exists('smartcms_board_recent_posts_by_key')
-                ? smartcms_board_recent_posts_by_key('notice', 1)
-                : [];
-            $notice_link = !empty($recent_notice)
-                ? smartcms_board_post_url((string)$recent_notice[0]['board_key'], (int)$recent_notice[0]['id'])
-                : smartcms_base_url('/board/?board=notice');
-            $board_count = function_exists('smartcms_board_list') ? count(smartcms_board_list()) : 0;
-            $post_count = function_exists('smartcms_board_post_counts') ? array_sum(smartcms_board_post_counts()) : 0;
 
-            $html .= '<header class="bg-white border-bottom py-2 small text-body-secondary">';
-            $html .= '<div class="container-fluid container-xxl d-flex flex-wrap align-items-center gap-2">';
-            $html .= '<div class="d-none d-sm-flex align-items-center gap-3">';
-            $html .= '<span class="text-primary fw-semibold"><i class="bi bi-megaphone-fill me-1"></i>공지</span>';
-            $html .= '<a class="text-decoration-none text-body-secondary" href="' . smartcms_h($notice_link) . '">';
-            $html .= !empty($recent_notice) ? smartcms_h((string)$recent_notice[0]['title']) : '새로운 반응형 커뮤니티 레이아웃 배포 안내';
-            $html .= '</a>';
-            $html .= '</div>';
-            $html .= '<div class="d-flex gap-3 ms-auto flex-wrap justify-content-end" id="topUtilLinks">';
-            if ($user) {
-                $html .= '<span class="text-body fw-semibold"><i class="bi bi-person-circle me-1"></i>' . smartcms_h((string)$user['name']) . '님</span>';
-                $html .= '<a href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '" class="text-decoration-none text-body-secondary"><i class="bi bi-box-arrow-right me-1"></i>로그아웃</a>';
-            } else {
-                $html .= '<a href="' . smartcms_h(smartcms_base_url('/member/login/')) . '" class="text-decoration-none text-body-secondary"><i class="bi bi-box-arrow-in-right me-1"></i>로그인</a>';
-                $html .= '<a href="' . smartcms_h(smartcms_base_url('/member/register/')) . '" class="text-decoration-none text-body-secondary"><i class="bi bi-person-plus me-1"></i>회원가입</a>';
-            }
-            $html .= '<a href="' . smartcms_h(smartcms_base_url('/board/?board=notice')) . '" class="text-decoration-none text-body-secondary"><i class="bi bi-question-circle me-1"></i>고객센터</a>';
-            $html .= '</div>';
-            $html .= '</div>';
-            $html .= '</header>';
-
-            $html .= '<section class="bg-white border-bottom py-3">';
-            $html .= '<div class="container-fluid container-xxl">';
-            $html .= '<div class="row align-items-center g-3">';
-            $html .= '<div class="col-12 col-md-4 text-center text-md-start">';
-            $html .= '<a class="text-decoration-none d-inline-flex align-items-center gap-2" href="' . $brandHref . '">';
-            $html .= '<span class="badge text-bg-primary rounded-circle p-2 lh-1"><i class="bi bi-n-square-fill"></i></span>';
-            $html .= '<span class="fs-3 fw-bold text-dark">smartcms <span class="fs-5 text-body-secondary fw-light">Community</span></span>';
-            $html .= '</a>';
-            $html .= '</div>';
-            $html .= '<div class="col-12 col-md-5">';
-            $html .= '<form class="input-group" action="' . smartcms_h(smartcms_base_url('/board/')) . '" method="get">';
-            $html .= '<input type="text" class="form-control" name="q" placeholder="게시글, 태그, 회원 검색..." aria-label="검색어 입력">';
-            $html .= '<button class="btn btn-primary px-4" type="submit"><i class="bi bi-search"></i></button>';
-            $html .= '</form>';
-            $html .= '</div>';
-            $html .= '<div class="col-12 col-md-3 d-none d-md-flex justify-content-end align-items-center gap-2">';
-            $html .= '<span class="badge text-bg-light border p-2"><i class="bi bi-layout-text-window text-primary me-1"></i> 게시판 ' . number_format($board_count) . '개</span>';
-            $html .= '<span class="badge text-bg-light border p-2"><i class="bi bi-people-fill text-info me-1"></i> 글 ' . number_format($post_count) . '개</span>';
-            $html .= '</div>';
-            $html .= '</div>';
-            $html .= '</div>';
-            $html .= '</section>';
-
-            $html .= '<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top p-0 shadow-sm">';
-            $html .= '<div class="container-fluid container-xxl">';
-            $html .= '<button class="navbar-toggler my-2 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#smartcmsSiteNav" aria-controls="smartcmsSiteNav" aria-expanded="false" aria-label="메뉴 열기">';
-            $html .= '<span class="navbar-toggler-icon"></span>';
-            $html .= '</button>';
-            $html .= '<div class="collapse navbar-collapse" id="smartcmsSiteNav">';
-            $html .= '<ul class="navbar-nav w-100 nav-fill">';
-            foreach ($items as $key => $item) {
-                $html .= '<li class="nav-item' . ($key !== array_key_last($items) ? ' border-end border-secondary border-opacity-25' : '') . '">'
-                      . '<a class="nav-link py-3 fw-semibold' . ($is_active($key) ? ' active text-white' : '') . '" href="' . smartcms_h(smartcms_base_url((string)$item['href'])) . '">'
-                      . (in_array($key, ['home', 'boards', 'notice', 'free', 'qna'], true) ? '<i class="bi ' . smartcms_h((string)$item['icon']) . ' me-1"></i>' : '')
-                      . smartcms_h((string)$item['label'])
-                      . '</a>'
-                      . '</li>';
-            }
-            $html .= '</ul>';
-            $html .= '</div>';
-            $html .= '</div>';
-            $html .= '</nav>';
+        // 1. Top Utility Bar (Login/Register/Search)
+        $html .= '<header class="bg-white border-bottom py-2 small text-body-secondary">';
+        $html .= '<div class="container-xxl d-flex align-items-center justify-content-between">';
+        $html .= '<div class="d-none d-md-flex gap-3">';
+        $html .= '<a href="' . $brandHref . '" class="text-decoration-none text-body-secondary">커뮤니티 홈</a>';
+        $html .= '<a href="' . smartcms_h(smartcms_base_url('/board/')) . '" class="text-decoration-none text-body-secondary">전체글</a>';
+        $html .= '</div>';
+        $html .= '<div class="d-flex gap-3 ms-auto">';
+        if ($user) {
+            $html .= '<span class="text-dark fw-bold"><i class="bi bi-person-circle me-1"></i>' . smartcms_h((string)$user['name']) . '</span>';
+            $html .= '<a href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '" class="text-decoration-none text-body-secondary">로그아웃</a>';
         } else {
-            $html .= '<header class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">';
-            $html .= '<div class="container-xxl py-3">';
-            $html .= '<a class="navbar-brand d-inline-flex align-items-center gap-2 fw-bold text-primary text-decoration-none" href="' . $brandHref . '">';
-            $html .= '<span class="badge text-bg-primary rounded-circle p-2 lh-1"><i class="bi bi-n-square-fill"></i></span>';
-            $html .= '<span>smartcms</span>';
-            $html .= '</a>';
-            $html .= '<button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#smartcmsSiteNav" aria-controls="smartcmsSiteNav" aria-expanded="false" aria-label="사이트 메뉴 열기">';
-            $html .= '<span class="navbar-toggler-icon"></span>';
-            $html .= '</button>';
-            $html .= '<div class="collapse navbar-collapse" id="smartcmsSiteNav">';
-            $html .= '<ul class="navbar-nav ms-auto me-lg-3 gap-2 mt-3 mt-lg-0 nav nav-pills">';
-            foreach ($items as $key => $item) {
-                $html .= '<li class="nav-item">'
-                      . '<a class="nav-link rounded-pill px-3' . ($is_active($key) ? ' active' : '') . '" href="' . smartcms_h(smartcms_base_url((string)$item['href'])) . '">'
-                      . '<i class="bi ' . smartcms_h((string)$item['icon']) . ' me-1"></i>'
-                      . smartcms_h((string)$item['label'])
-                      . '</a>'
-                      . '</li>';
-            }
-            $html .= '</ul>';
-            $html .= '<div class="d-grid gap-2 d-lg-flex">';
-            $html .= '<a class="btn btn-secondary btn-sm rounded-pill" href="' . smartcms_h(smartcms_base_url('/member/login/')) . '"><i class="bi bi-box-arrow-in-right me-1"></i>로그인</a>';
-            $html .= '<a class="btn btn-primary btn-sm rounded-pill" href="' . smartcms_h(smartcms_base_url('/admin/')) . '"><i class="bi bi-speedometer2 me-1"></i>관리자</a>';
-            $html .= '</div>';
-            $html .= '</div>';
-            $html .= '</div>';
-            $html .= '</header>';
+            $html .= '<a href="' . smartcms_h(smartcms_base_url('/member/login/')) . '" class="text-decoration-none text-body-secondary">로그인</a>';
+            $html .= '<a href="' . smartcms_h(smartcms_base_url('/member/register/')) . '" class="text-decoration-none text-body-secondary">회원가입</a>';
         }
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</header>';
+
+        // 2. Main Brand & Search Section
+        $html .= '<section class="bg-white py-4">';
+        $html .= '<div class="container-xxl">';
+        $html .= '<div class="row align-items-center g-4">';
+        $html .= '<div class="col-12 col-md-3 text-center text-md-start">';
+        $html .= '<a class="navbar-brand fs-2 fw-bold text-primary" href="' . $brandHref . '">';
+        $html .= 'smartcms<span class="text-dark">.</span>';
+        $html .= '</a>';
+        $html .= '</div>';
+        $html .= '<div class="col-12 col-md-6">';
+        $html .= '<form action="' . smartcms_h(smartcms_base_url('/board/')) . '" method="get" class="position-relative">';
+        $html .= '<div class="input-group input-group-lg">';
+        $html .= '<input type="text" name="q" class="form-control bg-body border-0 rounded-pill ps-4" placeholder="궁금한 것을 검색해보세요" aria-label="Search">';
+        $html .= '<button class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-primary z-3 me-2" type="submit"><i class="bi bi-search fs-5"></i></button>';
+        $html .= '</div>';
+        $html .= '</form>';
+        $html .= '</div>';
+        $html .= '<div class="col-md-3 d-none d-md-flex justify-content-end gap-2">';
+        $html .= '<a href="' . smartcms_h(smartcms_base_url('/board/write/')) . '" class="btn btn-primary rounded-pill px-4"><i class="bi bi-pencil-square me-2"></i>글쓰기</a>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</section>';
+
+        // 3. Main Navigation Bar
+        $html .= '<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top p-0">';
+        $html .= '<div class="container-xxl">';
+        $html .= '<button class="navbar-toggler my-2 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="Toggle navigation">';
+        $html .= '<span class="navbar-toggler-icon"></span>';
+        $html .= '</button>';
+        $html .= '<div class="collapse navbar-collapse" id="siteNav">';
+        $html .= '<ul class="navbar-nav w-100">';
+        foreach ($items as $key => $item) {
+            $activeClass = $is_active($key) ? ' active fw-bold text-primary border-bottom border-primary border-3' : '';
+            $html .= '<li class="nav-item">';
+            $html .= '<a class="nav-link py-3 px-4 text-center' . $activeClass . '" href="' . smartcms_h(smartcms_base_url((string)$item['href'])) . '">';
+            $html .= smartcms_h((string)$item['label']);
+            $html .= '</a>';
+            $html .= '</li>';
+        }
+        if ($user && (int)$user['level'] <= 2) {
+            $html .= '<li class="nav-item ms-lg-auto">';
+            $html .= '<a class="nav-link py-3 px-4 text-warning" href="' . smartcms_h(smartcms_base_url('/admin/')) . '">';
+            $html .= '<i class="bi bi-speedometer2 me-1"></i>관리자';
+            $html .= '</a>';
+            $html .= '</li>';
+        }
+        $html .= '</ul>';
+        $html .= '</div>';
+        $html .= '</div>';
+        $html .= '</nav>';
 
         return $html;
     }
