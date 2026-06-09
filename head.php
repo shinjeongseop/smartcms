@@ -21,7 +21,26 @@ if (!function_exists('smartcms_site_header')) {
     function smartcms_site_header(string $active = '', string $extra_class = ''): string
     {
         $items = smartcms_site_nav_items();
-        $is_active = static fn(string $key): bool => $key === $active;
+        $requestPath = (string)(parse_url((string)($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH) ?: '');
+        $is_active = static function (string $key) use ($active, $requestPath): bool {
+            if ($key === $active) {
+                return true;
+            }
+
+            if ($key === 'boards') {
+                if ($active === 'boards') {
+                    return true;
+                }
+
+                if ($active === '') {
+                    return str_starts_with($requestPath, '/board/');
+                }
+
+                return in_array($active, ['notice', 'free', 'qna'], true);
+            }
+
+            return false;
+        };
         $brandHref = smartcms_h(smartcms_base_url('/'));
         $user = function_exists('smartcms_current_user') ? smartcms_current_user() : null;
 

@@ -79,7 +79,7 @@ echo smartcms_site_header('home');
         </div>
       </div>
       <div class="col-lg-5">
-        <div class="card border-0 shadow-sm bg-white">
+        <div class="card border shadow-sm bg-white">
           <div class="card-body p-4 p-lg-5">
             <div class="d-flex align-items-start gap-3 mb-4">
               <div class="rounded-circle bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center flex-shrink-0 p-3">
@@ -116,7 +116,7 @@ echo smartcms_site_header('home');
 
   <section class="row g-4 mb-5">
     <div class="col-12 col-lg-8">
-      <article class="card border-0 shadow-sm h-100">
+      <article class="card border shadow-sm h-100">
         <div class="card-body p-4 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
           <div class="d-flex align-items-start gap-3">
             <span class="badge bg-primary-subtle text-primary p-2 rounded-3">
@@ -141,7 +141,7 @@ echo smartcms_site_header('home');
     </div>
 
     <div class="col-12 col-lg-4">
-      <article class="card border-0 shadow-sm h-100 bg-dark text-white">
+      <article class="card border shadow-sm h-100 bg-dark text-white">
         <div class="card-body p-4">
           <div class="row row-cols-3 g-2 text-center">
             <div>
@@ -164,10 +164,10 @@ echo smartcms_site_header('home');
 
   <section class="row g-4">
     <div class="col-12 col-lg-8">
-      <article class="card border-0 shadow-sm mb-4">
+      <article class="card border shadow-sm mb-4">
         <div class="card-header bg-white border-0 p-4 pb-0">
           <div class="d-flex align-items-center justify-content-between gap-3">
-            <h2 class="h5 fw-bold mb-0"><i class="bi bi-clock-history me-2 text-primary"></i>전체 최신글</h2>
+            <h2 class="h5 fw-bold"><i class="bi bi-clock-history me-2 text-primary"></i>전체 최신글</h2>
             <a href="<?= smartcms_h(smartcms_base_url('/board/')) ?>" class="text-decoration-none small text-body-secondary">전체보기 <i class="bi bi-chevron-right"></i></a>
           </div>
         </div>
@@ -194,7 +194,7 @@ echo smartcms_site_header('home');
           <?php foreach ($board_widgets as $widget): ?>
             <?php $board = $widget['board']; ?>
             <div class="col-12 col-md-6">
-              <article class="card border-0 shadow-sm h-100">
+              <article class="card border shadow-sm h-100">
                 <div class="card-header bg-white border-0 p-4 pb-0">
                   <div class="d-flex align-items-center justify-content-between gap-3">
                     <div>
@@ -230,7 +230,7 @@ echo smartcms_site_header('home');
 
     <aside class="col-12 col-lg-4">
       <?php if ($user): ?>
-        <article class="card border-0 shadow-sm mb-4 overflow-hidden">
+        <article class="card border shadow-sm mb-4 overflow-hidden">
           <div class="card-body p-4 text-center">
             <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary text-white shadow-sm mb-3 p-3">
               <i class="bi bi-person-fill fs-3"></i>
@@ -248,7 +248,7 @@ echo smartcms_site_header('home');
           </div>
         </article>
       <?php else: ?>
-        <article class="card border-0 shadow-sm mb-4 bg-primary text-white">
+        <article class="card border shadow-sm mb-4 bg-primary text-white">
           <div class="card-body p-4">
             <h2 class="h5 fw-bold mb-2">커뮤니티 로그인</h2>
             <p class="small text-white-50 mb-4">가입 후 글쓰기와 댓글 참여가 가능합니다. 지금 시작하세요!</p>
@@ -260,7 +260,7 @@ echo smartcms_site_header('home');
         </article>
       <?php endif; ?>
 
-      <article class="card border-0 shadow-sm mb-4">
+      <article class="card border shadow-sm mb-4">
         <div class="card-header bg-white border-0 p-4 pb-0">
           <h3 class="h6 fw-bold mb-0 text-uppercase"><i class="bi bi-fire me-2 text-danger"></i>실시간 인기글</h3>
         </div>
@@ -287,7 +287,7 @@ echo smartcms_site_header('home');
         </div>
       </article>
 
-      <article class="card border-0 shadow-sm">
+      <article class="card border shadow-sm">
         <div class="card-body p-4">
           <h3 class="h6 fw-bold mb-3 text-uppercase text-body-secondary">전체 게시판</h3>
           <div class="d-flex flex-wrap gap-2">
