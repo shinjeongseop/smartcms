@@ -85,7 +85,7 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
                 $is_active = ($key === $active_menu);
             ?>
               <li class="nav-item">
-                <a class="nav-link py-3 px-4 text-center <?= $is_active ? 'active fw-bold border-bottom border-primary border-3' : '' ?>" 
+                <a class="nav-link py-3 px-4 text-center <?= $is_active ? 'active fw-bold border-bottom border-primary border-3' : '' ?>"
                    href="<?= smartcms_h(smartcms_base_url((string)$item['href'])) ?>">
                   <?= smartcms_h((string)$item['label']) ?>
                 </a>
@@ -106,4 +106,3 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
 
   <!-- [MAIN] 메인 콘텐츠 영역 -->
   <main class="min-vh-100 py-4 py-lg-5">
-y-lg-5">
