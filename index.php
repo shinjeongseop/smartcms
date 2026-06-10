@@ -222,7 +222,7 @@ require SMARTCMS_ROOT . '/head.php';
                   <div class="list-group list-group-flush small">
                     <?php if ($widget['posts']): ?>
                       <?php foreach ($widget['posts'] as $post): ?>
-                        <a class="list-group-item list-group-item-action px-0 py-2 border-0 d-flex justify-content-between align-items-center gap-2"
+                        <a class="list-group-item list-group-item-action bg-white px-0 py-2 border-0 d-flex justify-content-between align-items-center gap-2"
                            href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                           <span class="text-truncate fw-medium"><?= smartcms_h($post['title']) ?></span>
                           <time class="text-xs text-body-secondary flex-shrink-0" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">

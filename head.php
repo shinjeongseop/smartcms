@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/common/config.php';
 require_once __DIR__ . '/common/auth.php';
-require_once __DIR__ . '/common/ui/components.php';
 
 $title = (string)($SMARTCMS_HEAD['title'] ?? 'smartcms');
 $active_menu = (string)($SMARTCMS_HEAD['active_menu'] ?? '');
