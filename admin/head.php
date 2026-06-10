@@ -21,14 +21,10 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#03c75a">
   <title><?= smartcms_h($title) ?> · Admin · smartcms</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="<?= smartcms_h(smartcms_asset_url('/common/css/common.css')) ?>">
   <?php foreach ($stylesheets as $stylesheet): ?>
     <link rel="stylesheet" href="<?= smartcms_h(smartcms_asset_url((string)$stylesheet)) ?>">
@@ -37,20 +33,20 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
 <body class="<?= smartcms_h($body_class) ?>">
 <?php if (!$is_login_page): $admin = smartcms_current_user(); ?>
   <div class="d-flex min-vh-100">
-    <!-- [SIDEBAR] 반응형 사이드바 -->
-    <aside class="offcanvas-md offcanvas-start sc-admin-sidebar flex-column bg-white border-end p-3 flex-shrink-0" tabindex="-1" id="adminSidebarOffcanvas">
-      <div class="d-flex align-items-center justify-content-between mb-4">
+    <!-- [SIDEBAR] 어드민 사이드바 -->
+    <aside class="offcanvas-md offcanvas-start sc-admin-sidebar flex-column bg-white border-end p-3 flex-shrink-0 shadow-sm" tabindex="-1" id="adminSidebarOffcanvas">
+      <header class="d-flex align-items-center justify-content-between mb-4 px-2">
         <a class="navbar-brand d-inline-flex align-items-center gap-2 fw-bold text-primary text-decoration-none" href="/admin/dashboard/">
-          <span class="badge bg-primary-subtle text-primary rounded p-2 lh-1"><i class="bi bi-app-indicator fs-4"></i></span>
+          <span class="badge bg-primary-subtle text-primary rounded p-2 lh-1 shadow-sm"><i class="bi bi-app-indicator fs-4"></i></span>
           <span class="fs-4">smartcms</span>
         </a>
         <button type="button" class="btn-close d-md-none" data-bs-dismiss="offcanvas" data-bs-target="#adminSidebarOffcanvas" aria-label="Close"></button>
-      </div>
+      </header>
 
-      <nav class="nav nav-pills flex-column gap-1" aria-label="관리자 메뉴">
-        <p class="text-uppercase small fw-bold text-secondary opacity-50 mb-3 px-2" style="font-size: 0.65rem; letter-spacing: 0.05rem;">Admin Menu</p>
+      <nav class="nav nav-pills flex-column gap-1 mb-auto" aria-label="관리자 메뉴">
+        <p class="text-uppercase small fw-bold text-secondary opacity-50 mb-3 px-2" style="font-size: 0.65rem; letter-spacing: 0.1rem;">Admin Menu</p>
         <?php foreach (smartcms_admin_nav_items() as $key => $item): ?>
-          <a class="nav-link d-flex align-items-center gap-2 py-2 px-3 rounded-2 <?= $key === $active_menu ? 'active shadow-sm fw-bold' : 'text-secondary' ?>" href="<?= smartcms_h($item['href']) ?>">
+          <a class="nav-link d-flex align-items-center gap-2 py-2.5 px-3 rounded-2 <?= $key === $active_menu ? 'active shadow fw-bold' : 'text-secondary hover-bg-light' ?>" href="<?= smartcms_h($item['href']) ?>">
             <i class="bi <?= smartcms_h($item['icon']) ?> fs-5"></i>
             <span class="fw-medium"><?= smartcms_h($item['label']) ?></span>
           </a>
@@ -58,37 +54,50 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
       </nav>
 
       <?php if ($admin): ?>
-        <div class="card mt-auto border-0 bg-light rounded-3 mb-2">
+        <section class="card border bg-light rounded-3 mb-2 mt-4 shadow-none border">
           <div class="card-body p-3 d-flex align-items-center gap-2">
-            <span class="badge bg-primary rounded-circle p-2 lh-1" style="width:32px; height:32px;">
+            <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:34px; height:34px;">
               <?= smartcms_h(mb_substr((string)$admin['name'], 0, 1)) ?>
-            </span>
+            </div>
             <div class="min-w-0 flex-grow-1">
-              <strong class="d-block text-body text-truncate small"><?= smartcms_h($admin['name']) ?></strong>
-              <small class="text-secondary d-block" style="font-size: 0.7rem;">LV <?= (int)$admin['level'] ?></small>
+              <strong class="d-block text-body text-truncate small fw-bold"><?= smartcms_h($admin['name']) ?></strong>
+              <small class="text-secondary d-block fw-medium" style="font-size: 0.7rem;">LV <?= (int)$admin['level'] ?> Admin</small>
             </div>
           </div>
-        </div>
+        </section>
       <?php endif; ?>
-      <a class="btn btn-danger btn-sm w-100 border-0 text-start px-3" href="/member/logout/"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+      
+      <footer class="mt-2 pt-2 border-top">
+        <a class="btn btn-danger btn-sm w-100 border-0 text-start px-3 py-2 rounded-2 fw-bold shadow-none" href="/member/logout/">
+          <i class="bi bi-box-arrow-right me-2"></i>Logout
+        </a>
+      </footer>
     </aside>
 
     <!-- [WORKSPACE] 워크스페이스 영역 -->
     <div class="flex-grow-1 d-flex flex-column bg-light" style="min-width: 0;">
-      <header class="bg-white border-bottom px-3 px-md-4 py-3">
+      <header class="bg-white border-bottom px-3 px-md-4 py-3 sticky-top z-1 shadow-sm">
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
             <button class="btn btn-link p-0 border-0 text-dark d-md-none shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#adminSidebarOffcanvas">
               <i class="bi bi-list fs-2"></i>
             </button>
-            <div class="d-none d-sm-block">
-              <nav aria-label="breadcrumb"><ol class="breadcrumb small mb-1"><li class="breadcrumb-item"><a href="/admin/dashboard/" class="text-decoration-none text-secondary">Admin</a></li><li class="breadcrumb-item active fw-bold" aria-current="page"><?= smartcms_h($title) ?></li></ol></nav>
-              <h1 class="h4 fw-bold mb-0 text-body"><?= smartcms_h($title) ?></h1>
-            </div>
-            <h1 class="h5 fw-bold mb-0 text-body d-sm-none"><?= smartcms_h($title) ?></h1>
+            <nav aria-label="breadcrumb" class="d-none d-sm-block">
+              <ol class="breadcrumb small mb-1 fw-medium">
+                <li class="breadcrumb-item"><a href="/admin/dashboard/" class="text-decoration-none text-secondary">Admin</a></li>
+                <li class="breadcrumb-item active fw-bold text-primary" aria-current="page"><?= smartcms_h($title) ?></li>
+              </ol>
+              <h1 class="h4 fw-bold mb-0 text-dark"><?= smartcms_h($title) ?></h1>
+            </nav>
+            <h1 class="h5 fw-bold mb-0 text-dark d-sm-none"><?= smartcms_h($title) ?></h1>
           </div>
-          <a class="btn btn-light btn-sm rounded-pill border px-3" href="/"><i class="bi bi-house me-1"></i><span class="d-none d-sm-inline">사이트 홈</span></a>
+          <div class="d-flex gap-2">
+            <a class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-bold border-2 shadow-none" href="/">
+              <i class="bi bi-house me-1"></i><span class="d-none d-sm-inline">사이트 홈</span>
+            </a>
+          </div>
         </div>
       </header>
+
       <main class="p-4 flex-grow-1">
 <?php endif; ?>

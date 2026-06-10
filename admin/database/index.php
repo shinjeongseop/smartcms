@@ -45,10 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     try {
                         $executed = smartcms_db_restore_sql($sql);
-                        $message = 'DB 복구를 완료했습니다. 실행된 SQL 문장 수: ' . $executed;
+                        $message = '데이터베이스 복구를 성공적으로 완료했습니다. (쿼리 ' . $executed . '개 실행됨)';
                         $message_type = 'success';
                     } catch (Throwable $e) {
-                        $message = 'DB 복구 중 오류가 발생했습니다: ' . $e->getMessage();
+                        $message = '데이터베이스 복구 중 치명적 오류 발생: ' . $e->getMessage();
                         $message_type = 'error';
                     }
                 }
@@ -64,10 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             try {
                 $dropped = smartcms_db_drop_managed_tables();
-                $message = 'DB 초기화를 완료했습니다. 삭제된 테이블 수: ' . $dropped . '개.';
+                $message = '시스템 테이블이 모두 초기화되었습니다. (삭제된 테이블: ' . $dropped . '개)';
                 $message_type = 'success';
             } catch (Throwable $e) {
-                $message = 'DB 초기화 중 오류가 발생했습니다: ' . $e->getMessage();
+                $message = '초기화 작업 중 오류가 발생했습니다: ' . $e->getMessage();
                 $message_type = 'error';
             }
         }
@@ -77,72 +77,107 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $tables = smartcms_db_managed_tables();
 $prefix = (string)smartcms_config_value('table_prefix', 'sc_');
 
-$SMARTCMS_HEAD = ['title' => 'DB 관리', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'database'];
+$SMARTCMS_HEAD = ['title' => '데이터베이스 관리', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'database'];
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
-<?php if ($message !== ''): ?>
-  <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-start gap-2 mb-4" role="alert">
-    <i class="bi bi-info-circle-fill mt-1"></i>
-    <div><?= smartcms_h($message) ?></div>
-  </div>
-<?php endif; ?>
+<section class="container-fluid py-2">
+  <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+    <div>
+      <h1 class="h3 fw-bold mb-1 text-dark">데이터베이스 관리 도구</h1>
+      <p class="text-secondary small mb-0 fw-medium">시스템 데이터의 안전한 백업, 복구 및 유지보수를 수행합니다.</p>
+    </div>
+  </header>
 
-<div class="row g-3">
-  <div class="col-12">
-    <section class="card border-0 shadow-sm">
-      <div class="card-body p-4">
-        <header><h2 class="h5 fw-bold mb-2">DB 백업</h2></header>
-        <p class="text-body-secondary mb-3">현재 prefix <strong><?= smartcms_h($prefix) ?></strong>로 시작하는 SmartCMS 테이블을 SQL 파일로 내려받습니다.</p>
-        <form method="post">
-          <?= smartcms_csrf_input() ?>
-          <input type="hidden" name="action" value="backup">
-          <button class="btn btn-primary px-4" type="submit">SQL 백업 다운로드</button>
-        </form>
-      </div>
-    </section>
-  </div>
+  <?php if ($message !== ''): ?>
+    <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
+      <i class="bi bi-info-circle-fill fs-5"></i>
+      <div class="fw-medium small"><?= smartcms_h($message) ?></div>
+    </aside>
+  <?php endif; ?>
 
-  <div class="col-12">
-    <section class="card border-0 shadow-sm">
-      <div class="card-body p-4">
-        <header><h2 class="h5 fw-bold mb-2">DB 복구</h2></header>
-        <p class="text-body-secondary mb-3">SmartCMS 백업 SQL 파일을 업로드해 복구합니다. 복구 전 현재 DB 백업을 먼저 다운로드하는 것을 권장합니다.</p>
-        <form class="row g-3" method="post" enctype="multipart/form-data">
-          <?= smartcms_csrf_input() ?>
-          <input type="hidden" name="action" value="restore">
-          <div class="col-12 col-lg-8">
-            <label for="backup_file" class="form-label">SQL 백업 파일</label>
-            <input class="form-control" id="backup_file" name="backup_file" type="file" accept=".sql" required>
-          </div>
-          <div class="col-12 col-lg-4 d-flex align-items-end">
-            <button class="btn btn-primary px-4" type="submit">SQL 복구 실행</button>
-          </div>
-        </form>
-      </div>
-    </section>
-  </div>
+  <div class="row g-4">
+    <!-- DB 백업 섹션 -->
+    <div class="col-12 col-lg-6">
+      <article class="card border shadow-sm h-100 overflow-hidden">
+        <header class="card-header bg-white border-bottom py-3 px-4">
+          <h2 class="h6 fw-bold mb-0 text-dark d-flex align-items-center gap-2">
+            <i class="bi bi-cloud-download text-primary fs-5"></i>데이터베이스 백업 (Dump)
+          </h2>
+        </header>
+        <div class="card-body p-4 p-lg-5">
+          <p class="text-secondary small mb-4 fw-medium">
+            현재 사용 중인 테이블 Prefix <strong><?= smartcms_h($prefix) ?></strong>로 시작하는 모든 구조와 데이터를 SQL 파일로 생성하여 내려받습니다. 정기적인 백업을 권장합니다.
+          </p>
+          <form method="post">
+            <?= smartcms_csrf_input() ?>
+            <input type="hidden" name="action" value="backup">
+            <button class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm py-2.5" type="submit">
+              <i class="bi bi-download me-2"></i>SQL 백업 다운로드
+            </button>
+          </form>
+        </div>
+      </article>
+    </div>
 
-  <div class="col-12">
-    <section class="card border-0 shadow-sm border-start border-danger border-4">
-      <div class="card-body p-4">
-        <header><h2 class="h5 fw-bold mb-2 text-danger">DB 초기화</h2></header>
-        <p class="text-body-secondary mb-3">현재 prefix <strong><?= smartcms_h($prefix) ?></strong>로 시작하는 테이블 <?= count($tables) ?>개를 삭제합니다.</p>
-        <form class="row g-3" method="post">
-          <?= smartcms_csrf_input() ?>
-          <input type="hidden" name="action" value="reset">
-          <div class="col-12 col-lg-8">
-            <label for="confirm_text" class="form-label">확인 문구</label>
-            <input class="form-control" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required>
+    <!-- DB 복구 섹션 -->
+    <div class="col-12 col-lg-6">
+      <article class="card border shadow-sm h-100 overflow-hidden">
+        <header class="card-header bg-white border-bottom py-3 px-4">
+          <h2 class="h6 fw-bold mb-0 text-dark d-flex align-items-center gap-2">
+            <i class="bi bi-cloud-upload text-info fs-5"></i>데이터베이스 복구 (Restore)
+          </h2>
+        </header>
+        <div class="card-body p-4 p-lg-5">
+          <p class="text-secondary small mb-4 fw-medium">
+            이전에 백업된 SQL 파일을 업로드하여 데이터를 복원합니다. <span class="text-danger fw-bold">주의: 현재 데이터가 백업 파일의 내용으로 덮어씌워집니다.</span>
+          </p>
+          <form class="vstack gap-3" method="post" enctype="multipart/form-data">
+            <?= smartcms_csrf_input() ?>
+            <input type="hidden" name="action" value="restore">
+            <div>
+              <label for="backup_file" class="form-label fw-bold small text-dark text-uppercase">백업 SQL 파일 선택</label>
+              <input class="form-control bg-light border-0 py-2 shadow-none fw-bold" id="backup_file" name="backup_file" type="file" accept=".sql" required>
+            </div>
+            <div class="pt-2">
+              <button class="btn btn-dark rounded-pill px-5 fw-bold shadow-sm py-2.5" type="submit">
+                <i class="bi bi-arrow-repeat me-2"></i>SQL 복구 실행
+              </button>
+            </div>
+          </form>
+        </div>
+      </article>
+    </div>
+
+    <!-- DB 초기화 섹션 -->
+    <div class="col-12">
+      <section class="card border shadow-sm border-start border-danger border-5 overflow-hidden">
+        <div class="card-body p-4 p-lg-5">
+          <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4">
+            <div class="d-flex align-items-start gap-3">
+              <div class="badge bg-danger p-3 rounded-circle shadow-sm"><i class="bi bi-exclamation-octagon fs-4"></i></div>
+              <div>
+                <h2 class="h5 fw-bold mb-1 text-danger">시스템 데이터 초기화 (Dangerous Area)</h2>
+                <p class="text-secondary small mb-0 fw-medium">
+                  현재 Prefix로 생성된 모든 테이블 <strong><?= count($tables) ?>개</strong>를 완전히 삭제합니다. 이 작업은 되돌릴 수 없습니다.
+                </p>
+              </div>
+            </div>
+            <form class="d-flex flex-column flex-md-row gap-2 align-items-md-end" method="post">
+              <?= smartcms_csrf_input() ?>
+              <input type="hidden" name="action" value="reset">
+              <div>
+                <label for="confirm_text" class="form-label fw-bold small text-danger text-uppercase">확인 문구 입력</label>
+                <input class="form-control border-danger-subtle shadow-none py-2 px-3 fw-bold" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required style="width:200px;">
+              </div>
+              <button class="btn btn-danger rounded-pill px-4 py-2 fw-bold shadow-sm" type="submit">지금 즉시 초기화</button>
+            </form>
           </div>
-          <div class="col-12 d-flex flex-wrap gap-2">
-            <button class="btn btn-danger px-4" type="submit">DB 초기화 실행</button>
-          </div>
-        </form>
-      </div>
-    </section>
+        </div>
+      </section>
+    </div>
   </div>
-</div>
+</section>
 
 <?php
 $SMARTCMS_FOOT = [];

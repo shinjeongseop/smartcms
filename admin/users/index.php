@@ -53,114 +53,144 @@ $SMARTCMS_HEAD = ['title' => '회원 관리', 'body_class' => 'smartcms-admin-pa
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
+<!-- [MESSAGES] 알림 영역 -->
 <?php if ($message): ?>
-  <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-start gap-2 mb-4" role="alert">
-    <i class="bi bi-info-circle-fill mt-1"></i>
-    <div><?= smartcms_h($message) ?></div>
-  </div>
+  <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4" role="alert">
+    <i class="bi bi-info-circle-fill fs-5"></i>
+    <div class="fw-medium"><?= smartcms_h($message) ?></div>
+  </aside>
 <?php endif; ?>
 
-<section class="card border-0 shadow-sm mb-4">
+<!-- [SEARCH] 검색 영역 -->
+<section class="card border shadow-sm mb-4">
     <div class="card-body p-4">
-        <form method="get" class="row g-3 align-items-center">
+        <form method="get" class="row g-3 align-items-center" role="search">
             <div class="col-12 col-md-6 col-lg-4">
-                <div class="input-group shadow-sm">
+                <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                    <input type="text" name="search" class="form-control border-start-0 ps-0" placeholder="이름 또는 이메일 검색" value="<?= smartcms_h($search) ?>">
-                    <button class="btn btn-primary px-4" type="submit">검색</button>
+                    <input type="search" name="search" class="form-control border-start-0 ps-0 shadow-none" 
+                           placeholder="이름 또는 이메일 검색" value="<?= smartcms_h($search) ?>">
+                    <button class="btn btn-primary px-4 shadow-none" type="submit">검색</button>
                 </div>
             </div>
             <?php if ($search !== ''): ?>
-                <div class="col-auto"><a href="?" class="btn btn-link btn-sm text-secondary">필터 초기화</a></div>
+                <div class="col-auto">
+                    <a href="?" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-none">필터 초기화</a>
+                </div>
             <?php endif; ?>
         </form>
     </div>
 </section>
 
-<section class="card border-0 shadow-sm">
-    <header class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
-        <h5 class="card-title mb-0 fw-bold">전체 회원 목록</h5>
-        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold"><?= number_format($total_users) ?>명 조회됨</span>
+<!-- [LIST] 회원 목록 테이블 영역 -->
+<section class="card border shadow-sm overflow-hidden">
+    <header class="card-header bg-white border-bottom py-3 px-4 d-flex align-items-center justify-content-between">
+        <h5 class="card-title mb-0 fw-bold text-dark">전체 회원 목록</h5>
+        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold">
+            총 <?= number_format($total_users) ?>명
+        </span>
     </header>
+    
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0 text-nowrap">
-            <thead class="bg-light text-secondary small text-uppercase">
+            <thead class="table-light small text-uppercase fw-bold text-secondary">
                 <tr>
-                    <th class="ps-4 py-3">ID</th>
-                    <th class="py-3">회원 정보</th>
-                    <th class="py-3">역할 / 레벨</th>
-                    <th>상태</th>
-                    <th>가입일</th>
-                    <th class="text-end pe-4 py-3">권한 수정</th>
+                    <th scope="col" class="ps-4 py-3">ID</th>
+                    <th scope="col" class="py-3">회원 정보</th>
+                    <th scope="col" class="py-3">권한 설정</th>
+                    <th scope="col" class="py-3">상태</th>
+                    <th scope="col" class="py-3">가입일</th>
+                    <th scope="col" class="text-end pe-4 py-3">액션</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="table-group-divider">
                 <?php foreach ($users as $user): ?>
-                    <tr class="sc-user-row-<?= (int)$user['id'] ?>">
-                        <td class="ps-4 text-secondary opacity-75">#<?= smartcms_h($user['id']) ?></td>
+                    <tr>
+                        <td class="ps-4 text-secondary small">#<?= (int)$user['id'] ?></td>
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                <div class="badge bg-primary-subtle text-primary rounded-circle p-2 lh-1 sc-avatar-sm text-xs"><?= smartcms_h(mb_substr((string)$user['name'], 0, 1)) ?></div>
+                                <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width:36px; height:36px;">
+                                    <?= smartcms_h(mb_substr((string)$user['name'], 0, 1)) ?>
+                                </div>
                                 <div class="lh-sm">
-                                    <div class="fw-bold text-emphasis small"><?= smartcms_h($user['name']) ?></div>
-                                    <div class="text-xs text-secondary opacity-75"><?= smartcms_h($user['email']) ?></div>
+                                    <div class="fw-bold text-dark mb-1"><?= smartcms_h($user['name']) ?></div>
+                                    <div class="text-xs text-secondary"><?= smartcms_h($user['email']) ?></div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <div class="d-flex gap-2">
-                                <span class="badge bg-secondary-subtle text-secondary small text-uppercase text-xs"><?= smartcms_h($user['role']) ?></span>
-                                <span class="badge bg-light text-dark border-0 small">LV <?= (int)$user['level'] ?></span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="badge bg-<?= $user['status'] === 'active' ? 'success' : 'secondary' ?> p-1 rounded-circle me-1" style="width:6px; height:6px; display:inline-block;"></span>
-                            <span class="small text-capitalize"><?= smartcms_h($user['status']) ?></span>
-                        </td>
-                        <td class="text-secondary small"><?= smartcms_h(date('Y-m-d', strtotime($user['created_at']))) ?></td>
-                        <td class="text-end pe-4">
-                            <form class="d-inline-flex gap-2 align-items-center" method="post">
+                            <form class="d-flex gap-2 align-items-center" method="post" id="form-user-<?= (int)$user['id'] ?>">
                                 <?= smartcms_csrf_input() ?>
                                 <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
-                                <select name="role" class="form-select form-select-sm bg-light border-0" style="width:100px;">
+                                <select name="role" aria-label="역할" class="form-select form-select-sm bg-light border-0 shadow-none" style="width:110px;">
                                     <?php foreach(['admin', 'manager', 'user'] as $r): ?>
                                         <option value="<?= $r ?>" <?= $user['role'] === $r ? 'selected' : '' ?>><?= $r ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <select name="level" class="form-select form-select-sm bg-light border-0" style="width:65px;">
+                                <select name="level" aria-label="레벨" class="form-select form-select-sm bg-light border-0 shadow-none" style="width:70px;">
                                     <?php for($i=1;$i<=10;$i++): ?>
-                                        <option value="<?= $i ?>" <?= $user['level'] == $i ? 'selected' : '' ?>><?= $i ?></option>
+                                        <option value="<?= $i ?>" <?= (int)$user['level'] === $i ? 'selected' : '' ?>><?= $i ?></option>
                                     <?php endfor; ?>
                                 </select>
-                                <button type="submit" class="btn btn-primary btn-sm px-3 shadow-none">변경</button>
+                                <select name="status" aria-label="상태" class="form-select form-select-sm bg-light border-0 shadow-none" style="width:90px;">
+                                    <?php foreach(['active', 'blocked'] as $s): ?>
+                                        <option value="<?= $s ?>" <?= $user['status'] === $s ? 'selected' : '' ?>><?= $s ?></option>
+                                    <?php endforeach; ?>
+                                </select>
                             </form>
+                        </td>
+                        <td>
+                            <?php if ($user['status'] === 'active'): ?>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1 small">정상</span>
+                            <?php else: ?>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1 small">차단</span>
+                            <?php endif; ?>
+                        </td>
+                        <td class="text-secondary small">
+                            <time datetime="<?= date('Y-m-d', strtotime($user['created_at'])) ?>">
+                                <?= smartcms_h(date('Y-m-d', strtotime($user['created_at']))) ?>
+                            </time>
+                        </td>
+                        <td class="text-end pe-4">
+                            <button type="submit" form="form-user-<?= (int)$user['id'] ?>" class="btn btn-primary btn-sm px-3 shadow-none">저장</button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
     </div>
-    <?php if (!$users): ?>
-        <div class="text-center py-5 text-secondary">표시할 회원이 없습니다.</div>
+
+    <!-- [PAGINATION] 하단 페이지네이션 -->
+    <?php if ($total_pages > 1): ?>
+    <footer class="card-footer bg-white border-top py-4">
+        <nav aria-label="회원 목록 페이지">
+            <ul class="pagination pagination-sm justify-content-center mb-0 gap-1">
+                <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                    <a class="page-link rounded-circle border shadow-sm" href="?search=<?= urlencode($search) ?>&page=<?= $page - 1 ?>">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+                <?php for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++): ?>
+                    <li class="page-item <?= $i === $page ? 'active' : '' ?>">
+                        <a class="page-link rounded-circle border shadow-sm mx-1" href="?search=<?= urlencode($search) ?>&page=<?= $i ?>"><?= $i ?></a>
+                    </li>
+                <?php endfor; ?>
+                <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link rounded-circle border shadow-sm" href="?search=<?= urlencode($search) ?>&page=<?= $page + 1 ?>">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </footer>
     <?php endif; ?>
 </section>
 
-<?php if ($total_pages > 1): ?>
-<nav class="mt-4 d-flex justify-content-center" aria-label="Page navigation">
-      <ul class="pagination pagination-sm mb-0 gap-1">
-        <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-          <a class="page-link rounded-circle border-0 shadow-sm" href="?search=<?= urlencode($search) ?>&page=<?= $page - 1 ?>"><i class="bi bi-chevron-left"></i></a>
-        </li>
-        <?php for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++): ?>
-          <li class="page-item <?= $i === $page ? 'active' : '' ?>">
-            <a class="page-link rounded-circle border-0 shadow-sm mx-1" href="?search=<?= urlencode($search) ?>&page=<?= $i ?>"><?= $i ?></a>
-          </li>
-        <?php endfor; ?>
-        <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
-          <a class="page-link rounded-circle border-0 shadow-sm" href="?search=<?= urlencode($search) ?>&page=<?= $page + 1 ?>"><i class="bi bi-chevron-right"></i></a>
-        </li>
-      </ul>
-</nav>
+<?php if (!$users): ?>
+    <div class="text-center py-5">
+        <i class="bi bi-person-exclamation fs-1 text-secondary opacity-25"></i>
+        <p class="text-secondary mt-3">조회된 회원이 없습니다.</p>
+    </div>
 <?php endif; ?>
 
 <?php

@@ -64,14 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ]
         );
 
-        $message = '게시판 상세 설정이 저장되었습니다.';
+        $message = '게시판 상세 설정이 성공적으로 저장되었습니다.';
         $message_type = 'success';
 
         // 데이터 새로고침
         $board = smartcms_fetch_one("SELECT * FROM " . smartcms_table('boards') . " WHERE board_key = :key", ['key' => $board_key]);
         $permission = smartcms_fetch_one("SELECT * FROM " . smartcms_table('board_permissions') . " WHERE board_key = :key", ['key' => $board_key]);
     } catch (Throwable $e) {
-        $message = '오류 발생: ' . $e->getMessage();
+        $message = '설정 저장 중 오류가 발생했습니다: ' . $e->getMessage();
         $message_type = 'error';
     }
 }
@@ -83,134 +83,149 @@ $SMARTCMS_HEAD = [
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
-<article class="p-4">
-  <header class="d-flex align-items-center justify-content-between mb-4">
+<section class="container-fluid py-2">
+  <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
     <div>
-      <h1 class="h3 fw-bold mb-1">게시판 상세 설정</h1>
-      <p class="text-secondary mb-0">게시판의 기능, 디자인 및 접근 권한을 관리합니다.</p>
+      <h1 class="h3 fw-bold mb-1 text-dark">상세 설정: <?= smartcms_h($board['board_name']) ?></h1>
+      <p class="text-secondary small mb-0 fw-medium">게시판의 세부 기능 및 접근 권한을 정밀하게 제어합니다.</p>
     </div>
     <nav aria-label="breadcrumb">
-      <ol class="breadcrumb mb-0">
+      <ol class="breadcrumb mb-0 small fw-bold">
         <li class="breadcrumb-item"><a href="/admin/boards/" class="text-decoration-none text-secondary">게시판 관리</a></li>
-        <li class="breadcrumb-item active" aria-current="page">상세 설정</li>
+        <li class="breadcrumb-item active text-primary" aria-current="page">상세 설정</li>
       </ol>
     </nav>
   </header>
 
   <?php if ($message): ?>
-    <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ($message_type === 'success' ? 'success' : 'info') ?> d-flex align-items-start gap-2 mb-4" role="alert">
-      <i class="bi bi-info-circle-fill mt-1"></i>
-      <div><?= smartcms_h($message) ?></div>
-    </div>
+    <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ($message_type === 'success' ? 'success' : 'info') ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
+      <i class="bi bi-info-circle-fill fs-5"></i>
+      <div class="fw-medium small"><?= smartcms_h($message) ?></div>
+    </aside>
   <?php endif; ?>
 
   <form method="post">
     <?= smartcms_csrf_input() ?>
     <div class="row g-4">
-      <!-- 기본 정보 -->
+      <!-- 기본 정보 및 디자인 영역 -->
       <div class="col-12 col-xl-8">
-        <section class="card border-0 shadow-sm mb-4">
-          <div class="card-header bg-white border-bottom py-3 px-4">
-            <h2 class="card-title h6 mb-0 fw-bold">기본 정보 및 디자인</h2>
-          </div>
-          <div class="card-body p-4">
-            <div class="row g-3">
+        <article class="card border shadow-sm mb-4 overflow-hidden">
+          <header class="card-header bg-white border-bottom py-3 px-4">
+            <h2 class="card-title h6 mb-0 fw-bold text-dark text-uppercase letter-spacing-1">기본 정보 및 스킨 설정</h2>
+          </header>
+          <div class="card-body p-4 p-lg-5">
+            <div class="row g-4">
               <div class="col-md-6">
-                <label class="form-label small fw-bold">게시판 키</label>
-                <input type="text" class="form-control bg-light" value="<?= smartcms_h($board['board_key']) ?>" readonly>
+                <label class="form-label fw-bold small text-secondary text-uppercase">게시판 고유 키</label>
+                <input type="text" class="form-control bg-light border-0 py-2 shadow-none fw-bold" value="<?= smartcms_h($board['board_key']) ?>" readonly>
               </div>
               <div class="col-md-6">
-                <label class="form-label small fw-bold">게시판 이름</label>
-                <input type="text" name="board_name" class="form-control" value="<?= smartcms_h($board['board_name']) ?>" required>
+                <label for="board_name" class="form-label fw-bold small text-dark text-uppercase">게시판 표시 이름</label>
+                <input type="text" id="board_name" name="board_name" class="form-control bg-light border-0 py-2 shadow-none" value="<?= smartcms_h($board['board_name']) ?>" required>
               </div>
               <div class="col-12">
-                <label class="form-label small fw-bold">게시판 설명</label>
-                <textarea name="description" class="form-control" rows="2"><?= smartcms_h($board['description'] ?? '') ?></textarea>
+                <label for="description" class="form-label fw-bold small text-dark text-uppercase">게시판 상세 설명</label>
+                <textarea id="description" name="description" class="form-control bg-light border-0 shadow-none" rows="2"><?= smartcms_h($board['description'] ?? '') ?></textarea>
               </div>
               <div class="col-md-6">
-                <label class="form-label small fw-bold">적용 스킨</label>
-                <select name="skin" class="form-select">
+                <label for="skin" class="form-label fw-bold small text-dark text-uppercase">적용 디자인 스킨</label>
+                <select id="skin" name="skin" class="form-select bg-light border-0 py-2 shadow-none fw-bold">
                   <?php foreach(['default', 'table', 'card', 'gallery', 'qna', 'notice', 'faq', 'webzine'] as $skin): ?>
                     <option value="<?= $skin ?>" <?= $board['skin'] === $skin ? 'selected' : '' ?>><?= ucfirst($skin) ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>
               <div class="col-md-6">
-                <label class="form-label small fw-bold">페이지당 게시물 수</label>
-                <input type="number" name="items_per_page" class="form-control" value="<?= (int)$board['items_per_page'] ?>" min="1" max="100">
+                <label for="items_per_page" class="form-label fw-bold small text-dark text-uppercase">페이지당 게시물 노출 수</label>
+                <input type="number" id="items_per_page" name="items_per_page" class="form-control bg-light border-0 py-2 shadow-none" value="<?= (int)$board['items_per_page'] ?>" min="1" max="100">
               </div>
             </div>
           </div>
-        </section>
+        </article>
 
-        <section class="card border-0 shadow-sm">
-          <div class="card-header bg-white border-bottom py-3 px-4">
-            <h2 class="card-title h6 mb-0 fw-bold">접근 및 권한 설정</h2>
-          </div>
-          <div class="card-body p-4">
-            <div class="row g-3">
-              <?php foreach (['list' => '목록', 'view' => '보기', 'write' => '쓰기', 'comment' => '댓글'] as $key => $label): ?>
+        <article class="card border shadow-sm overflow-hidden">
+          <header class="card-header bg-white border-bottom py-3 px-4">
+            <h2 class="card-title h6 mb-0 fw-bold text-dark text-uppercase letter-spacing-1">접근 권한 및 상세 레벨 제어</h2>
+          </header>
+          <div class="card-body p-4 p-lg-5">
+            <div class="row g-4">
+              <?php foreach (['list' => '목록 조회', 'view' => '본문 읽기', 'write' => '글 쓰기', 'comment' => '댓글 쓰기'] as $key => $label): ?>
                 <div class="col-md-3">
-                  <label class="form-label small fw-bold"><?= $label ?> 권한</label>
-                  <select name="board_<?= $key ?>_level" class="form-select">
+                  <label class="form-label fw-bold small text-secondary text-uppercase"><?= $label ?></label>
+                  <select name="board_<?= $key ?>_level" class="form-select bg-light border-0 py-2 shadow-none fw-bold">
                     <?php for($i=0; $i<=10; $i++): ?>
                       <option value="<?= $i ?>" <?= (int)$permission["board_{$key}_level"] === $i ? 'selected' : '' ?>>Level <?= $i ?></option>
                     <?php endfor; ?>
                   </select>
                 </div>
               <?php endforeach; ?>
-              <div class="col-md-6">
-                <div class="p-3 bg-light rounded-3 border">
-                  <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" name="allow_guest_list" id="g_list" <?= $permission['allow_guest_list'] ? 'checked' : '' ?>>
-                    <label class="form-check-label small fw-bold" for="g_list">비회원 목록 접근 허용</label>
-                  </div>
-                  <div class="form-check form-switch mb-0">
-                    <input class="form-check-input" type="checkbox" name="allow_guest_view" id="g_view" <?= $permission['allow_guest_view'] ? 'checked' : '' ?>>
-                    <label class="form-check-label small fw-bold" for="g_view">비회원 게시글 읽기 허용</label>
+              
+              <div class="col-12">
+                <div class="p-4 bg-light rounded-4 border-0">
+                  <div class="row g-4">
+                    <div class="col-md-6">
+                      <div class="form-check form-switch custom-switch">
+                        <input class="form-check-input" type="checkbox" name="allow_guest_list" id="g_list" <?= $permission['allow_guest_list'] ? 'checked' : '' ?>>
+                        <label class="form-check-label fw-bold text-dark ms-2" for="g_list">비회원 목록 접근 허용 (Guest List)</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-check form-switch custom-switch">
+                        <input class="form-check-input" type="checkbox" name="allow_guest_view" id="g_view" <?= $permission['allow_guest_view'] ? 'checked' : '' ?>>
+                        <label class="form-check-label fw-bold text-dark ms-2" for="g_view">비회원 본문 읽기 허용 (Guest View)</label>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </article>
       </div>
 
-      <!-- 기능 스위치 및 저장 -->
+      <!-- 기능 스위치 및 액션 패널 -->
       <div class="col-12 col-xl-4">
-        <section class="card border-0 shadow-sm mb-4">
-          <div class="card-header bg-white border-bottom py-3 px-4">
-            <h2 class="card-title h6 mb-0 fw-bold">기능 활성화</h2>
-          </div>
-          <div class="card-body p-4">
-            <div class="form-check form-switch mb-3">
-              <input class="form-check-input" type="checkbox" name="use_editor" id="u_editor" <?= $board['use_editor'] ? 'checked' : '' ?>>
-              <label class="form-check-label fw-bold" for="u_editor">WYSIWYG 에디터 사용</label>
+        <aside class="sticky-top" style="top: 1rem;">
+          <article class="card border shadow-sm mb-4 overflow-hidden border-top border-primary border-4">
+            <header class="card-header bg-white border-bottom py-3 px-4 text-center">
+              <h2 class="card-title h6 mb-0 fw-bold text-primary text-uppercase">기능 활성화 스위치</h2>
+            </header>
+            <div class="card-body p-4">
+              <div class="vstack gap-3 mb-4">
+                <div class="form-check form-switch p-3 bg-light rounded-3 border-0">
+                  <input class="form-check-input ms-0" type="checkbox" name="use_editor" id="u_editor" <?= $board['use_editor'] ? 'checked' : '' ?>>
+                  <label class="form-check-label fw-bold text-dark ms-3" for="u_editor">WYSIWYG 에디터</label>
+                </div>
+                <div class="form-check form-switch p-3 bg-light rounded-3 border-0">
+                  <input class="form-check-input ms-0" type="checkbox" name="use_comments" id="u_comments" <?= $board['use_comments'] ? 'checked' : '' ?>>
+                  <label class="form-check-label fw-bold text-dark ms-3" for="u_comments">실시간 댓글 시스템</label>
+                </div>
+                <div class="form-check form-switch p-3 bg-light rounded-3 border-0">
+                  <input class="form-check-input ms-0" type="checkbox" name="use_attachments" id="u_files" <?= $board['use_attachments'] ? 'checked' : '' ?>>
+                  <label class="form-check-label fw-bold text-dark ms-3" for="u_files">멀티 첨부파일 업로드</label>
+                </div>
+              </div>
+
+              <div class="mb-4 pt-2">
+                <label for="status" class="form-label fw-bold small text-secondary text-uppercase">게시판 현재 상태</label>
+                <select id="status" name="status" class="form-select border-2 shadow-none fw-bold">
+                  <option value="active" <?= $board['status'] === 'active' ? 'selected' : '' ?> class="text-success">● Active (정상 운영)</option>
+                  <option value="hidden" <?= $board['status'] === 'hidden' ? 'selected' : '' ?> class="text-warning">● Hidden (목록 숨김)</option>
+                  <option value="disabled" <?= $board['status'] === 'disabled' ? 'selected' : '' ?> class="text-danger">● Disabled (영구 중지)</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 py-3 fw-bold shadow-sm mb-2 rounded-3">
+                <i class="bi bi-cloud-check-fill me-2"></i>모든 설정 저장하기
+              </button>
+              <a href="/admin/boards/" class="btn btn-light border-0 w-100 py-2 text-secondary small fw-bold">취소하고 목록으로 돌아가기</a>
             </div>
-            <div class="form-check form-switch mb-3">
-              <input class="form-check-input" type="checkbox" name="use_comments" id="u_comments" <?= $board['use_comments'] ? 'checked' : '' ?>>
-              <label class="form-check-label fw-bold" for="u_comments">댓글 기능 활성화</label>
-            </div>
-            <div class="form-check form-switch mb-4">
-              <input class="form-check-input" type="checkbox" name="use_attachments" id="u_files" <?= $board['use_attachments'] ? 'checked' : '' ?>>
-              <label class="form-check-label fw-bold" for="u_files">첨부파일 업로드 허용</label>
-            </div>
-            <label class="form-label small fw-bold">게시판 상태</label>
-            <select name="status" class="form-select mb-4">
-              <option value="active" <?= $board['status'] === 'active' ? 'selected' : '' ?>>Active (정상 운영)</option>
-              <option value="hidden" <?= $board['status'] === 'hidden' ? 'selected' : '' ?>>Hidden (숨김)</option>
-              <option value="disabled" <?= $board['status'] === 'disabled' ? 'selected' : '' ?>>Disabled (사용 중지)</option>
-            </select>
-            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold shadow-sm">
-              <i class="bi bi-check-circle-fill me-2"></i>상세 설정 저장하기
-            </button>
-            <a href="/admin/boards/" class="btn btn-light border w-100 mt-2 py-2 text-secondary">목록으로 돌아가기</a>
-          </div>
-        </section>
+          </article>
+        </aside>
       </div>
     </div>
   </form>
-</article>
+</section>
 
 <?php
 $SMARTCMS_FOOT = [];

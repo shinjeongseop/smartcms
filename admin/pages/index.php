@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'status' => $status,
             ]
         );
-        $message = '페이지 권한을 저장했습니다.';
+        $message = '페이지 접근 권한 설정이 저장되었습니다.';
         $message_type = 'success';
     }
 }
@@ -55,86 +55,98 @@ try {
     $message_type = 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '페이지 권한', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'pages'];
+$SMARTCMS_HEAD = ['title' => '페이지 권한 관리', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'pages'];
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
-<?php if ($message !== ''): ?>
-  <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-start gap-2 mb-4" role="alert">
-    <i class="bi bi-info-circle-fill mt-1"></i>
-    <div><?= smartcms_h($message) ?></div>
-  </div>
-<?php endif; ?>
-
-<section class="card border-0 shadow-sm">
-  <header class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
+<section class="container-fluid py-2">
+  <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
     <div>
-      <h5 class="card-title mb-1 fw-bold">등록된 페이지 권한</h5>
-      <p class="text-secondary small mb-0">페이지가 호출될 때 자동으로 등록되는 접근 제어 목록입니다.</p>
+      <h1 class="h3 fw-bold mb-1 text-dark">페이지 권한 관리 (ACL)</h1>
+      <p class="text-secondary small mb-0 fw-medium">시스템에서 생성된 개별 페이지의 접근 권한을 제어합니다.</p>
     </div>
-    <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold"><?= count($pages) ?>개</span>
+    <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-bold shadow-sm">
+      총 <?= count($pages) ?>개 등록됨
+    </span>
   </header>
-  <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0 text-nowrap">
-        <thead class="bg-light text-secondary small text-uppercase">
-          <tr>
-            <th class="ps-4 py-3">페이지 정보</th>
-            <th class="py-3">경로</th>
-            <th class="py-3">권한 (V/W/M)</th>
-            <th class="py-3">옵션 및 상태</th>
-            <th class="text-end pe-4 py-3">빠른 설정</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($pages as $page): ?>
-            <tr>
-              <td class="ps-4">
-                <div class="fw-bold text-emphasis small"><?= smartcms_h($page['title']) ?></div>
-                <div class="text-xs text-secondary opacity-75"><?= smartcms_h($page['page_key']) ?></div>
-              </td>
-              <td class="text-secondary small"><?= smartcms_h($page['page_path']) ?></td>
-              <td>
-                <div class="d-flex gap-2">
-                  <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">V LV <?= (int)$page['page_view_level'] ?></span>
-                  <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">W LV <?= (int)$page['page_write_level'] ?></span>
-                  <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">M LV <?= (int)$page['page_manage_level'] ?></span>
-                </div>
-              </td>
-              <td>
-                <div class="d-flex align-items-center gap-3">
-                  <span class="badge bg-<?= (int)$page['allow_guest'] === 1 ? 'info' : 'secondary' ?>-subtle text-<?= (int)$page['allow_guest'] === 1 ? 'info' : 'secondary' ?> text-uppercase fw-semibold" style="font-size:0.65rem;">
-                    <?= (int)$page['allow_guest'] === 1 ? 'Guest Allowed' : 'Member Only' ?>
-                  </span>
-                  <span class="small d-flex align-items-center">
-                    <span class="badge bg-<?= $page['status'] === 'active' ? 'success' : 'danger' ?> p-1 rounded-circle me-2" style="width:6px; height:6px;"></span>
-                    <span class="text-capitalize text-secondary"><?= smartcms_h($page['status']) ?></span>
-                  </span>
-                </div>
-              </td>
-              <td class="text-end pe-4">
-                <form class="d-inline-flex gap-2 align-items-center" method="post">
-                  <?= smartcms_csrf_input() ?>
-                  <input type="hidden" name="id" value="<?= smartcms_h($page['id']) ?>">
-                  <select class="form-select form-select-sm bg-light border-0" name="page_view_level" style="width:100px;">
-                    <?php for ($level = 0; $level <= 10; $level++): ?>
-                      <option value="<?= $level ?>" <?= $level === (int)$page['page_view_level'] ? 'selected' : '' ?>>LV <?= $level ?></option>
-                    <?php endfor; ?>
-                  </select>
-                  <div class="form-check form-switch small mb-0 px-2 ms-2">
-                    <input class="form-check-input" type="checkbox" name="allow_guest" value="1" id="allow_guest_<?= smartcms_h($page['id']) ?>" <?= (int)$page['allow_guest'] === 1 ? 'checked' : '' ?>>
-                    <label class="form-check-label text-secondary text-xs" for="allow_guest_<?= smartcms_h($page['id']) ?>">Guest</label>
-                  </div>
-                  <button class="btn btn-primary btn-sm px-3 shadow-none" type="submit">변경</button>
-                </form>
-              </td>
+
+  <?php if ($message !== ''): ?>
+    <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
+      <i class="bi bi-info-circle-fill fs-5"></i>
+      <div class="fw-medium small"><?= smartcms_h($message) ?></div>
+    </aside>
+  <?php endif; ?>
+
+  <article class="card border shadow-sm overflow-hidden">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0 text-nowrap">
+          <thead class="table-light">
+            <tr class="small text-uppercase fw-bold text-secondary">
+              <th scope="col" class="ps-4 py-3">페이지 식별 정보</th>
+              <th scope="col" class="py-3">URL 경로</th>
+              <th scope="col" class="py-3">권한 제어 (View/Write/Manage)</th>
+              <th scope="col" class="py-3">옵션 및 상태</th>
+              <th scope="col" class="text-end pe-4 py-3">수정</th>
             </tr>
-          <?php endforeach; ?>
-        </tbody>
-      </table>
-    </div>
-    <?php if (!$pages): ?>
-      <div class="text-center py-5 text-secondary">등록된 페이지 권한이 없습니다.</div>
-    <?php endif; ?>
+          </thead>
+          <tbody class="table-group-divider">
+            <?php foreach ($pages as $page): ?>
+              <tr>
+                <td class="ps-4 py-3">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="p-2 bg-light rounded text-primary border shadow-sm"><i class="bi bi-shield-lock fs-5"></i></div>
+                    <div>
+                      <div class="fw-bold text-dark small mb-1"><?= smartcms_h($page['title']) ?></div>
+                      <div class="text-xs text-secondary opacity-75 fw-medium"><?= smartcms_h($page['page_key']) ?></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-3">
+                  <code class="text-primary small fw-bold"><?= smartcms_h($page['page_path']) ?></code>
+                </td>
+                <td class="py-3">
+                  <div class="d-flex gap-2">
+                    <span class="badge bg-light text-dark border fw-bold px-2 py-1 small">V LV <?= (int)$page['page_view_level'] ?></span>
+                    <span class="badge bg-light text-dark border fw-bold px-2 py-1 small">W LV <?= (int)$page['page_write_level'] ?></span>
+                    <span class="badge bg-light text-dark border fw-bold px-2 py-1 small">M LV <?= (int)$page['page_manage_level'] ?></span>
+                  </div>
+                </td>
+                <td class="py-3">
+                  <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-<?= (int)$page['allow_guest'] === 1 ? 'info' : 'secondary' ?>-subtle text-<?= (int)$page['allow_guest'] === 1 ? 'info' : 'secondary' ?> text-uppercase fw-bold shadow-none" style="font-size:0.65rem;">
+                      <?= (int)$page['allow_guest'] === 1 ? 'Guest Allowed' : 'Auth Required' ?>
+                    </span>
+                    <div class="d-flex align-items-center gap-1">
+                      <span class="badge bg-<?= $page['status'] === 'active' ? 'success' : 'danger' ?> p-1 rounded-circle" style="width:6px; height:6px;"></span>
+                      <span class="text-capitalize small fw-bold text-secondary"><?= smartcms_h($page['status']) ?></span>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-end pe-4 py-3">
+                  <form class="d-inline-flex gap-2 align-items-center" method="post">
+                    <?= smartcms_csrf_input() ?>
+                    <input type="hidden" name="id" value="<?= smartcms_h($page['id']) ?>">
+                    <select class="form-select form-select-sm bg-light border-0 shadow-none fw-bold" name="page_view_level" style="width:100px;">
+                      <?php for ($level = 0; $level <= 10; $level++): ?>
+                        <option value="<?= $level ?>" <?= $level === (int)$page['page_view_level'] ? 'selected' : '' ?>>LV <?= $level ?></option>
+                      <?php endfor; ?>
+                    </select>
+                    <div class="form-check form-switch small mb-0 px-2 ms-2">
+                      <input class="form-check-input ms-0" type="checkbox" name="allow_guest" value="1" id="allow_guest_<?= smartcms_h($page['id']) ?>" <?= (int)$page['allow_guest'] === 1 ? 'checked' : '' ?>>
+                      <label class="form-check-label text-secondary fw-bold ms-1" style="font-size:0.7rem;" for="allow_guest_<?= smartcms_h($page['id']) ?>">GUEST</label>
+                    </div>
+                    <button class="btn btn-primary btn-sm px-3 fw-bold shadow-none" type="submit">저장</button>
+                  </form>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+      <?php if (!$pages): ?>
+        <div class="text-center py-5 text-secondary fw-medium opacity-75">등록된 페이지 권한 데이터가 없습니다.</div>
+      <?php endif; ?>
+  </article>
 </section>
 
 <?php

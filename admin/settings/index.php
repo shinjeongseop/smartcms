@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $message = '관리자 기준 레벨은 8 이상을 권장하며, 현재는 8 미만으로 저장할 수 없습니다.';
         $message_type = 'error';
     } elseif ($site_name === '') {
-        $message = '사이트명을 입력하세요.';
+        $message = '사이트 이름을 정확히 입력하세요.';
         $message_type = 'error';
     } else {
         smartcms_save_settings([
@@ -27,74 +27,94 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'admin_level' => (string)$admin_level,
             'upload_max_mb' => (string)$upload_max_mb,
         ]);
-        $message = '환경 설정을 저장했습니다.';
+        $message = '시스템 환경 설정이 성공적으로 저장되었습니다.';
         $message_type = 'success';
     }
 }
 
 $settings = smartcms_settings_all();
 
-$SMARTCMS_HEAD = ['title' => '환경 설정', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'settings'];
+$SMARTCMS_HEAD = ['title' => '전체 환경 설정', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'settings'];
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
-<?php if ($message !== ''): ?>
-  <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-start gap-2 mb-4" role="alert">
-    <i class="bi bi-info-circle-fill mt-1"></i>
-    <div><?= smartcms_h($message) ?></div>
-  </div>
-<?php endif; ?>
-
-<section class="card border-0 shadow-sm">
-  <div class="card-body p-4 p-lg-5">
-    <header class="d-flex align-items-center gap-2 mb-5">
-      <div class="p-2 bg-primary text-white rounded-3 lh-1"><i class="bi bi-sliders2 fs-5"></i></div>
-      <h2 class="h5 mb-0 fw-bold">시스템 기본 설정</h2>
-    </header>
-    <form class="row g-3" method="post">
-      <?= smartcms_csrf_input() ?>
-      <div class="col-12 col-md-6">
-        <label for="site_name" class="form-label fw-bold text-secondary small">사이트 이름</label>
-        <input class="form-control" id="site_name" name="site_name" value="<?= smartcms_h($settings['site_name'] ?? 'smartcms') ?>" required>
-        <div class="form-text text-muted">브라우저 탭 제목 및 사이트 상단 브랜드명으로 노출됩니다.</div>
-      </div>
-      <div class="col-12 col-md-6">
-        <label for="upload_max_mb" class="form-label fw-bold text-secondary small">첨부파일 최대 용량 (MB)</label>
-        <input class="form-control" id="upload_max_mb" name="upload_max_mb" type="number" min="1" max="100" value="<?= smartcms_h($settings['upload_max_mb'] ?? '10') ?>" required>
-        <div class="form-text text-muted">서버 환경(php.ini) 설정을 초과할 수 없습니다.</div>
-      </div>
-      <div class="col-12"><hr class="my-2 opacity-10"></div>
-      <div class="col-12 col-md-4">
-        <label for="default_member_level" class="form-label fw-bold text-secondary small">신규 가입 레벨</label>
-        <select class="form-select" id="default_member_level" name="default_member_level">
-          <?php for ($level = 1; $level <= 10; $level++): ?>
-            <option value="<?= $level ?>" <?= $level === (int)($settings['default_member_level'] ?? 2) ? 'selected' : '' ?>>Level <?= $level ?><?= $level == 2 ? ' (권장)' : '' ?></option>
-          <?php endfor; ?>
-        </select>
-      </div>
-      <div class="col-12 col-md-4">
-        <label for="admin_level" class="form-label fw-bold text-secondary small">관리자 최소 레벨</label>
-        <select class="form-select" id="admin_level" name="admin_level">
-          <?php for ($level = 8; $level <= 10; $level++): ?>
-            <option value="<?= $level ?>" <?= $level === (int)($settings['admin_level'] ?? 8) ? 'selected' : '' ?>>Level <?= $level ?><?= $level == 8 ? ' (운영자)' : '' ?></option>
-          <?php endfor; ?>
-        </select>
-      </div>
-      <div class="col-12 col-md-4 d-flex align-items-end">
-  <div class="p-3 border rounded-3 bg-light w-100">
-    <div class="form-check form-switch mb-0">
-      <input class="form-check-input" type="checkbox" name="allow_registration" value="1" id="allow_registration" <?= (string)($settings['allow_registration'] ?? '1') === '1' ? 'checked' : '' ?>>
-      <label class="form-check-label fw-bold ms-2" for="allow_registration">신규 회원가입 허용</label>
+<section class="container-fluid py-2">
+  <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+    <div>
+      <h1 class="h3 fw-bold mb-1 text-dark">전체 환경 설정</h1>
+      <p class="text-secondary small mb-0 fw-medium">SmartCMS의 전역 정책과 시스템 운영 변수를 관리합니다.</p>
     </div>
-  </div>
-</div>
-      <div class="col-12 mt-4 pt-3">
-        <button type="submit" class="btn btn-primary btn-lg w-100 py-3 fw-bold shadow-sm">
-          <i class="bi bi-check-circle-fill me-2"></i>시스템 설정 저장하기
-        </button>
+  </header>
+
+  <?php if ($message !== ''): ?>
+    <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
+      <i class="bi bi-info-circle-fill fs-5"></i>
+      <div class="fw-medium small"><?= smartcms_h($message) ?></div>
+    </aside>
+  <?php endif; ?>
+
+  <article class="card border shadow-sm overflow-hidden">
+    <header class="card-header bg-white border-bottom py-4 px-4 p-lg-5">
+      <div class="d-flex align-items-center gap-3">
+        <div class="p-3 bg-primary-subtle text-primary rounded-4 shadow-sm lh-1"><i class="bi bi-gear-wide-connected fs-4"></i></div>
+        <h2 class="h5 mb-0 fw-bold text-dark">시스템 운영 및 정책 설정</h2>
       </div>
-    </form>
-  </div>
+    </header>
+
+    <div class="card-body p-4 p-lg-5">
+      <form class="row g-4" method="post">
+        <?= smartcms_csrf_input() ?>
+        
+        <div class="col-12 col-md-6">
+          <label for="site_name" class="form-label fw-bold small text-secondary text-uppercase mb-2">공식 사이트 이름</label>
+          <input class="form-control bg-light border-0 py-2.5 shadow-none fw-bold" id="site_name" name="site_name" value="<?= smartcms_h($settings['site_name'] ?? 'smartcms') ?>" required>
+          <div class="form-text text-muted small mt-2 fw-medium">브라우저 탭 타이틀과 로고 영역에 표시될 프로젝트 이름입니다.</div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label for="upload_max_mb" class="form-label fw-bold small text-secondary text-uppercase mb-2">첨부파일 단일 최대 용량 (MB)</label>
+          <input class="form-control bg-light border-0 py-2.5 shadow-none fw-bold" id="upload_max_mb" name="upload_max_mb" type="number" min="1" max="100" value="<?= smartcms_h($settings['upload_max_mb'] ?? '10') ?>" required>
+          <div class="form-text text-muted small mt-2 fw-medium">게시판 파일 업로드 시 적용되는 용량 제한입니다. (서버 설정 범위 내)</div>
+        </div>
+
+        <div class="col-12 my-2"><hr class="opacity-10"></div>
+
+        <div class="col-12 col-md-4">
+          <label for="default_member_level" class="form-label fw-bold small text-secondary text-uppercase mb-2">신규 회원 가입 레벨</label>
+          <select class="form-select bg-light border-0 py-2.5 shadow-none fw-bold" id="default_member_level" name="default_member_level">
+            <?php for ($level = 1; $level <= 10; $level++): ?>
+              <option value="<?= $level ?>" <?= $level === (int)($settings['default_member_level'] ?? 2) ? 'selected' : '' ?>>Level <?= $level ?><?= $level == 2 ? ' (System Default)' : '' ?></option>
+            <?php endfor; ?>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <label for="admin_level" class="form-label fw-bold small text-secondary text-uppercase mb-2">관리자 최소 인증 레벨</label>
+          <select class="form-select bg-light border-0 py-2.5 shadow-none fw-bold" id="admin_level" name="admin_level">
+            <?php for ($level = 8; $level <= 10; $level++): ?>
+              <option value="<?= $level ?>" <?= $level === (int)($settings['admin_level'] ?? 8) ? 'selected' : '' ?>>Level <?= $level ?><?= $level == 8 ? ' (Admin Base)' : '' ?></option>
+            <?php endfor; ?>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <label class="form-label fw-bold small text-secondary text-uppercase mb-2">회원 가입 정책</label>
+          <div class="p-2 bg-light rounded-3 border-0">
+            <div class="form-check form-switch py-1 ms-2">
+              <input class="form-check-input ms-0" type="checkbox" name="allow_registration" value="1" id="allow_registration" <?= (string)($settings['allow_registration'] ?? '1') === '1' ? 'checked' : '' ?>>
+              <label class="form-check-label fw-bold text-dark ms-3" for="allow_registration">신규 자유 가입 허용</label>
+            </div>
+          </div>
+        </div>
+
+        <footer class="col-12 mt-5 pt-3">
+          <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow-sm py-3 w-100 w-md-auto">
+            <i class="bi bi-cloud-check me-2"></i>모든 시스템 설정 저장
+          </button>
+        </footer>
+      </form>
+    </div>
+  </article>
 </section>
 
 <?php

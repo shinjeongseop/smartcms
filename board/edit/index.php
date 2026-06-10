@@ -58,8 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_type = $result['ok'] ? 'success' : 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '글 수정', 'body_class' => 'bg-body', 'active_menu' => (string)$board['board_key']];
+$SMARTCMS_HEAD = ['title' => '게시글 수정', 'body_class' => 'bg-body', 'active_menu' => (string)$board['board_key']];
 require SMARTCMS_ROOT . '/head.php';
+
+// Skin variables
 $form_action = 'update';
 $form_values = [
     'title' => (string)$post['title'],
@@ -69,60 +71,67 @@ $form_values = [
 ];
 $show_attachments = false;
 $show_hide_form = true;
-$submit_label = '수정 저장';
+$submit_label = '변경 사항 저장';
 $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);
-$back_label = '상세로';
+$back_label = '취소 및 돌아가기';
 $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_key'], 5);
 ?>
 
 <main class="container-fluid container-xxl py-4 py-lg-5">
-  <header class="card border-0 shadow-sm mb-4">
-    <div class="card-body p-4 p-lg-5">
-      <p class="text-uppercase small fw-semibold text-primary mb-2">Edit</p>
-      <h1 class="display-6 fw-bold mb-2"><?= smartcms_h($board['board_name']) ?> 글 수정</h1>
-      <p class="text-body-secondary mb-0">작성자 또는 게시판 관리자만 글을 수정할 수 있습니다.</p>
-    </div>
-  </header>
-
-  <?php if ($message !== ''): ?>
-    <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ($message_type === 'success' ? 'success' : 'info') ?> d-flex align-items-start gap-2 mb-4" role="alert">
-      <i class="bi bi-info-circle-fill mt-1"></i>
-      <div><?= smartcms_h($message) ?></div>
-    </div>
-  <?php endif; ?>
-
   <div class="row g-4 align-items-start">
-    <div class="col-12 col-md-8">
-      <div class="card border-0 shadow-sm">
+    <section class="col-12 col-md-8 col-lg-9">
+      <!-- 헤더 카드 -->
+      <header class="card border shadow-sm mb-4 overflow-hidden bg-dark text-white">
         <div class="card-body p-4 p-lg-5">
-          <?php require smartcms_board_skin_template($board, 'form'); ?>
+          <p class="text-uppercase small fw-bold text-white-50 mb-2 letter-spacing-1">Editing Post #<?= (int)$post['id'] ?></p>
+          <h1 class="display-6 fw-bold mb-0 text-white"><?= smartcms_h($board['board_name']) ?> 글 수정하기</h1>
         </div>
-      </div>
-    </div>
-    <aside class="col-12 col-md-4">
-      <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-          <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
-          <p class="mb-3 text-body-secondary">수정 후에는 본문과 첨부 파일이 함께 반영됩니다.</p>
-          <div class="d-flex flex-wrap gap-2">
-            <a class="btn btn-secondary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">게시판 보기</a>
-            <a class="btn btn-primary btn-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">목록</a>
-          </div>
-        </div>
-      </div>
+      </header>
 
-      <div class="card border-0 shadow-sm mt-3">
-        <div class="card-body p-4">
-          <h3 class="h6 fw-semibold mb-3">최근 글</h3>
-          <div class="list-group list-group-flush">
-            <?php foreach ($recent_board_posts as $recent): ?>
-              <a class="list-group-item list-group-item-action px-0 text-truncate"
-                 href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
-                <?= smartcms_h($recent['title']) ?>
-              </a>
-            <?php endforeach; ?>
+      <?php if ($message !== ''): ?>
+        <?php
+          $alert_theme = $message_type === 'error' ? 'danger' : $message_type;
+          $alert_icon = $alert_theme === 'danger' ? 'bi-exclamation-triangle-fill' : ($alert_theme === 'success' ? 'bi-check-circle-fill' : 'bi-info-circle-fill');
+        ?>
+        <aside class="alert alert-<?= smartcms_h($alert_theme) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
+          <i class="bi <?= smartcms_h($alert_icon) ?> fs-5"></i>
+          <div class="fw-bold small"><?= smartcms_h($message) ?></div>
+        </aside>
+      <?php endif; ?>
+
+      <?php require SMARTCMS_ROOT . smartcms_board_skin_template($board, 'form.php'); ?>
+    </section>
+
+    <aside class="col-12 col-md-4 col-lg-3">
+      <div class="sticky-top" style="top: 5.5rem;">
+        <section class="card border shadow-sm mb-4 overflow-hidden">
+          <header class="card-header bg-white border-bottom p-4">
+            <h3 class="h6 fw-bold mb-0 text-dark text-uppercase letter-spacing-1">정보</h3>
+          </header>
+          <div class="card-body p-4 text-secondary small fw-medium">
+            작성하신 글은 수정 즉시 반영되며, 첨부 파일 목록은 상세 페이지에서 별도로 관리하실 수 있습니다.
           </div>
-        </div>
+        </section>
+
+        <section class="card border shadow-sm overflow-hidden">
+          <header class="card-header bg-white border-bottom p-4">
+            <h3 class="h6 fw-bold mb-0 text-dark d-flex align-items-center gap-2 text-uppercase letter-spacing-1">
+              <i class="bi bi-clock-history text-primary"></i>
+              최근 글
+            </h3>
+          </header>
+          <div class="card-body p-0">
+            <div class="list-group list-group-flush small">
+              <?php foreach ($recent_board_posts as $recent): ?>
+                <a class="list-group-item list-group-item-action px-4 py-3 border-0 border-bottom d-flex align-items-center gap-3"
+                   href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
+                  <span class="text-dark fw-bold text-truncate flex-grow-1"><?= smartcms_h($recent['title']) ?></span>
+                  <i class="bi bi-chevron-right text-secondary opacity-50"></i>
+                </a>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        </section>
       </div>
     </aside>
   </div>

@@ -53,7 +53,7 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 
 ### Cards (`.card`)
 
-- `border-0` + `shadow-sm` 조합을 기본으로 합니다.
+- `border` + `shadow-sm` 조합을 기본으로 합니다.
 - 내부 패딩은 기본 `p-4` (모바일 `p-3`)를 권장합니다.
 
 ### Buttons (`.btn`)

@@ -45,7 +45,7 @@ require SMARTCMS_ROOT . '/head.php';
 ?>
 
 <div class="container-fluid container-xxl py-4 py-lg-5">
-  <header class="card border-0 shadow-sm mb-4">
+  <header class="card border shadow-sm mb-4">
     <div class="card-body p-4 p-lg-5">
       <p class="text-uppercase small fw-semibold text-primary mb-2">Board</p>
       <h1 class="display-6 fw-bold mb-3"><?= smartcms_h($page_title) ?></h1>
@@ -63,21 +63,21 @@ require SMARTCMS_ROOT . '/head.php';
   <?php if (!$board): ?>
     <div class="row g-4 align-items-start">
       <div class="col-12 col-md-8">
-        <div class="card border-0 shadow-sm">
+        <div class="card border shadow-sm">
           <div class="card-body p-4 p-lg-5">
             <?php require smartcms_board_skin_template(null, 'boards'); ?>
           </div>
         </div>
       </div>
       <aside class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm">
+        <div class="card border shadow-sm">
           <div class="card-body p-4">
             <p class="text-uppercase small fw-semibold text-primary mb-2">Boards</p>
             <p class="text-body-secondary mb-0">사용 가능한 게시판을 선택하세요.</p>
           </div>
         </div>
 
-        <div class="card border-0 shadow-sm mt-3">
+        <div class="card border shadow-sm mt-3">
           <div class="card-body p-4">
             <h3 class="h6 fw-semibold mb-3">바로가기</h3>
             <div class="list-group list-group-flush">
@@ -100,7 +100,7 @@ require SMARTCMS_ROOT . '/head.php';
         <?php require smartcms_board_skin_template($board, 'list'); ?>
       </div>
       <aside class="col-12 col-md-4">
-        <div class="card border-0 shadow-sm">
+        <div class="card border shadow-sm">
           <div class="card-body p-4">
             <p class="text-uppercase small fw-semibold text-primary mb-2"><?= smartcms_h($board['board_name']) ?></p>
             <p class="mb-3 text-body-secondary"><?= smartcms_h((string)($board['description'] ?? '게시판을 확인하세요.')) ?></p>
@@ -111,7 +111,7 @@ require SMARTCMS_ROOT . '/head.php';
           </div>
         </div>
 
-        <div class="card border-0 shadow-sm mt-3">
+        <div class="card border shadow-sm mt-3">
           <div class="card-body p-4">
             <h3 class="h6 fw-semibold mb-3">최근 글</h3>
             <div class="list-group list-group-flush">
