@@ -40,6 +40,26 @@ function smartcms_button(string $label, string $type = 'button', string $extra_c
          . '</button>';
 }
 
+/**
+ * CSRF 보호를 위한 Hidden Input 생성
+ */
+function smartcms_csrf_input(): string
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        smartcms_session_start();
+    }
+
+    // 토큰이 없으면 생성 (security.php 로직과 호환 유지)
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+
+    return sprintf(
+        '<input type="hidden" name="csrf_token" value="%s">',
+        smartcms_h($_SESSION['csrf_token'])
+    );
+}
+
 /* ─────────────────────────────────────────
    2. 공통 UI 조각
 ───────────────────────────────────────── */
