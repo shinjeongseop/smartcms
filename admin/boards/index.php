@@ -132,7 +132,12 @@ require SMARTCMS_ROOT . '/head.php';
             <input class="form-control" id="description" name="description">
           </div>
           <div class="col-12 mt-4">
-            <?= smartcms_button('게시판 생성하기', 'submit', 'w-100 py-3 shadow-sm') ?>
+
+
+<!-- 수정 후 -->
+<button class="btn btn-primary px-4" type="submit">저장</button>
+
+
           </div>
         </form>
         </div>
