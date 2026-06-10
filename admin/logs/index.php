@@ -39,7 +39,7 @@ try {
 }
 
 $SMARTCMS_HEAD = ['title' => '접속 로그', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'logs'];
-require SMARTCMS_ROOT . '/head.php'; // head.php는 이미 관리자 레이아웃을 처리합니다.
+require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <?php if ($message !== ''): ?>
@@ -164,5 +164,5 @@ require SMARTCMS_ROOT . '/head.php'; // head.php는 이미 관리자 레이아�
 
 <?php
 $SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/foot.php';
+require SMARTCMS_ROOT . '/admin/foot.php';
 ?>
