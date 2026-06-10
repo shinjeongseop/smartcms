@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
-require_once __DIR__ . '/../../common/ui/components.php';
 
 $admin = smartcms_admin_user();
 
@@ -28,7 +27,6 @@ try {
 
 $SMARTCMS_HEAD = ['title' => '대시보드', 'body_class' => 'smartcms-admin-page'];
 require SMARTCMS_ROOT . '/head.php';
-// echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
 ?>
 
 <div class="row g-4 mb-4">
@@ -134,7 +132,7 @@ require SMARTCMS_ROOT . '/head.php';
                                     <td class="px-4 py-3">
                                         <div class="d-flex align-items-center">
                                             <div class="badge bg-primary rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width:32px; height:32px;">
-                                                <?= smartcms_admin_initial($u['name']) ?>
+                                                <?= smartcms_h(mb_substr((string)$u['name'], 0, 1)) ?>
                                             </div>
                                             <div>
                                                 <div class="fw-medium text-dark"><?= smartcms_h($u['name']) ?></div>
@@ -202,7 +200,6 @@ require SMARTCMS_ROOT . '/head.php';
     </div>
 </div>
 
-<?= smartcms_admin_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';

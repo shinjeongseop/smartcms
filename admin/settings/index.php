@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
-
 $admin = smartcms_admin_user();
 $message = '';
 $message_type = 'info';

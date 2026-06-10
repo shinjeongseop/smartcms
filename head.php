@@ -55,7 +55,7 @@ if (isset($SMARTCMS_HEAD) && is_array($SMARTCMS_HEAD)) {
 <?php if ($is_admin && !str_contains($request_path, '/admin/login/')): ?>
   <div class="container-fluid flex-grow-1 px-0">
     <div class="row g-0 min-vh-100 align-items-stretch">
-      <aside class="col-12 col-md-3 col-lg-2 d-none d-md-flex flex-column bg-white border-end p-3 sticky-top" style="height: 100vh; overflow-y: auto;">
+      <aside class="sc-admin-sidebar d-none d-md-flex flex-column bg-white border-end p-3 sticky-top" style="height: 100vh; overflow-y: auto;">
         <a class="navbar-brand d-inline-flex align-items-center gap-2 fw-bold text-primary text-decoration-none mb-4" href="/admin/dashboard/">
           <span class="badge bg-primary-subtle text-primary rounded p-2 lh-1"><i class="bi bi-app-indicator fs-4"></i></span>
           <span class="fs-4">smartcms</span>
@@ -86,7 +86,7 @@ if (isset($SMARTCMS_HEAD) && is_array($SMARTCMS_HEAD)) {
         <a class="btn btn-outline-danger btn-sm w-100 border-0 text-start px-3" href="/member/logout/"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
       </aside>
 
-      <main class="col-12 col-md-9 col-lg-10 bg-light p-3 p-lg-4" style="min-width: 0;">
+      <main class="flex-grow-1 bg-light p-3 p-lg-4" style="min-width: 0;">
         <header class="card mb-4 d-none d-md-block border-0 shadow-sm">
           <div class="card-body p-4">
             <div class="d-flex align-items-center justify-content-between gap-3">

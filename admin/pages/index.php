@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
-
 $admin = smartcms_admin_user();
 $message = '';
 $message_type = 'info';
@@ -58,7 +57,6 @@ try {
 
 $SMARTCMS_HEAD = ['title' => '페이지 권한', 'body_class' => 'smartcms-admin-page'];
 require SMARTCMS_ROOT . '/head.php';
-?>
 
 <?php if ($message !== ''): ?>
   <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-start gap-2 mb-4" role="alert">

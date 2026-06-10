@@ -2,10 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
-require_once __DIR__ . '/../../head.php';
-require_once __DIR__ . '/../../foot.php';
-require_once __DIR__ . '/../../common/ui/components.php';
-
 $admin = smartcms_admin_user();
 $access_logs = [];
 $login_logs = [];
@@ -43,12 +39,14 @@ try {
 }
 
 $SMARTCMS_HEAD = ['title' => '접속 로그', 'body_class' => 'smartcms-admin-page'];
-require SMARTCMS_ROOT . '/head.php';
-echo smartcms_admin_page_header($admin, '접속 로그', 'logs');
+require SMARTCMS_ROOT . '/head.php'; // head.php는 이미 관리자 레이아웃을 처리합니다.
 ?>
 
 <?php if ($message !== ''): ?>
-  <?= smartcms_alert($message, $message_type) ?>
+  <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-start gap-2 mb-4" role="alert">
+    <i class="bi bi-info-circle-fill mt-1"></i>
+    <div><?= smartcms_h($message) ?></div>
+  </div>
 <?php endif; ?>
 
 <div class="card border-0 shadow-sm">
@@ -164,7 +162,6 @@ echo smartcms_admin_page_header($admin, '접속 로그', 'logs');
     </div>
 </div>
 
-<?= smartcms_admin_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';
