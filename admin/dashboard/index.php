@@ -2,8 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
-require_once __DIR__ . '/../../head.php';
-require_once __DIR__ . '/../../foot.php';
 require_once __DIR__ . '/../../common/ui/components.php';
 
 $admin = smartcms_admin_user();
