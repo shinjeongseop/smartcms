@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
 require_once __DIR__ . '/../../common/board.php';
-require_once __DIR__ . '/../../head.php';
-require_once __DIR__ . '/../../foot.php';
 require_once __DIR__ . '/../../common/ui/components.php';
 
 $admin = smartcms_admin_user();
@@ -83,23 +81,41 @@ try {
     $message_type = 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '게시판 관리', 'body_class' => 'smartcms-admin-page'];
+$SMARTCMS_HEAD = [
+    'title' => '게시판 관리',
+    'active_menu' => 'boards'
+];
 require SMARTCMS_ROOT . '/head.php';
-echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
 ?>
 
-<?php if ($message !== ''): ?>
-  <?= smartcms_alert($message, $message_type) ?>
-<?php endif; ?>
+<article class="p-4">
+  <header class="d-flex align-items-center justify-content-between mb-4">
+    <div>
+      <h1 class="h3 fw-bold mb-1">게시판 관리</h1>
+      <p class="text-secondary mb-0">시스템의 게시판 생성 및 운영 설정을 관리합니다.</p>
+    </div>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="/admin/dashboard/" class="text-decoration-none text-secondary">관리자 홈</a></li>
+        <li class="breadcrumb-item active" aria-current="page">게시판 관리</li>
+      </ol>
+    </nav>
+  </header>
 
-<div class="row g-3">
-  <div class="col-12">
-    <section class="card border-0 shadow-sm mb-4 border-top border-primary border-3">
-      <div class="card-body p-4 p-lg-5">
-        <header class="d-flex align-items-center gap-2 mb-4">
-          <div class="p-2 bg-primary-subtle text-primary rounded-3"><i class="bi bi-plus-circle-fill fs-5"></i></div>
-          <h5 class="card-title mb-0 fw-bold">새 게시판 생성</h5>
-        </header>
+  <?php if ($message !== ''): ?>
+    <section class="mb-4">
+      <?= smartcms_alert($message, $message_type) ?>
+    </section>
+  <?php endif; ?>
+
+  <div class="row g-4">
+    <section class="col-12">
+      <div class="card border-0 shadow-sm mb-4 border-top border-primary border-3">
+        <div class="card-body p-4 p-lg-5">
+          <div class="d-flex align-items-center gap-2 mb-4">
+            <div class="p-2 bg-primary-subtle text-primary rounded-3"><i class="bi bi-plus-circle-fill fs-5"></i></div>
+            <h2 class="h5 mb-0 fw-bold">새 게시판 생성</h2>
+          </div>
         <form class="row g-3" method="post">
           <?= smartcms_csrf_input() ?>
           <input type="hidden" name="action" value="create">

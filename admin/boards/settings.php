@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
 require_once __DIR__ . '/../../common/board.php';
-require_once __DIR__ . '/../../head.php';
-require_once __DIR__ . '/../../foot.php';
 require_once __DIR__ . '/../../common/ui/components.php';
 
 $admin = smartcms_admin_user();
@@ -80,7 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $SMARTCMS_HEAD = [
     'title' => '게시판 상세 설정',
-    '
+    'active_menu' => 'boards'
+];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 

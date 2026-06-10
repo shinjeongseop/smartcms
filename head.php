@@ -194,14 +194,19 @@ if (!function_exists('smartcms_admin_page_header')) {
     }
 }
 
+// 기본 변수 초기화 (오류 방지)
+$request_path = (string)(parse_url((string)($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH) ?: '');
+$is_admin = str_contains($request_path, '/admin/');
+$active_menu = '';
+
 if (isset($SMARTCMS_HEAD) && is_array($SMARTCMS_HEAD)) {
     $title = (string)($SMARTCMS_HEAD['title'] ?? 'smartcms');
-    $body_class = trim((string)($SMARTCMS_HEAD['body_class'] ?? ''));
+    $active_menu = (string)($SMARTCMS_HEAD['active_menu'] ?? '');
+    $body_class = trim((string)($SMARTCMS_HEAD['body_class'] ?? ($is_admin ? 'smartcms-admin-page bg-light' : '')));
     $css_url = (string)smartcms_config_value('theme.css_url', '/common/css/common.css');
     $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
-    $request_path = (string)(parse_url((string)($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH) ?: '');
 
-    if (str_starts_with($request_path, '/admin/')) {
+    if ($is_admin) {
         $admin_class = str_starts_with($request_path, '/admin/login/') ? 'smartcms-admin-auth' : 'smartcms-admin-page';
         $body_classes = preg_split('/\s+/', $body_class, -1, PREG_SPLIT_NO_EMPTY) ?: [];
 
@@ -254,7 +259,7 @@ if (isset($SMARTCMS_HEAD) && is_array($SMARTCMS_HEAD)) {
             </a>
           <?php endforeach; ?>
         </nav>
-        
+
         <?php if (isset($admin)): ?>
           <div class="card mt-auto border-0 bg-light rounded-3 mb-2">
             <div class="card-body p-3 d-flex align-items-center gap-2">
