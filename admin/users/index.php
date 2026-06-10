@@ -52,13 +52,15 @@ try {
     $message_type = 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '회원 관리', 'body_class' => 'smartcms-admin-page'];
+$SMARTCMS_HEAD = ['title' => '회원 관리', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'users'];
 require SMARTCMS_ROOT . '/head.php';
-echo smartcms_admin_page_header($admin, '회원 관리', 'users');
 ?>
 
 <?php if ($message): ?>
-  <?= smartcms_alert($message, $message_type) ?>
+  <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-start gap-2 mb-4" role="alert">
+    <i class="bi bi-info-circle-fill mt-1"></i>
+    <div><?= smartcms_h($message) ?></div>
+  </div>
 <?php endif; ?>
 
 <section class="card border-0 shadow-sm mb-4">
@@ -164,7 +166,6 @@ echo smartcms_admin_page_header($admin, '회원 관리', 'users');
 </nav>
 <?php endif; ?>
 
-<?= smartcms_admin_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';
