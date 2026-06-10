@@ -98,9 +98,10 @@ require SMARTCMS_ROOT . '/head.php';
   </header>
 
   <?php if ($message): ?>
-    <section class="mb-4">
-      <?= smartcms_alert($message, $message_type) ?>
-    </section>
+    <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ($message_type === 'success' ? 'success' : 'info') ?> d-flex align-items-start gap-2 mb-4" role="alert">
+      <i class="bi bi-info-circle-fill mt-1"></i>
+      <div><?= smartcms_h($message) ?></div>
+    </div>
   <?php endif; ?>
 
   <form method="post">

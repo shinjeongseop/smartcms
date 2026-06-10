@@ -103,9 +103,10 @@ require SMARTCMS_ROOT . '/head.php';
   </header>
 
   <?php if ($message !== ''): ?>
-    <section class="mb-4">
-      <?= smartcms_alert($message, $message_type) ?>
-    </section>
+    <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ($message_type === 'success' ? 'success' : 'info') ?> d-flex align-items-start gap-2 mb-4" role="alert">
+      <i class="bi bi-info-circle-fill mt-1"></i>
+      <div><?= smartcms_h($message) ?></div>
+    </div>
   <?php endif; ?>
 
   <div class="row g-4">
@@ -132,12 +133,7 @@ require SMARTCMS_ROOT . '/head.php';
             <input class="form-control" id="description" name="description">
           </div>
           <div class="col-12 mt-4">
-
-
-<!-- 수정 후 -->
 <button class="btn btn-primary px-4" type="submit">저장</button>
-
-
           </div>
         </form>
         </div>

@@ -54,8 +54,8 @@ if (isset($SMARTCMS_HEAD) && is_array($SMARTCMS_HEAD)) {
 <body class="<?= smartcms_h($body_class) ?>">
 <?php if ($is_admin && !str_contains($request_path, '/admin/login/')): ?>
   <div class="d-flex min-vh-100">
-    <!-- [SIDEBAR] 반응형 사이드바 (모바일은 Offcanvas, 데스크톱은 고정) -->
-    <aside class="offcanvas-md offcanvas-start sc-admin-sidebar flex-column bg-white border-end p-3 sticky-top" tabindex="-1" id="adminSidebarOffcanvas" style="height: 100vh; overflow-y: auto;">
+    <!-- [SIDEBAR] 반응형 사이드바 -->
+    <aside class="offcanvas-md offcanvas-start sc-admin-sidebar flex-column bg-white border-end p-3" tabindex="-1" id="adminSidebarOffcanvas">
       <div class="d-flex align-items-center justify-content-between mb-4">
         <a class="navbar-brand d-inline-flex align-items-center gap-2 fw-bold text-primary text-decoration-none" href="/admin/dashboard/">
           <span class="badge bg-primary-subtle text-primary rounded p-2 lh-1"><i class="bi bi-app-indicator fs-4"></i></span>
@@ -94,7 +94,7 @@ if (isset($SMARTCMS_HEAD) && is_array($SMARTCMS_HEAD)) {
     <!-- [WORKSPACE] 워크스페이스 영역 -->
     <div class="flex-grow-1 d-flex flex-column bg-light" style="min-width: 0;">
       <!-- 상단 워크스페이스 헤더 -->
-      <header class="bg-white border-bottom px-4 py-3">
+      <header class="bg-white border-bottom px-3 px-md-4 py-3">
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
             <!-- 모바일용 햄버거 메뉴 버튼 -->

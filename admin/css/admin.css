@@ -7,11 +7,17 @@ body.smartcms-admin-page {
   --sc-sidebar-width: 260px;
 }
 
-.sc-admin-sidebar {
-  width: var(--sc-sidebar-width);
-  min-width: var(--sc-sidebar-width);
-  max-width: var(--sc-sidebar-width);
-  flex-shrink: 0;
+@media (min-width: 768px) {
+  .sc-admin-sidebar {
+    width: var(--sc-sidebar-width);
+    min-width: var(--sc-sidebar-width);
+    max-width: var(--sc-sidebar-width);
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
 }
 
 /* Sidebar Customizations */
