@@ -46,7 +46,7 @@
         <?php endif; ?>
 
         <div class="col-12 d-flex flex-wrap gap-2">
-          <?= smartcms_button($submit_label ?? '저장', 'submit') ?>
+          <button class="btn btn-primary px-4" type="submit"><?= smartcms_h($submit_label ?? '저장') ?></button>
           <a class="btn btn-secondary" href="<?= smartcms_h($back_url) ?>"><?= smartcms_h($back_label ?? '목록으로') ?></a>
         </div>
       </div>

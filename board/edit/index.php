@@ -2,9 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../common/board.php';
-require_once __DIR__ . '/../../head.php';
-require_once __DIR__ . '/../../common/ui/components.php';
-require_once __DIR__ . '/../../foot.php';
 
 $board_key = smartcms_board_key((string)($_GET['board'] ?? ''));
 $post_id = (int)($_GET['id'] ?? 0);
@@ -61,9 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_type = $result['ok'] ? 'success' : 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '글 수정', 'body_class' => 'bg-body'];
+$SMARTCMS_HEAD = ['title' => '글 수정', 'body_class' => 'bg-body', 'active_menu' => (string)$board['board_key']];
 require SMARTCMS_ROOT . '/head.php';
-echo smartcms_site_header((string)$board['board_key']);
 $form_action = 'update';
 $form_values = [
     'title' => (string)$post['title'],
@@ -89,7 +85,10 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
   </header>
 
   <?php if ($message !== ''): ?>
-    <?= smartcms_alert($message, $message_type) ?>
+    <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ($message_type === 'success' ? 'success' : 'info') ?> d-flex align-items-start gap-2 mb-4" role="alert">
+      <i class="bi bi-info-circle-fill mt-1"></i>
+      <div><?= smartcms_h($message) ?></div>
+    </div>
   <?php endif; ?>
 
   <div class="row g-4 align-items-start">
@@ -129,7 +128,6 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
   </div>
 </main>
 
-<?= smartcms_site_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';
