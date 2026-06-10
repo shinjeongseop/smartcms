@@ -74,21 +74,6 @@ h6,
   color: var(--bs-emphasis-color);
 }
 
-/* Card Improvements */
-/* .card {
-  --bs-card-border-width: 0;
-  --bs-card-box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
-  border: var(--bs-card-border-width) solid var(--bs-card-border-color);
-  box-shadow: var(--bs-card-box-shadow);
-} */
-
-/* Form Improvements */
-.form-control:focus,
-.form-select:focus {
-  border-color: rgba(var(--sc-primary-rgb), 0.5);
-  box-shadow: 0 0 0 0.25rem rgba(var(--sc-primary-rgb), 0.15);
-}
-
 /* Button Improvements */
 .btn-primary {
   --bs-btn-bg: var(--sc-primary);
