@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $settings = smartcms_settings_all();
 
 $SMARTCMS_HEAD = ['title' => '환경 설정', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'settings'];
-require SMARTCMS_ROOT . '/head.php';
+require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <?php if ($message !== ''): ?>
@@ -99,5 +99,5 @@ require SMARTCMS_ROOT . '/head.php';
 
 <?php
 $SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/foot.php';
+require SMARTCMS_ROOT . '/admin/foot.php';
 ?>

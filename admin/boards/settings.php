@@ -80,7 +80,7 @@ $SMARTCMS_HEAD = [
     'title' => '게시판 상세 설정',
     'active_menu' => 'boards'
 ];
-require SMARTCMS_ROOT . '/head.php';
+require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <article class="p-4">
@@ -214,5 +214,5 @@ require SMARTCMS_ROOT . '/head.php';
 
 <?php
 $SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/foot.php';
+require SMARTCMS_ROOT . '/admin/foot.php';
 ?>

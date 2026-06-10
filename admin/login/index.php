@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $SMARTCMS_HEAD = ['title' => '관리자 로그인', 'body_class' => 'smartcms-admin-auth'];
-require SMARTCMS_ROOT . '/head.php';
+require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 <main class="form-signin w-100 m-auto">
   <div class="text-center mb-4">
@@ -82,5 +82,5 @@ require SMARTCMS_ROOT . '/head.php';
 </main>
 <?php
 $SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/foot.php';
+require SMARTCMS_ROOT . '/admin/foot.php';
 ?>

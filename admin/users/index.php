@@ -50,7 +50,7 @@ try {
 }
 
 $SMARTCMS_HEAD = ['title' => '회원 관리', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'users'];
-require SMARTCMS_ROOT . '/head.php';
+require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <?php if ($message): ?>
@@ -165,5 +165,5 @@ require SMARTCMS_ROOT . '/head.php';
 
 <?php
 $SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/foot.php';
+require SMARTCMS_ROOT . '/admin/foot.php';
 ?>

@@ -56,7 +56,7 @@ try {
 }
 
 $SMARTCMS_HEAD = ['title' => '페이지 권한', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'pages'];
-require SMARTCMS_ROOT . '/head.php';
+require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <?php if ($message !== ''): ?>
@@ -139,5 +139,5 @@ require SMARTCMS_ROOT . '/head.php';
 
 <?php
 $SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/foot.php';
+require SMARTCMS_ROOT . '/admin/foot.php';
 ?>
