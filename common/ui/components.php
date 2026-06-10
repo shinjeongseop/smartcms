@@ -40,30 +40,7 @@ function smartcms_button(string $label, string $type = 'button', string $extra_c
 }
 
 /* ─────────────────────────────────────────
-   2. 인증 페이지 래퍼
-───────────────────────────────────────── */
-
-/**
- * 로그인/회원가입 등 인증 페이지 시작
- */
-function smartcms_auth_header(string $active = ''): string
-{
-    return '<main class="bg-body flex-grow-1 d-flex align-items-center py-5">'
-         . '<div class="container">'
-         . '<div class="row justify-content-center">'
-         . '<div class="col-12 col-md-8 col-lg-5 col-xl-4">';
-}
-
-/**
- * 인증 페이지 닫힘
- */
-function smartcms_auth_footer(): string
-{
-    return '</div></div></div></main>';
-}
-
-/* ─────────────────────────────────────────
-   3. 공통 UI 조각
+   2. 공통 UI 조각
 ───────────────────────────────────────── */
 
 /**
@@ -71,56 +48,10 @@ function smartcms_auth_footer(): string
  */
 function smartcms_section_head(string $title, string $action_html = ''): string
 {
-    $html = '<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">';
-    $html .= '<h2 class="h5 mb-0 fw-semibold text-body">' . smartcms_h($title) . '</h2>';
-    if ($action_html !== '') {
-        $html .= $action_html;
-    }
-    $html .= '</div>';
-    return $html;
-}
-
-/**
- * 공통 본문 컨테이너 시작
- */
-function smartcms_page_container_start(string $class = 'container-fluid container-xxl py-4'): string
-{
-    return '<div class="' . smartcms_h(trim($class)) . '">';
-}
-
-/**
- * 공통 본문 컨테이너 끝
- */
-function smartcms_page_container_end(): string
-{
-    return '</div>';
-}
-
-/**
- * 본문 2열 레이아웃 시작
- */
-function smartcms_two_column_start(array $options = []): string
-{
-    $mainClass = trim((string)($options['main_class'] ?? 'col-12 col-md-8'));
-    return '<div class="row g-4 align-items-start">'
-         . '<div class="' . smartcms_h($mainClass) . '">';
-}
-
-/**
- * 본문 2열 레이아웃 중간(사이드바 시작)
- */
-function smartcms_two_column_middle(array $options = []): string
-{
-    $sidebarClass = trim((string)($options['sidebar_class'] ?? 'col-12 col-md-4'));
-    return '</div><aside class="' . smartcms_h($sidebarClass) . '">';
-}
-
-/**
- * 본문 2열 레이아웃 끝
- */
-function smartcms_two_column_end(): string
-{
-    return '</aside></div>';
+    return '<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">'
+         . '<h2 class="h5 mb-0 fw-semibold text-body">' . smartcms_h($title) . '</h2>'
+         . ($action_html !== '' ? $action_html : '')
+         . '</div>';
 }
 
 /**

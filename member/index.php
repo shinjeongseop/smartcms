@@ -13,7 +13,7 @@ $SMARTCMS_HEAD = [
     'body_class' => 'smartcms-board-page',
 ]; require SMARTCMS_ROOT . '/head.php';?>
 <?= smartcms_site_header('') ?>
-<?= smartcms_page_container_start() ?>
+<main class="container-fluid container-xxl py-4">
   <header class="mb-4">
     <p class="text-uppercase text-muted small fw-semibold mb-1">Member</p>
     <h1 class="h2 fw-bold mb-2">회원 센터</h1>
@@ -65,7 +65,7 @@ $SMARTCMS_HEAD = [
       </div>
   <?php endif; ?>
   </section>
-<?= smartcms_page_container_end() ?>
+</main>
 <?= smartcms_site_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];

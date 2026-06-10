@@ -12,7 +12,7 @@ $SMARTCMS_HEAD = ['title' => '마이페이지'];
 require SMARTCMS_ROOT . '/head.php';
 echo smartcms_site_header('');
 ?>
-<?= smartcms_page_container_start() ?>
+<main class="container-fluid container-xxl py-4">
   <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-8 col-xxl-6">
       <div class="card border-0 shadow-sm">
@@ -47,7 +47,7 @@ echo smartcms_site_header('');
       </div>
     </div>
   </div>
-<?= smartcms_page_container_end() ?>
+</main>
 <?= smartcms_site_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
