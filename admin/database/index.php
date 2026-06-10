@@ -2,8 +2,8 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
-require_once __DIR__ . '/../../common/board.php';
-require_once __DIR__ . '/../../common/ui/components.php';
+require_once __DIR__ . '/../../common/database_tools.php';
+
 
 $admin = smartcms_admin_user();
 $message = '';

@@ -75,5 +75,5 @@ require SMARTCMS_ROOT . '/head.php';
 </main>
 <?php
 $SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/foot.php';
+..
 ?>
