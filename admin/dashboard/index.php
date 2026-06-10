@@ -28,7 +28,7 @@ try {
 
 $SMARTCMS_HEAD = ['title' => '대시보드', 'body_class' => 'smartcms-admin-page'];
 require SMARTCMS_ROOT . '/head.php';
-echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
+// echo smartcms_admin_page_header($admin, '대시보드', 'dashboard');
 ?>
 
 <div class="row g-4 mb-4">
