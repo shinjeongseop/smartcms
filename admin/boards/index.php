@@ -119,24 +119,25 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
             <?= smartcms_button('게시판 생성하기', 'submit', 'w-100 py-3 shadow-sm') ?>
           </div>
         </form>
+        </div>
       </div>
     </section>
-  </div>
 
-  <div class="col-12">
-    <section class="card border-0 shadow-sm">
-      <header class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
-        <h5 class="card-title mb-0 fw-bold">운영 중인 게시판</h5>
-        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold"><?= count($boards) ?>개 활성</span>
-      </header>
-      <div class="table-responsive">
+    <!-- 운영 중인 게시판 목록 섹션 -->
+    <section class="col-12">
+      <div class="card border-0 shadow-sm">
+        <header class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
+          <h2 class="h5 mb-0 fw-bold">운영 중인 게시판</h2>
+          <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold"><?= count($boards) ?>개 활성</span>
+        </header>
+        <div class="table-responsive">
           <table class="table table-hover align-middle mb-0 text-nowrap">
             <thead class="bg-light text-secondary small text-uppercase">
               <tr>
                 <th class="ps-4 py-3">게시판 정보</th>
                 <th class="py-3">권한 요약 (Level)</th>
                 <th class="py-3">상태</th>
-                <th class="text-end pe-4 py-3">빠른 설정</th>
+                <th class="text-end pe-4 py-3">관리</th>
               </tr>
             </thead>
             <tbody>
@@ -192,9 +193,8 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
       </div>
     </section>
   </div>
-</div>
+</article>
 
-<?= smartcms_admin_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';
