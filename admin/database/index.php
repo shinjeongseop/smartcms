@@ -83,7 +83,10 @@ require SMARTCMS_ROOT . '/head.php';
 ?>
 
 <?php if ($message !== ''): ?>
-  <?= smartcms_alert($message, $message_type) ?>
+  <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-start gap-2 mb-4" role="alert">
+    <i class="bi bi-info-circle-fill mt-1"></i>
+    <div><?= smartcms_h($message) ?></div>
+  </div>
 <?php endif; ?>
 
 <div class="row g-3">
@@ -95,7 +98,7 @@ require SMARTCMS_ROOT . '/head.php';
         <form method="post">
           <?= smartcms_csrf_input() ?>
           <input type="hidden" name="action" value="backup">
-          <?= smartcms_button('SQL 백업 다운로드', 'submit') ?>
+          <button class="btn btn-primary px-4" type="submit">SQL 백업 다운로드</button>
         </form>
       </div>
     </section>
@@ -114,7 +117,7 @@ require SMARTCMS_ROOT . '/head.php';
             <input class="form-control" id="backup_file" name="backup_file" type="file" accept=".sql" required>
           </div>
           <div class="col-12 col-lg-4 d-flex align-items-end">
-            <?= smartcms_button('SQL 복구 실행', 'submit') ?>
+            <button class="btn btn-primary px-4" type="submit">SQL 복구 실행</button>
           </div>
         </form>
       </div>

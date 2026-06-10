@@ -40,7 +40,10 @@ require SMARTCMS_ROOT . '/head.php';
 ?>
 
 <?php if ($message !== ''): ?>
-  <?= smartcms_alert($message, $message_type) ?>
+  <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-start gap-2 mb-4" role="alert">
+    <i class="bi bi-info-circle-fill mt-1"></i>
+    <div><?= smartcms_h($message) ?></div>
+  </div>
 <?php endif; ?>
 
 <div class="card border-0 shadow-sm sc-card-settings">

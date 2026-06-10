@@ -47,18 +47,21 @@ require SMARTCMS_ROOT . '/head.php';
   </div>
 
   <?php if ($message !== ''): ?>
-    <div class="mb-3"><?= smartcms_alert($message, $message_type) ?></div>
+    <div class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-start gap-2 mb-4" role="alert">
+      <i class="bi bi-info-circle-fill mt-1"></i>
+      <div><?= smartcms_h($message) ?></div>
+    </div>
   <?php endif; ?>
 
   <form method="post">
     <?= smartcms_csrf_input() ?>
-    
+
     <div class="mb-3">
       <label for="email" class="form-label small fw-bold text-uppercase opacity-75">Email address</label>
       <input class="form-control fs-6" id="email" name="email" type="email"
              value="<?= smartcms_h($email) ?>" placeholder="Enter your email" autocomplete="email" required>
     </div>
-    
+
     <div class="mb-3">
       <div class="d-flex justify-content-between align-items-center mb-1">
         <label for="password" class="form-label small fw-bold text-uppercase opacity-75 mb-0">Password</label>
@@ -74,7 +77,7 @@ require SMARTCMS_ROOT . '/head.php';
     </div>
 
     <button class="btn btn-primary w-100 py-2 fw-bold shadow-sm" type="submit">LOGIN</button>
-    
+
     <div class="text-center mt-4">
       <p class="mb-0 small text-secondary">New on our platform? <a href="/member/register/" class="text-primary text-decoration-none">Create an account</a></p>
     </div>
