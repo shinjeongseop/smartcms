@@ -19,7 +19,7 @@ if (isset($SMARTCMS_FOOT) && is_array($SMARTCMS_FOOT)) {
         echo '    </div>' . PHP_EOL;
         echo '  </div>' . PHP_EOL;
         echo '</footer>' . PHP_EOL;
-        echo '</main></div></div><!-- /.container-fluid -->' . PHP_EOL;
+        echo '</main></div></div><!-- /.d-flex -->' . PHP_EOL;
     } elseif (!$is_admin) {
         $year = date('Y');
         ?>
