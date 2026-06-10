@@ -3,6 +3,7 @@
  * 사용 가능 변수: $boards
  */
 ?>
+<section class="smartcms-board-registry">
 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
   <?php foreach ($boards as $board): ?>
     <?php if ((string)$board['status'] === 'hidden') continue; ?>
@@ -25,3 +26,4 @@
     </div>
   <?php endif; ?>
 </div>
+</section>

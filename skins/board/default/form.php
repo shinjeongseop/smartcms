@@ -4,6 +4,7 @@
  *                 $submit_label, $back_url, $back_label, $show_attachments, $show_hide_form
  */
 ?>
+<article class="smartcms-board-form">
 <div class="card border-0 shadow-sm">
   <div class="card-body p-4 p-lg-5">
     <form method="post" enctype="<?= smartcms_h($form_enctype ?? 'application/x-www-form-urlencoded') ?>">
@@ -70,3 +71,4 @@
     <?php endif; ?>
   </div>
 </div>
+</article>

@@ -3,10 +3,11 @@
  * 사용 가능 변수: $board, $posts, $pagination, $user
  */
 ?>
+<article class="smartcms-board-list">
 <div class="card border-0 shadow-sm overflow-hidden">
-  <div class="card-body p-0">
+  <section class="card-body p-0">
     <!-- List Header -->
-    <div class="p-4 p-lg-5 pb-0">
+    <header class="p-4 p-lg-5 pb-0">
       <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
         <div>
           <p class="text-xs text-uppercase fw-bold text-primary mb-1">Board Community</p>
@@ -39,10 +40,10 @@
           </div>
         <?php endif; ?>
       </form>
-    </div>
+    </header>
 
     <!-- List Table -->
-    <div class="table-responsive">
+    <section class="table-responsive">
       <table class="table table-hover align-middle mb-0">
         <thead class="bg-body-secondary bg-opacity-10">
           <tr class="text-uppercase text-xs fw-bold text-muted border-top">
@@ -98,7 +99,7 @@
           <?php endif; ?>
         </tbody>
       </table>
-    </div>
+    </section>
 
     <!-- Pagination -->
     <?php if ((int)$pagination['pages'] > 1): ?>
@@ -117,5 +118,6 @@
         </ul>
       </nav>
     <?php endif; ?>
-  </div>
+  </section>
 </div>
+</article>
