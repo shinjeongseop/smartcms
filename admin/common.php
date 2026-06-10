@@ -56,14 +56,14 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
     $html .= '      <span>smartcms</span>';
     $html .= '    </a>';
     $html .= '  </div>';
-    
+
     $html .= '  <nav class="nav nav-pills flex-column px-3 gap-1 mb-auto">';
     $html .= '    <p class="text-uppercase small fw-bold text-secondary opacity-50 px-3 mb-2" style="font-size: 0.65rem; letter-spacing: 0.05rem;">Main Menu</p>';
     foreach ($items as $key => $item) {
         $isActive = $key === $active;
         $activeClass = $isActive ? ' active shadow-sm fw-bold bg-primary text-white' : ' text-secondary';
         $iconColor = $isActive ? 'text-white' : 'text-primary';
-        
+
         $html .= '<a class="nav-link d-flex align-items-center gap-3 py-2 px-3 rounded-2' . $activeClass . '" href="' . smartcms_h(smartcms_base_url((string)$item['href'])) . '">';
         $html .= '  <i class="bi ' . smartcms_h((string)$item['icon']) . ' fs-5 ' . $iconColor . '"></i>';
         $html .= '  <span class="fw-medium">' . smartcms_h((string)$item['label']) . '</span>';
@@ -85,7 +85,7 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
 
     // 2. Main Workspace
     $html .= '<main class="sc-admin-workspace flex-grow-1 d-flex flex-column bg-light" style="min-width: 0;">';
-    
+
     // Topbar
     $html .= '  <header class="sc-admin-topbar sticky-top bg-light px-3 px-lg-4 py-3">';
     $html .= '    <div class="container-fluid p-0">';
@@ -95,13 +95,11 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
     $html .= '          <button class="navbar-toggler d-lg-none border-0 p-0 me-3" type="button" data-bs-toggle="collapse" data-bs-target="#adminMobileNav">';
     $html .= '            <i class="bi bi-list fs-2"></i>';
     $html .= '          </button>';
-    
+
     $html .= '          <nav aria-label="breadcrumb">';
     $html .= '            <ol class="breadcrumb mb-0">';
     $html .= '              <li class="breadcrumb-item small"><a href="/admin/dashboard/" class="text-decoration-none text-secondary">Admin</a></li>';
     $html .= '              <li class="breadcrumb-item active small fw-bold" aria-current="page">' . smartcms_h($title) . '</li>';
-    $ol_html = '            </ol>';
-    $html .= $ol_html;
     $html .= '          </nav>';
 
     $html .= '          <div class="ms-auto d-flex align-items-center gap-3">';
@@ -129,7 +127,7 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
     // Content Area
     $html .= '  <div class="sc-admin-content flex-grow-1 p-3 p-lg-4 pt-0">';
     $html .= '    <div class="container-fluid p-0">';
-    
+
     // Page Title for content area
     $html .= '    <div class="mb-4">';
     $html .= '      <h1 class="h3 fw-bold mb-1">' . smartcms_h($title) . '</h1>';
@@ -146,7 +144,7 @@ function smartcms_admin_footer(): string
 {
     $html  = '    </div>'; // container-fluid
     $html .= '  </div>'; // sc-admin-content
-    
+
     $html .= '  <footer class="sc-admin-footer mt-auto bg-light border-top py-3">';
     $html .= '    <div class="container-fluid px-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-secondary">';
     $html .= '      <span>&copy; ' . date('Y') . ' <a href="#" class="text-decoration-none fw-bold">smartcms</a>. All rights reserved.</span>';
@@ -157,7 +155,7 @@ function smartcms_admin_footer(): string
     $html .= '      </div>';
     $html .= '    </div>';
     $html .= '  </footer>';
-    
+
     $html .= '</main>'; // sc-admin-workspace
     $html .= '</div>'; // sc-admin-layout
 
