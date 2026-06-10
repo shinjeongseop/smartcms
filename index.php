@@ -56,7 +56,7 @@ try {
 
 $SMARTCMS_HEAD = [
     'title' => 'smartcms Community',
-    'body_class' => 'bg-body',
+    'body_class' => 'bg-light',
     'active_menu' => 'home',
 ];
 

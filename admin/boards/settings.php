@@ -117,19 +117,19 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <div class="row g-4">
               <div class="col-md-6">
                 <label class="form-label fw-bold small text-secondary text-uppercase">게시판 고유 키</label>
-                <input type="text" class="form-control bg-light border-0 py-2 shadow-none fw-bold" value="<?= smartcms_h($board['board_key']) ?>" readonly>
+                <input type="text" class="form-control py-2 fw-bold" value="<?= smartcms_h($board['board_key']) ?>" readonly>
               </div>
               <div class="col-md-6">
                 <label for="board_name" class="form-label fw-bold small text-dark text-uppercase">게시판 표시 이름</label>
-                <input type="text" id="board_name" name="board_name" class="form-control bg-light border-0 py-2 shadow-none" value="<?= smartcms_h($board['board_name']) ?>" required>
+                <input type="text" id="board_name" name="board_name" class="form-control py-2" value="<?= smartcms_h($board['board_name']) ?>" required>
               </div>
               <div class="col-12">
                 <label for="description" class="form-label fw-bold small text-dark text-uppercase">게시판 상세 설명</label>
-                <textarea id="description" name="description" class="form-control bg-light border-0 shadow-none" rows="2"><?= smartcms_h($board['description'] ?? '') ?></textarea>
+                <textarea id="description" name="description" class="form-control" rows="2"><?= smartcms_h($board['description'] ?? '') ?></textarea>
               </div>
               <div class="col-md-6">
                 <label for="skin" class="form-label fw-bold small text-dark text-uppercase">적용 디자인 스킨</label>
-                <select id="skin" name="skin" class="form-select bg-light border-0 py-2 shadow-none fw-bold">
+                <select id="skin" name="skin" class="form-select py-2 fw-bold">
                   <?php foreach(['default', 'table', 'card', 'gallery', 'qna', 'notice', 'faq', 'webzine'] as $skin): ?>
                     <option value="<?= $skin ?>" <?= $board['skin'] === $skin ? 'selected' : '' ?>><?= ucfirst($skin) ?></option>
                   <?php endforeach; ?>
@@ -137,7 +137,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
               </div>
               <div class="col-md-6">
                 <label for="items_per_page" class="form-label fw-bold small text-dark text-uppercase">페이지당 게시물 노출 수</label>
-                <input type="number" id="items_per_page" name="items_per_page" class="form-control bg-light border-0 py-2 shadow-none" value="<?= (int)$board['items_per_page'] ?>" min="1" max="100">
+                <input type="number" id="items_per_page" name="items_per_page" class="form-control py-2" value="<?= (int)$board['items_per_page'] ?>" min="1" max="100">
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <?php foreach (['list' => '목록 조회', 'view' => '본문 읽기', 'write' => '글 쓰기', 'comment' => '댓글 쓰기'] as $key => $label): ?>
                 <div class="col-md-3">
                   <label class="form-label fw-bold small text-secondary text-uppercase"><?= $label ?></label>
-                  <select name="board_<?= $key ?>_level" class="form-select bg-light border-0 py-2 shadow-none fw-bold">
+                  <select name="board_<?= $key ?>_level" class="form-select py-2 fw-bold">
                     <?php for($i=0; $i<=10; $i++): ?>
                       <option value="<?= $i ?>" <?= (int)$permission["board_{$key}_level"] === $i ? 'selected' : '' ?>>Level <?= $i ?></option>
                     <?php endfor; ?>
@@ -208,7 +208,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
               <div class="mb-4 pt-2">
                 <label for="status" class="form-label fw-bold small text-secondary text-uppercase">게시판 현재 상태</label>
-                <select id="status" name="status" class="form-select border-2 shadow-none fw-bold">
+                <select id="status" name="status" class="form-select border-2 fw-bold">
                   <option value="active" <?= $board['status'] === 'active' ? 'selected' : '' ?> class="text-success">● Active (정상 운영)</option>
                   <option value="hidden" <?= $board['status'] === 'hidden' ? 'selected' : '' ?> class="text-warning">● Hidden (목록 숨김)</option>
                   <option value="disabled" <?= $board['status'] === 'disabled' ? 'selected' : '' ?> class="text-danger">● Disabled (영구 중지)</option>

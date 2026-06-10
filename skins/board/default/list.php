@@ -27,8 +27,8 @@
         <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
         <div class="col-12 col-lg">
           <div class="input-group">
-            <span class="input-group-text bg-light border-0"><i class="bi bi-search text-muted"></i></span>
-            <input type="search" class="form-control bg-light border-0 shadow-none" name="q" 
+            <span class="input-group-text bg-white border"><i class="bi bi-search text-muted"></i></span>
+            <input type="search" class="form-control" name="q" 
                    value="<?= smartcms_h($pagination['keyword']) ?>" placeholder="제목, 내용, 작성자 검색">
           </div>
         </div>

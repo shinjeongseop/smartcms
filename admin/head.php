@@ -9,7 +9,15 @@ $title = (string)($SMARTCMS_HEAD['title'] ?? 'Admin Panel');
 $active_menu = (string)($SMARTCMS_HEAD['active_menu'] ?? '');
 $request_path = (string)(parse_url((string)($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH) ?: '');
 $is_login_page = str_contains($request_path, '/admin/login/');
-$body_class = trim((string)($SMARTCMS_HEAD['body_class'] ?? ($is_login_page ? 'smartcms-admin-auth' : 'smartcms-admin-page bg-light')));
+$body_class = (string)($SMARTCMS_HEAD['body_class'] ?? '');
+
+if ($body_class === '') {
+    $body_class = $is_login_page ? 'smartcms-admin-auth' : 'smartcms-admin-page bg-light';
+} elseif (!$is_login_page && !str_contains($body_class, 'bg-')) {
+    $body_class .= ' bg-light';
+}
+
+$body_class = trim($body_class);
 $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
 
 if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
@@ -54,7 +62,7 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
       </nav>
 
       <?php if ($admin): ?>
-        <section class="card border bg-light rounded-3 mb-2 mt-4 shadow-none border">
+        <section class="card border rounded-3 mb-2 mt-4 shadow-none border">
           <div class="card-body p-3 d-flex align-items-center gap-2">
             <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:34px; height:34px;">
               <?= smartcms_h(mb_substr((string)$admin['name'], 0, 1)) ?>

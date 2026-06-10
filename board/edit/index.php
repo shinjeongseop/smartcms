@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_type = $result['ok'] ? 'success' : 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '게시글 수정', 'body_class' => 'bg-body', 'active_menu' => (string)$board['board_key']];
+$SMARTCMS_HEAD = ['title' => '게시글 수정', 'body_class' => 'bg-light', 'active_menu' => (string)$board['board_key']];
 require SMARTCMS_ROOT . '/head.php';
 
 // Skin variables

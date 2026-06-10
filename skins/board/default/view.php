@@ -105,7 +105,7 @@
           <?= smartcms_csrf_input() ?>
           <input type="hidden" name="action" value="comment_create">
           <div>
-            <textarea class="form-control bg-light border-0 shadow-none py-3" id="content" name="content" rows="4" required placeholder="상대방을 존중하는 따뜻한 댓글을 남겨주세요."></textarea>
+            <textarea class="form-control py-3" id="content" name="content" rows="4" required placeholder="상대방을 존중하는 따뜻한 댓글을 남겨주세요."></textarea>
           </div>
           <div class="text-end">
             <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-sm">댓글 등록</button>

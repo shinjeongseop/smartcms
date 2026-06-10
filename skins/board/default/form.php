@@ -14,7 +14,7 @@
         <div class="row g-4">
           <div class="col-12">
             <label for="title" class="form-label fw-bold text-dark">제목 <span class="text-primary">*</span></label>
-            <input class="form-control bg-light border-0 py-2.5 shadow-none" id="title" name="title" value="<?= smartcms_h($form_values['title'] ?? '') ?>" placeholder="게시글 제목을 입력하세요." required>
+            <input class="form-control py-2.5" id="title" name="title" value="<?= smartcms_h($form_values['title'] ?? '') ?>" placeholder="게시글 제목을 입력하세요." required>
           </div>
 
           <div class="col-12">
@@ -34,13 +34,13 @@
 
           <div class="col-12">
             <label for="content" class="form-label fw-bold text-dark">내용 <span class="text-primary">*</span></label>
-            <textarea class="form-control bg-light border-0 shadow-none" id="content" name="content" rows="16" placeholder="자유롭게 내용을 작성해주세요." required><?= smartcms_h($form_values['content'] ?? '') ?></textarea>
+            <textarea class="form-control" id="content" name="content" rows="16" placeholder="자유롭게 내용을 작성해주세요." required><?= smartcms_h($form_values['content'] ?? '') ?></textarea>
           </div>
 
           <?php if (!empty($show_attachments)): ?>
             <div class="col-12">
               <label for="attachments" class="form-label fw-bold text-dark">첨부파일</label>
-              <input class="form-control bg-light border-0 shadow-none py-2" id="attachments" name="attachments[]" type="file" multiple>
+              <input class="form-control py-2" id="attachments" name="attachments[]" type="file" multiple>
               <div class="form-text small text-secondary">파일당 최대 <?= smartcms_h(smartcms_setting_int('upload_max_mb', 10)) ?>MB까지 업로드 가능합니다.</div>
             </div>
           <?php endif; ?>

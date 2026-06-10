@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$SMARTCMS_HEAD = ['title' => '비밀번호 변경', 'body_class' => 'bg-body'];
+$SMARTCMS_HEAD = ['title' => '비밀번호 변경', 'body_class' => 'bg-light'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
@@ -61,16 +61,16 @@ require SMARTCMS_ROOT . '/head.php';
             <?= smartcms_csrf_input() ?>
             <div>
               <label for="current_password" class="form-label fw-bold small text-dark">현재 비밀번호</label>
-              <input class="form-control bg-light border-0 py-2.5 shadow-none" id="current_password" name="current_password" type="password" required placeholder="기존 비밀번호를 입력하세요.">
+              <input class="form-control py-2.5" id="current_password" name="current_password" type="password" required placeholder="기존 비밀번호를 입력하세요.">
             </div>
             <div>
               <label for="new_password" class="form-label fw-bold small text-dark">새 비밀번호</label>
-              <input class="form-control bg-light border-0 py-2.5 shadow-none" id="new_password" name="new_password" type="password" minlength="8" required placeholder="8자 이상의 새 비밀번호">
+              <input class="form-control py-2.5" id="new_password" name="new_password" type="password" minlength="8" required placeholder="8자 이상의 새 비밀번호">
               <div class="form-text small opacity-75 mt-1">영문, 숫자, 특수문자 조합을 권장합니다.</div>
             </div>
             <div>
               <label for="confirm_password" class="form-label fw-bold small text-dark">새 비밀번호 확인</label>
-              <input class="form-control bg-light border-0 py-2.5 shadow-none" id="confirm_password" name="confirm_password" type="password" minlength="8" required placeholder="새 비밀번호를 한 번 더 입력하세요.">
+              <input class="form-control py-2.5" id="confirm_password" name="confirm_password" type="password" minlength="8" required placeholder="새 비밀번호를 한 번 더 입력하세요.">
             </div>
             
             <div class="d-grid pt-3">

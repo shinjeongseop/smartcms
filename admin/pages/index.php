@@ -126,7 +126,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                   <form class="d-inline-flex gap-2 align-items-center" method="post">
                     <?= smartcms_csrf_input() ?>
                     <input type="hidden" name="id" value="<?= smartcms_h($page['id']) ?>">
-                    <select class="form-select form-select-sm bg-light border-0 shadow-none fw-bold" name="page_view_level" style="width:100px;">
+                    <select class="form-select form-select-sm fw-bold" name="page_view_level" style="width:100px;">
                       <?php for ($level = 0; $level <= 10; $level++): ?>
                         <option value="<?= $level ?>" <?= $level === (int)$page['page_view_level'] ? 'selected' : '' ?>>LV <?= $level ?></option>
                       <?php endfor; ?>

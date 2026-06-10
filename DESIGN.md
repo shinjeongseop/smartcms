@@ -1,19 +1,19 @@
 # smartcms 2.0 Design System
 
-> Version: 2.0
-> Philosophy: **Bootstrap-Native**. 부트스트랩 5의 기본 유틸리티와 컴포넌트를 100% 활용하여 커스텀 CSS를 최소화합니다.
+> Version: 2.2 (Bootstrap Standard & Semantic)
+> Philosophy: **Standard Bootstrap-Native**. 부트스트랩 5의 표준 컴포넌트 구조와 HTML5 시맨틱 태그를 100% 활용합니다. 임의의 배경색이나 테두리 제거를 지양하고 브라우저 기본 폼 스타일을 존중합니다.
 
 ## Overview
 
 smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축되었습니다.
-디자인은 **네이버 포털의 명료함**과 **모던한 카드 레이아웃**을 결합하여 가독성과 사용성을 최우선으로 합니다.
+디자인은 **네이버 포털의 명료함**과 **모던한 카드 레이아웃**을 결합하며, 부트스트랩 표준 스타일(Standard Look & Feel)을 최우선으로 합니다.
 
 ### Core Principles
 
-1. **Utility-First**: 모든 레이아웃과 간격은 `p-*`, `m-*`, `d-flex`, `gap-*` 등 부트스트랩 유틸리티를 우선 사용합니다.
-2. **Component-Driven**: 부트스트랩의 `card`, `list-group`, `modal`, `navbar` 등을 기본 상태로 사용하고 변수로만 톤을 조정합니다.
-3. **Typography-Centric**: Pretendard 서체를 사용하여 한글 가독성을 극대화합니다.
-4. **Clean & High Contrast**: 명확한 테두리(`border`)와 은은한 그림자(`shadow-sm`)를 조합하여 계층을 분리합니다.
+1. **Semantic First**: 단순한 `div` 나열 대신 `header`, `nav`, `main`, `section`, `article`, `aside`, `footer` 등을 사용하여 문서 구조를 선언적으로 표현합니다.
+2. **Bootstrap Standard Style**: 폼 요소(Input, Select)는 부트스트랩 표준인 **흰색 배경과 1px 테두리**를 유지합니다.
+3. **Utility-First Layout**: 모든 레이아웃과 간격은 `p-*`, `m-*`, `d-flex`, `gap-*` 등 부트스트랩 유틸리티를 사용합니다.
+4. **Clean & High Contrast**: 페이지 배경은 `bg-light`로, 카드는 명확한 테두리(`border`)와 은은한 그림자(`shadow-sm`)를 가진 **흰색 배경**으로 구성합니다.
 
 ## Color Tokens (via Bootstrap Overrides)
 
@@ -22,11 +22,11 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 | Variable               | Value     | Role                                     |
 | ---------------------- | --------- | ---------------------------------------- |
 | `--bs-primary`         | `#03c75a` | 브랜드 메인 컬러 (네이버 그린), 핵심 CTA |
-| `--bs-body-bg`         | `#f6f7f9` | 페이지 전체 배경색 (연한 회색)           |
+| `--bs-body-bg`         | `#f8f9fa` | 페이지 전체 배경색 (Standard bg-light)   |
 | `--bs-body-color`      | `#444444` | 본문 텍스트 컬러                         |
 | `--bs-emphasis-color`  | `#111111` | 제목 및 강조 텍스트 컬러                 |
 | `--bs-secondary-color` | `#767676` | 보조 텍스트, 메타 정보                   |
-| `--bs-border-color`    | `#e6e5e0` | 기본 테두리 색상                         |
+| `--bs-border-color`    | `#dee2e6` | 표준 테두리 색상                         |
 
 ## Typography
 
@@ -53,19 +53,19 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 
 ### Cards (`.card`)
 
-- `border` + `shadow-sm` 조합을 기본으로 합니다.
+- **흰색 배경(`bg-white`)**, **표준 테두리(`border`)**, **은은한 그림자(`shadow-sm`)** 조합을 기본으로 합니다.
 - 내부 패딩은 기본 `p-4` (모바일 `p-3`)를 권장합니다.
 
 ### Buttons (`.btn`)
 
 - 주요 액션: `.btn-primary` (Green)
 - 보조 액션: `.btn-secondary` (Gray) 또는 `.btn-light`
-- 크기: `.btn-sm`, `.btn-lg` 유틸리티 활용
+- 스타일: `rounded-pill`을 활용하여 부드러운 인상을 줍니다.
 
 ### Forms (`.form-control`)
 
+- **부트스트랩 표준 스타일(흰색 배경 + 테두리)**을 기본으로 합니다. `bg-light`나 `border-0`를 지양합니다.
 - 레이블은 `.form-label`과 `.fw-semibold`를 조합합니다.
-- 입력창은 `.form-control-lg`를 선호하여 시원한 느낌을 줍니다.
 
 ## Do & Don't
 
@@ -78,10 +78,9 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 ### ❌ Don't
 
 - 인라인 스타일 (`style="..."`) 사용
-- 새로운 CSS 클래스 이름 생성 (예: `.my-custom-box`)
-- 부트스트랩 JS 없이 무리하게 인터랙션 구현
+- 폼 요소에 `bg-light`, `border-0` 등 비표준 스타일 강제 적용
 - 한 페이지에 여러 개의 Primary 버튼 배치
 
 ---
 
-_Last Updated: 2026-06-09_
+_Last Updated: 2026-06-10_

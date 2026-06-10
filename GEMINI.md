@@ -15,6 +15,7 @@
   - 예: 네비게이션은 반드시 `ul.navbar-nav > li.nav-item > a.nav-link` 구조를 사용합니다.
 - 모든 스타일링과 레이아웃은 부트스트랩 **유틸리티 클래스**(`p-*`, `m-*`, `d-flex`, `gap-*`, `text-*`)를 우선적으로 사용합니다.
 - **카드(`.card`) 및 주요 컨테이너에는 `border-0` 대신 기본 `border`를 사용하여 명확한 구분을 제공합니다.**
+- **폼 요소(`input`, `select`)는 부트스트랩 표준(흰색 배경, 1px 테두리)을 유지하며, 임의로 `bg-light`나 `border-0`를 적용하지 않습니다.**
 - **PHP UI 헬퍼 함수(`smartcms_button`, `smartcms_alert` 등)를 사용하지 않고, 직접 부트스트랩 HTML 마크업을 작성합니다.**
 - 커스텀 CSS는 `common/css/common.css`에 정의된 변수를 수정하는 방식으로 최소화합니다.
 

@@ -34,7 +34,7 @@
               <p class="text-secondary mb-0 small opacity-50 italic">이 게시판에 대한 설명이 없습니다.</p>
             <?php endif; ?>
           </div>
-          <footer class="card-footer bg-light border-0 px-4 py-3 d-flex justify-content-between align-items-center">
+          <footer class="card-footer bg-white border-top px-4 py-3 d-flex justify-content-between align-items-center">
             <span class="text-xs fw-bold text-uppercase text-secondary opacity-75">Level <?= (int)$board['board_list_level'] ?> Required</span>
             <i class="bi bi-arrow-right-circle-fill text-primary fs-5"></i>
           </footer>

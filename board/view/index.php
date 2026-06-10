@@ -71,7 +71,7 @@ $comments = smartcms_board_comments((int)$post['id']);
 $files = smartcms_board_files((int)$post['id']);
 $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_key'], 5);
 
-$SMARTCMS_HEAD = ['title' => (string)$post['title'], 'body_class' => 'bg-body'];
+$SMARTCMS_HEAD = ['title' => (string)$post['title'], 'body_class' => 'bg-light'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 

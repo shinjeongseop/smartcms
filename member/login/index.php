@@ -54,7 +54,7 @@ require SMARTCMS_ROOT . '/head.php';
               <?= smartcms_csrf_input() ?>
               <div>
                 <label for="email" class="form-label fw-bold small text-dark">이메일 주소</label>
-                <input class="form-control bg-light border-0 py-2 shadow-none" id="email" name="email" type="email"
+                <input class="form-control py-2" id="email" name="email" type="email"
                        placeholder="name@example.com" value="<?= smartcms_h($email) ?>" autocomplete="email" required>
               </div>
               <div>
@@ -62,7 +62,7 @@ require SMARTCMS_ROOT . '/head.php';
                   <label for="password" class="form-label fw-bold small text-dark mb-0">비밀번호</label>
                   <a href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>" class="text-xs text-decoration-none fw-bold">비밀번호 찾기</a>
                 </div>
-                <input class="form-control bg-light border-0 py-2 shadow-none" id="password" name="password" type="password"
+                <input class="form-control py-2" id="password" name="password" type="password"
                        placeholder="••••••••" autocomplete="current-password" required>
               </div>
               <div class="d-grid pt-2">

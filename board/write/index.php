@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-$SMARTCMS_HEAD = ['title' => '새 글 작성', 'body_class' => 'bg-body'];
+$SMARTCMS_HEAD = ['title' => '새 글 작성', 'body_class' => 'bg-light'];
 require SMARTCMS_ROOT . '/head.php';
 
 // Skin variables

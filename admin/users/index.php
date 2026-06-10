@@ -68,7 +68,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                    <input type="search" name="search" class="form-control border-start-0 ps-0 shadow-none" 
+                    <input type="search" name="search" class="form-control border-start-0 ps-0" 
                            placeholder="이름 또는 이메일 검색" value="<?= smartcms_h($search) ?>">
                     <button class="btn btn-primary px-4 shadow-none" type="submit">검색</button>
                 </div>
@@ -122,17 +122,17 @@ require SMARTCMS_ROOT . '/admin/head.php';
                             <form class="d-flex gap-2 align-items-center" method="post" id="form-user-<?= (int)$user['id'] ?>">
                                 <?= smartcms_csrf_input() ?>
                                 <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
-                                <select name="role" aria-label="역할" class="form-select form-select-sm bg-light border-0 shadow-none" style="width:110px;">
+                                <select name="role" aria-label="역할" class="form-select form-select-sm" style="width:110px;">
                                     <?php foreach(['admin', 'manager', 'user'] as $r): ?>
                                         <option value="<?= $r ?>" <?= $user['role'] === $r ? 'selected' : '' ?>><?= $r ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <select name="level" aria-label="레벨" class="form-select form-select-sm bg-light border-0 shadow-none" style="width:70px;">
+                                <select name="level" aria-label="레벨" class="form-select form-select-sm" style="width:70px;">
                                     <?php for($i=1;$i<=10;$i++): ?>
                                         <option value="<?= $i ?>" <?= (int)$user['level'] === $i ? 'selected' : '' ?>><?= $i ?></option>
                                     <?php endfor; ?>
                                 </select>
-                                <select name="status" aria-label="상태" class="form-select form-select-sm bg-light border-0 shadow-none" style="width:90px;">
+                                <select name="status" aria-label="상태" class="form-select form-select-sm" style="width:90px;">
                                     <?php foreach(['active', 'blocked'] as $s): ?>
                                         <option value="<?= $s ?>" <?= $user['status'] === $s ? 'selected' : '' ?>><?= $s ?></option>
                                     <?php endforeach; ?>
@@ -192,6 +192,11 @@ require SMARTCMS_ROOT . '/admin/head.php';
         <p class="text-secondary mt-3">조회된 회원이 없습니다.</p>
     </div>
 <?php endif; ?>
+
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/admin/foot.php';
+?>
 
 <?php
 $SMARTCMS_FOOT = [];

@@ -137,7 +137,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <input type="hidden" name="action" value="restore">
             <div>
               <label for="backup_file" class="form-label fw-bold small text-dark text-uppercase">백업 SQL 파일 선택</label>
-              <input class="form-control bg-light border-0 py-2 shadow-none fw-bold" id="backup_file" name="backup_file" type="file" accept=".sql" required>
+              <input class="form-control py-2 fw-bold" id="backup_file" name="backup_file" type="file" accept=".sql" required>
             </div>
             <div class="pt-2">
               <button class="btn btn-dark rounded-pill px-5 fw-bold shadow-sm py-2.5" type="submit">
@@ -168,7 +168,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <input type="hidden" name="action" value="reset">
               <div>
                 <label for="confirm_text" class="form-label fw-bold small text-danger text-uppercase">확인 문구 입력</label>
-                <input class="form-control border-danger-subtle shadow-none py-2 px-3 fw-bold" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required style="width:200px;">
+                <input class="form-control border-danger-subtle py-2 px-3 fw-bold" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required style="width:200px;">
               </div>
               <button class="btn btn-danger rounded-pill px-4 py-2 fw-bold shadow-sm" type="submit">지금 즉시 초기화</button>
             </form>

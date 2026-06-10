@@ -99,15 +99,15 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <input type="hidden" name="action" value="create">
             <div class="col-12 col-md-4">
               <label for="board_key" class="form-label fw-bold small text-dark">게시판 키 <span class="text-primary">*</span></label>
-              <input class="form-control bg-light border-0 py-2 shadow-none" id="board_key" name="board_key" placeholder="영문/숫자 (예: notice)" required>
+              <input class="form-control py-2" id="board_key" name="board_key" placeholder="영문/숫자 (예: notice)" required>
             </div>
             <div class="col-12 col-md-4">
               <label for="board_name" class="form-label fw-bold small text-dark">게시판 이름 <span class="text-primary">*</span></label>
-              <input class="form-control bg-light border-0 py-2 shadow-none" id="board_name" name="board_name" placeholder="표시될 이름 (예: 공지사항)" required>
+              <input class="form-control py-2" id="board_name" name="board_name" placeholder="표시될 이름 (예: 공지사항)" required>
             </div>
             <div class="col-12 col-md-4">
               <label for="description" class="form-label fw-bold small text-dark">간략 설명</label>
-              <input class="form-control bg-light border-0 py-2 shadow-none" id="description" name="description" placeholder="게시판 용도 설명">
+              <input class="form-control py-2" id="description" name="description" placeholder="게시판 용도 설명">
             </div>
             <div class="col-12 mt-4">
               <button class="btn btn-primary px-4 py-2 fw-bold shadow-sm" type="submit">저장 및 생성</button>
@@ -168,8 +168,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
                       <?= smartcms_csrf_input() ?>
                       <input type="hidden" name="action" value="update">
                       <input type="hidden" name="board_key" value="<?= smartcms_h($board['board_key']) ?>">
-                      <input class="form-control form-control-sm bg-light border-0 shadow-none fw-bold" name="board_name" value="<?= smartcms_h($board['board_name']) ?>" style="width:140px;" required>
-                      <select class="form-select form-select-sm bg-light border-0 shadow-none fw-bold" name="status" style="width:100px;">
+                      <input class="form-control form-control-sm fw-bold" name="board_name" value="<?= smartcms_h($board['board_name']) ?>" style="width:140px;" required>
+                      <select class="form-select form-select-sm fw-bold" name="status" style="width:100px;">
                         <?php foreach (['active', 'hidden', 'disabled'] as $status): ?>
                           <option value="<?= smartcms_h($status) ?>" <?= $status === $board['status'] ? 'selected' : '' ?>><?= $status ?></option>
                         <?php endforeach; ?>

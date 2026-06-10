@@ -7,7 +7,7 @@ require_once __DIR__ . '/common/ui/components.php';
 
 $title = (string)($SMARTCMS_HEAD['title'] ?? 'smartcms');
 $active_menu = (string)($SMARTCMS_HEAD['active_menu'] ?? '');
-$body_class = trim((string)($SMARTCMS_HEAD['body_class'] ?? 'bg-body-tertiary'));
+$body_class = trim((string)($SMARTCMS_HEAD['body_class'] ?? 'bg-light'));
 $css_url = (string)smartcms_config_value('theme.css_url', '/common/css/common.css');
 $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
 ?>
@@ -58,7 +58,7 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
         <div class="col-12 col-md-6">
           <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" class="position-relative" role="search">
             <div class="input-group input-group-lg">
-              <input type="search" name="q" class="form-control bg-light border-0 rounded-pill ps-4" placeholder="궁금한 것을 검색해보세요">
+              <input type="search" name="q" class="form-control rounded-pill ps-4" placeholder="궁금한 것을 검색해보세요">
               <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-primary z-3 me-2" type="submit">
                 <i class="bi bi-search fs-5"></i>
               </button>
@@ -106,3 +106,4 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
 
   <!-- [MAIN] 메인 콘텐츠 영역 -->
   <main class="min-vh-100 py-4 py-lg-5">
+y-lg-5">

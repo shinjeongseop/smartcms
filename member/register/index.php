@@ -54,22 +54,22 @@ require SMARTCMS_ROOT . '/head.php';
               <?= smartcms_csrf_input() ?>
               <div>
                 <label for="email" class="form-label fw-bold small text-dark">이메일 주소 <span class="text-primary">*</span></label>
-                <input class="form-control bg-light border-0 py-2 shadow-none" id="email" name="email" type="email"
+                <input class="form-control py-2" id="email" name="email" type="email"
                        placeholder="name@example.com" value="<?= smartcms_h($form['email']) ?>" autocomplete="off" required>
               </div>
               <div>
                 <label for="name" class="form-label fw-bold small text-dark">사용자 이름 <span class="text-primary">*</span></label>
-                <input class="form-control bg-light border-0 py-2 shadow-none" id="name" name="name"
+                <input class="form-control py-2" id="name" name="name"
                        placeholder="실명 또는 닉네임" value="<?= smartcms_h($form['name']) ?>" autocomplete="off" required>
               </div>
               <div>
                 <label for="company_name" class="form-label fw-bold small text-dark">회사명 <small class="fw-normal text-muted">(선택)</small></label>
-                <input class="form-control bg-light border-0 py-2 shadow-none" id="company_name" name="company_name"
+                <input class="form-control py-2" id="company_name" name="company_name"
                        placeholder="소속된 조직 이름" value="<?= smartcms_h($form['company_name']) ?>" autocomplete="off">
               </div>
               <div>
                 <label for="password" class="form-label fw-bold small text-dark">비밀번호 <span class="text-primary">*</span></label>
-                <input class="form-control bg-light border-0 py-2 shadow-none" id="password" name="password" type="password"
+                <input class="form-control py-2" id="password" name="password" type="password"
                        placeholder="8자 이상의 비밀번호" minlength="8" autocomplete="new-password" required>
                 <div class="form-text text-xs ps-2 pt-1 opacity-75">영문, 숫자, 특수문자 조합을 권장합니다.</div>
               </div>
