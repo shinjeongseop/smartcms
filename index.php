@@ -65,7 +65,7 @@ require SMARTCMS_ROOT . '/head.php';
 
 <header class="bg-primary text-white py-5 py-lg-5">
   <div class="container-xxl">
-    <div class="row align-items-center g-5">
+    <div class="row align-items-center g-5 m-0">
       <div class="col-lg-7">
         <span class="badge text-bg-light text-primary rounded-pill px-3 py-2 mb-3 fw-semibold">v2.0 Bootstrap-Native</span>
         <h1 class="display-4 fw-bold mb-3">더 가볍고, 더 똑똑한<br>차세대 커뮤니티 CMS</h1>
