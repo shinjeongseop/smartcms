@@ -2,9 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../common/auth.php';
-require_once __DIR__ . '/../../head.php';
 require_once __DIR__ . '/../../common/ui/components.php';
-require_once __DIR__ . '/../../foot.php';
 
 $message      = '';
 $message_type = 'info';
@@ -75,5 +73,5 @@ require SMARTCMS_ROOT . '/head.php';
 </main>
 <?php
 $SMARTCMS_FOOT = [];
-..
+require SMARTCMS_ROOT . '/foot.php';
 ?>

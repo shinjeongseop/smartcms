@@ -2,9 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common/auth.php';
-require_once __DIR__ . '/../head.php';
 require_once __DIR__ . '/../common/ui/components.php';
-require_once __DIR__ . '/../foot.php';
 
 $user = smartcms_current_user();
 
