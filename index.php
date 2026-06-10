@@ -117,7 +117,7 @@ require SMARTCMS_ROOT . '/head.php';
   <!-- [SUB HEADER] 공지사항 및 통계 -->
   <section class="row g-4 mb-5" aria-label="요약 정보">
     <div class="col-12 col-lg-8">
-      <article class="card border shadow-sm h-100">
+      <article class="card border shadow-sm h-100 bg-white">
         <div class="card-body p-4 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
           <div class="d-flex align-items-start gap-3">
             <span class="badge bg-primary-subtle text-primary p-2 rounded-3 shadow-sm">
@@ -167,7 +167,7 @@ require SMARTCMS_ROOT . '/head.php';
   <section class="row g-4" aria-label="게시글 목록 및 사이드바">
     <div class="col-12 col-lg-8">
       <!-- 최신글 카드 -->
-      <article class="card border shadow-sm mb-4">
+      <article class="card border shadow-sm mb-4 bg-white">
         <header class="card-header bg-white border-bottom p-4">
           <div class="d-flex align-items-center justify-content-between gap-3">
             <h2 class="h5 fw-bold mb-0 d-flex align-items-center gap-2">
@@ -206,7 +206,7 @@ require SMARTCMS_ROOT . '/head.php';
           <?php foreach ($board_widgets as $widget): ?>
             <?php $board = $widget['board']; ?>
             <div class="col-12 col-md-6">
-              <article class="card border shadow-sm h-100">
+              <article class="card border shadow-sm h-100 bg-white">
                 <header class="card-header bg-white border-bottom p-4">
                   <div class="d-flex align-items-center justify-content-between gap-3">
                     <div>
@@ -245,7 +245,7 @@ require SMARTCMS_ROOT . '/head.php';
     <!-- 사이드바 -->
     <aside class="col-12 col-lg-4">
       <?php if ($user): ?>
-        <article class="card border shadow-sm mb-4 overflow-hidden">
+        <article class="card border shadow-sm mb-4 overflow-hidden bg-white">
           <div class="card-body p-4 text-center">
             <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary text-white shadow-sm mb-3 p-3">
               <i class="bi bi-person-fill fs-3"></i>
@@ -275,7 +275,7 @@ require SMARTCMS_ROOT . '/head.php';
         </article>
       <?php endif; ?>
 
-      <article class="card border shadow-sm mb-4">
+      <article class="card border shadow-sm mb-4 bg-white">
         <header class="card-header bg-white border-bottom p-4">
           <h3 class="h6 fw-bold mb-0 d-flex align-items-center gap-2 text-uppercase">
             <i class="bi bi-fire text-danger lh-1"></i>
