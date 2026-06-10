@@ -91,9 +91,9 @@ echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
 
 <div class="row g-3">
   <div class="col-12">
-    <div class="card border-0 shadow-sm">
+    <section class="card border-0 shadow-sm">
       <div class="card-body p-4">
-        <h2 class="h5 fw-bold mb-2">DB 백업</h2>
+        <header><h2 class="h5 fw-bold mb-2">DB 백업</h2></header>
         <p class="text-body-secondary mb-3">현재 prefix <strong><?= smartcms_h($prefix) ?></strong>로 시작하는 SmartCMS 테이블을 SQL 파일로 내려받습니다.</p>
         <form method="post">
           <?= smartcms_csrf_input() ?>
@@ -101,13 +101,13 @@ echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
           <?= smartcms_button('SQL 백업 다운로드', 'submit') ?>
         </form>
       </div>
-    </div>
+    </section>
   </div>
 
   <div class="col-12">
-    <div class="card border-0 shadow-sm">
+    <section class="card border-0 shadow-sm">
       <div class="card-body p-4">
-        <h2 class="h5 fw-bold mb-2">DB 복구</h2>
+        <header><h2 class="h5 fw-bold mb-2">DB 복구</h2></header>
         <p class="text-body-secondary mb-3">SmartCMS 백업 SQL 파일을 업로드해 복구합니다. 복구 전 현재 DB 백업을 먼저 다운로드하는 것을 권장합니다.</p>
         <form class="row g-3" method="post" enctype="multipart/form-data">
           <?= smartcms_csrf_input() ?>
@@ -121,13 +121,13 @@ echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
           </div>
         </form>
       </div>
-    </div>
+    </section>
   </div>
 
   <div class="col-12">
-    <div class="card border-0 shadow-sm border-danger">
+    <section class="card border-0 shadow-sm border-start border-danger border-4">
       <div class="card-body p-4">
-        <h2 class="h5 fw-bold mb-2 text-danger">DB 초기화</h2>
+        <header><h2 class="h5 fw-bold mb-2 text-danger">DB 초기화</h2></header>
         <p class="text-body-secondary mb-3">현재 prefix <strong><?= smartcms_h($prefix) ?></strong>로 시작하는 테이블 <?= count($tables) ?>개를 삭제합니다.</p>
         <form class="row g-3" method="post">
           <?= smartcms_csrf_input() ?>
@@ -141,7 +141,7 @@ echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
           </div>
         </form>
       </div>
-    </div>
+    </section>
   </div>
 </div>
 

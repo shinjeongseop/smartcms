@@ -61,7 +61,7 @@ echo smartcms_admin_page_header($admin, '회원 관리', 'users');
   <?= smartcms_alert($message, $message_type) ?>
 <?php endif; ?>
 
-<div class="sc-admin-card mb-4">
+<section class="card border-0 shadow-sm mb-4">
     <div class="card-body p-4">
         <form method="get" class="row g-3 align-items-center">
             <div class="col-12 col-md-6 col-lg-4">
@@ -76,13 +76,13 @@ echo smartcms_admin_page_header($admin, '회원 관리', 'users');
             <?php endif; ?>
         </form>
     </div>
-</div>
+</section>
 
-<div class="sc-admin-card">
-    <div class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
+<section class="card border-0 shadow-sm">
+    <header class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
         <h5 class="card-title mb-0 fw-bold">전체 회원 목록</h5>
         <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold"><?= number_format($total_users) ?>명 조회됨</span>
-    </div>
+    </header>
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0 text-nowrap">
             <thead class="bg-light text-secondary small text-uppercase">
@@ -144,11 +144,10 @@ echo smartcms_admin_page_header($admin, '회원 관리', 'users');
     <?php if (!$users): ?>
         <div class="text-center py-5 text-secondary">표시할 회원이 없습니다.</div>
     <?php endif; ?>
-</div>
+</section>
 
 <?php if ($total_pages > 1): ?>
-<div class="mt-4 d-flex justify-content-center">
-    <nav aria-label="Page navigation">
+<nav class="mt-4 d-flex justify-content-center" aria-label="Page navigation">
       <ul class="pagination pagination-sm mb-0 gap-1">
         <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
           <a class="page-link rounded-circle border-0 shadow-sm" href="?search=<?= urlencode($search) ?>&page=<?= $page - 1 ?>"><i class="bi bi-chevron-left"></i></a>
@@ -162,8 +161,7 @@ echo smartcms_admin_page_header($admin, '회원 관리', 'users');
           <a class="page-link rounded-circle border-0 shadow-sm" href="?search=<?= urlencode($search) ?>&page=<?= $page + 1 ?>"><i class="bi bi-chevron-right"></i></a>
         </li>
       </ul>
-    </nav>
-</div>
+</nav>
 <?php endif; ?>
 
 <?= smartcms_admin_footer() ?>

@@ -94,12 +94,12 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
 
 <div class="row g-3">
   <div class="col-12">
-    <div class="sc-admin-card mb-4 sc-card-accent">
+    <section class="card border-0 shadow-sm mb-4 border-top border-primary border-3">
       <div class="card-body p-4 p-lg-5">
-        <div class="d-flex align-items-center gap-2 mb-4">
+        <header class="d-flex align-items-center gap-2 mb-4">
           <div class="p-2 bg-primary-subtle text-primary rounded-3"><i class="bi bi-plus-circle-fill fs-5"></i></div>
           <h5 class="card-title mb-0 fw-bold">새 게시판 생성</h5>
-        </div>
+        </header>
         <form class="row g-3" method="post">
           <?= smartcms_csrf_input() ?>
           <input type="hidden" name="action" value="create">
@@ -120,15 +120,15 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
           </div>
         </form>
       </div>
-    </div>
+    </section>
   </div>
 
   <div class="col-12">
-    <div class="sc-admin-card">
-      <div class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
+    <section class="card border-0 shadow-sm">
+      <header class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
         <h5 class="card-title mb-0 fw-bold">운영 중인 게시판</h5>
         <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold"><?= count($boards) ?>개 활성</span>
-      </div>
+      </header>
       <div class="table-responsive">
           <table class="table table-hover align-middle mb-0 text-nowrap">
             <thead class="bg-light text-secondary small text-uppercase">
@@ -176,7 +176,7 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
                         <?php endforeach; ?>
                       </select>
                       <button class="btn btn-primary btn-sm px-3" type="submit">변경</button>
-                      <a href="/admin/boards/settings/?key=<?= urlencode($board['board_key']) ?>" class="btn btn-outline-secondary btn-sm" title="상세 설정"><i class="bi bi-gear-fill"></i></a>
+                      <a href="/admin/boards/settings/?key=<?= urlencode($board['board_key']) ?>" class="btn btn-light border btn-sm" title="상세 설정"><i class="bi bi-gear-fill"></i></a>
                     </form>
                   </td>
                 </tr>
@@ -190,7 +190,7 @@ echo smartcms_admin_page_header($admin, '게시판 관리', 'boards');
           </table>
         </div>
       </div>
-    </div>
+    </section>
   </div>
 </div>
 

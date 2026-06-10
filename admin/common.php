@@ -46,10 +46,10 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
     $initial = smartcms_admin_initial((string)$admin['name']);
     $items = smartcms_admin_nav_items();
 
-    $html = '<div class="sc-admin-layout d-flex min-vh-100">';
+    $html = '<div class="d-flex min-vh-100">';
 
     // 1. Sidebar (Fixed on Desktop)
-    $html .= '<aside class="sc-admin-sidebar d-none d-lg-flex flex-column bg-white border-end sticky-top" style="height: 100vh; overflow-y: auto; z-index: 1030;">';
+    $html .= '<aside class="d-none d-lg-flex flex-column bg-white border-end sticky-top" style="height: 100vh; width: 260px; overflow-y: auto; z-index: 1030;">';
     $html .= '  <div class="px-4 py-4 mb-2">';
     $html .= '    <a class="d-flex align-items-center gap-2 text-decoration-none fw-bold text-dark fs-4" href="' . smartcms_h(smartcms_base_url('/admin/dashboard/')) . '">';
     $html .= '      <span class="badge bg-primary p-2 lh-1 rounded-3"><i class="bi bi-app-indicator fs-4 text-white"></i></span>';
@@ -72,22 +72,22 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
     $html .= '  </nav>';
 
     $html .= '  <div class="p-3 mt-auto border-top">';
-    $html .= '    <div class="d-flex align-items-center gap-3 p-2 bg-light rounded-3">';
+    $html .= '    <section class="d-flex align-items-center gap-3 p-2 bg-light rounded-3">';
     $html .= '      <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:38px; height:38px;">' . smartcms_h($initial) . '</div>';
     $html .= '      <div class="overflow-hidden">';
     $html .= '        <div class="fw-bold text-dark text-truncate small">' . smartcms_h((string)$admin['name']) . '</div>';
     $html .= '        <div class="text-secondary" style="font-size: 0.7rem;">LV ' . smartcms_h((string)$admin['level']) . ' · Admin</div>';
     $html .= '      </div>';
-    $html .= '    </div>';
-    $html .= '    <a href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '" class="btn btn-outline-danger btn-sm w-100 mt-3 border-0 text-start px-3"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>';
+    $html .= '    </section>';
+    $html .= '    <a href="' . smartcms_h(smartcms_base_url('/member/logout/')) . '" class="btn btn-light text-danger btn-sm w-100 mt-3 border-0 text-start px-3"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>';
     $html .= '  </div>';
     $html .= '</aside>';
 
     // 2. Main Workspace
-    $html .= '<main class="sc-admin-workspace flex-grow-1 d-flex flex-column bg-light" style="min-width: 0;">';
+    $html .= '<main class="flex-grow-1 d-flex flex-column bg-light" style="min-width: 0;">';
 
     // Topbar
-    $html .= '  <header class="sc-admin-topbar sticky-top bg-light px-3 px-lg-4 py-3">';
+    $html .= '  <header class="sticky-top bg-light px-3 px-lg-4 py-3" style="z-index: 1020;">';
     $html .= '    <div class="container-fluid p-0">';
     $html .= '      <nav class="navbar navbar-expand bg-white shadow-sm rounded-3 px-3 py-2">';
     $html .= '        <div class="container-fluid p-0">';
@@ -125,14 +125,14 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
     $html .= '  </header>';
 
     // Content Area
-    $html .= '  <div class="sc-admin-content flex-grow-1 p-3 p-lg-4 pt-0">';
+    $html .= '  <article class="flex-grow-1 p-3 p-lg-4 pt-0">';
     $html .= '    <div class="container-fluid p-0">';
 
     // Page Title for content area
-    $html .= '    <div class="mb-4">';
+    $html .= '    <header class="mb-4">';
     $html .= '      <h1 class="h3 fw-bold mb-1">' . smartcms_h($title) . '</h1>';
     $html .= '      <p class="text-secondary small mb-0">smartcms 관리자 대시보드 및 시스템 관리</p>';
-    $html .= '    </div>';
+    $html .= '    </header>';
 
     return $html;
 }
@@ -143,9 +143,9 @@ function smartcms_admin_page_header(array $admin, string $title, string $active)
 function smartcms_admin_footer(): string
 {
     $html  = '    </div>'; // container-fluid
-    $html .= '  </div>'; // sc-admin-content
+    $html .= '  </article>'; // sc-admin-content
 
-    $html .= '  <footer class="sc-admin-footer mt-auto bg-light border-top py-3">';
+    $html .= '  <footer class="mt-auto bg-white border-top py-4">';
     $html .= '    <div class="container-fluid px-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-secondary">';
     $html .= '      <span>&copy; ' . date('Y') . ' <a href="#" class="text-decoration-none fw-bold">smartcms</a>. All rights reserved.</span>';
     $html .= '      <div class="d-flex gap-3">';
