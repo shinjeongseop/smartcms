@@ -38,7 +38,7 @@ try {
     $message_type = 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '접속 로그', 'body_class' => 'smartcms-admin-page'];
+$SMARTCMS_HEAD = ['title' => '접속 로그', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'logs'];
 require SMARTCMS_ROOT . '/head.php'; // head.php는 이미 관리자 레이아웃을 처리합니다.
 ?>
 
@@ -49,8 +49,8 @@ require SMARTCMS_ROOT . '/head.php'; // head.php는 이미 관리자 레이아�
   </div>
 <?php endif; ?>
 
-<div class="card border-0 shadow-sm">
-    <div class="card-header bg-white border-bottom-0 pt-4 px-4">
+<section class="card border-0 shadow-sm">
+    <header class="card-header bg-white border-bottom-0 pt-4 px-4">
         <ul class="nav nav-tabs card-header-tabs border-bottom-0 gap-2" id="logTab" role="tablist">
             <li class="nav-item">
                 <button class="nav-link active fw-bold border-0 py-3" id="access-tab" data-bs-toggle="tab" data-bs-target="#access-panel" type="button">접속 로그</button>
@@ -62,7 +62,7 @@ require SMARTCMS_ROOT . '/head.php'; // head.php는 이미 관리자 레이아�
                 <button class="nav-link fw-bold border-0 py-3" id="audit-tab" data-bs-toggle="tab" data-bs-target="#audit-panel" type="button">게시판 감사</button>
             </li>
         </ul>
-    </div>
+    </header>
     <div class="tab-content">
         <!-- 접속 로그 패널 -->
         <div class="tab-pane fade show active" id="access-panel" role="tabpanel" aria-labelledby="access-tab">
@@ -82,8 +82,8 @@ require SMARTCMS_ROOT . '/head.php'; // head.php는 이미 관리자 레이아�
                             <tr>
                                 <td class="ps-4">
                                     <div class="d-flex flex-column small">
-                                        <span><?= date('Y-m-d', strtotime($log['created_at'])) ?></span>
-                                        <span class="text-secondary opacity-50"><?= date('H:i:s', strtotime($log['created_at'])) ?></span>
+                                        <span><?= smartcms_h(date('Y-m-d', strtotime((string)$log['created_at']))) ?></span>
+                                        <span class="text-secondary opacity-50"><?= smartcms_h(date('H:i:s', strtotime((string)$log['created_at']))) ?></span>
                                     </div>
                                 </td>
                                 <td>
@@ -95,7 +95,7 @@ require SMARTCMS_ROOT . '/head.php'; // head.php는 이미 관리자 레이아�
                                     <div class="fw-medium small"><?= smartcms_h($log['target_type']) ?>: <?= smartcms_h($log['target_key'] ?? '-') ?></div>
                                     <div class="text-xs text-secondary opacity-75"><?= smartcms_h($log['request_path']) ?></div>
                                 </td>
-                                <td><code class="text-xs text-muted"><?= substr($log['ip_hash'] ?? 'N/A', 0, 10) ?>...</code></td>
+                                <td><code class="text-xs text-muted"><?= smartcms_h(substr((string)($log['ip_hash'] ?? 'N/A'), 0, 10)) ?>...</code></td>
                                 <td class="text-end pe-4">
                                     <span class="badge bg-<?= $log['status_code'] >= 400 ? 'danger' : 'success' ?>-subtle text-<?= $log['status_code'] >= 400 ? 'danger' : 'success' ?>">
                                         <?= (int)$log['status_code'] ?>
@@ -160,7 +160,7 @@ require SMARTCMS_ROOT . '/head.php'; // head.php는 이미 관리자 레이아�
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <?php
 $SMARTCMS_FOOT = [];

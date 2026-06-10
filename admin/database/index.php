@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $tables = smartcms_db_managed_tables();
 $prefix = (string)smartcms_config_value('table_prefix', 'sc_');
 
-$SMARTCMS_HEAD = ['title' => 'DB 관리', 'body_class' => 'smartcms-admin-page'];
+$SMARTCMS_HEAD = ['title' => 'DB 관리', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'database'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 

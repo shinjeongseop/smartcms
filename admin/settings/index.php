@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $settings = smartcms_settings_all();
 
-$SMARTCMS_HEAD = ['title' => '환경 설정', 'body_class' => 'smartcms-admin-page'];
+$SMARTCMS_HEAD = ['title' => '환경 설정', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'settings'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
@@ -45,12 +45,12 @@ require SMARTCMS_ROOT . '/head.php';
   </div>
 <?php endif; ?>
 
-<div class="card border-0 shadow-sm sc-card-settings">
+<section class="card border-0 shadow-sm">
   <div class="card-body p-4 p-lg-5">
-    <div class="d-flex align-items-center gap-2 mb-5">
+    <header class="d-flex align-items-center gap-2 mb-5">
       <div class="p-2 bg-primary text-white rounded-3 lh-1"><i class="bi bi-sliders2 fs-5"></i></div>
-      <h5 class="card-title mb-0 fw-bold">시스템 기본 설정</h5>
-    </div>
+      <h2 class="h5 mb-0 fw-bold">시스템 기본 설정</h2>
+    </header>
     <form class="row g-3" method="post">
       <?= smartcms_csrf_input() ?>
       <div class="col-12 col-md-6">
@@ -95,7 +95,7 @@ require SMARTCMS_ROOT . '/head.php';
       </div>
     </form>
   </div>
-</div>
+</section>
 
 <?php
 $SMARTCMS_FOOT = [];

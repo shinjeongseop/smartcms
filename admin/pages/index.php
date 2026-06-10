@@ -55,7 +55,7 @@ try {
     $message_type = 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '페이지 권한', 'body_class' => 'smartcms-admin-page'];
+$SMARTCMS_HEAD = ['title' => '페이지 권한', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'pages'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
@@ -66,14 +66,14 @@ require SMARTCMS_ROOT . '/head.php';
   </div>
 <?php endif; ?>
 
-<div class="card border-0 shadow-sm">
-  <div class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
+<section class="card border-0 shadow-sm">
+  <header class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
     <div>
       <h5 class="card-title mb-1 fw-bold">등록된 페이지 권한</h5>
       <p class="text-secondary small mb-0">페이지가 호출될 때 자동으로 등록되는 접근 제어 목록입니다.</p>
     </div>
     <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold"><?= count($pages) ?>개</span>
-  </div>
+  </header>
   <div class="table-responsive">
       <table class="table table-hover align-middle mb-0 text-nowrap">
         <thead class="bg-light text-secondary small text-uppercase">
@@ -95,9 +95,9 @@ require SMARTCMS_ROOT . '/head.php';
               <td class="text-secondary small"><?= smartcms_h($page['page_path']) ?></td>
               <td>
                 <div class="d-flex gap-2">
-                  <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">V <?= $page['page_view_level'] ?></span>
-                  <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">W <?= $page['page_write_level'] ?></span>
-                  <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">M <?= $page['page_manage_level'] ?></span>
+                  <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">V LV <?= (int)$page['page_view_level'] ?></span>
+                  <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">W LV <?= (int)$page['page_write_level'] ?></span>
+                  <span class="badge bg-light text-dark border-0 fw-medium px-2 py-1">M LV <?= (int)$page['page_manage_level'] ?></span>
                 </div>
               </td>
               <td>
@@ -107,7 +107,7 @@ require SMARTCMS_ROOT . '/head.php';
                   </span>
                   <span class="small d-flex align-items-center">
                     <span class="badge bg-<?= $page['status'] === 'active' ? 'success' : 'danger' ?> p-1 rounded-circle me-2" style="width:6px; height:6px;"></span>
-                    <span class="text-capitalize text-secondary"><?= $page['status'] ?></span>
+                    <span class="text-capitalize text-secondary"><?= smartcms_h($page['status']) ?></span>
                   </span>
                 </div>
               </td>
@@ -135,8 +135,7 @@ require SMARTCMS_ROOT . '/head.php';
     <?php if (!$pages): ?>
       <div class="text-center py-5 text-secondary">등록된 페이지 권한이 없습니다.</div>
     <?php endif; ?>
-  </div>
-</div>
+</section>
 
 <?php
 $SMARTCMS_FOOT = [];

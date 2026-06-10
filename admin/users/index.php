@@ -2,9 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
-require_once __DIR__ . '/../../head.php';
-require_once __DIR__ . '/../../foot.php';
-require_once __DIR__ . '/../../common/ui/components.php';
 
 $admin = smartcms_admin_user();
 $search = trim((string)($_GET['search'] ?? ''));
@@ -99,11 +96,11 @@ require SMARTCMS_ROOT . '/head.php';
             </thead>
             <tbody>
                 <?php foreach ($users as $user): ?>
-                    <tr>
-                        <td class="ps-4 text-secondary opacity-75">#<?= $user['id'] ?></td>
+                    <tr class="sc-user-row-<?= (int)$user['id'] ?>">
+                        <td class="ps-4 text-secondary opacity-75">#<?= smartcms_h($user['id']) ?></td>
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                <div class="badge bg-primary-subtle text-primary rounded-circle p-2 lh-1" style="width:32px; height:32px; font-size: 0.75rem;"><?= mb_substr($user['name'],0,1) ?></div>
+                                <div class="badge bg-primary-subtle text-primary rounded-circle p-2 lh-1" style="width:32px; height:32px; font-size: 0.75rem;"><?= smartcms_h(mb_substr((string)$user['name'], 0, 1)) ?></div>
                                 <div class="lh-sm">
                                     <div class="fw-bold text-emphasis small"><?= smartcms_h($user['name']) ?></div>
                                     <div class="text-xs text-secondary opacity-75"><?= smartcms_h($user['email']) ?></div>
@@ -112,19 +109,19 @@ require SMARTCMS_ROOT . '/head.php';
                         </td>
                         <td>
                             <div class="d-flex gap-2">
-                                <span class="badge bg-secondary-subtle text-secondary small text-uppercase" style="font-size:0.65rem;"><?= $user['role'] ?></span>
-                                <span class="badge bg-light text-dark border-0 small">LV <?= $user['level'] ?></span>
+                                <span class="badge bg-secondary-subtle text-secondary small text-uppercase" style="font-size:0.65rem;"><?= smartcms_h($user['role']) ?></span>
+                                <span class="badge bg-light text-dark border-0 small">LV <?= (int)$user['level'] ?></span>
                             </div>
                         </td>
                         <td>
                             <span class="badge bg-<?= $user['status'] === 'active' ? 'success' : 'secondary' ?> p-1 rounded-circle me-1" style="width:6px; height:6px; display:inline-block;"></span>
-                            <span class="small text-capitalize"><?= $user['status'] ?></span>
+                            <span class="small text-capitalize"><?= smartcms_h($user['status']) ?></span>
                         </td>
-                        <td class="text-secondary small"><?= date('Y-m-d', strtotime($user['created_at'])) ?></td>
+                        <td class="text-secondary small"><?= smartcms_h(date('Y-m-d', strtotime($user['created_at']))) ?></td>
                         <td class="text-end pe-4">
                             <form class="d-inline-flex gap-2 align-items-center" method="post">
                                 <?= smartcms_csrf_input() ?>
-                                <input type="hidden" name="user_id" value="<?= $user['id'] ?>">
+                                <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
                                 <select name="role" class="form-select form-select-sm bg-light border-0" style="width:100px;">
                                     <?php foreach(['admin', 'manager', 'user'] as $r): ?>
                                         <option value="<?= $r ?>" <?= $user['role'] === $r ? 'selected' : '' ?>><?= $r ?></option>

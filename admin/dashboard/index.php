@@ -25,11 +25,11 @@ try {
     $recent_logs = [];
 }
 
-$SMARTCMS_HEAD = ['title' => '대시보드', 'body_class' => 'smartcms-admin-page'];
+$SMARTCMS_HEAD = ['title' => '대시보드', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'dashboard'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
-<div class="row g-4 mb-4">
+<section class="row g-4 mb-4" aria-label="통계 요약">
     <!-- 요약 카드 세트 -->
     <div class="col-12 col-sm-6 col-xl-3">
         <div class="card sc-stat-card h-100 bg-white">
@@ -107,15 +107,15 @@ require SMARTCMS_ROOT . '/head.php';
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <div class="row g-4">
     <div class="col-12 col-lg-6">
-        <div class="card sc-admin-card h-100">
-            <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex align-items-center justify-content-between">
-                <h5 class="card-title mb-0 fw-bold">최근 가입 회원</h5>
+        <section class="card sc-admin-card h-100">
+            <header class="card-header bg-transparent border-0 pt-4 px-4 d-flex align-items-center justify-content-between">
+                <h2 class="h5 card-title mb-0 fw-bold">최근 가입 회원</h2>
                 <a href="/admin/users/" class="btn btn-sm btn-label-primary" style="background-color: rgba(105, 108, 255, 0.1); color: #696cff;">전체보기</a>
-            </div>
+            </header>
             <div class="card-body px-0 pb-2">
                 <div class="table-responsive">
                     <table class="table table-hover border-top mb-0">
@@ -152,14 +152,14 @@ require SMARTCMS_ROOT . '/head.php';
                     </table>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
     <div class="col-12 col-lg-6">
-        <div class="card sc-admin-card h-100">
-            <div class="card-header bg-transparent border-0 pt-4 px-4 d-flex align-items-center justify-content-between">
-                <h5 class="card-title mb-0 fw-bold">최근 시스템 활동</h5>
+        <section class="card sc-admin-card h-100">
+            <header class="card-header bg-transparent border-0 pt-4 px-4 d-flex align-items-center justify-content-between">
+                <h2 class="h5 card-title mb-0 fw-bold">최근 시스템 활동</h2>
                 <a href="/admin/logs/" class="btn btn-sm btn-label-secondary" style="background-color: rgba(133, 146, 163, 0.1); color: #8592a3;">로그 전체보기</a>
-            </div>
+            </header>
             <div class="card-body px-0 pb-2">
                 <div class="list-group list-group-flush border-top">
                     <?php foreach ($recent_logs as $log): ?>
@@ -196,7 +196,7 @@ require SMARTCMS_ROOT . '/head.php';
                     <?php endif; ?>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
 </div>
 
