@@ -57,6 +57,12 @@ if (!function_exists('smartcms_site_footer')) {
 }
 
 if (isset($SMARTCMS_FOOT) && is_array($SMARTCMS_FOOT)) {
+    $is_admin = str_contains((string)($_SERVER['REQUEST_URI'] ?? ''), '/admin/');
+    if ($is_admin && !str_contains((string)$_SERVER['REQUEST_URI'], '/admin/login/')) {
+        echo '      </main>' . PHP_EOL;
+        echo '    </div>' . PHP_EOL;
+        echo '  </div>' . PHP_EOL;
+    }
     $scripts = (array)($SMARTCMS_FOOT['scripts'] ?? []);
 
     echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>' . PHP_EOL;
