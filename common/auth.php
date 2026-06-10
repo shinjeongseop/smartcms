@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/routes.php';
 require_once __DIR__ . '/settings.php';
+require_once __DIR__ . '/security.php';
 
 function smartcms_session_start(): void
 {
