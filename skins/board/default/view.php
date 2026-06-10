@@ -42,7 +42,7 @@
         <h3 class="h6 fw-bold mb-3 text-uppercase letter-spacing-1 text-primary"><i class="bi bi-paperclip me-1"></i>첨부파일</h3>
         <div class="list-group list-group-flush border rounded-3 overflow-hidden shadow-sm">
           <?php foreach ($files as $file): ?>
-            <a class="list-group-item list-group-item-action d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 p-3"
+            <a class="list-group-item list-group-item-action bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 p-3"
                href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>">
               <span class="fw-bold text-dark"><i class="bi bi-file-earmark-arrow-down me-2"></i><?= smartcms_h($file['original_name']) ?></span>
               <small class="text-secondary fw-medium bg-light px-2 py-1 rounded"><?= number_format((int)$file['file_size']) ?> bytes · 다운로드 <?= (int)$file['download_count'] ?>회</small>

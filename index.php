@@ -286,7 +286,7 @@ require SMARTCMS_ROOT . '/head.php';
           <div class="list-group list-group-flush small">
             <?php if ($popular_posts): ?>
               <?php foreach ($popular_posts as $idx => $post): ?>
-                <a class="list-group-item list-group-item-action px-0 py-3 border-0 border-bottom d-flex align-items-start gap-3"
+                <a class="list-group-item list-group-item-action bg-white px-0 py-3 border-0 border-bottom d-flex align-items-start gap-3"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                   <span class="text-primary fw-bold fs-5 lh-1 mt-1"><?= (int)$idx + 1 ?></span>
                   <div class="flex-grow-1 overflow-hidden">

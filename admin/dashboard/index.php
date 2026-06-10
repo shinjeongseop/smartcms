@@ -163,7 +163,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
       <div class="card-body p-0">
         <div class="list-group list-group-flush">
           <?php foreach ($recent_logs as $log): ?>
-            <div class="list-group-item border-0 px-4 py-3 d-flex align-items-center justify-content-between">
+            <div class="list-group-item bg-white border-0 px-4 py-3 d-flex align-items-center justify-content-between">
               <div class="d-flex align-items-center">
                 <?php
                 $log_theme = [
