@@ -26,7 +26,7 @@ try {
 }
 
 $SMARTCMS_HEAD = ['title' => '대시보드', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'dashboard'];
-require SMARTCMS_ROOT . '/head.php';
+require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <section class="row g-4 mb-4" aria-label="통계 요약">
@@ -202,5 +202,5 @@ require SMARTCMS_ROOT . '/head.php';
 
 <?php
 $SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/foot.php';
+require SMARTCMS_ROOT . '/admin/foot.php';
 ?>
