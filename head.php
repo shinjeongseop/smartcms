@@ -277,6 +277,87 @@ if (isset($SMARTCMS_HEAD) && is_array($SMARTCMS_HEAD)) {
       </aside>
 
       <main class="col-12 col-md-9 col-lg-10 bg-light p-3 p-lg-4" style="min-width: 0;">
+        <header class="card mb-4 d-none d-md-block border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center justify-content-between gap-3">
+              <div>
+                <nav aria-label="breadcrumb" class="mb-1">
+                  <ol class="breadcrumb small mb-0">
+                    <li class="breadcrumb-item"><a href="/admin/dashboard/" class="text-decoration-none text-secondary">Admin</a></li>
+                    <li class="breadcrumb-item active fw-bold" aria-current="page"><?= smartcms_h($title) ?></li>
+                  </ol>
+                </nav>
+                <h1 class="h3 fw-bold mb-0 text-body"><?= smartcms_h($title) ?></h1>
+              </div>
+              <a class="btn btn-light btn-sm rounded-pill border px-3" href="/"><i class="bi bi-house me-1"></i>사이트 홈</a>
+            </div>
+          </div>
+        </header>
+<?php elseif (!$is_admin):
+    $site_nav = smartcms_site_nav_items();
+    $user = smartcms_current_user();
+    $brand_url = smartcms_h(smartcms_base_url('/'));
+?>
+  <main class="min-vh-100 d-flex flex-column">
+    <header class="bg-white border-bottom py-2 small text-body-secondary">
+      <div class="container-xxl d-flex align-items-center justify-content-between">
+        <div class="d-none d-md-flex gap-3">
+          <a href="<?= $brand_url ?>" class="text-decoration-none text-body-secondary">커뮤니티 홈</a>
+          <a href="<?= smartcms_h(smartcms_base_url('/board/')) ?>" class="text-decoration-none text-body-secondary">전체글</a>
+        </div>
+        <div class="d-flex gap-3 ms-auto">
+          <?php if ($user): ?>
+            <span class="text-dark fw-bold"><i class="bi bi-person-circle me-1"></i><?= smartcms_h($user['name']) ?></span>
+            <a href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>" class="text-decoration-none text-body-secondary">로그아웃</a>
+          <?php else: ?>
+            <a href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>" class="text-decoration-none text-body-secondary">로그인</a>
+            <a href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>" class="text-decoration-none text-body-secondary">회원가입</a>
+          <?php endif; ?>
+        </div>
+      </div>
+    </header>
+
+    <section class="bg-white py-4">
+      <div class="container-xxl">
+        <div class="row align-items-center g-4">
+          <div class="col-12 col-md-3 text-center text-md-start">
+            <a class="navbar-brand fs-2 fw-bold text-primary" href="<?= $brand_url ?>">smartcms<span class="text-dark">.</span></a>
+          </div>
+          <div class="col-12 col-md-6">
+            <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" class="position-relative">
+              <div class="input-group input-group-lg">
+                <input type="text" name="q" class="form-control bg-body border-0 rounded-pill ps-4" placeholder="궁금한 것을 검색해보세요">
+                <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-primary z-3 me-2" type="submit"><i class="bi bi-search fs-5"></i></button>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-3 d-none d-md-flex justify-content-end">
+            <a href="<?= smartcms_h(smartcms_base_url('/board/write/')) ?>" class="btn btn-primary rounded-pill px-4"><i class="bi bi-pencil-square me-2"></i>글쓰기</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top p-0">
+      <div class="container-xxl">
+        <button class="navbar-toggler my-2 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="siteNav">
+          <ul class="navbar-nav w-100">
+            <?php foreach ($site_nav as $key => $item):
+                $is_active = ($key === $active_menu);
+                $active_class = $is_active ? ' active fw-bold text-primary border-bottom border-primary border-3' : '';
+            ?>
+              <li class="nav-item"><a class="nav-link py-3 px-4 text-center<?= $active_class ?>" href="<?= smartcms_h(smartcms_base_url((string)$item['href'])) ?>"><?= smartcms_h((string)$item['label']) ?></a></li>
+            <?php endforeach; ?>
+            <?php if ($user && (int)$user['level'] >= 8): ?>
+              <li class="nav-item ms-lg-auto"><a class="nav-link py-3 px-4 text-warning" href="<?= smartcms_h(smartcms_base_url('/admin/')) ?>"><i class="bi bi-speedometer2 me-1"></i>관리자</a></li>
+            <?php endif; ?>
+          </ul>
+        </div>
+      </div>
+    </nav>
 <?php endif; ?>
     <?php
 }

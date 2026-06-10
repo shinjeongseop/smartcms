@@ -57,10 +57,10 @@ try {
 $SMARTCMS_HEAD = [
     'title' => 'smartcms Community',
     'body_class' => 'bg-body',
+    'active_menu' => 'home',
 ];
 
 require SMARTCMS_ROOT . '/head.php';
-echo smartcms_site_header('home');
 ?>
 
 <header class="bg-primary text-white py-5 py-lg-5">
@@ -309,8 +309,6 @@ echo smartcms_site_header('home');
     </aside>
   </section>
 </div>
-
-<?= smartcms_site_footer() ?>
 
 <?php
 $SMARTCMS_FOOT = [];

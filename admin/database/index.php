@@ -80,7 +80,6 @@ $prefix = (string)smartcms_config_value('table_prefix', 'sc_');
 
 $SMARTCMS_HEAD = ['title' => 'DB 관리', 'body_class' => 'smartcms-admin-page'];
 require SMARTCMS_ROOT . '/head.php';
-echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
 ?>
 
 <?php if ($message !== ''): ?>
@@ -143,7 +142,6 @@ echo smartcms_admin_page_header($admin, 'DB 관리', 'database');
   </div>
 </div>
 
-<?= smartcms_admin_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';

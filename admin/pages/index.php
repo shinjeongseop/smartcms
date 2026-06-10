@@ -2,9 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
-require_once __DIR__ . '/../../head.php';
-require_once __DIR__ . '/../../foot.php';
-require_once __DIR__ . '/../../common/ui/components.php';
 
 $admin = smartcms_admin_user();
 $message = '';
@@ -61,7 +58,6 @@ try {
 
 $SMARTCMS_HEAD = ['title' => '페이지 권한', 'body_class' => 'smartcms-admin-page'];
 require SMARTCMS_ROOT . '/head.php';
-echo smartcms_admin_page_header($admin, '페이지 권한', 'pages');
 ?>
 
 <?php if ($message !== ''): ?>
@@ -140,7 +136,6 @@ echo smartcms_admin_page_header($admin, '페이지 권한', 'pages');
   </div>
 </div>
 
-<?= smartcms_admin_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';

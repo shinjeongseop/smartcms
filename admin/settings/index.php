@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common.php';
-require_once __DIR__ . '/../../common/ui/components.php';
 
 $admin = smartcms_admin_user();
 $message = '';
@@ -38,7 +37,6 @@ $settings = smartcms_settings_all();
 
 $SMARTCMS_HEAD = ['title' => '환경 설정', 'body_class' => 'smartcms-admin-page'];
 require SMARTCMS_ROOT . '/head.php';
-echo smartcms_admin_page_header($admin, '환경 설정', 'settings');
 ?>
 
 <?php if ($message !== ''): ?>
@@ -97,7 +95,6 @@ echo smartcms_admin_page_header($admin, '환경 설정', 'settings');
   </div>
 </div>
 
-<?= smartcms_admin_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';
