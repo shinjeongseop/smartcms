@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/common/config.php';
 require_once __DIR__ . '/common/auth.php';
+require_once __DIR__ . '/common/ui/components.php';
 
 if (!function_exists('smartcms_site_nav_items')) {
     function smartcms_site_nav_items(): array

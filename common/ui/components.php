@@ -40,26 +40,6 @@ function smartcms_button(string $label, string $type = 'button', string $extra_c
          . '</button>';
 }
 
-/**
- * CSRF 보호를 위한 Hidden Input 생성
- */
-function smartcms_csrf_input(): string
-{
-    if (session_status() === PHP_SESSION_NONE) {
-        smartcms_session_start();
-    }
-
-    // 토큰이 없으면 생성 (security.php 로직과 호환 유지)
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
-
-    return sprintf(
-        '<input type="hidden" name="csrf_token" value="%s">',
-        smartcms_h($_SESSION['csrf_token'])
-    );
-}
-
 /* ─────────────────────────────────────────
    2. 공통 UI 조각
 ───────────────────────────────────────── */
@@ -126,6 +106,7 @@ if (!function_exists('smartcms_admin_nav_items')) {
     }
 }
 
+if (!function_exists('smartcms_site_header')) {
 function smartcms_site_header(string $active = '', string $extra_class = ''): string
 {
     $items = smartcms_site_nav_items();
@@ -185,7 +166,9 @@ function smartcms_site_header(string $active = '', string $extra_class = ''): st
 
     return $html;
 }
+}
 
+if (!function_exists('smartcms_site_footer')) {
 function smartcms_site_footer(): string
 {
     $year = date('Y');
@@ -199,6 +182,7 @@ function smartcms_site_footer(): string
           . '<ul class="list-unstyled small d-grid gap-2">'
           . '<li><a href="' . smartcms_h(smartcms_base_url('/board/')) . '" class="text-decoration-none text-reset">전체 게시판</a></li>'
           . '<li><a href="' . smartcms_h(smartcms_base_url('/member/login/')) . '" class="text-decoration-none text-reset">로그인</a></li>'
+          . '<li><a href="' . smartcms_h(smartcms_base_url('/member/register/')) . '" class="text-decoration-none text-reset">회원가입</a></li>'
           . '</ul></div>'
           . '<div class="col-6 col-lg-2"><h3 class="h6 fw-bold text-white mb-3">Support</h3>'
           . '<ul class="list-unstyled small d-grid gap-2">'
@@ -207,10 +191,12 @@ function smartcms_site_footer(): string
           . '<div class="col-6 col-lg-2"><h3 class="h6 fw-bold text-white mb-3">Admin</h3>'
           . '<ul class="list-unstyled small d-grid gap-2">'
           . '<li><a href="' . smartcms_h(smartcms_base_url('/admin/')) . '" class="text-decoration-none text-reset">관리자 홈</a></li>'
+          . '<li><a href="' . smartcms_h(smartcms_base_url('/admin/settings/')) . '" class="text-decoration-none text-reset">시스템 설정</a></li>'
           . '</ul></div></div>'
           . '<div class="border-top border-secondary border-opacity-25 pt-4 mt-5 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 small">'
           . '<span>&copy; ' . smartcms_h($year) . ' smartcms. All rights reserved.</span>'
           . '<span class="text-white-50">Powered by Bootstrap 5 & PHP</span>'
           . '</div></div></footer></main>';
     return $html;
+}
 }
