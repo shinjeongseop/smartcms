@@ -100,7 +100,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                         <td class="ps-4 text-secondary opacity-75">#<?= smartcms_h($user['id']) ?></td>
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                <div class="badge bg-primary-subtle text-primary rounded-circle p-2 lh-1" style="width:32px; height:32px; font-size: 0.75rem;"><?= smartcms_h(mb_substr((string)$user['name'], 0, 1)) ?></div>
+                                <div class="badge bg-primary-subtle text-primary rounded-circle p-2 lh-1 sc-avatar-sm text-xs"><?= smartcms_h(mb_substr((string)$user['name'], 0, 1)) ?></div>
                                 <div class="lh-sm">
                                     <div class="fw-bold text-emphasis small"><?= smartcms_h($user['name']) ?></div>
                                     <div class="text-xs text-secondary opacity-75"><?= smartcms_h($user['email']) ?></div>
@@ -109,7 +109,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                         </td>
                         <td>
                             <div class="d-flex gap-2">
-                                <span class="badge bg-secondary-subtle text-secondary small text-uppercase" style="font-size:0.65rem;"><?= smartcms_h($user['role']) ?></span>
+                                <span class="badge bg-secondary-subtle text-secondary small text-uppercase text-xs"><?= smartcms_h($user['role']) ?></span>
                                 <span class="badge bg-light text-dark border-0 small">LV <?= (int)$user['level'] ?></span>
                             </div>
                         </td>

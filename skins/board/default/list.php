@@ -68,7 +68,7 @@
                 <div class="d-flex align-items-center gap-2">
                   <a class="text-decoration-none fw-semibold text-dark text-truncate"
                      href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
-                    <?= (int)$post['is_secret'] === 1 ? '🔒 ' : '' ?><?= smartcms_h($post['title']) ?>
+                    <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?><?= smartcms_h($post['title']) ?>
                   </a>
                   <?php if ((int)$post['comment_count'] > 0): ?>
                     <span class="badge bg-light text-primary border rounded-pill text-xs"><?= (int)$post['comment_count'] ?></span>

@@ -35,10 +35,10 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
   <?php endforeach; ?>
 </head>
 <body class="<?= smartcms_h($body_class) ?>">
-<?php if (!$is_login_page): ?>
+<?php if (!$is_login_page): $admin = smartcms_current_user(); ?>
   <div class="d-flex min-vh-100">
     <!-- [SIDEBAR] 반응형 사이드바 -->
-    <aside class="offcanvas-md offcanvas-start sc-admin-sidebar flex-column bg-white border-end p-3" tabindex="-1" id="adminSidebarOffcanvas">
+    <aside class="offcanvas-md offcanvas-start sc-admin-sidebar flex-column bg-white border-end p-3 flex-shrink-0" tabindex="-1" id="adminSidebarOffcanvas">
       <div class="d-flex align-items-center justify-content-between mb-4">
         <a class="navbar-brand d-inline-flex align-items-center gap-2 fw-bold text-primary text-decoration-none" href="/admin/dashboard/">
           <span class="badge bg-primary-subtle text-primary rounded p-2 lh-1"><i class="bi bi-app-indicator fs-4"></i></span>
@@ -57,7 +57,7 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
         <?php endforeach; ?>
       </nav>
 
-      <?php $admin = smartcms_current_user(); if ($admin): ?>
+      <?php if ($admin): ?>
         <div class="card mt-auto border-0 bg-light rounded-3 mb-2">
           <div class="card-body p-3 d-flex align-items-center gap-2">
             <span class="badge bg-primary rounded-circle p-2 lh-1" style="width:32px; height:32px;">
@@ -70,7 +70,7 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
           </div>
         </div>
       <?php endif; ?>
-      <a class="btn btn-outline-danger btn-sm w-100 border-0 text-start px-3" href="/member/logout/"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
+      <a class="btn btn-danger btn-sm w-100 border-0 text-start px-3" href="/member/logout/"><i class="bi bi-box-arrow-right me-2"></i>Logout</a>
     </aside>
 
     <!-- [WORKSPACE] 워크스페이스 영역 -->

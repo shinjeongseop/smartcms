@@ -2,10 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common/board.php';
-require_once __DIR__ . '/../head.php';
-require_once __DIR__ . '/../common/ui/components.php';
-require_once __DIR__ . '/../foot.php';
-
 $board_key    = smartcms_board_key((string)($_GET['board'] ?? ''));
 $board        = $board_key !== '' ? smartcms_board_find($board_key) : null;
 $boards       = [];
@@ -46,10 +42,9 @@ $page_title = $board ? (string)$board['board_name'] : ($keyword !== '' ? '게시
 
 $SMARTCMS_HEAD = ['title' => $page_title];
 require SMARTCMS_ROOT . '/head.php';
-echo smartcms_site_header($board ? (string)$board['board_key'] : '');
 ?>
 
-<main class="container-fluid container-xxl py-4 py-lg-5">
+<div class="container-fluid container-xxl py-4 py-lg-5">
   <header class="card border-0 shadow-sm mb-4">
     <div class="card-body p-4 p-lg-5">
       <p class="text-uppercase small fw-semibold text-primary mb-2">Board</p>
@@ -59,7 +54,10 @@ echo smartcms_site_header($board ? (string)$board['board_key'] : '');
   </header>
 
   <?php if ($message !== ''): ?>
-    <?= smartcms_alert($message, $message_type) ?>
+    <div class="alert alert-<?= $message_type === 'error' ? 'danger' : 'info' ?> d-flex align-items-start gap-2 mb-4" role="alert">
+      <i class="bi bi-info-circle-fill mt-1"></i>
+      <div><?= smartcms_h($message) ?></div>
+    </div>
   <?php endif; ?>
 
   <?php if (!$board): ?>
@@ -132,9 +130,8 @@ echo smartcms_site_header($board ? (string)$board['board_key'] : '');
       </aside>
     </div>
   <?php endif; ?>
-</main>
+</div>
 
-<?= smartcms_site_footer() ?>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';

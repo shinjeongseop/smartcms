@@ -36,7 +36,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <div class="card-body">
                 <div class="d-flex align-items-center mb-2">
                     <div class="avatar flex-shrink-0 me-3">
-                        <span class="badge bg-label-primary p-2 rounded" style="background-color: rgba(105, 108, 255, 0.1); color: #696cff;"><i class="bi bi-people fs-4"></i></span>
+                        <span class="badge bg-primary-subtle text-primary p-2 rounded"><i class="bi bi-people fs-4"></i></span>
                     </div>
                     <div>
                         <small class="d-block text-secondary mb-1">전체 회원</small>
@@ -131,7 +131,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                                 <tr>
                                     <td class="px-4 py-3">
                                         <div class="d-flex align-items-center">
-                                            <div class="badge bg-primary rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width:32px; height:32px;">
+                                            <div class="badge bg-primary rounded-circle p-2 me-3 d-flex align-items-center justify-content-center sc-avatar-sm">
                                                 <?= smartcms_h(mb_substr((string)$u['name'], 0, 1)) ?>
                                             </div>
                                             <div>
