@@ -126,7 +126,7 @@ require SMARTCMS_ROOT . '/head.php';
               <?php endif; ?>
             </div>
           </div>
-          <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>" class="btn btn-light btn-sm rounded-pill px-3 flex-shrink-0 fw-bold shadow-none border text-primary">더보기</a>
+          <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>" class="btn btn-light btn-sm rounded-pill px-3 flex-shrink-0 fw-bold shadow-none border text-primary">전체보기</a>
         </div>
       </article>
     </div>
@@ -164,7 +164,7 @@ require SMARTCMS_ROOT . '/head.php';
               <i class="bi bi-clock-history text-primary lh-1"></i>
               <span>전체 최신글</span>
             </h2>
-            <a href="<?= smartcms_h(smartcms_base_url('/board/')) ?>" class="text-decoration-none small text-body-secondary fw-medium">전체보기 <i class="bi bi-chevron-right"></i></a>
+            <a href="<?= smartcms_h(smartcms_base_url('/board/')) ?>" class="text-decoration-none small text-body-secondary fw-medium">전체보기</a>
           </div>
         </header>
         <div class="card-body p-0">
@@ -203,9 +203,7 @@ require SMARTCMS_ROOT . '/head.php';
                       <h3 class="h6 fw-bold mb-1 text-primary text-uppercase"><?= smartcms_h($board['board_name']) ?></h3>
                       <p class="text-xs text-body-secondary mb-0"><?= smartcms_h($widget['summary']) ?></p>
                     </div>
-                    <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" class="btn btn-light btn-sm rounded-circle px-2 py-1 d-flex align-items-center justify-content-center shadow-none border">
-                      <i class="bi bi-plus-lg"></i>
-                    </a>
+                    <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" class="btn btn-light btn-sm rounded-pill px-3 flex-shrink-0 fw-bold shadow-none border text-primary">전체보기</a>
                   </div>
                 </header>
                 <div class="card-body p-4">
