@@ -149,7 +149,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                   </td>
                   <td class="py-3">
                     <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-<?= $board['status'] === 'active' ? 'success' : 'secondary' ?> p-1 rounded-circle" style="width:8px; height:8px; display:inline-block;"></span>
+                      <span class="badge bg-<?= $board['status'] === 'active' ? 'success' : 'secondary' ?> p-1 rounded-circle sc-admin-dot-8"></span>
                       <span class="small fw-bold text-capitalize text-dark"><?= $board['status'] ?></span>
                     </div>
                   </td>
@@ -158,8 +158,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
                       <?= smartcms_csrf_input() ?>
                       <input type="hidden" name="action" value="update">
                       <input type="hidden" name="board_key" value="<?= smartcms_h($board['board_key']) ?>">
-                      <input class="form-control form-control-sm fw-bold" name="board_name" value="<?= smartcms_h($board['board_name']) ?>" style="width:140px;" required>
-                      <select class="form-select form-select-sm fw-bold" name="status" style="width:100px;">
+                      <input class="form-control form-control-sm fw-bold sc-admin-input-board-name" name="board_name" value="<?= smartcms_h($board['board_name']) ?>" required>
+                      <select class="form-select form-select-sm fw-bold sc-admin-select-status" name="status">
                         <?php foreach (['active', 'hidden', 'disabled'] as $status): ?>
                           <option value="<?= smartcms_h($status) ?>" <?= $status === $board['status'] ? 'selected' : '' ?>><?= $status ?></option>
                         <?php endforeach; ?>

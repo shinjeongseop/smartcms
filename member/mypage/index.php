@@ -15,7 +15,7 @@ require SMARTCMS_ROOT . '/head.php';
         <!-- 프로필 헤더 -->
         <header class="card-header bg-primary text-white p-4 p-md-5">
           <div class="d-flex align-items-center gap-4">
-            <div class="badge bg-white text-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:72px; height:72px;">
+            <div class="badge bg-white text-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm sc-avatar-72">
               <i class="bi bi-person-fill fs-1"></i>
             </div>
             <div>

@@ -90,11 +90,11 @@ require SMARTCMS_ROOT . '/admin/head.php';
                                   <td class="ps-4">
                                       <div class="d-flex flex-column lh-sm">
                                           <time class="fw-bold text-dark small" datetime="<?= smartcms_h((string)$log['created_at']) ?>"><?= date('m.d', strtotime((string)$log['created_at'])) ?></time>
-                                          <time class="text-secondary opacity-50 small fw-medium" style="font-size:0.7rem;"><?= date('H:i:s', strtotime((string)$log['created_at'])) ?></time>
+                                          <time class="text-secondary opacity-50 small fw-medium sc-admin-time-xs"><?= date('H:i:s', strtotime((string)$log['created_at'])) ?></time>
                                       </div>
                                   </td>
                                   <td>
-                                      <span class="badge bg-secondary-subtle text-secondary small text-uppercase fw-bold" style="font-size:0.6rem; letter-spacing:0.05rem;">
+                                      <span class="badge bg-secondary-subtle text-secondary small text-uppercase fw-bold sc-admin-badge-xs">
                                           <?= smartcms_h($log['access_type']) ?>
                                       </span>
                                   </td>
@@ -133,7 +133,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                                   <td class="ps-4 fw-medium small"><time datetime="<?= smartcms_h($log['created_at']) ?>"><?= smartcms_h($log['created_at']) ?></time></td>
                                   <td class="fw-bold text-dark small"><?= smartcms_h($log['email']) ?></td>
                                   <td class="text-end pe-4">
-                                      <span class="badge bg-<?= $log['result'] === 'success' ? 'success' : 'danger' ?> text-uppercase fw-bold" style="font-size:0.65rem;">
+                                      <span class="badge bg-<?= $log['result'] === 'success' ? 'success' : 'danger' ?> text-uppercase fw-bold sc-admin-badge-sm">
                                           <?= smartcms_h($log['result']) ?>
                                       </span>
                                   </td>

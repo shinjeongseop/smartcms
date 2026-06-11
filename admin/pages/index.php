@@ -109,11 +109,11 @@ require SMARTCMS_ROOT . '/admin/head.php';
                 </td>
                 <td class="py-3">
                   <div class="d-flex align-items-center gap-3">
-                    <span class="badge bg-<?= (int)$page['allow_guest'] === 1 ? 'info' : 'secondary' ?>-subtle text-<?= (int)$page['allow_guest'] === 1 ? 'info' : 'secondary' ?> text-uppercase fw-bold shadow-none" style="font-size:0.65rem;">
+                    <span class="badge bg-<?= (int)$page['allow_guest'] === 1 ? 'info' : 'secondary' ?>-subtle text-<?= (int)$page['allow_guest'] === 1 ? 'info' : 'secondary' ?> text-uppercase fw-bold shadow-none sc-admin-badge-xs">
                       <?= (int)$page['allow_guest'] === 1 ? 'Guest Allowed' : 'Auth Required' ?>
                     </span>
                     <div class="d-flex align-items-center gap-1">
-                      <span class="badge bg-<?= $page['status'] === 'active' ? 'success' : 'danger' ?> p-1 rounded-circle" style="width:6px; height:6px;"></span>
+                      <span class="badge bg-<?= $page['status'] === 'active' ? 'success' : 'danger' ?> p-1 rounded-circle sc-admin-dot-6"></span>
                       <span class="text-capitalize small fw-bold text-secondary"><?= smartcms_h($page['status']) ?></span>
                     </div>
                   </div>
@@ -122,14 +122,14 @@ require SMARTCMS_ROOT . '/admin/head.php';
                   <form class="d-inline-flex gap-2 align-items-center" method="post">
                     <?= smartcms_csrf_input() ?>
                     <input type="hidden" name="id" value="<?= smartcms_h($page['id']) ?>">
-                    <select class="form-select form-select-sm fw-bold" name="page_view_level" style="width:100px;">
+                    <select class="form-select form-select-sm fw-bold sc-admin-select-page-level" name="page_view_level">
                       <?php for ($level = 0; $level <= 10; $level++): ?>
                         <option value="<?= $level ?>" <?= $level === (int)$page['page_view_level'] ? 'selected' : '' ?>>LV <?= $level ?></option>
                       <?php endfor; ?>
                     </select>
                     <div class="form-check form-switch small mb-0 px-2 ms-2">
                       <input class="form-check-input ms-0" type="checkbox" name="allow_guest" value="1" id="allow_guest_<?= smartcms_h($page['id']) ?>" <?= (int)$page['allow_guest'] === 1 ? 'checked' : '' ?>>
-                      <label class="form-check-label text-secondary fw-bold ms-1" style="font-size:0.7rem;" for="allow_guest_<?= smartcms_h($page['id']) ?>">GUEST</label>
+                      <label class="form-check-label text-secondary fw-bold ms-1 sc-admin-time-xs" for="allow_guest_<?= smartcms_h($page['id']) ?>">GUEST</label>
                     </div>
                     <button class="btn btn-primary btn-sm px-3 fw-bold shadow-none" type="submit">저장</button>
                   </form>

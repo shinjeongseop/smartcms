@@ -75,7 +75,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             </div>
             <?php if ($search !== ''): ?>
                 <div class="col-auto">
-                    <a href="?" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-none">필터 초기화</a>
+                    <a href="?" class="btn btn-light border btn-sm rounded-pill px-3 shadow-none">필터 초기화</a>
                 </div>
             <?php endif; ?>
         </form>
@@ -109,7 +109,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                         <td class="ps-4 text-secondary small">#<?= (int)$user['id'] ?></td>
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width:36px; height:36px;">
+                                <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center sc-admin-avatar-36">
                                     <?= smartcms_h(mb_substr((string)$user['name'], 0, 1)) ?>
                                 </div>
                                 <div class="lh-sm">
@@ -122,17 +122,17 @@ require SMARTCMS_ROOT . '/admin/head.php';
                             <form class="d-flex gap-2 align-items-center" method="post" id="form-user-<?= (int)$user['id'] ?>">
                                 <?= smartcms_csrf_input() ?>
                                 <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
-                                <select name="role" aria-label="역할" class="form-select form-select-sm" style="width:110px;">
+                                <select name="role" aria-label="역할" class="form-select form-select-sm sc-admin-select-role">
                                     <?php foreach(['admin', 'manager', 'user'] as $r): ?>
                                         <option value="<?= $r ?>" <?= $user['role'] === $r ? 'selected' : '' ?>><?= $r ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <select name="level" aria-label="레벨" class="form-select form-select-sm" style="width:70px;">
+                                <select name="level" aria-label="레벨" class="form-select form-select-sm sc-admin-select-level">
                                     <?php for($i=1;$i<=10;$i++): ?>
                                         <option value="<?= $i ?>" <?= (int)$user['level'] === $i ? 'selected' : '' ?>><?= $i ?></option>
                                     <?php endfor; ?>
                                 </select>
-                                <select name="status" aria-label="상태" class="form-select form-select-sm" style="width:90px;">
+                                <select name="status" aria-label="상태" class="form-select form-select-sm sc-admin-select-status">
                                     <?php foreach(['active', 'blocked'] as $s): ?>
                                         <option value="<?= $s ?>" <?= $user['status'] === $s ? 'selected' : '' ?>><?= $s ?></option>
                                     <?php endforeach; ?>

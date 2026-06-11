@@ -131,7 +131,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                 <tr>
                   <td class="px-4 py-3">
                     <div class="d-flex align-items-center">
-                      <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width:40px; height:40px;">
+                      <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm sc-admin-avatar-40">
                         <?= smartcms_h(mb_substr((string)$u['name'], 0, 1)) ?>
                       </div>
                       <div class="lh-sm">

@@ -19,9 +19,82 @@ body.smartcms-admin-page {
     overflow-y: auto;
   }
 
-  .sc-admin-sticky-panel {
-    top: 5.5rem;
-  }
+.sc-admin-sticky-panel {
+  top: 5.5rem;
+}
+
+.sc-admin-menu-eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.1rem;
+}
+
+.sc-admin-avatar-34 {
+  width: 34px;
+  height: 34px;
+}
+
+.sc-admin-avatar-36 {
+  width: 36px;
+  height: 36px;
+}
+
+.sc-admin-avatar-40 {
+  width: 40px;
+  height: 40px;
+}
+
+.sc-admin-select-role {
+  width: 110px;
+}
+
+.sc-admin-select-level {
+  width: 70px;
+}
+
+.sc-admin-select-status {
+  width: 90px;
+}
+
+.sc-admin-select-page-level {
+  width: 100px;
+}
+
+.sc-admin-input-board-name {
+  width: 140px;
+}
+
+.sc-admin-input-confirm {
+  width: 200px;
+}
+
+.sc-admin-time-xs {
+  font-size: 0.7rem;
+}
+
+.sc-admin-badge-xs {
+  font-size: 0.6rem;
+  letter-spacing: 0.05rem;
+}
+
+.sc-admin-badge-sm {
+  font-size: 0.65rem;
+}
+
+.sc-admin-dot-6 {
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+}
+
+.sc-admin-dot-8 {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+}
+
+.sc-admin-workspace {
+  min-width: 0;
+}
 }
 
 /* Sidebar Customizations */

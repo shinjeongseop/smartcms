@@ -53,7 +53,7 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
       </header>
 
       <nav class="nav nav-pills flex-column gap-1 mb-auto" aria-label="관리자 메뉴">
-        <p class="text-uppercase small fw-bold text-secondary opacity-50 mb-3 px-2" style="font-size: 0.65rem; letter-spacing: 0.1rem;">Admin Menu</p>
+        <p class="text-uppercase small fw-bold text-secondary opacity-50 mb-3 px-2 sc-admin-menu-eyebrow">Admin Menu</p>
         <?php foreach (smartcms_admin_nav_items() as $key => $item): ?>
           <a class="nav-link d-flex align-items-center gap-2 py-2.5 px-3 rounded-2 <?= $key === $active_menu ? 'active shadow fw-bold' : 'text-secondary hover-bg-light' ?>" href="<?= smartcms_h($item['href']) ?>">
             <i class="bi <?= smartcms_h($item['icon']) ?> fs-5"></i>
@@ -65,12 +65,12 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
       <?php if ($admin): ?>
         <section class="card border rounded-3 mb-2 mt-4 shadow-none border">
           <div class="card-body p-3 d-flex align-items-center gap-2">
-            <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width:34px; height:34px;">
+            <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm sc-admin-avatar-34">
               <?= smartcms_h(mb_substr((string)$admin['name'], 0, 1)) ?>
             </div>
             <div class="min-w-0 flex-grow-1">
               <strong class="d-block text-body text-truncate small fw-bold"><?= smartcms_h($admin['name']) ?></strong>
-              <small class="text-secondary d-block fw-medium" style="font-size: 0.7rem;">LV <?= (int)$admin['level'] ?> Admin</small>
+              <small class="text-secondary d-block fw-medium sc-admin-time-xs">LV <?= (int)$admin['level'] ?> Admin</small>
             </div>
           </div>
         </section>
@@ -84,7 +84,7 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
     </aside>
 
     <!-- [WORKSPACE] 워크스페이스 영역 -->
-    <div class="flex-grow-1 d-flex flex-column bg-light" style="min-width: 0;">
+    <div class="flex-grow-1 d-flex flex-column bg-light sc-admin-workspace">
       <header class="bg-white border-bottom px-3 px-md-4 py-3 sticky-top z-1 shadow-sm">
         <div class="d-flex align-items-center justify-content-between">
           <div class="d-flex align-items-center gap-3">
@@ -101,7 +101,7 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
             <h1 class="h5 fw-bold mb-0 text-dark d-sm-none"><?= smartcms_h($page_heading) ?></h1>
           </div>
           <div class="d-flex gap-2">
-            <a class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-bold border-2 shadow-none" href="/">
+            <a class="btn btn-light border btn-sm rounded-pill px-3 fw-bold shadow-none" href="/">
               <i class="bi bi-house me-1"></i><span class="d-none d-sm-inline">사이트 홈</span>
             </a>
           </div>

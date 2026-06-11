@@ -158,7 +158,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <input type="hidden" name="action" value="reset">
               <div>
                 <label for="confirm_text" class="form-label fw-bold small text-danger text-uppercase">확인 문구 입력</label>
-                <input class="form-control border-danger-subtle py-2 px-3 fw-bold" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required style="width:200px;">
+                <input class="form-control border-danger-subtle py-2 px-3 fw-bold sc-admin-input-confirm" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required>
               </div>
               <button class="btn btn-danger rounded-pill px-4 py-2 fw-bold shadow-sm" type="submit">지금 즉시 초기화</button>
             </form>
