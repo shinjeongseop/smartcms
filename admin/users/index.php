@@ -93,8 +93,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
     
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0 text-nowrap">
-            <thead class="table-light sc-admin-table-head">
-                <tr>
+            <thead class="table-light">
+                <tr class="small text-uppercase fw-bold text-secondary">
                     <th scope="col" class="ps-4 py-3">ID</th>
                     <th scope="col" class="py-3">회원 정보</th>
                     <th scope="col" class="py-3">권한 설정</th>

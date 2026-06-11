@@ -119,8 +119,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
       <div class="card-body p-0">
         <div class="table-responsive">
           <table class="table table-hover align-middle mb-0">
-            <thead class="table-light sc-admin-table-head">
-              <tr>
+            <thead class="table-light">
+              <tr class="small text-uppercase fw-bold text-secondary">
                 <th scope="col" class="px-4 py-3">회원</th>
                 <th scope="col" class="px-4 py-3">가입일</th>
                 <th scope="col" class="px-4 py-3 text-end">액션</th>

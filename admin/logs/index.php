@@ -75,8 +75,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
           <section class="tab-pane fade show active" id="access-panel" role="tabpanel" aria-labelledby="access-tab">
               <div class="table-responsive">
                   <table class="table table-hover align-middle mb-0 text-nowrap">
-                      <thead class="table-light sc-admin-table-head">
-                          <tr>
+                      <thead class="table-light">
+                          <tr class="small text-uppercase fw-bold text-secondary">
                               <th scope="col" class="ps-4">일시</th>
                               <th scope="col">유형</th>
                               <th scope="col">대상 및 경로</th>
@@ -120,8 +120,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
           <section class="tab-pane fade" id="login-panel" role="tabpanel" aria-labelledby="login-tab">
               <div class="table-responsive">
                   <table class="table table-hover align-middle mb-0 text-nowrap">
-                      <thead class="table-light sc-admin-table-head">
-                          <tr>
+                      <thead class="table-light">
+                          <tr class="small text-uppercase fw-bold text-secondary">
                               <th scope="col" class="ps-4">일시</th>
                               <th scope="col">로그인 시도 계정 (Email)</th>
                               <th scope="col" class="text-end pe-4">결과</th>
@@ -148,8 +148,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
           <section class="tab-pane fade" id="audit-panel" role="tabpanel" aria-labelledby="audit-tab">
               <div class="table-responsive">
                   <table class="table table-hover align-middle mb-0 text-nowrap">
-                      <thead class="table-light sc-admin-table-head">
-                          <tr>
+                      <thead class="table-light">
+                          <tr class="small text-uppercase fw-bold text-secondary">
                               <th scope="col" class="ps-4">일시</th>
                               <th scope="col">액션 (Action)</th>
                               <th scope="col" class="pe-4">상세 내역</th>
