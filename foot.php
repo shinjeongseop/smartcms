@@ -1,10 +1,4 @@
-<?php
-declare(strict_types=1);
-
-require_once __DIR__ . '/common/config.php';
-
-    $year = date('Y');
-    ?>
+    </main>
     <footer class="bg-dark text-white-50 py-5 mt-auto">
       <div class="container-xxl">
         <div class="row g-4">
@@ -32,11 +26,10 @@ require_once __DIR__ . '/common/config.php';
           </div>
         </div>
         <div class="border-top border-secondary border-opacity-25 pt-4 mt-5 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 small fw-medium">
-          <span>&copy; <?= $year ?> smartcms. All rights reserved.</span><span class="text-white-50">Powered by Bootstrap 5 & Optimized PHP</span>
+          <span>&copy; <?= date('Y') ?> smartcms. All rights reserved.</span><span class="text-white-50">Powered by Bootstrap 5 & Optimized PHP</span>
         </div>
       </div>
     </footer>
-    </main>
     <?php
 
 $scripts = (array)($SMARTCMS_FOOT['scripts'] ?? []);
