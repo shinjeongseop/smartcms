@@ -48,7 +48,7 @@ $SMARTCMS_HEAD = [
     'title' => 'smartcms Community',
     'body_class' => 'bg-light',
     'active_menu' => 'home',
-    'main_class' => 'flex-grow-1',
+    'main_class' => 'flex-grow-1 pb-5',
 ];
 
 require SMARTCMS_ROOT . '/head.php';
