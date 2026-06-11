@@ -74,18 +74,18 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
     </div>
 
     <!-- [NAV] 메인 네비게이션 -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-0 mt-3" aria-label="메인 메뉴">
+    <nav class="navbar bg-white border-top p-0 mt-3" aria-label="메인 메뉴">
       <div class="container-xxl">
-        <button class="navbar-toggler my-2 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav">
-          <span class="navbar-toggler-icon"></span>
+        <button class="btn btn-light border rounded-pill d-md-none my-2 px-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#siteNavOffcanvas" aria-controls="siteNavOffcanvas" aria-label="메뉴 열기">
+          <i class="bi bi-list fs-4 lh-1"></i>
         </button>
-        <div class="collapse navbar-collapse" id="siteNav">
-          <ul class="navbar-nav w-100">
+        <div class="d-none d-md-block w-100">
+          <ul class="nav w-100">
             <?php foreach ($site_nav as $key => $item):
                 $is_active = ($key === $active_menu);
             ?>
               <li class="nav-item">
-                <a class="nav-link py-3 px-4 text-center <?= $is_active ? 'active fw-bold border-bottom border-primary border-3' : '' ?>"
+                <a class="nav-link py-3 px-4 text-center text-body <?= $is_active ? 'active fw-bold text-primary border-bottom border-primary border-3' : '' ?>"
                    href="<?= smartcms_h(smartcms_base_url((string)$item['href'])) ?>">
                   <?= smartcms_h((string)$item['label']) ?>
                 </a>
@@ -93,7 +93,7 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
             <?php endforeach; ?>
             <?php if ($user && (int)$user['level'] >= 8): ?>
               <li class="nav-item ms-lg-auto">
-                <a class="nav-link py-3 px-4 text-warning fw-bold" href="<?= smartcms_h(smartcms_base_url('/admin/')) ?>">
+                <a class="nav-link py-3 px-4 text-primary fw-bold" href="<?= smartcms_h(smartcms_base_url('/admin/')) ?>">
                   <i class="bi bi-speedometer2 me-1"></i>관리자
                 </a>
               </li>
@@ -102,6 +102,36 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
         </div>
       </div>
     </nav>
+
+    <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="siteNavOffcanvas" aria-labelledby="siteNavOffcanvasLabel">
+      <div class="offcanvas-header border-bottom">
+        <h2 class="offcanvas-title h5 fw-bold text-primary" id="siteNavOffcanvasLabel">smartcms</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="메뉴 닫기"></button>
+      </div>
+      <div class="offcanvas-body">
+        <nav aria-label="모바일 메뉴">
+          <ul class="nav nav-pills flex-column gap-1">
+            <?php foreach ($site_nav as $key => $item):
+                $is_active = ($key === $active_menu);
+            ?>
+              <li class="nav-item">
+                <a class="nav-link <?= $is_active ? 'active fw-bold' : 'text-body' ?>"
+                   href="<?= smartcms_h(smartcms_base_url((string)$item['href'])) ?>">
+                  <?= smartcms_h((string)$item['label']) ?>
+                </a>
+              </li>
+            <?php endforeach; ?>
+            <?php if ($user && (int)$user['level'] >= 8): ?>
+              <li class="nav-item">
+                <a class="nav-link text-primary fw-bold" href="<?= smartcms_h(smartcms_base_url('/admin/')) ?>">
+                  <i class="bi bi-speedometer2 me-1"></i>관리자
+                </a>
+              </li>
+            <?php endif; ?>
+          </ul>
+        </nav>
+      </div>
+    </div>
   </header>
 
   <!-- [MAIN] 메인 콘텐츠 영역 -->

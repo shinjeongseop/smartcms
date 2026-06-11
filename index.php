@@ -75,7 +75,6 @@ require SMARTCMS_ROOT . '/head.php';
         </p>
         <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
           <a class="btn btn-light rounded-pill px-4 py-2 fw-semibold text-primary shadow-sm" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">시작하기</a>
-          <a class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>">회원가입</a>
         </div>
       </div>
       <div class="col-lg-5 d-none d-lg-block">
@@ -142,19 +141,19 @@ require SMARTCMS_ROOT . '/head.php';
     </div>
 
     <div class="col-12 col-lg-4">
-      <section class="card border shadow-sm h-100 bg-dark text-white overflow-hidden">
+      <section class="card border shadow-sm h-100 bg-white overflow-hidden">
         <div class="card-body p-4 d-flex align-items-center">
           <div class="row row-cols-3 g-2 text-center w-100">
             <div>
-              <div class="text-xs text-white-50 text-uppercase mb-1 fw-bold">Posts</div>
+              <div class="text-xs text-body-secondary text-uppercase mb-1 fw-bold">Posts</div>
               <div class="h5 fw-bold mb-0"><?= number_format(array_sum($board_counts)) ?></div>
             </div>
             <div>
-              <div class="text-xs text-white-50 text-uppercase mb-1 fw-bold">Boards</div>
+              <div class="text-xs text-body-secondary text-uppercase mb-1 fw-bold">Boards</div>
               <div class="h5 fw-bold mb-0"><?= number_format(count($boards)) ?></div>
             </div>
             <div>
-              <div class="text-xs text-white-50 text-uppercase mb-1 fw-bold">7 Days</div>
+              <div class="text-xs text-body-secondary text-uppercase mb-1 fw-bold">7 Days</div>
               <div class="h5 fw-bold mb-0"><?= number_format(count($recent_posts)) ?></div>
             </div>
           </div>
@@ -269,7 +268,6 @@ require SMARTCMS_ROOT . '/head.php';
             <p class="small text-white-50 mb-4">가입 후 글쓰기와 댓글 참여가 가능합니다. 지금 시작하세요!</p>
             <div class="d-grid gap-2">
               <a class="btn btn-light text-primary fw-bold rounded-pill shadow-sm" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인</a>
-              <a class="btn btn-dark rounded-pill shadow-sm" href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>">회원가입</a>
             </div>
           </div>
         </article>
@@ -278,7 +276,7 @@ require SMARTCMS_ROOT . '/head.php';
       <article class="card border shadow-sm mb-4 bg-white">
         <header class="card-header bg-white border-bottom p-4">
           <h3 class="h6 fw-bold mb-0 d-flex align-items-center gap-2 text-uppercase">
-            <i class="bi bi-fire text-danger lh-1"></i>
+            <i class="bi bi-fire text-primary lh-1"></i>
             <span>실시간 인기글</span>
           </h3>
         </header>
@@ -308,7 +306,7 @@ require SMARTCMS_ROOT . '/head.php';
 
       <section class="card border shadow-sm">
         <div class="card-body p-4 text-center">
-          <h3 class="text-xs fw-bold mb-3 text-uppercase text-body-secondary letter-spacing-1">전체 게시판</h3>
+          <h3 class="text-xs fw-bold mb-3 text-uppercase text-body-secondary">전체 게시판</h3>
           <div class="d-flex flex-wrap justify-content-center gap-2">
             <?php foreach ($boards as $board_item): ?>
               <?php if ((string)$board_item['status'] === 'hidden') continue; ?>
