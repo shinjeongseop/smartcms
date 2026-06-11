@@ -81,7 +81,7 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
         </aside>
       <?php endif; ?>
 
-      <?php require SMARTCMS_ROOT . smartcms_board_skin_template($board, 'form.php'); ?>
+      <?php require smartcms_board_skin_template($board, 'form'); ?>
     </section>
 
     <aside class="col-12 col-md-4 col-lg-3">

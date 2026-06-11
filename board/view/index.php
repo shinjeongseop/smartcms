@@ -90,7 +90,7 @@ require SMARTCMS_ROOT . '/head.php';
       <?php endif; ?>
 
       <?php
-        require SMARTCMS_ROOT . smartcms_board_skin_template($board, 'view.php');
+        require smartcms_board_skin_template($board, 'view');
       ?>
     </section>
 
