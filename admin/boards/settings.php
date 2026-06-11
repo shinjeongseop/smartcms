@@ -110,7 +110,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
       <div class="col-12 col-xl-8">
         <article class="card border shadow-sm mb-4 overflow-hidden">
           <header class="card-header bg-white border-bottom py-3 px-4">
-            <h2 class="card-title h6 mb-0 fw-bold text-dark text-uppercase letter-spacing-1">기본 정보 및 스킨 설정</h2>
+            <h2 class="card-title h6 mb-0 fw-bold text-dark">기본 정보 및 스킨 설정</h2>
           </header>
           <div class="card-body p-4 p-lg-5">
             <div class="row g-4">
@@ -149,7 +149,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
         <article class="card border shadow-sm overflow-hidden">
           <header class="card-header bg-white border-bottom py-3 px-4">
-            <h2 class="card-title h6 mb-0 fw-bold text-dark text-uppercase letter-spacing-1">접근 권한 및 상세 레벨 제어</h2>
+            <h2 class="card-title h6 mb-0 fw-bold text-dark">접근 권한 및 상세 레벨 제어</h2>
           </header>
           <div class="card-body p-4 p-lg-5">
             <div class="row g-4">
