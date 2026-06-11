@@ -41,7 +41,6 @@ require SMARTCMS_ROOT . '/admin/head.php';
 <section class="container-fluid py-2">
   <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
     <div>
-      <h1 class="h3 fw-bold mb-1 text-dark">전체 환경 설정</h1>
       <p class="text-secondary small mb-0 fw-medium">SmartCMS의 전역 정책과 시스템 운영 변수를 관리합니다.</p>
     </div>
   </header>
