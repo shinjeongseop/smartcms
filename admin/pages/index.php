@@ -107,8 +107,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
   <article class="card border shadow-sm overflow-hidden">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0 text-nowrap">
-          <thead class="table-light">
-            <tr class="small text-uppercase fw-bold text-secondary">
+          <thead class="table-light sc-admin-table-head">
+            <tr>
               <th scope="col" class="ps-4 py-3">페이지 식별 정보</th>
               <th scope="col" class="py-3">URL 경로</th>
               <th scope="col" class="py-3">권한 제어 (View/Write/Manage)</th>

@@ -19,8 +19,9 @@ body.smartcms-admin-page {
     overflow-y: auto;
   }
 
-.sc-admin-sticky-panel {
-  top: 5.5rem;
+  .sc-admin-sticky-panel {
+    top: 5.5rem;
+  }
 }
 
 .sc-admin-menu-eyebrow {
@@ -57,6 +58,19 @@ body.smartcms-admin-page {
 
 .sc-admin-select-page-level {
   width: 100px;
+}
+
+.sc-admin-table-head {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  color: #6c757d;
+}
+
+.sc-admin-table-head th {
+  font-weight: 700;
+  color: #6c757d;
 }
 
 .sc-admin-input-board-name {

@@ -75,7 +75,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
           <section class="tab-pane fade show active" id="access-panel" role="tabpanel" aria-labelledby="access-tab">
               <div class="table-responsive">
                   <table class="table table-hover align-middle mb-0 text-nowrap">
-                      <thead class="table-light small text-uppercase fw-bold text-secondary">
+                      <thead class="table-light sc-admin-table-head">
                           <tr>
                               <th scope="col" class="ps-4">일시</th>
                               <th scope="col">유형</th>
@@ -120,7 +120,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
           <section class="tab-pane fade" id="login-panel" role="tabpanel" aria-labelledby="login-tab">
               <div class="table-responsive">
                   <table class="table table-hover align-middle mb-0 text-nowrap">
-                      <thead class="table-light small text-uppercase fw-bold text-secondary">
+                      <thead class="table-light sc-admin-table-head">
                           <tr>
                               <th scope="col" class="ps-4">일시</th>
                               <th scope="col">로그인 시도 계정 (Email)</th>
@@ -148,7 +148,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
           <section class="tab-pane fade" id="audit-panel" role="tabpanel" aria-labelledby="audit-tab">
               <div class="table-responsive">
                   <table class="table table-hover align-middle mb-0 text-nowrap">
-                      <thead class="table-light small text-uppercase fw-bold text-secondary">
+                      <thead class="table-light sc-admin-table-head">
                           <tr>
                               <th scope="col" class="ps-4">일시</th>
                               <th scope="col">액션 (Action)</th>
