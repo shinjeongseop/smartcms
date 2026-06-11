@@ -11,7 +11,7 @@ $message_type = 'info';
 
 try {
     $stmt = smartcms_db()->query(
-        "SELECT id, user_id, access_type, target_type, target_key, request_path, method, result, status_code, created_at
+        "SELECT id, user_id, access_type, target_type, target_key, request_path, method, ip_hash, result, status_code, created_at
          FROM " . smartcms_table('access_logs') . "
          ORDER BY id DESC
          LIMIT 50"
