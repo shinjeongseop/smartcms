@@ -43,10 +43,6 @@ require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <section class="container-fluid py-2">
-  <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <p class="text-secondary small mb-0 fw-medium">시스템의 실시간 활동 내역과 보안 위협을 모니터링합니다.</p>
-  </header>
-
   <?php if ($message !== ''): ?>
     <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
       <i class="bi bi-info-circle-fill fs-5"></i>

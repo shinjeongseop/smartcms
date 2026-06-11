@@ -82,10 +82,6 @@ require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <section class="container-fluid py-2">
-  <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <p class="text-secondary small mb-0 fw-medium">시스템 데이터의 안전한 백업, 복구 및 유지보수를 수행합니다.</p>
-  </header>
-
   <?php if ($message !== ''): ?>
     <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
       <i class="bi bi-info-circle-fill fs-5"></i>
@@ -155,9 +151,6 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <div class="badge bg-danger p-3 rounded-circle shadow-sm"><i class="bi bi-exclamation-octagon fs-4"></i></div>
               <div>
                 <h2 class="h5 fw-bold mb-1 text-danger">시스템 데이터 초기화 (Dangerous Area)</h2>
-                <p class="text-secondary small mb-0 fw-medium">
-                  현재 Prefix로 생성된 모든 테이블 <strong><?= count($tables) ?>개</strong>를 완전히 삭제합니다. 이 작업은 되돌릴 수 없습니다.
-                </p>
               </div>
             </div>
             <form class="d-flex flex-column flex-md-row gap-2 align-items-md-end" method="post">

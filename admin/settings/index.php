@@ -39,12 +39,6 @@ require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <section class="container-fluid py-2">
-  <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <div>
-      <p class="text-secondary small mb-0 fw-medium">SmartCMS의 전역 정책과 시스템 운영 변수를 관리합니다.</p>
-    </div>
-  </header>
-
   <?php if ($message !== ''): ?>
     <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
       <i class="bi bi-info-circle-fill fs-5"></i>
