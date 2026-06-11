@@ -197,8 +197,3 @@ require SMARTCMS_ROOT . '/admin/head.php';
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/admin/foot.php';
 ?>
-
-<?php
-$SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/admin/foot.php';
-?>
