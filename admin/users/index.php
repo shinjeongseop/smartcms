@@ -162,27 +162,27 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
     <!-- [PAGINATION] 하단 페이지네이션 -->
     <?php if ($total_pages > 1): ?>
-    <footer class="card-footer bg-white border-top py-4">
-        <nav aria-label="회원 목록 페이지">
-            <ul class="pagination pagination-sm justify-content-center mb-0 gap-1">
-                <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                    <a class="page-link rounded-circle border shadow-sm" href="?search=<?= urlencode($search) ?>&page=<?= $page - 1 ?>">
-                        <i class="bi bi-chevron-left"></i>
-                    </a>
-                </li>
-                <?php for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++): ?>
-                    <li class="page-item <?= $i === $page ? 'active' : '' ?>">
-                        <a class="page-link rounded-circle border shadow-sm mx-1" href="?search=<?= urlencode($search) ?>&page=<?= $i ?>"><?= $i ?></a>
+        <div class="py-4">
+            <nav aria-label="회원 목록 페이지">
+                <ul class="pagination pagination-sm justify-content-center mb-0 gap-1">
+                    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                        <a class="page-link rounded-circle border shadow-sm" href="?search=<?= urlencode($search) ?>&page=<?= $page - 1 ?>">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
                     </li>
-                <?php endfor; ?>
-                <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
-                    <a class="page-link rounded-circle border shadow-sm" href="?search=<?= urlencode($search) ?>&page=<?= $page + 1 ?>">
-                        <i class="bi bi-chevron-right"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </footer>
+                    <?php for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++): ?>
+                        <li class="page-item <?= $i === $page ? 'active' : '' ?>">
+                            <a class="page-link rounded-circle border shadow-sm mx-1" href="?search=<?= urlencode($search) ?>&page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li class="page-item <?= $page >= $total_pages ? 'disabled' : '' ?>">
+                        <a class="page-link rounded-circle border shadow-sm" href="?search=<?= urlencode($search) ?>&page=<?= $page + 1 ?>">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     <?php endif; ?>
 </section>
 
