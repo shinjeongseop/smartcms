@@ -68,7 +68,7 @@
               </td>
               <td>
                 <div class="d-flex align-items-center gap-2">
-                  <a class="text-decoration-none fw-semibold text-dark text-truncate"
+                  <a class="text-decoration-none fw-semibold text-dark text-truncate fs-6"
                      href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                     <?= smartcms_h($post['title']) ?>

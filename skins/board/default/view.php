@@ -11,7 +11,7 @@
           <?php if ((int)$post['is_notice'] === 1): ?><span class="badge bg-primary rounded-pill me-1 px-3">공지</span><?php endif; ?>
           <?php if ((int)$post['is_secret'] === 1): ?><span class="badge bg-dark rounded-pill me-1 px-3"><i class="bi bi-lock-fill me-1"></i>비밀글</span><?php endif; ?>
         </div>
-        <h2 class="display-6 fw-bold mb-0 text-dark"><?= smartcms_h($post['title']) ?></h2>
+        <h2 class="fs-6 fw-bold mb-0 text-dark"><?= smartcms_h($post['title']) ?></h2>
       </div>
       <?php if ($can_manage_post): ?>
         <a class="btn btn-light border btn-sm rounded-pill px-3 shadow-none fw-bold"
@@ -33,7 +33,7 @@
       <span class="d-flex align-items-center gap-1"><i class="bi bi-chat-dots fs-6"></i>댓글 <?= count($comments) ?></span>
     </div>
 
-    <div class="mb-5 text-break lh-lg fs-5 text-dark" style="min-height: 200px;">
+    <div class="mb-5 text-break lh-lg small text-dark">
       <?= nl2br(smartcms_h($post['content'])) ?>
     </div>
 
