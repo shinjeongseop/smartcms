@@ -63,22 +63,22 @@ $SMARTCMS_HEAD = [
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
-<header class="bg-primary text-white py-5 py-lg-5">
+<header class="bg-white border-bottom py-5 py-lg-5">
   <div class="container-xxl">
     <div class="row align-items-center g-5 m-0">
       <div class="col-lg-7 text-center text-lg-start">
-        <span class="badge text-bg-light text-primary rounded-pill px-3 py-2 mb-3 fw-semibold">v2.1 Semantic & Bootstrap</span>
-        <h1 class="display-4 fw-bold mb-3 lh-sm">더 가볍고, 더 똑똑한<br>차세대 커뮤니티 CMS</h1>
-        <p class="lead mb-4 text-white-50">
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 mb-3 fw-semibold">v2.1 Semantic & Bootstrap</span>
+        <h1 class="display-4 fw-bold mb-3 lh-sm text-emphasis">더 가볍고, 더 똑똑한<br>차세대 커뮤니티 CMS</h1>
+        <p class="lead mb-4 text-body-secondary">
           HTML5 시맨틱 마크업과 부트스트랩 5의 표준 컴포넌트를 결합했습니다.<br class="d-none d-md-block">
           유지보수가 쉽고 구조가 명확한 현대적인 CMS를 경험해보세요.
         </p>
         <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
-          <a class="btn btn-light rounded-pill px-4 py-2 fw-semibold text-primary shadow-sm" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">시작하기</a>
+          <a class="btn btn-primary rounded-pill px-4 py-2 fw-semibold shadow-sm" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">시작하기</a>
         </div>
       </div>
       <div class="col-lg-5 d-none d-lg-block">
-        <div class="card border shadow-lg bg-white overflow-hidden">
+        <div class="card border shadow-sm bg-white overflow-hidden">
           <div class="card-body p-4 p-lg-5">
             <div class="d-flex align-items-start gap-3 mb-4">
               <div class="rounded-circle bg-primary-subtle text-primary d-inline-flex align-items-center justify-content-center flex-shrink-0 p-3 shadow-sm">

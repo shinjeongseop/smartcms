@@ -10,6 +10,15 @@ html {
   overflow-y: scroll;
 }
 
+:root {
+  --bs-primary: #03c75a;
+  --bs-primary-rgb: 3, 199, 90;
+  --bs-primary-bg-subtle: #e8f8ef;
+  --bs-primary-border-subtle: #b8ebcf;
+  --bs-primary-text-emphasis: #027a39;
+  --bs-emphasis-color: #212529;
+}
+
 /* Global Adjustments */
 body {
   font-family: 'Noto Sans KR', sans-serif;
@@ -29,7 +38,16 @@ h6,
 .h5,
 .h6 {
   font-weight: 700;
-  color: var(--bs-emphasis-color);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-bg: #02a74b;
+  --bs-btn-hover-border-color: #02a74b;
+  --bs-btn-active-bg: #028a3f;
+  --bs-btn-active-border-color: #028a3f;
+  --bs-btn-focus-shadow-rgb: var(--bs-primary-rgb);
 }
 
 .smartcms-icon-button-sm {
