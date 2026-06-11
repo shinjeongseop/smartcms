@@ -89,6 +89,7 @@ function smartcms_db_restore_sql(string $sql): int
     $executed = 0;
 
     try {
+        $pdo->beginTransaction();
         $pdo->exec('SET FOREIGN_KEY_CHECKS=0');
         foreach ($statements as $statement) {
             $trimmed = trim($statement);
@@ -99,6 +100,14 @@ function smartcms_db_restore_sql(string $sql): int
             $pdo->exec($trimmed);
             $executed++;
         }
+        if ($pdo->inTransaction()) {
+            $pdo->commit();
+        }
+    } catch (Throwable $e) {
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        throw $e;
     } finally {
         $pdo->exec('SET FOREIGN_KEY_CHECKS=1');
     }

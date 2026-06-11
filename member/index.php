@@ -2,16 +2,17 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common/auth.php';
-require_once __DIR__ . '/../common/ui/components.php';
 
 $user = smartcms_current_user();
 
 $SMARTCMS_HEAD = [
     'title' => '회원 센터',
     'body_class' => 'smartcms-board-page',
-]; require SMARTCMS_ROOT . '/head.php';?>
-<?= smartcms_site_header('') ?>
-<main class="container-fluid container-xxl py-4">
+];
+require SMARTCMS_ROOT . '/head.php';
+?>
+
+<section class="container-fluid container-xxl py-4">
   <header class="mb-4">
     <p class="text-uppercase text-muted small fw-semibold mb-1">Member</p>
     <h1 class="h2 fw-bold mb-2">회원 센터</h1>
@@ -63,8 +64,7 @@ $SMARTCMS_HEAD = [
       </div>
   <?php endif; ?>
   </section>
-</main>
-<?= smartcms_site_footer() ?>
+</section>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';

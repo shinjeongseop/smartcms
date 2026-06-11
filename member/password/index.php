@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../common/auth.php';
-require_once __DIR__ . '/../../common/ui/components.php';
 
 $user = smartcms_require_login();
 $message = '';
@@ -27,7 +26,7 @@ $SMARTCMS_HEAD = ['title' => '비밀번호 변경', 'body_class' => 'bg-light'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
-<main class="container-fluid container-xxl py-5">
+<section class="container-fluid container-xxl py-5">
   <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5">
       <article class="card border shadow-lg overflow-hidden">
@@ -87,7 +86,7 @@ require SMARTCMS_ROOT . '/head.php';
       </article>
     </div>
   </div>
-</main>
+</section>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';

@@ -2,14 +2,13 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../common/auth.php';
-require_once __DIR__ . '/../../common/ui/components.php';
 
 $user = smartcms_require_login();
 
 $SMARTCMS_HEAD = ['title' => '마이페이지'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
-<main class="container-fluid container-xxl py-5">
+<section class="container-fluid container-xxl py-5">
   <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-8 col-xxl-6">
       <article class="card border shadow-lg overflow-hidden">
@@ -61,7 +60,7 @@ require SMARTCMS_ROOT . '/head.php';
             <a class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>">
               <i class="bi bi-shield-lock me-2"></i>비밀번호 변경
             </a>
-            <a class="btn btn-outline-danger rounded-pill px-4 py-2 fw-bold shadow-none" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">
+            <a class="btn btn-light border text-danger rounded-pill px-4 py-2 fw-bold shadow-none" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">
               <i class="bi bi-box-arrow-right me-2"></i>로그아웃
             </a>
           </footer>
@@ -73,7 +72,7 @@ require SMARTCMS_ROOT . '/head.php';
       </nav>
     </div>
   </div>
-</main>
+</section>
 <?php
 $SMARTCMS_FOOT = [];
 require SMARTCMS_ROOT . '/foot.php';

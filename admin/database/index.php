@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $message = '데이터베이스 복구를 성공적으로 완료했습니다. (쿼리 ' . $executed . '개 실행됨)';
                         $message_type = 'success';
                     } catch (Throwable $e) {
-                        $message = '데이터베이스 복구 중 치명적 오류 발생: ' . $e->getMessage();
+                        $message = '데이터베이스 복구 중 오류가 발생했습니다. SQL 파일 형식과 테이블 상태를 확인하세요.';
                         $message_type = 'error';
                     }
                 }
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $message = '시스템 테이블이 모두 초기화되었습니다. (삭제된 테이블: ' . $dropped . '개)';
                 $message_type = 'success';
             } catch (Throwable $e) {
-                $message = '초기화 작업 중 오류가 발생했습니다: ' . $e->getMessage();
+                $message = '초기화 작업 중 오류가 발생했습니다. 권한과 DB 상태를 확인하세요.';
                 $message_type = 'error';
             }
         }
