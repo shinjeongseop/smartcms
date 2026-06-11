@@ -212,7 +212,7 @@ require SMARTCMS_ROOT . '/head.php';
                       <h3 class="h6 fw-bold mb-1 text-primary text-uppercase"><?= smartcms_h($board['board_name']) ?></h3>
                       <p class="text-xs text-body-secondary mb-0"><?= smartcms_h($widget['summary']) ?></p>
                     </div>
-                    <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" class="btn btn-light btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center shadow-none border smartcms-icon-button-sm">
+                    <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" class="btn btn-light btn-sm rounded-circle px-2 py-1 d-flex align-items-center justify-content-center shadow-none border">
                       <i class="bi bi-plus-lg"></i>
                     </a>
                   </div>

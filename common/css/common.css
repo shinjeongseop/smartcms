@@ -50,11 +50,6 @@ h6,
   --bs-btn-focus-shadow-rgb: var(--bs-primary-rgb);
 }
 
-.smartcms-icon-button-sm {
-  width: 1.75rem;
-  height: 1.75rem;
-}
-
 /* Custom Scrollbar for modern browsers */
 ::-webkit-scrollbar {
   width: 8px;
