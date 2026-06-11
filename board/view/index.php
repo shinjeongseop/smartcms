@@ -71,7 +71,7 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
 $active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
     ? (string)$board['board_key']
     : 'boards';
-$SMARTCMS_HEAD = ['title' => (string)$post['title'], 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1'];
+$SMARTCMS_HEAD = ['title' => (string)$post['title'], 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
