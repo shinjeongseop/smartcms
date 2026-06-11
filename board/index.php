@@ -46,14 +46,6 @@ require SMARTCMS_ROOT . '/head.php';
 ?>
 
 <div class="container-fluid container-xxl pt-4 pt-lg-5">
-  <header class="card border shadow-sm mb-4">
-    <div class="card-body p-4 p-lg-5">
-      <p class="text-uppercase small fw-semibold text-primary mb-2">Board</p>
-      <h1 class="display-6 fw-bold mb-3"><?= smartcms_h($page_title) ?></h1>
-      <p class="lead text-body-secondary mb-0"><?= smartcms_h($board ? ($board['description'] ?? '게시글을 확인하세요.') : '사용 가능한 게시판을 선택하세요.') ?></p>
-    </div>
-  </header>
-
   <?php if ($message !== ''): ?>
     <div class="alert alert-<?= $message_type === 'error' ? 'danger' : 'info' ?> d-flex align-items-start gap-2 mb-4" role="alert">
       <i class="bi bi-info-circle-fill mt-1"></i>
@@ -61,12 +53,8 @@ require SMARTCMS_ROOT . '/head.php';
     </div>
   <?php endif; ?>
 
-<?php if (!$board): ?>
-    <div class="card border shadow-sm">
-      <div class="card-body p-4 p-lg-5">
-        <?php require smartcms_board_skin_template(null, 'boards'); ?>
-      </div>
-    </div>
+  <?php if (!$board): ?>
+    <?php require smartcms_board_skin_template(null, 'boards'); ?>
   <?php else: ?>
     <?php require smartcms_board_skin_template($board, 'list'); ?>
   <?php endif; ?>

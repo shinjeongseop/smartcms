@@ -9,14 +9,6 @@ $accent = (string)$skin_meta['accent'];
 <article class="smartcms-board-form">
   <div class="card border shadow-sm overflow-hidden">
     <div class="card-body p-4 p-lg-5">
-      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
-        <div>
-          <p class="text-uppercase small fw-bold text-secondary mb-1">Board Form</p>
-          <h2 class="h5 fw-bold mb-0 text-dark">게시글 작성</h2>
-        </div>
-        <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-3 py-2 fw-bold">스킨 <?= smartcms_h((string)$skin_meta['label']) ?></span>
-      </div>
-
       <form method="post" enctype="<?= smartcms_h($form_enctype ?? 'application/x-www-form-urlencoded') ?>">
         <?= smartcms_csrf_input() ?>
         <input type="hidden" name="action" value="<?= smartcms_h($form_action ?? 'update') ?>">
@@ -71,15 +63,12 @@ $accent = (string)$skin_meta['accent'];
       <?php if (!empty($show_hide_form)): ?>
         <section class="mt-5 pt-5 border-top">
           <div class="alert alert-danger border shadow-sm bg-danger-subtle p-4 mb-0">
-            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-4">
-              <div class="d-flex align-items-center gap-3">
-                <div class="badge bg-danger p-3 rounded-circle shadow-sm"><i class="bi bi-trash3-fill fs-4"></i></div>
-                <div>
-                  <h3 class="h6 fw-bold mb-1 text-danger">게시글 관리 옵션</h3>
-                  <p class="mb-0 text-dark small opacity-75 fw-medium">이 게시글을 목록에서 즉시 숨김 처리합니다. 데이터는 삭제되지 않습니다.</p>
-                </div>
+            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+              <div>
+                <h3 class="h6 fw-bold mb-1 text-danger">게시글 관리 옵션</h3>
+                <p class="mb-0 text-dark small opacity-75 fw-medium">이 게시글을 목록에서 즉시 숨김 처리합니다. 데이터는 삭제되지 않습니다.</p>
               </div>
-              <form method="post">
+              <form method="post" class="m-0">
                 <?= smartcms_csrf_input() ?>
                 <input type="hidden" name="action" value="hide">
                 <button class="btn btn-danger rounded-pill px-4 py-2 fw-bold shadow-sm" type="submit">지금 숨기기</button>

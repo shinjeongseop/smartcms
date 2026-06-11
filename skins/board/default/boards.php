@@ -6,8 +6,8 @@ $board_skin_meta = fn(array $item): array => smartcms_board_skin_meta($item);
 ?>
 <section class="smartcms-board-registry py-4">
   <header class="mb-5 text-center">
-    <h2 class="display-6 fw-bold text-dark mb-2">커뮤니티 게시판 목록</h2>
-    <p class="text-secondary fw-medium">SmartCMS가 제공하는 다양한 소통 공간입니다.</p>
+    <h2 class="h3 fw-bold text-dark mb-2">커뮤니티 게시판 목록</h2>
+    <p class="text-secondary fw-medium mb-0">SmartCMS가 제공하는 다양한 소통 공간입니다.</p>
   </header>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
@@ -18,7 +18,7 @@ $board_skin_meta = fn(array $item): array => smartcms_board_skin_meta($item);
         <article class="card h-100 border shadow-sm overflow-hidden <?= $skin_meta['header_class'] ?>">
           <div class="card-body p-4 p-lg-5">
             <div class="d-flex align-items-start justify-content-between mb-3">
-              <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-3 py-2 fw-bold text-uppercase letter-spacing-1">
+              <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-3 py-2 fw-bold">
                 <?= smartcms_h($board['board_key']) ?>
               </span>
               <div class="<?= $skin_meta['accent'] === 'dark' ? 'text-dark' : 'text-' . $skin_meta['accent'] ?> opacity-25">
@@ -38,10 +38,6 @@ $board_skin_meta = fn(array $item): array => smartcms_board_skin_meta($item);
               <p class="text-secondary mb-0 small opacity-50 italic">이 게시판에 대한 설명이 없습니다.</p>
             <?php endif; ?>
           </div>
-          <footer class="card-footer bg-white border-top px-4 py-3 d-flex justify-content-between align-items-center">
-            <span class="text-xs fw-bold text-uppercase text-secondary opacity-75">Level <?= (int)$board['board_list_level'] ?> Required</span>
-            <i class="bi <?= smartcms_h((string)$skin_meta['icon']) ?> <?= $skin_meta['accent'] === 'dark' ? 'text-dark' : 'text-' . $skin_meta['accent'] ?> fs-5"></i>
-          </footer>
         </article>
       </div>
     <?php endforeach; ?>

@@ -59,30 +59,18 @@ $back_label = '목록으로';
 ?>
 
 <div class="container-fluid container-xxl pt-4 pt-lg-5">
-  <div class="row g-4 align-items-start">
-    <section class="col-12">
-      <!-- 헤더 카드 -->
-      <header class="card border shadow-sm mb-4 overflow-hidden bg-primary text-white">
-        <div class="card-body p-4 p-lg-5">
-          <p class="text-uppercase small fw-bold text-white-50 mb-2 letter-spacing-1"><?= smartcms_h($board['board_key']) ?> Community</p>
-          <h1 class="display-6 fw-bold mb-0"><?= smartcms_h($board['board_name']) ?> 새 글 쓰기</h1>
-        </div>
-      </header>
+  <?php if ($message !== ''): ?>
+    <?php
+      $alert_theme = $message_type === 'error' ? 'danger' : $message_type;
+      $alert_icon = $alert_theme === 'danger' ? 'bi-exclamation-triangle-fill' : ($alert_theme === 'success' ? 'bi-check-circle-fill' : 'bi-info-circle-fill');
+    ?>
+    <aside class="alert alert-<?= smartcms_h($alert_theme) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
+      <i class="bi <?= smartcms_h($alert_icon) ?> fs-5"></i>
+      <div class="fw-bold small"><?= smartcms_h($message) ?></div>
+    </aside>
+  <?php endif; ?>
 
-      <?php if ($message !== ''): ?>
-        <?php
-          $alert_theme = $message_type === 'error' ? 'danger' : $message_type;
-          $alert_icon = $alert_theme === 'danger' ? 'bi-exclamation-triangle-fill' : ($alert_theme === 'success' ? 'bi-check-circle-fill' : 'bi-info-circle-fill');
-        ?>
-        <aside class="alert alert-<?= smartcms_h($alert_theme) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
-          <i class="bi <?= smartcms_h($alert_icon) ?> fs-5"></i>
-          <div class="fw-bold small"><?= smartcms_h($message) ?></div>
-        </aside>
-      <?php endif; ?>
-
-      <?php require smartcms_board_skin_template($board, 'form'); ?>
-    </section>
-  </div>
+  <?php require smartcms_board_skin_template($board, 'form'); ?>
 </div>
 
 <?php

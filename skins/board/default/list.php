@@ -13,10 +13,7 @@ $layout = (string)$skin_meta['layout'];
     <header class="card-header bg-white border-bottom p-4 p-lg-5">
       <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
         <div>
-          <p class="text-xs text-uppercase fw-bold <?= $accent_text ?> mb-1">Board Community</p>
-          <h2 class="h3 fw-bold mb-0 text-dark">
-            글 목록 <span class="badge <?= $skin_meta['badge_class'] ?> align-middle ms-2">스킨 <?= smartcms_h((string)$skin_meta['label']) ?></span>
-          </h2>
+          <h2 class="h3 fw-bold mb-0 text-dark">글 목록</h2>
         </div>
         <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
           <a class="btn <?= smartcms_h((string)$skin_meta['button_class']) ?> rounded-pill px-4 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?>"

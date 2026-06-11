@@ -11,7 +11,6 @@ $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
     <header class="d-flex align-items-start justify-content-between gap-3 mb-4">
       <div>
         <div class="mb-2">
-          <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill me-1 px-3">스킨 <?= smartcms_h((string)$skin_meta['label']) ?></span>
           <?php if ((int)$post['is_notice'] === 1): ?><span class="badge bg-<?= smartcms_h($accent) ?> rounded-pill me-1 px-3">공지</span><?php endif; ?>
           <?php if ((int)$post['is_secret'] === 1): ?><span class="badge bg-dark rounded-pill me-1 px-3"><i class="bi bi-lock-fill me-1"></i>비밀글</span><?php endif; ?>
         </div>
@@ -43,7 +42,7 @@ $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
 
     <?php if ($files): ?>
       <section class="mb-5">
-        <h3 class="h6 fw-bold mb-3 text-uppercase letter-spacing-1 text-primary"><i class="bi bi-paperclip me-1"></i>첨부파일</h3>
+        <h3 class="h6 fw-bold mb-3 text-primary"><i class="bi bi-paperclip me-1"></i>첨부파일</h3>
         <div class="list-group list-group-flush border rounded-3 overflow-hidden shadow-sm">
           <?php foreach ($files as $file): ?>
             <a class="list-group-item list-group-item-action bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 p-3"
@@ -104,7 +103,7 @@ $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
 
     <?php if ($can_comment && $user): ?>
       <section class="mt-5 pt-5 border-top">
-        <h3 class="h6 fw-bold mb-3 text-dark text-uppercase letter-spacing-1">댓글 작성하기</h3>
+        <h3 class="h6 fw-bold mb-3 text-dark">댓글 작성하기</h3>
         <form class="vstack gap-3" method="post">
           <?= smartcms_csrf_input() ?>
           <input type="hidden" name="action" value="comment_create">
