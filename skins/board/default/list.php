@@ -11,37 +11,7 @@ $layout = (string)$skin_meta['layout'];
 <section class="board-list-container">
   <div class="card border shadow-sm overflow-hidden">
     <header class="card-header bg-white border-bottom p-4 p-lg-5">
-      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
-        <div>
-          <h2 class="h3 fw-bold mb-0 text-dark">글 목록</h2>
-        </div>
-        <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
-          <a class="btn <?= smartcms_h((string)$skin_meta['button_class']) ?> rounded-pill px-4 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?>"
-             href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">
-            <i class="bi bi-pencil-square me-2"></i>글쓰기
-          </a>
-        <?php endif; ?>
-      </div>
-
-      <form class="row g-2 mb-0" method="get" role="search">
-        <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
-        <div class="col-12 col-lg">
-          <div class="input-group">
-            <span class="input-group-text bg-white border"><i class="bi bi-search text-muted"></i></span>
-            <input type="search" class="form-control" name="q" 
-                value="<?= smartcms_h($pagination['keyword']) ?>" placeholder="제목, 내용, 작성자 검색">
-          </div>
-        </div>
-        <div class="col-12 col-lg-auto">
-          <button class="btn <?= $layout === 'cards' ? 'btn-dark' : 'btn-secondary' ?> rounded-pill px-4 w-100 shadow-none fw-bold" type="submit">검색</button>
-        </div>
-        <?php if ($pagination['keyword'] !== ''): ?>
-          <div class="col-12 col-lg-auto">
-            <a class="btn btn-light border rounded-pill px-4 w-100 shadow-none fw-bold text-secondary"
-               href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">초기화</a>
-          </div>
-        <?php endif; ?>
-      </form>
+      <h2 class="h3 fw-bold mb-0 text-dark">글 목록</h2>
     </header>
 
     <?php if ($layout === 'cards'): ?>
@@ -175,5 +145,36 @@ $layout = (string)$skin_meta['layout'];
         </nav>
       </footer>
     <?php endif; ?>
+
+    <footer class="card-footer bg-white border-top p-4 p-lg-5">
+      <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+        <form class="row g-2 flex-grow-1 mb-0" method="get" role="search">
+          <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
+          <div class="col-12 col-lg">
+            <div class="input-group">
+              <span class="input-group-text bg-white border"><i class="bi bi-search text-muted"></i></span>
+              <input type="search" class="form-control" name="q"
+                  value="<?= smartcms_h($pagination['keyword']) ?>" placeholder="제목, 내용, 작성자 검색">
+            </div>
+          </div>
+          <div class="col-12 col-lg-auto">
+            <button class="btn <?= $layout === 'cards' ? 'btn-dark' : 'btn-secondary' ?> rounded-pill px-4 w-100 shadow-none fw-bold" type="submit">검색</button>
+          </div>
+          <?php if ($pagination['keyword'] !== ''): ?>
+            <div class="col-12 col-lg-auto">
+              <a class="btn btn-light border rounded-pill px-4 w-100 shadow-none fw-bold text-secondary"
+                 href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">초기화</a>
+            </div>
+          <?php endif; ?>
+        </form>
+
+        <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
+          <a class="btn <?= smartcms_h((string)$skin_meta['button_class']) ?> rounded-pill px-4 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?> flex-shrink-0"
+             href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">
+            <i class="bi bi-pencil-square me-2"></i>글쓰기
+          </a>
+        <?php endif; ?>
+      </div>
+    </footer>
   </div>
 </section>
