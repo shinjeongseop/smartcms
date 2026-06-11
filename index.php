@@ -119,7 +119,7 @@ require SMARTCMS_ROOT . '/head.php';
                 <?php $notice = $notice_posts[0]; ?>
                 <a class="text-decoration-none fw-bold text-dark d-block text-truncate"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$notice['board_key'], (int)$notice['id'])) ?>">
-                  <?= smartcms_h($notice['title']) ?>
+                  <?= smartcms_h(smartcms_board_truncate_title((string)$notice['title'], (int)($notice['title_length_limit'] ?? 0))) ?>
                 </a>
               <?php else: ?>
                 <span class="text-body-secondary small">등록된 공지사항이 없습니다.</span>
@@ -174,7 +174,7 @@ require SMARTCMS_ROOT . '/head.php';
                 <a class="list-group-item list-group-item-action p-4 d-flex align-items-center gap-3"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                   <span class="badge text-bg-light text-secondary rounded-pill small flex-shrink-0 border"><?= smartcms_h($post['board_name']) ?></span>
-                  <span class="text-dark fw-semibold text-truncate flex-grow-1"><?= smartcms_h($post['title']) ?></span>
+                  <span class="text-dark fw-semibold text-truncate flex-grow-1"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], (int)($post['title_length_limit'] ?? 0))) ?></span>
                   <time class="small text-body-secondary flex-shrink-0 fw-medium" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
                     <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                   </time>
@@ -211,8 +211,8 @@ require SMARTCMS_ROOT . '/head.php';
                     <?php if ($widget['posts']): ?>
                       <?php foreach ($widget['posts'] as $post): ?>
                         <a class="list-group-item list-group-item-action bg-white px-0 py-2 d-flex justify-content-between align-items-center gap-2"
-                           href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-                          <span class="text-truncate fw-medium"><?= smartcms_h($post['title']) ?></span>
+                          href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
+                          <span class="text-truncate fw-medium"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], (int)($post['title_length_limit'] ?? 0))) ?></span>
                           <time class="text-xs text-body-secondary flex-shrink-0" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
                             <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                           </time>
@@ -277,7 +277,7 @@ require SMARTCMS_ROOT . '/head.php';
                    href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                   <span class="text-primary fw-bold fs-5 lh-1 mt-1"><?= (int)$idx + 1 ?></span>
                   <div class="flex-grow-1 overflow-hidden">
-                    <strong class="d-block text-truncate mb-1 text-dark"><?= smartcms_h($post['title']) ?></strong>
+                    <strong class="d-block text-truncate mb-1 text-dark"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], (int)($post['title_length_limit'] ?? 0))) ?></strong>
                     <div class="d-flex flex-wrap gap-2 text-xs text-body-secondary fw-medium">
                       <span>조회 <?= number_format((int)$post['view_count']) ?></span>
                       <span class="opacity-50">|</span>

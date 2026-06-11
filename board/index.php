@@ -121,7 +121,7 @@ require SMARTCMS_ROOT . '/head.php';
               <?php foreach ($recent_board_posts as $recent): ?>
                 <a class="list-group-item list-group-item-action px-0 text-truncate"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
-                  <?= smartcms_h($recent['title']) ?>
+                  <?= smartcms_h(smartcms_board_truncate_title((string)$recent['title'], (int)($recent['title_length_limit'] ?? 0))) ?>
                 </a>
               <?php endforeach; ?>
               <?php if (!$recent_board_posts): ?>

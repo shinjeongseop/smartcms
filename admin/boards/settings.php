@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         smartcms_execute(
             "UPDATE " . smartcms_table('boards') . "
              SET board_name = :name, description = :desc, skin = :skin, items_per_page = :ipp,
+                 title_length_limit = :title_length_limit,
                  use_editor = :editor, use_comments = :comments, use_attachments = :attachments, status = :status
              WHERE board_key = :key",
             [
@@ -38,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'desc'        => trim((string)$_POST['description']),
                 'skin'        => trim((string)$_POST['skin']),
                 'ipp'         => max(1, min(100, (int)$_POST['items_per_page'])),
+                'title_length_limit' => max(0, min(255, (int)($_POST['title_length_limit'] ?? 0))),
                 'editor'      => isset($_POST['use_editor']) ? 1 : 0,
                 'comments'    => isset($_POST['use_comments']) ? 1 : 0,
                 'attachments' => isset($_POST['use_attachments']) ? 1 : 0,
@@ -138,6 +140,11 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <div class="col-md-6">
                 <label for="items_per_page" class="form-label fw-bold small text-dark text-uppercase">페이지당 게시물 노출 수</label>
                 <input type="number" id="items_per_page" name="items_per_page" class="form-control py-2" value="<?= (int)$board['items_per_page'] ?>" min="1" max="100">
+              </div>
+              <div class="col-md-6">
+                <label for="title_length_limit" class="form-label fw-bold small text-dark text-uppercase">제목 길이 제한</label>
+                <input type="number" id="title_length_limit" name="title_length_limit" class="form-control py-2" value="<?= (int)($board['title_length_limit'] ?? 0) ?>" min="0" max="255">
+                <div class="form-text small text-secondary">0이면 제한 없음, 설정값을 넘으면 ...으로 표시됩니다.</div>
               </div>
             </div>
           </div>

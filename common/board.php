@@ -24,6 +24,54 @@ function smartcms_board_skin_template(?array $board, string $template): string
     return SMARTCMS_ROOT . '/skins/board/default/' . $template . '.php';
 }
 
+function smartcms_board_title_limit(array $board): int
+{
+    return max(0, (int)($board['title_length_limit'] ?? 0));
+}
+
+function smartcms_board_truncate_title(string $title, int $length): string
+{
+    $title = trim(strip_tags($title));
+    if ($length <= 0 || $title === '') {
+        return $title;
+    }
+
+    if (function_exists('mb_strlen') && function_exists('mb_substr')) {
+        if (mb_strlen($title) <= $length) {
+            return $title;
+        }
+
+        return mb_substr($title, 0, $length) . '...';
+    }
+
+    if (strlen($title) <= $length) {
+        return $title;
+    }
+
+    return substr($title, 0, $length) . '...';
+}
+
+function smartcms_board_ensure_title_length_column(): void
+{
+    static $checked = false;
+    if ($checked) {
+        return;
+    }
+    $checked = true;
+
+    try {
+        $table = smartcms_table('boards');
+        $stmt = smartcms_db()->query("SHOW COLUMNS FROM `{$table}` LIKE 'title_length_limit'");
+        if ($stmt === false || $stmt->fetch() === false) {
+            smartcms_db()->exec(
+                "ALTER TABLE `{$table}` ADD COLUMN title_length_limit SMALLINT UNSIGNED NOT NULL DEFAULT 0 AFTER items_per_page"
+            );
+        }
+    } catch (Throwable) {
+        // Schema auto-migration must not break runtime pages.
+    }
+}
+
 function smartcms_board_post_url(string $board_key, int $post_id): string
 {
     return smartcms_board_url($board_key, '/board/view/') . '&id=' . rawurlencode((string)$post_id);
@@ -48,6 +96,8 @@ function smartcms_home_date(?string $value): string
     $ts = strtotime($value);
     return $ts ? date('m.d', $ts) : $value;
 }
+
+smartcms_board_ensure_title_length_column();
 
 function smartcms_board_list(): array
 {
@@ -433,7 +483,7 @@ function smartcms_board_seed_defaults(int $created_by): array
 function smartcms_board_recent_posts(int $limit = 12): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name
+        "SELECT p.id, p.title, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name, b.title_length_limit
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled'
@@ -450,7 +500,7 @@ function smartcms_board_recent_posts_by_key(string $board_key, int $limit = 5): 
 {
     $stmt = smartcms_db()->prepare(
         "SELECT p.id, p.title, p.author_name, p.comment_count, p.attachment_count, p.view_count, p.created_at,
-                b.board_key, b.board_name
+                b.board_key, b.board_name, b.title_length_limit
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled' AND b.board_key = :board_key
@@ -467,7 +517,7 @@ function smartcms_board_recent_posts_by_key(string $board_key, int $limit = 5): 
 function smartcms_board_popular_posts(int $limit = 5): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.author_name, p.comment_count, p.view_count, p.created_at, b.board_key, b.board_name
+        "SELECT p.id, p.title, p.author_name, p.comment_count, p.view_count, p.created_at, b.board_key, b.board_name, b.title_length_limit
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled'

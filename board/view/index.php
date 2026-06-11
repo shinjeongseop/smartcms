@@ -123,7 +123,7 @@ require SMARTCMS_ROOT . '/head.php';
               <?php foreach ($recent_board_posts as $recent): ?>
                 <a class="list-group-item list-group-item-action bg-white px-4 py-3 border-0 border-bottom d-flex align-items-center gap-3"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
-                  <span class="text-dark fw-bold text-truncate flex-grow-1"><?= smartcms_h($recent['title']) ?></span>
+                  <span class="text-dark fw-bold text-truncate flex-grow-1"><?= smartcms_h(smartcms_board_truncate_title((string)$recent['title'], (int)($recent['title_length_limit'] ?? 0))) ?></span>
                   <i class="bi bi-chevron-right text-secondary opacity-50"></i>
                 </a>
               <?php endforeach; ?>

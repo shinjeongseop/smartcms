@@ -45,7 +45,7 @@
     </header>
 
     <!-- [TABLE] 게시글 테이블 -->
-    <div class="table-responsive">
+    <div class="table-responsive pb-4 pb-lg-5">
       <table class="table table-hover align-middle mb-0 text-nowrap">
         <thead class="table-light">
           <tr class="text-uppercase small fw-bold text-secondary">
@@ -71,7 +71,7 @@
                   <a class="text-decoration-none fw-semibold text-dark text-truncate fs-6 d-block flex-grow-1 min-w-0"
                      href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
-                    <?= smartcms_h($post['title']) ?>
+                    <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], smartcms_board_title_limit($board))) ?>
                   </a>
                   <?php if ((int)$post['comment_count'] > 0): ?>
                     <span class="badge bg-light text-primary border rounded-pill small"><?= (int)$post['comment_count'] ?></span>
