@@ -81,7 +81,7 @@ $SMARTCMS_HEAD = ['title' => '데이터베이스 관리', 'page_heading' => 'DB 
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
-<section class="container-fluid py-2">
+<section>
   <?php if ($message !== ''): ?>
     <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
       <i class="bi bi-info-circle-fill fs-5"></i>

@@ -6,6 +6,7 @@ $is_login_page = str_contains($request_path, '/admin/login/');
 
 if (!$is_login_page) {
     ?>
+    </div>
     </main>
     <footer class="mt-auto bg-white border-top py-4 mt-4 mx-n3 mx-lg-n4">
       <div class="container-fluid px-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-secondary">

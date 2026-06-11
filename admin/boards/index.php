@@ -65,7 +65,7 @@ $SMARTCMS_HEAD = [
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
-<section class="container-fluid py-2">
+<section>
 
 
   <?php if ($message !== ''): ?>

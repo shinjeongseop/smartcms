@@ -59,7 +59,7 @@ $SMARTCMS_HEAD = ['title' => '페이지 권한 관리', 'page_heading' => 'ACL �
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
-<section class="container-fluid py-2">
+<section>
   <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
     <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-bold shadow-sm">
       총 <?= count($pages) ?>개 등록됨

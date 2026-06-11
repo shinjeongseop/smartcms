@@ -86,7 +86,7 @@ $SMARTCMS_HEAD = [
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
-<section class="container-fluid py-2">
+<section>
   <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb mb-0 small fw-bold">

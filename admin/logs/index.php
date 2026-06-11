@@ -42,7 +42,7 @@ $SMARTCMS_HEAD = ['title' => '시스템 로그 관리', 'page_heading' => '활�
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
-<section class="container-fluid py-2">
+<section>
   <?php if ($message !== ''): ?>
     <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
       <i class="bi bi-info-circle-fill fs-5"></i>
