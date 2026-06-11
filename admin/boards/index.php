@@ -66,14 +66,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <section class="container-fluid py-2">
-  <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb mb-0 small fw-bold">
-        <li class="breadcrumb-item"><a href="/admin/dashboard/" class="text-decoration-none text-secondary">관리자 홈</a></li>
-        <li class="breadcrumb-item active text-primary" aria-current="page">게시판 관리</li>
-      </ol>
-    </nav>
-  </header>
+
 
   <?php if ($message !== ''): ?>
     <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ($message_type === 'success' ? 'success' : 'info') ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">

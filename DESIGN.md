@@ -60,7 +60,7 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 
 - 주요 액션: `.btn-primary` (Green)
 - 보조 액션: `.btn-secondary` (Gray) 또는 `.btn-light`
-- 스타일: `rounded-pill`을 활용하여 부드러운 인상을 줍니다.
+- 스타일: `rounded-pill`을 사용하지 않습니다.
 
 ### Forms (`.form-control`)
 
