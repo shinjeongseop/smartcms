@@ -6,6 +6,7 @@ $is_login_page = str_contains($request_path, '/admin/login/');
 
 if (!$is_login_page) {
     ?>
+    </main>
     <footer class="mt-auto bg-white border-top py-4 mt-4 mx-n3 mx-lg-n4">
       <div class="container-fluid px-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-secondary">
         <span>&copy; <?= date('Y') ?> <a href="#" class="text-decoration-none fw-bold">smartcms</a>. All rights reserved.</span>
@@ -16,7 +17,7 @@ if (!$is_login_page) {
         </div>
       </div>
     </footer>
-    </main></div></div><!-- /.d-flex -->
+    </div></div><!-- /.d-flex -->
     <?php
 }
 
