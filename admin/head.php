@@ -6,6 +6,7 @@ require_once dirname(__DIR__) . '/common/auth.php';
 require_once dirname(__DIR__) . '/common/ui/components.php';
 
 $title = (string)($SMARTCMS_HEAD['title'] ?? 'Admin Panel');
+$page_heading = (string)($SMARTCMS_HEAD['page_heading'] ?? $title);
 $active_menu = (string)($SMARTCMS_HEAD['active_menu'] ?? '');
 $request_path = (string)(parse_url((string)($_SERVER['REQUEST_URI'] ?? ''), PHP_URL_PATH) ?: '');
 $is_login_page = str_contains($request_path, '/admin/login/');
@@ -93,11 +94,11 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
             <nav aria-label="breadcrumb" class="d-none d-sm-block">
               <ol class="breadcrumb small mb-1 fw-medium">
                 <li class="breadcrumb-item"><a href="/admin/dashboard/" class="text-decoration-none text-secondary">Admin</a></li>
-                <li class="breadcrumb-item active fw-bold text-primary" aria-current="page"><?= smartcms_h($title) ?></li>
-              </ol>
-              <h1 class="h4 fw-bold mb-0 text-dark"><?= smartcms_h($title) ?></h1>
+              <li class="breadcrumb-item active fw-bold text-primary" aria-current="page"><?= smartcms_h($page_heading) ?></li>
+            </ol>
+              <h1 class="h4 fw-bold mb-0 text-dark"><?= smartcms_h($page_heading) ?></h1>
             </nav>
-            <h1 class="h5 fw-bold mb-0 text-dark d-sm-none"><?= smartcms_h($title) ?></h1>
+            <h1 class="h5 fw-bold mb-0 text-dark d-sm-none"><?= smartcms_h($page_heading) ?></h1>
           </div>
           <div class="d-flex gap-2">
             <a class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-bold border-2 shadow-none" href="/">

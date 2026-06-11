@@ -59,6 +59,7 @@ try {
 
 $SMARTCMS_HEAD = [
     'title' => '게시판 관리',
+    'page_heading' => '게시판 운영',
     'active_menu' => 'boards'
 ];
 require SMARTCMS_ROOT . '/admin/head.php';

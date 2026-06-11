@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $tables = smartcms_db_managed_tables();
 $prefix = (string)smartcms_config_value('table_prefix', 'sc_');
 
-$SMARTCMS_HEAD = ['title' => '데이터베이스 관리', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'database'];
+$SMARTCMS_HEAD = ['title' => '데이터베이스 관리', 'page_heading' => 'DB 도구', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'database'];
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 

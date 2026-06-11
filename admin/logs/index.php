@@ -38,7 +38,7 @@ try {
     $message_type = 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '시스템 로그 관리', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'logs'];
+$SMARTCMS_HEAD = ['title' => '시스템 로그 관리', 'page_heading' => '활동 로그', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'logs'];
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 

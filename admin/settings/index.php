@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $settings = smartcms_settings_all();
 
-$SMARTCMS_HEAD = ['title' => '전체 환경 설정', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'settings'];
+$SMARTCMS_HEAD = ['title' => '전체 환경 설정', 'page_heading' => '운영 설정', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'settings'];
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 

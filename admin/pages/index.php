@@ -55,7 +55,7 @@ try {
     $message_type = 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '페이지 권한 관리', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'pages'];
+$SMARTCMS_HEAD = ['title' => '페이지 권한 관리', 'page_heading' => 'ACL 설정', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'pages'];
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 

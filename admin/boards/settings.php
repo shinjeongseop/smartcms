@@ -80,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $SMARTCMS_HEAD = [
     'title' => '게시판 상세 설정',
+    'page_heading' => '게시판 세부 설정',
     'active_menu' => 'boards'
 ];
 require SMARTCMS_ROOT . '/admin/head.php';
