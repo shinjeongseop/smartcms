@@ -207,8 +207,10 @@ function smartcms_board_posts(int $board_id, int $page = 1, int $per_page = 10, 
     $params = ['board_id' => $board_id];
 
     if ($keyword !== '') {
-        $where .= " AND (title LIKE :keyword OR content LIKE :keyword OR author_name LIKE :keyword)";
-        $params['keyword'] = '%' . $keyword . '%';
+        $where .= " AND (title LIKE :keyword_title OR content LIKE :keyword_content OR author_name LIKE :keyword_author)";
+        $params['keyword_title'] = '%' . $keyword . '%';
+        $params['keyword_content'] = '%' . $keyword . '%';
+        $params['keyword_author'] = '%' . $keyword . '%';
     }
 
     $count_stmt = smartcms_db()->prepare(
@@ -228,7 +230,10 @@ function smartcms_board_posts(int $board_id, int $page = 1, int $per_page = 10, 
     );
     $stmt->bindValue('board_id', $board_id, PDO::PARAM_INT);
     if ($keyword !== '') {
-        $stmt->bindValue('keyword', '%' . $keyword . '%', PDO::PARAM_STR);
+        $like = '%' . $keyword . '%';
+        $stmt->bindValue('keyword_title', $like, PDO::PARAM_STR);
+        $stmt->bindValue('keyword_content', $like, PDO::PARAM_STR);
+        $stmt->bindValue('keyword_author', $like, PDO::PARAM_STR);
     }
     $stmt->bindValue('limit', $per_page, PDO::PARAM_INT);
     $stmt->bindValue('offset', $offset, PDO::PARAM_INT);
