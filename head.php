@@ -8,7 +8,11 @@ require_once __DIR__ . '/common/ui/components.php';
 $title = (string)($SMARTCMS_HEAD['title'] ?? 'smartcms');
 $active_menu = (string)($SMARTCMS_HEAD['active_menu'] ?? '');
 $body_class = trim((string)($SMARTCMS_HEAD['body_class'] ?? 'bg-light'));
-$main_class = trim((string)($SMARTCMS_HEAD['main_class'] ?? 'min-vh-100 py-4 py-lg-5'));
+if ($body_class !== '') {
+    $body_class .= ' ';
+}
+$body_class .= 'd-flex flex-column min-vh-100';
+$main_class = trim((string)($SMARTCMS_HEAD['main_class'] ?? 'flex-grow-1 py-4 py-lg-5'));
 $css_url = (string)smartcms_config_value('theme.css_url', '/common/css/common.css');
 $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
 ?>

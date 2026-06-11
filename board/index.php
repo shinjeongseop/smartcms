@@ -43,7 +43,7 @@ $page_title = $board ? (string)$board['board_name'] : ($keyword !== '' ? '게시
 $active_menu = $board && in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
     ? (string)$board['board_key']
     : 'boards';
-$SMARTCMS_HEAD = ['title' => $page_title, 'active_menu' => $active_menu, 'main_class' => 'min-vh-100'];
+$SMARTCMS_HEAD = ['title' => $page_title, 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 

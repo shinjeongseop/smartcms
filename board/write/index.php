@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
     ? (string)$board['board_key']
     : 'boards';
-$SMARTCMS_HEAD = ['title' => '새 글 작성', 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'min-vh-100'];
+$SMARTCMS_HEAD = ['title' => '새 글 작성', 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1'];
 require SMARTCMS_ROOT . '/head.php';
 
 // Skin variables
