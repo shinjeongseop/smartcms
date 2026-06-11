@@ -46,14 +46,14 @@
 
     <!-- [TABLE] 게시글 테이블 -->
     <div class="table-responsive">
-      <table class="table table-hover align-middle mb-0">
+      <table class="table table-hover align-middle mb-0 text-nowrap">
         <thead class="table-light">
           <tr class="text-uppercase small fw-bold text-secondary">
-            <th scope="col" class="ps-4 ps-lg-5 py-3" style="width: 80px;">번호</th>
-            <th scope="col" class="py-3">제목</th>
-            <th scope="col" class="d-none d-md-table-cell py-3" style="width: 150px;">작성자</th>
-            <th scope="col" class="d-none d-lg-table-cell py-3 text-center" style="width: 100px;">조회</th>
-            <th scope="col" class="d-none d-md-table-cell pe-4 pe-lg-5 py-3 text-end" style="width: 120px;">날짜</th>
+            <th scope="col" class="ps-4 ps-lg-5 py-3 text-nowrap" style="width: 80px;">번호</th>
+            <th scope="col" class="py-3 text-nowrap">제목</th>
+            <th scope="col" class="d-none d-md-table-cell py-3 text-nowrap" style="width: 150px;">작성자</th>
+            <th scope="col" class="d-none d-lg-table-cell py-3 text-center text-nowrap" style="width: 100px;">조회</th>
+            <th scope="col" class="d-none d-md-table-cell pe-4 pe-lg-5 py-3 text-end text-nowrap" style="width: 120px;">날짜</th>
           </tr>
         </thead>
         <tbody class="table-group-divider">
@@ -66,9 +66,9 @@
                   <?= (int)$post['id'] ?>
                 <?php endif; ?>
               </td>
-              <td>
-                <div class="d-flex align-items-center gap-2">
-                  <a class="text-decoration-none fw-semibold text-dark text-truncate fs-6"
+              <td class="min-w-0">
+                <div class="d-flex align-items-center gap-2 min-w-0">
+                  <a class="text-decoration-none fw-semibold text-dark text-truncate fs-6 d-block flex-grow-1 min-w-0"
                      href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                     <?= smartcms_h($post['title']) ?>
