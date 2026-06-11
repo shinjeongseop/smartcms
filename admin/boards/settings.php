@@ -192,7 +192,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
       <!-- 기능 스위치 및 액션 패널 -->
       <div class="col-12 col-xl-4">
-        <aside class="sticky-top" style="top: 1rem;">
+        <aside class="sticky-top sc-admin-sticky-panel">
           <article class="card border shadow-sm mb-4 overflow-hidden border-top border-primary border-4">
             <header class="card-header bg-white border-bottom py-3 px-4 text-center">
               <h2 class="card-title h6 mb-0 fw-bold text-primary text-uppercase">기능 활성화 스위치</h2>

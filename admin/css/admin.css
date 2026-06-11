@@ -18,6 +18,10 @@ body.smartcms-admin-page {
     height: 100vh;
     overflow-y: auto;
   }
+
+  .sc-admin-sticky-panel {
+    top: 5.5rem;
+  }
 }
 
 /* Sidebar Customizations */
