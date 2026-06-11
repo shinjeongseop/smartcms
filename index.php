@@ -136,7 +136,7 @@ require SMARTCMS_ROOT . '/head.php';
               <?php endif; ?>
             </div>
           </div>
-          <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>" class="btn btn-outline-primary btn-sm rounded-pill px-3 flex-shrink-0 fw-bold shadow-none">더보기</a>
+          <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>" class="btn btn-light btn-sm rounded-pill px-3 flex-shrink-0 fw-bold shadow-none border text-primary">더보기</a>
         </div>
       </article>
     </div>
@@ -181,7 +181,7 @@ require SMARTCMS_ROOT . '/head.php';
           <div class="list-group list-group-flush">
             <?php if ($recent_posts): ?>
               <?php foreach ($recent_posts as $post): ?>
-                <a class="list-group-item list-group-item-action p-4 border-0 border-bottom d-flex align-items-center gap-3"
+                <a class="list-group-item list-group-item-action p-4 d-flex align-items-center gap-3"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                   <span class="badge text-bg-light text-secondary rounded-pill small flex-shrink-0 border"><?= smartcms_h($post['board_name']) ?></span>
                   <span class="text-dark fw-semibold text-truncate flex-grow-1"><?= smartcms_h($post['title']) ?></span>
@@ -213,7 +213,7 @@ require SMARTCMS_ROOT . '/head.php';
                       <h3 class="h6 fw-bold mb-1 text-primary text-uppercase"><?= smartcms_h($board['board_name']) ?></h3>
                       <p class="text-xs text-body-secondary mb-0"><?= smartcms_h($widget['summary']) ?></p>
                     </div>
-                    <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" class="btn btn-light btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center shadow-none border" style="width:28px; height:28px;">
+                    <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" class="btn btn-light btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center shadow-none border smartcms-icon-button-sm">
                       <i class="bi bi-plus-lg"></i>
                     </a>
                   </div>
@@ -222,7 +222,7 @@ require SMARTCMS_ROOT . '/head.php';
                   <div class="list-group list-group-flush small">
                     <?php if ($widget['posts']): ?>
                       <?php foreach ($widget['posts'] as $post): ?>
-                        <a class="list-group-item list-group-item-action bg-white px-0 py-2 border-0 d-flex justify-content-between align-items-center gap-2"
+                        <a class="list-group-item list-group-item-action bg-white px-0 py-2 d-flex justify-content-between align-items-center gap-2"
                            href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                           <span class="text-truncate fw-medium"><?= smartcms_h($post['title']) ?></span>
                           <time class="text-xs text-body-secondary flex-shrink-0" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
@@ -286,7 +286,7 @@ require SMARTCMS_ROOT . '/head.php';
           <div class="list-group list-group-flush small">
             <?php if ($popular_posts): ?>
               <?php foreach ($popular_posts as $idx => $post): ?>
-                <a class="list-group-item list-group-item-action bg-white px-0 py-3 border-0 border-bottom d-flex align-items-start gap-3"
+                <a class="list-group-item list-group-item-action bg-white px-0 py-3 d-flex align-items-start gap-3"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                   <span class="text-primary fw-bold fs-5 lh-1 mt-1"><?= (int)$idx + 1 ?></span>
                   <div class="flex-grow-1 overflow-hidden">

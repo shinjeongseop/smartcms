@@ -29,8 +29,12 @@ h6,
 .h5,
 .h6 {
   font-weight: 700;
-  letter-spacing: -0.02em;
   color: var(--bs-emphasis-color);
+}
+
+.smartcms-icon-button-sm {
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 /* Custom Scrollbar for modern browsers */
