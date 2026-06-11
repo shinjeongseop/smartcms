@@ -77,12 +77,11 @@ $show_hide_form = true;
 $submit_label = '변경 사항 저장';
 $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);
 $back_label = '취소 및 돌아가기';
-$recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_key'], 5);
 ?>
 
 <div class="container-fluid container-xxl pt-4 pt-lg-5">
   <div class="row g-4 align-items-start">
-    <section class="col-12 col-md-8 col-lg-9">
+    <section class="col-12">
       <!-- 헤더 카드 -->
       <header class="card border shadow-sm mb-4 overflow-hidden bg-dark text-white">
         <div class="card-body p-4 p-lg-5">
@@ -104,39 +103,6 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
 
       <?php require smartcms_board_skin_template($board, 'form'); ?>
     </section>
-
-    <aside class="col-12 col-md-4 col-lg-3">
-      <div class="sticky-top" style="top: 5.5rem;">
-        <section class="card border shadow-sm mb-4 overflow-hidden">
-          <header class="card-header bg-white border-bottom p-4">
-            <h3 class="h6 fw-bold mb-0 text-dark text-uppercase letter-spacing-1">정보</h3>
-          </header>
-          <div class="card-body p-4 text-secondary small fw-medium">
-            작성하신 글은 수정 즉시 반영되며, 첨부 파일 목록은 상세 페이지에서 별도로 관리하실 수 있습니다.
-          </div>
-        </section>
-
-        <section class="card border shadow-sm overflow-hidden">
-          <header class="card-header bg-white border-bottom p-4">
-            <h3 class="h6 fw-bold mb-0 text-dark d-flex align-items-center gap-2 text-uppercase letter-spacing-1">
-              <i class="bi bi-clock-history text-primary"></i>
-              최근 글
-            </h3>
-          </header>
-          <div class="card-body p-0">
-            <div class="list-group list-group-flush small">
-              <?php foreach ($recent_board_posts as $recent): ?>
-                <a class="list-group-item list-group-item-action px-4 py-3 border-0 border-bottom d-flex align-items-center gap-3"
-                   href="<?= smartcms_h(smartcms_board_post_url((string)$recent['board_key'], (int)$recent['id'])) ?>">
-                  <span class="text-dark fw-bold text-truncate flex-grow-1"><?= smartcms_h(smartcms_board_truncate_title((string)$recent['title'], (int)($recent['title_length_limit'] ?? 0))) ?></span>
-                  <i class="bi bi-chevron-right text-secondary opacity-50"></i>
-                </a>
-              <?php endforeach; ?>
-            </div>
-          </div>
-        </section>
-      </div>
-    </aside>
   </div>
 </div>
 
