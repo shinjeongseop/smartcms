@@ -3,10 +3,20 @@
  * 사용 가능 변수: $board, $user, $form_values, $form_action, $form_enctype,
  *                 $submit_label, $back_url, $back_label, $show_attachments, $show_hide_form
  */
+$skin_meta = smartcms_board_skin_meta($board);
+$accent = (string)$skin_meta['accent'];
 ?>
 <article class="smartcms-board-form">
   <div class="card border shadow-sm overflow-hidden">
     <div class="card-body p-4 p-lg-5">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+        <div>
+          <p class="text-uppercase small fw-bold text-secondary mb-1">Board Form</p>
+          <h2 class="h5 fw-bold mb-0 text-dark">게시글 작성</h2>
+        </div>
+        <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-3 py-2 fw-bold">스킨 <?= smartcms_h((string)$skin_meta['label']) ?></span>
+      </div>
+
       <form method="post" enctype="<?= smartcms_h($form_enctype ?? 'application/x-www-form-urlencoded') ?>">
         <?= smartcms_csrf_input() ?>
         <input type="hidden" name="action" value="<?= smartcms_h($form_action ?? 'update') ?>">
@@ -47,10 +57,10 @@
 
           <div class="col-12 pt-3">
             <div class="d-flex flex-wrap gap-2">
-              <button class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-sm" type="submit">
+              <button class="btn <?= $skin_meta['button_class'] ?> rounded-pill px-5 py-2 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?>" type="submit">
                 <i class="bi bi-check2-circle me-1"></i><?= smartcms_h($submit_label ?? '저장하기') ?>
               </button>
-              <a class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-bold shadow-none" href="<?= smartcms_h($back_url) ?>">
+              <a class="btn btn-light border rounded-pill px-4 py-2 fw-bold shadow-none text-secondary" href="<?= smartcms_h($back_url) ?>">
                 <?= smartcms_h($back_label ?? '취소하고 목록으로') ?>
               </a>
             </div>

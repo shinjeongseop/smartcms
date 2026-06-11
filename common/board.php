@@ -24,6 +24,30 @@ function smartcms_board_skin_template(?array $board, string $template): string
     return SMARTCMS_ROOT . '/skins/board/default/' . $template . '.php';
 }
 
+function smartcms_board_skin_meta(?array $board): array
+{
+    $skin = strtolower(preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($board['skin'] ?? 'default')));
+    $meta_map = [
+        'default' => ['label' => '기본', 'accent' => 'primary', 'layout' => 'table', 'icon' => 'bi-layout-text-window-reverse'],
+        'table' => ['label' => '테이블', 'accent' => 'secondary', 'layout' => 'table', 'icon' => 'bi-table'],
+        'card' => ['label' => '카드', 'accent' => 'success', 'layout' => 'cards', 'icon' => 'bi-postcard-heart-fill'],
+        'gallery' => ['label' => '갤러리', 'accent' => 'info', 'layout' => 'cards', 'icon' => 'bi-grid-3x3-gap-fill'],
+        'qna' => ['label' => 'Q&A', 'accent' => 'warning', 'layout' => 'table', 'icon' => 'bi-question-circle-fill'],
+        'notice' => ['label' => '공지', 'accent' => 'danger', 'layout' => 'table', 'icon' => 'bi-megaphone-fill'],
+        'faq' => ['label' => 'FAQ', 'accent' => 'dark', 'layout' => 'cards', 'icon' => 'bi-patch-question-fill'],
+        'webzine' => ['label' => '웹진', 'accent' => 'primary', 'layout' => 'cards', 'icon' => 'bi-journal-richtext'],
+    ];
+
+    $meta = $meta_map[$skin] ?? $meta_map['default'];
+    $meta['skin'] = $skin;
+    $meta['badge_class'] = 'bg-' . $meta['accent'] . '-subtle text-' . ($meta['accent'] === 'dark' ? 'dark' : $meta['accent']) . ' border border-' . $meta['accent'] . '-subtle';
+    $meta['button_class'] = $meta['accent'] === 'dark' ? 'btn-dark' : 'btn-' . $meta['accent'];
+    $meta['button_text_class'] = in_array($meta['accent'], ['warning', 'info'], true) ? 'text-dark' : 'text-white';
+    $meta['header_class'] = 'border-top border-4 border-' . $meta['accent'];
+
+    return $meta;
+}
+
 function smartcms_board_title_limit(array $board): int
 {
     return max(0, (int)($board['title_length_limit'] ?? 0));

@@ -2,6 +2,7 @@
 /* 게시판 목록 스킨 - default/boards.php
  * 사용 가능 변수: $boards
  */
+$board_skin_meta = fn(array $item): array => smartcms_board_skin_meta($item);
 ?>
 <section class="smartcms-board-registry py-4">
   <header class="mb-5 text-center">
@@ -12,14 +13,17 @@
   <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
     <?php foreach ($boards as $board): ?>
       <?php if ((string)$board['status'] === 'hidden') continue; ?>
+      <?php $skin_meta = $board_skin_meta($board); ?>
       <div class="col">
-        <article class="card h-100 border shadow-sm hover-shadow transition-all overflow-hidden border-top border-primary border-4">
+        <article class="card h-100 border shadow-sm overflow-hidden <?= $skin_meta['header_class'] ?>">
           <div class="card-body p-4 p-lg-5">
             <div class="d-flex align-items-start justify-content-between mb-3">
-              <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-bold text-uppercase letter-spacing-1" style="font-size: 0.7rem;">
+              <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-3 py-2 fw-bold text-uppercase letter-spacing-1">
                 <?= smartcms_h($board['board_key']) ?>
               </span>
-              <div class="text-secondary opacity-25"><i class="bi bi-chat-quote-fill fs-2"></i></div>
+              <div class="<?= $skin_meta['accent'] === 'dark' ? 'text-dark' : 'text-' . $skin_meta['accent'] ?> opacity-25">
+                <i class="<?= smartcms_h((string)$skin_meta['icon']) ?> fs-2"></i>
+              </div>
             </div>
             
             <h3 class="h4 fw-bold mb-3">
@@ -36,7 +40,7 @@
           </div>
           <footer class="card-footer bg-white border-top px-4 py-3 d-flex justify-content-between align-items-center">
             <span class="text-xs fw-bold text-uppercase text-secondary opacity-75">Level <?= (int)$board['board_list_level'] ?> Required</span>
-            <i class="bi bi-arrow-right-circle-fill text-primary fs-5"></i>
+            <i class="bi <?= smartcms_h((string)$skin_meta['icon']) ?> <?= $skin_meta['accent'] === 'dark' ? 'text-dark' : 'text-' . $skin_meta['accent'] ?> fs-5"></i>
           </footer>
         </article>
       </div>
@@ -52,8 +56,3 @@
     <?php endif; ?>
   </div>
 </section>
-
-<style>
-.transition-all { transition: all 0.3s ease; }
-.hover-shadow:hover { transform: translateY(-5px); box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.1) !important; }
-</style>

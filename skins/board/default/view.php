@@ -2,13 +2,17 @@
 /* 게시판 상세 스킨 - default/view.php
  * 사용 가능 변수: $board, $post, $files, $comments, $user, $can_manage_post, $can_manage_board, $can_comment
  */
+$skin_meta = smartcms_board_skin_meta($board);
+$accent = (string)$skin_meta['accent'];
+$accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
 ?>
 <article class="card border shadow-sm overflow-hidden mb-4">
   <div class="card-body p-4 p-lg-5">
     <header class="d-flex align-items-start justify-content-between gap-3 mb-4">
       <div>
         <div class="mb-2">
-          <?php if ((int)$post['is_notice'] === 1): ?><span class="badge bg-primary rounded-pill me-1 px-3">공지</span><?php endif; ?>
+          <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill me-1 px-3">스킨 <?= smartcms_h((string)$skin_meta['label']) ?></span>
+          <?php if ((int)$post['is_notice'] === 1): ?><span class="badge bg-<?= smartcms_h($accent) ?> rounded-pill me-1 px-3">공지</span><?php endif; ?>
           <?php if ((int)$post['is_secret'] === 1): ?><span class="badge bg-dark rounded-pill me-1 px-3"><i class="bi bi-lock-fill me-1"></i>비밀글</span><?php endif; ?>
         </div>
         <h2 class="fs-6 fw-bold mb-0 text-dark"><?= smartcms_h($post['title']) ?></h2>
@@ -24,13 +28,13 @@
     </header>
 
     <div class="d-flex flex-wrap align-items-center gap-3 py-3 border-top border-bottom text-secondary small mb-5 fw-medium">
-      <span class="d-flex align-items-center gap-1"><i class="bi bi-person-circle fs-6"></i><?= smartcms_h($post['author_name']) ?></span>
+      <span class="d-flex align-items-center gap-1"><i class="bi bi-person-circle fs-6 <?= $accent_text ?>"></i><?= smartcms_h($post['author_name']) ?></span>
       <span class="opacity-25">|</span>
-      <span class="d-flex align-items-center gap-1"><i class="bi bi-clock fs-6"></i><?= smartcms_h($post['created_at']) ?></span>
+      <span class="d-flex align-items-center gap-1"><i class="bi bi-clock fs-6 <?= $accent_text ?>"></i><?= smartcms_h($post['created_at']) ?></span>
       <span class="opacity-25">|</span>
-      <span class="d-flex align-items-center gap-1"><i class="bi bi-eye fs-6"></i>조회 <?= number_format((int)$post['view_count']) ?></span>
+      <span class="d-flex align-items-center gap-1"><i class="bi bi-eye fs-6 <?= $accent_text ?>"></i>조회 <?= number_format((int)$post['view_count']) ?></span>
       <span class="opacity-25 d-none d-md-inline">|</span>
-      <span class="d-flex align-items-center gap-1"><i class="bi bi-chat-dots fs-6"></i>댓글 <?= count($comments) ?></span>
+      <span class="d-flex align-items-center gap-1"><i class="bi bi-chat-dots fs-6 <?= $accent_text ?>"></i>댓글 <?= count($comments) ?></span>
     </div>
 
     <div class="mb-5 text-break lh-lg small text-dark">
@@ -53,7 +57,7 @@
     <?php endif; ?>
 
     <footer class="pt-4 border-top">
-      <a class="btn btn-dark rounded-pill px-4 fw-bold shadow-none"
+      <a class="btn <?= $skin_meta['button_class'] ?> rounded-pill px-4 fw-bold shadow-none <?= smartcms_h((string)$skin_meta['button_text_class']) ?>"
          href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
         <i class="bi bi-list-ul me-1"></i>목록으로 이동
       </a>
@@ -85,7 +89,7 @@
                 <?= smartcms_csrf_input() ?>
                 <input type="hidden" name="action" value="comment_hide">
                 <input type="hidden" name="comment_id" value="<?= smartcms_h($comment['id']) ?>">
-                <button class="btn btn-outline-danger btn-sm rounded-pill px-3 shadow-none fw-bold border-2" type="submit">댓글 숨김</button>
+                <button class="btn btn-danger btn-sm rounded-pill px-3 shadow-none fw-bold" type="submit">댓글 숨김</button>
               </form>
             <?php endif; ?>
           </article>
