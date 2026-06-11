@@ -75,27 +75,6 @@ function smartcms_board_truncate_title(string $title, int $length): string
     return substr($title, 0, $length) . '...';
 }
 
-function smartcms_board_ensure_title_length_column(): void
-{
-    static $checked = false;
-    if ($checked) {
-        return;
-    }
-    $checked = true;
-
-    try {
-        $table = smartcms_table('boards');
-        $stmt = smartcms_db()->query("SHOW COLUMNS FROM `{$table}` LIKE 'title_length_limit'");
-        if ($stmt === false || $stmt->fetch() === false) {
-            smartcms_db()->exec(
-                "ALTER TABLE `{$table}` ADD COLUMN title_length_limit SMALLINT UNSIGNED NOT NULL DEFAULT 0 AFTER items_per_page"
-            );
-        }
-    } catch (Throwable) {
-        // Schema auto-migration must not break runtime pages.
-    }
-}
-
 function smartcms_board_post_url(string $board_key, int $post_id): string
 {
     return smartcms_board_url($board_key, '/board/view/') . '&id=' . rawurlencode((string)$post_id);
@@ -120,8 +99,6 @@ function smartcms_home_date(?string $value): string
     $ts = strtotime($value);
     return $ts ? date('m.d', $ts) : $value;
 }
-
-smartcms_board_ensure_title_length_column();
 
 function smartcms_board_list(): array
 {

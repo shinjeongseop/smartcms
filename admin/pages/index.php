@@ -8,27 +8,35 @@ $message_type = 'info';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
-    $id = (int)($_POST['id'] ?? 0);
+    $page_key = trim((string)($_POST['page_key'] ?? ''));
+    $page_path = trim((string)($_POST['page_path'] ?? ''));
+    $title = trim((string)($_POST['title'] ?? ''));
     $view_level = max(0, min(10, (int)($_POST['page_view_level'] ?? 0)));
     $write_level = max(0, min(10, (int)($_POST['page_write_level'] ?? 8)));
     $manage_level = max(0, min(10, (int)($_POST['page_manage_level'] ?? 8)));
     $allow_guest = isset($_POST['allow_guest']) ? 1 : 0;
     $status = (string)($_POST['status'] ?? 'active');
 
-    if (!in_array($status, ['active', 'disabled'], true)) {
+    if ($page_key === '' || $page_path === '' || $title === '' || !in_array($status, ['active', 'disabled'], true)) {
         $message = '올바르지 않은 페이지 상태입니다.';
         $message_type = 'error';
     } else {
         smartcms_execute(
-            "UPDATE " . smartcms_table('page_permissions') . "
-             SET page_view_level = :page_view_level,
-                 page_write_level = :page_write_level,
-                 page_manage_level = :page_manage_level,
-                 allow_guest = :allow_guest,
-                 status = :status
-             WHERE id = :id",
+            "INSERT INTO " . smartcms_table('page_permissions') . "
+             (page_key, page_path, title, page_view_level, page_write_level, page_manage_level, allow_guest, status)
+             VALUES (:page_key, :page_path, :title, :page_view_level, :page_write_level, :page_manage_level, :allow_guest, :status)
+             ON DUPLICATE KEY UPDATE
+                 page_path = VALUES(page_path),
+                 title = VALUES(title),
+                 page_view_level = VALUES(page_view_level),
+                 page_write_level = VALUES(page_write_level),
+                 page_manage_level = VALUES(page_manage_level),
+                 allow_guest = VALUES(allow_guest),
+                 status = VALUES(status)",
             [
-                'id' => $id,
+                'page_key' => $page_key,
+                'page_path' => $page_path,
+                'title' => $title,
                 'page_view_level' => $view_level,
                 'page_write_level' => $write_level,
                 'page_manage_level' => $manage_level,
@@ -50,6 +58,29 @@ try {
          LIMIT 100"
     );
     $pages = $stmt->fetchAll();
+    foreach (smartcms_page_permission_defaults() as $default_page) {
+        $exists = false;
+        foreach ($pages as $page) {
+            if ((string)$page['page_key'] === (string)$default_page['page_key']) {
+                $exists = true;
+                break;
+            }
+        }
+        if (!$exists) {
+            $pages[] = [
+                'id' => 0,
+                'page_key' => $default_page['page_key'],
+                'page_path' => $default_page['page_path'],
+                'title' => $default_page['title'],
+                'page_view_level' => $default_page['page_view_level'],
+                'page_write_level' => 8,
+                'page_manage_level' => 8,
+                'allow_guest' => $default_page['allow_guest'],
+                'status' => $default_page['status'],
+                'updated_at' => null,
+            ];
+        }
+    }
 } catch (Throwable $e) {
     $message = '페이지 권한 목록을 불러오지 못했습니다: ' . $e->getMessage();
     $message_type = 'error';
@@ -121,7 +152,9 @@ require SMARTCMS_ROOT . '/admin/head.php';
                 <td class="text-end pe-4 py-3">
                   <form class="d-inline-flex gap-2 align-items-center" method="post">
                     <?= smartcms_csrf_input() ?>
-                    <input type="hidden" name="id" value="<?= smartcms_h($page['id']) ?>">
+                    <input type="hidden" name="page_key" value="<?= smartcms_h($page['page_key']) ?>">
+                    <input type="hidden" name="page_path" value="<?= smartcms_h($page['page_path']) ?>">
+                    <input type="hidden" name="title" value="<?= smartcms_h($page['title']) ?>">
                     <select class="form-select form-select-sm fw-bold sc-admin-select-page-level" name="page_view_level">
                       <?php for ($level = 0; $level <= 10; $level++): ?>
                         <option value="<?= $level ?>" <?= $level === (int)$page['page_view_level'] ? 'selected' : '' ?>>LV <?= $level ?></option>

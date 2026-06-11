@@ -74,6 +74,20 @@ function smartcms_require_level(int $required_level, ?string $redirect_to = null
     exit;
 }
 
+function smartcms_page_permission_defaults(): array
+{
+    return [
+        'member_register' => [
+            'page_key' => 'member_register',
+            'page_path' => '/member/register/',
+            'title' => '회원가입',
+            'page_view_level' => 0,
+            'allow_guest' => 1,
+            'status' => 'active',
+        ],
+    ];
+}
+
 function smartcms_require_page_view(string $page_key, string $page_path, string $title, int $default_view_level = 0): ?array
 {
     $permission = smartcms_fetch_one(
@@ -85,19 +99,11 @@ function smartcms_require_page_view(string $page_key, string $page_path, string 
     );
 
     if (!$permission) {
-        smartcms_execute(
-            "INSERT INTO " . smartcms_table('page_permissions') . "
-             (page_key, page_path, title, page_view_level, allow_guest, status)
-             VALUES (:page_key, :page_path, :title, :page_view_level, :allow_guest, 'active')",
-            [
-                'page_key' => $page_key,
-                'page_path' => $page_path,
-                'title' => $title,
-                'page_view_level' => $default_view_level,
-                'allow_guest' => $default_view_level <= 0 ? 1 : 0,
-            ]
-        );
-        $permission = [
+        $defaults = smartcms_page_permission_defaults()[$page_key] ?? null;
+        $permission = $defaults ?? [
+            'page_key' => $page_key,
+            'page_path' => $page_path,
+            'title' => $title,
             'page_view_level' => $default_view_level,
             'allow_guest' => $default_view_level <= 0 ? 1 : 0,
             'status' => 'active',

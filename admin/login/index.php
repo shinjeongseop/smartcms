@@ -60,17 +60,9 @@ require SMARTCMS_ROOT . '/admin/head.php';
     </div>
 
     <div class="mb-3">
-      <div class="d-flex justify-content-between align-items-center mb-1">
-        <label for="password" class="form-label small fw-bold text-uppercase opacity-75 mb-0">Password</label>
-        <a href="#" class="text-primary small text-decoration-none">Forgot Password?</a>
-      </div>
+      <label for="password" class="form-label small fw-bold text-uppercase opacity-75 mb-1">Password</label>
       <input class="form-control fs-6" id="password" name="password" type="password"
              placeholder="············" autocomplete="current-password" required>
-    </div>
-
-    <div class="form-check text-start mb-4">
-      <input class="form-check-input" id="remember" name="remember" type="checkbox" value="1">
-      <label class="form-check-label small" for="remember">Remember me</label>
     </div>
 
     <button class="btn btn-primary w-100 py-2 fw-bold shadow-sm" type="submit">LOGIN</button>
