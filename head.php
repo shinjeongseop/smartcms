@@ -86,7 +86,7 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
                 $is_active = ($key === $active_menu);
             ?>
               <li class="nav-item">
-                <a class="nav-link py-3 px-4 text-center text-body <?= $is_active ? 'active fw-bold text-primary border-bottom border-primary border-3' : '' ?>"
+                <a class="nav-link py-3 px-4 text-center text-body border-bottom border-3 <?= $is_active ? 'active fw-bold text-primary border-primary' : 'border-white' ?>"
                    href="<?= smartcms_h(smartcms_base_url((string)$item['href'])) ?>">
                   <?= smartcms_h((string)$item['label']) ?>
                 </a>

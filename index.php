@@ -5,16 +5,6 @@ require_once __DIR__ . '/common/config.php';
 require_once __DIR__ . '/common/auth.php';
 require_once __DIR__ . '/common/board.php';
 
-function smartcms_home_date(?string $value): string
-{
-    if (!$value) {
-        return '';
-    }
-
-    $ts = strtotime($value);
-    return $ts ? date('m.d', $ts) : $value;
-}
-
 $user = smartcms_current_user();
 $boards = [];
 $board_map = [];

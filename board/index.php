@@ -40,11 +40,14 @@ try {
 
 $page_title = $board ? (string)$board['board_name'] : ($keyword !== '' ? '게시판 검색' : '게시판');
 
-$SMARTCMS_HEAD = ['title' => $page_title];
+$active_menu = $board && in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
+    ? (string)$board['board_key']
+    : 'boards';
+$SMARTCMS_HEAD = ['title' => $page_title, 'active_menu' => $active_menu, 'main_class' => 'min-vh-100'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
-<div class="container-fluid container-xxl py-4 py-lg-5">
+<div class="container-fluid container-xxl pt-4 pt-lg-5">
   <header class="card border shadow-sm mb-4">
     <div class="card-body p-4 p-lg-5">
       <p class="text-uppercase small fw-semibold text-primary mb-2">Board</p>

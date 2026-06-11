@@ -39,6 +39,16 @@ function smartcms_board_excerpt(string $content, int $length = 200): string
     return substr($plain, 0, $length);
 }
 
+function smartcms_home_date(?string $value): string
+{
+    if (!$value) {
+        return '';
+    }
+
+    $ts = strtotime($value);
+    return $ts ? date('m.d', $ts) : $value;
+}
+
 function smartcms_board_list(): array
 {
     $stmt = smartcms_db()->query(

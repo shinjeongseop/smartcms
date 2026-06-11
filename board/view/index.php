@@ -2,9 +2,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../common/board.php';
-require_once __DIR__ . '/../../head.php';
-require_once __DIR__ . '/../../common/ui/components.php';
-require_once __DIR__ . '/../../foot.php';
 
 $board_key = smartcms_board_key((string)($_GET['board'] ?? ''));
 $post_id = (int)($_GET['id'] ?? 0);
@@ -71,11 +68,14 @@ $comments = smartcms_board_comments((int)$post['id']);
 $files = smartcms_board_files((int)$post['id']);
 $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_key'], 5);
 
-$SMARTCMS_HEAD = ['title' => (string)$post['title'], 'body_class' => 'bg-light'];
+$active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
+    ? (string)$board['board_key']
+    : 'boards';
+$SMARTCMS_HEAD = ['title' => (string)$post['title'], 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'min-vh-100'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
-<main class="container-fluid container-xxl py-4 py-lg-5">
+<div class="container-fluid container-xxl pt-4 pt-lg-5">
   <div class="row g-4 align-items-start">
     <section class="col-12 col-md-8 col-lg-9">
       <?php if ($message !== ''): ?>
@@ -136,7 +136,7 @@ require SMARTCMS_ROOT . '/head.php';
       </div>
     </aside>
   </div>
-</main>
+</div>
 
 <?php
 $SMARTCMS_FOOT = [];

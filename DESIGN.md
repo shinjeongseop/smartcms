@@ -30,7 +30,7 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 
 ## Typography
 
-- **Body Font**: `Noto Sans KR`
+- **Body Font**: `Pretendard`
 - **Code Font**: `JetBrains Mono`, `Fira Code`, monospace
 
 | Level     | Size     | Weight | Utility              |

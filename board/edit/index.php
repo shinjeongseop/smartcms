@@ -58,7 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_type = $result['ok'] ? 'success' : 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '게시글 수정', 'body_class' => 'bg-light', 'active_menu' => (string)$board['board_key']];
+$active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
+    ? (string)$board['board_key']
+    : 'boards';
+$SMARTCMS_HEAD = ['title' => '게시글 수정', 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'min-vh-100'];
 require SMARTCMS_ROOT . '/head.php';
 
 // Skin variables
@@ -77,7 +80,7 @@ $back_label = '취소 및 돌아가기';
 $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_key'], 5);
 ?>
 
-<main class="container-fluid container-xxl py-4 py-lg-5">
+<div class="container-fluid container-xxl pt-4 pt-lg-5">
   <div class="row g-4 align-items-start">
     <section class="col-12 col-md-8 col-lg-9">
       <!-- 헤더 카드 -->
@@ -135,7 +138,7 @@ $recent_board_posts = smartcms_board_recent_posts_by_key((string)$board['board_k
       </div>
     </aside>
   </div>
-</main>
+</div>
 
 <?php
 $SMARTCMS_FOOT = [];
