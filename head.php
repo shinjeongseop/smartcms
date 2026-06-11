@@ -8,6 +8,7 @@ require_once __DIR__ . '/common/ui/components.php';
 $title = (string)($SMARTCMS_HEAD['title'] ?? 'smartcms');
 $active_menu = (string)($SMARTCMS_HEAD['active_menu'] ?? '');
 $body_class = trim((string)($SMARTCMS_HEAD['body_class'] ?? 'bg-light'));
+$main_class = trim((string)($SMARTCMS_HEAD['main_class'] ?? 'min-vh-100 py-4 py-lg-5'));
 $css_url = (string)smartcms_config_value('theme.css_url', '/common/css/common.css');
 $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
 ?>
@@ -135,4 +136,4 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
   </header>
 
   <!-- [MAIN] 메인 콘텐츠 영역 -->
-  <main class="min-vh-100 py-4 py-lg-5">
+  <main class="<?= smartcms_h($main_class) ?>">

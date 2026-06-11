@@ -58,6 +58,7 @@ $SMARTCMS_HEAD = [
     'title' => 'smartcms Community',
     'body_class' => 'bg-light',
     'active_menu' => 'home',
+    'main_class' => 'min-vh-100',
 ];
 
 require SMARTCMS_ROOT . '/head.php';
@@ -105,7 +106,7 @@ require SMARTCMS_ROOT . '/head.php';
   </div>
 </header>
 
-<div class="container-xxl py-5">
+<div class="container-xxl pt-5">
   <?php if ($message !== ''): ?>
     <aside class="alert alert-danger d-flex align-items-center gap-2 mb-5 shadow-sm" role="alert">
       <i class="bi bi-exclamation-triangle-fill fs-5"></i>
