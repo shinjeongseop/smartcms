@@ -83,10 +83,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
 <section class="container-fluid py-2">
   <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <div>
-      <h1 class="h3 fw-bold mb-1 text-dark">데이터베이스 관리 도구</h1>
-      <p class="text-secondary small mb-0 fw-medium">시스템 데이터의 안전한 백업, 복구 및 유지보수를 수행합니다.</p>
-    </div>
+    <p class="text-secondary small mb-0 fw-medium">시스템 데이터의 안전한 백업, 복구 및 유지보수를 수행합니다.</p>
   </header>
 
   <?php if ($message !== ''): ?>

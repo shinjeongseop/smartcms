@@ -67,10 +67,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
 <section class="container-fluid py-2">
   <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <div>
-      <h1 class="h3 fw-bold mb-1 text-dark">게시판 관리</h1>
-      <p class="text-secondary small mb-0 fw-medium">시스템의 게시판 생성 및 운영 설정을 통합 관리합니다.</p>
-    </div>
+    <p class="text-secondary small mb-0 fw-medium">시스템의 게시판 생성 및 운영 설정을 통합 관리합니다.</p>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb mb-0 small fw-bold">
         <li class="breadcrumb-item"><a href="/admin/dashboard/" class="text-decoration-none text-secondary">관리자 홈</a></li>

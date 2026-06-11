@@ -44,10 +44,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
 <section class="container-fluid py-2">
   <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <div>
-      <h1 class="h3 fw-bold mb-1 text-dark">시스템 로그 및 감사</h1>
-      <p class="text-secondary small mb-0 fw-medium">시스템의 실시간 활동 내역과 보안 위협을 모니터링합니다.</p>
-    </div>
+    <p class="text-secondary small mb-0 fw-medium">시스템의 실시간 활동 내역과 보안 위협을 모니터링합니다.</p>
   </header>
 
   <?php if ($message !== ''): ?>

@@ -88,10 +88,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
 <section class="container-fluid py-2">
   <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <div>
-      <h1 class="h3 fw-bold mb-1 text-dark">상세 설정: <?= smartcms_h($board['board_name']) ?></h1>
-      <p class="text-secondary small mb-0 fw-medium">게시판의 세부 기능 및 접근 권한을 정밀하게 제어합니다.</p>
-    </div>
+    <p class="text-secondary small mb-0 fw-medium">게시판의 세부 기능 및 접근 권한을 정밀하게 제어합니다.</p>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb mb-0 small fw-bold">
         <li class="breadcrumb-item"><a href="/admin/boards/" class="text-decoration-none text-secondary">게시판 관리</a></li>

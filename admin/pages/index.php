@@ -61,10 +61,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
 <section class="container-fluid py-2">
   <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <div>
-      <h1 class="h3 fw-bold mb-1 text-dark">페이지 권한 관리 (ACL)</h1>
-      <p class="text-secondary small mb-0 fw-medium">시스템에서 생성된 개별 페이지의 접근 권한을 제어합니다.</p>
-    </div>
+    <p class="text-secondary small mb-0 fw-medium">시스템에서 생성된 개별 페이지의 접근 권한을 제어합니다.</p>
     <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-bold shadow-sm">
       총 <?= count($pages) ?>개 등록됨
     </span>
