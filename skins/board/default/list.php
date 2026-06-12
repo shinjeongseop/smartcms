@@ -38,12 +38,12 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
     </header>
 
     <?php if ($layout === 'cards'): ?>
-      <div class="p-4 p-lg-5">
-        <div class="row g-4">
+      <div class="<?= $gallery_mode ? 'p-3 p-lg-4' : 'p-4 p-lg-5' ?>">
+        <div class="row <?= $gallery_mode ? 'g-3 g-lg-4' : 'g-4' ?>">
           <?php foreach ($posts as $post): ?>
             <div class="<?= $gallery_mode ? 'col-6 col-md-4 col-xl-3' : 'col-12 col-md-6 col-xl-4' ?>">
               <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
-              <article class="card h-100 <?= $gallery_mode ? 'border-0 shadow-sm rounded-4 overflow-hidden' : 'border shadow-sm' ?>">
+              <article class="card h-100 <?= $gallery_mode ? 'border-0 shadow-sm rounded-3 overflow-hidden' : 'border shadow-sm' ?>">
                 <?php if ($first_image): ?>
                   <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
                   <a class="d-block bg-light overflow-hidden <?= $gallery_mode ? 'ratio ratio-1x1' : 'ratio ratio-4x3' ?>" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
@@ -58,12 +58,12 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                     </span>
                   </a>
                 <?php endif; ?>
-                <div class="card-body <?= $gallery_mode ? 'p-3 p-lg-4' : 'p-4' ?> d-flex flex-column gap-3">
+                <div class="card-body <?= $gallery_mode ? 'p-2 p-lg-3' : 'p-4' ?> d-flex flex-column gap-2">
                   <div class="d-flex align-items-center justify-content-between gap-2">
                     <?php if ((int)$post['is_notice'] === 1): ?>
-                      <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-3 py-2 fw-bold">공지</span>
+                      <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-2 py-1 fw-bold">공지</span>
                     <?php else: ?>
-                      <span class="badge bg-light text-secondary border rounded-pill px-3 py-2 fw-bold">#<?= (int)$post['id'] ?></span>
+                      <span class="badge bg-light text-secondary border rounded-pill px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
                     <?php endif; ?>
                     <div class="d-flex align-items-center gap-2 text-secondary small">
                       <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?><i class="bi bi-paperclip <?= $accent_text ?>"></i><?php endif; ?>
