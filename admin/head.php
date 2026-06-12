@@ -107,5 +107,5 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
       </header>
 
       <main class="flex-grow-1">
-        <div class="p-4">
+        <div class="px-3 py-4 px-md-4">
 <?php endif; ?>

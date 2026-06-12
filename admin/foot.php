@@ -9,7 +9,7 @@ if (!$is_login_page) {
     </div>
     </main>
     <footer class="mt-auto bg-white border-top py-4 mt-4 mx-n3 mx-lg-n4">
-      <div class="container-fluid px-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-secondary">
+      <div class="container-fluid px-3 px-md-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-secondary">
         <span>&copy; <?= date('Y') ?> <a href="#" class="text-decoration-none fw-bold">smartcms</a>. All rights reserved.</span>
         <div class="d-flex gap-3">
           <a href="<?= smartcms_h(smartcms_base_url('/')) ?>" class="text-decoration-none text-secondary">사이트 홈</a>
