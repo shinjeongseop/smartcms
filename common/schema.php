@@ -113,6 +113,7 @@ function smartcms_create_board_posts_table(): void
         parent_id BIGINT UNSIGNED DEFAULT NULL,
         category VARCHAR(80) DEFAULT NULL,
         title VARCHAR(255) NOT NULL,
+        link_url VARCHAR(500) DEFAULT NULL,
         content MEDIUMTEXT NOT NULL,
         content_mode ENUM('text','editor') NOT NULL DEFAULT 'text',
         excerpt VARCHAR(500) DEFAULT NULL,

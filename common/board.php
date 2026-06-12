@@ -170,6 +170,49 @@ function smartcms_ensure_board_posts_content_mode_column(): void
     }
 }
 
+function smartcms_board_normalize_link_url(string $value): string
+{
+    $value = trim($value);
+    if ($value === '') {
+        return '';
+    }
+
+    if (preg_match('#^(https?:|mailto:|tel:|/|\\#)#i', $value) !== 1) {
+        return '';
+    }
+
+    return $value;
+}
+
+function smartcms_ensure_board_posts_link_column(): void
+{
+    static $checked = false;
+    if ($checked) {
+        return;
+    }
+    $checked = true;
+
+    try {
+        $exists = (int)smartcms_fetch_value(
+            "SELECT COUNT(*)
+             FROM INFORMATION_SCHEMA.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = :table_name
+               AND COLUMN_NAME = 'link_url'",
+            ['table_name' => smartcms_table('board_posts')]
+        );
+
+        if ($exists === 0) {
+            smartcms_execute(
+                "ALTER TABLE " . smartcms_table('board_posts') . "
+                 ADD COLUMN link_url VARCHAR(500) DEFAULT NULL AFTER title"
+            );
+        }
+    } catch (Throwable $e) {
+        // Keep the app usable even if schema migration is not allowed.
+    }
+}
+
 function smartcms_board_sanitize_editor_html(string $html): string
 {
     $html = trim($html);
@@ -609,8 +652,9 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
 function smartcms_board_post_find(int $board_id, int $post_id): ?array
 {
     smartcms_ensure_board_posts_content_mode_column();
+    smartcms_ensure_board_posts_link_column();
     return smartcms_fetch_one(
-        "SELECT id, board_id, title, content, content_mode, author_id, author_name, is_notice, is_secret, view_count, comment_count, created_at, updated_at
+        "SELECT id, board_id, title, link_url, content, content_mode, author_id, author_name, is_notice, is_secret, view_count, comment_count, created_at, updated_at
          FROM " . smartcms_table('board_posts') . "
          WHERE board_id = :board_id AND id = :id AND is_hidden = 0
          LIMIT 1",
@@ -759,14 +803,16 @@ function smartcms_board_create_comment(array $board, array $post, array $user, s
     return ['ok' => true, 'message' => '댓글을 등록했습니다.'];
 }
 
-function smartcms_board_update_post(array $board, array $post, array $user, string $title, string $content, string $content_mode, bool $is_notice, bool $is_secret): array
+function smartcms_board_update_post(array $board, array $post, array $user, string $title, string $link_url, string $content, string $content_mode, bool $is_notice, bool $is_secret): array
 {
     smartcms_ensure_board_posts_content_mode_column();
+    smartcms_ensure_board_posts_link_column();
     if (!smartcms_board_can_manage_post($board, $post, $user)) {
         return ['ok' => false, 'message' => '글 수정 권한이 없습니다.'];
     }
 
     $title = trim($title);
+    $link_url = smartcms_board_normalize_link_url($link_url);
     $content = trim($content);
     $content_mode = smartcms_board_normalize_content_mode($content_mode);
     if ($title === '' || $content === '') {
@@ -777,6 +823,7 @@ function smartcms_board_update_post(array $board, array $post, array $user, stri
     smartcms_execute(
         "UPDATE " . smartcms_table('board_posts') . "
          SET title = :title,
+             link_url = :link_url,
              content = :content,
              content_mode = :content_mode,
              excerpt = :excerpt,
@@ -787,6 +834,7 @@ function smartcms_board_update_post(array $board, array $post, array $user, stri
             'id' => (int)$post['id'],
             'board_id' => (int)$board['id'],
             'title' => $title,
+            'link_url' => $link_url !== '' ? $link_url : null,
             'content' => $content,
             'content_mode' => $content_mode,
             'excerpt' => smartcms_board_excerpt($content),
@@ -1049,10 +1097,12 @@ function smartcms_board_post_counts(): array
     return $counts;
 }
 
-function smartcms_board_create_post(array $board, array $user, string $title, string $content, string $content_mode = 'text', bool $is_notice = false, bool $is_secret = false): array
+function smartcms_board_create_post(array $board, array $user, string $title, string $link_url, string $content, string $content_mode = 'text', bool $is_notice = false, bool $is_secret = false): array
 {
     smartcms_ensure_board_posts_content_mode_column();
+    smartcms_ensure_board_posts_link_column();
     $title = trim($title);
+    $link_url = smartcms_board_normalize_link_url($link_url);
     $content = trim($content);
     $content_mode = smartcms_board_normalize_content_mode($content_mode);
     if ($title === '' || $content === '') {
@@ -1061,11 +1111,12 @@ function smartcms_board_create_post(array $board, array $user, string $title, st
 
     smartcms_execute(
         "INSERT INTO " . smartcms_table('board_posts') . "
-         (board_id, title, content, content_mode, excerpt, author_id, author_name, is_notice, is_secret)
-         VALUES (:board_id, :title, :content, :content_mode, :excerpt, :author_id, :author_name, :is_notice, :is_secret)",
+         (board_id, title, link_url, content, content_mode, excerpt, author_id, author_name, is_notice, is_secret)
+         VALUES (:board_id, :title, :link_url, :content, :content_mode, :excerpt, :author_id, :author_name, :is_notice, :is_secret)",
         [
             'board_id' => (int)$board['id'],
             'title' => $title,
+            'link_url' => $link_url !== '' ? $link_url : null,
             'content' => $content,
             'content_mode' => $content_mode,
             'excerpt' => smartcms_board_excerpt($content),

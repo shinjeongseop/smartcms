@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $post,
             $user,
             (string)($_POST['title'] ?? ''),
+            (string)($_POST['link_url'] ?? ''),
             (string)($_POST['content'] ?? ''),
             $content_mode,
             isset($_POST['is_notice']),
@@ -100,6 +101,7 @@ $message_type = (string)smartcms_flash_get('message_type', $message_type);
 $form_action = 'update';
 $form_values = [
     'title' => (string)$post['title'],
+    'link_url' => (string)($post['link_url'] ?? ''),
     'content' => (string)$post['content'],
     'content_mode' => $use_editor ? 'editor' : 'text',
     'is_notice' => (int)$post['is_notice'] === 1,

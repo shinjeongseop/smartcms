@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $board,
         $user,
         (string)($_POST['title'] ?? ''),
+        (string)($_POST['link_url'] ?? ''),
         (string)($_POST['content'] ?? ''),
         $content_mode,
         isset($_POST['is_notice']) && smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user),
@@ -62,9 +63,10 @@ $message = (string)smartcms_flash_get('message', $message);
 $message_type = (string)smartcms_flash_get('message_type', $message_type);
 $form_action = 'create';
 $form_enctype = 'multipart/form-data';
-$form_values = ['title' => '', 'content' => '', 'content_mode' => $use_editor ? 'editor' : 'text', 'is_notice' => false, 'is_secret' => false];
+$form_values = ['title' => '', 'link_url' => '', 'content' => '', 'content_mode' => $use_editor ? 'editor' : 'text', 'is_notice' => false, 'is_secret' => false];
 $show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
-$submit_label = '새글';
+$submit_label = '저장';
+$show_submit_icon = false;
 $back_url = smartcms_board_url((string)$board['board_key']);
 $back_label = '목록';
 if ($use_editor) {

@@ -6,6 +6,7 @@
 $skin_meta = smartcms_board_skin_meta($board);
 $accent = (string)$skin_meta['accent'];
 $use_editor = (int)($board['use_editor'] ?? 1) === 1;
+$show_submit_icon = $show_submit_icon ?? true;
 ?>
 <article class="smartcms-board-form">
   <div class="card border shadow-sm bg-white overflow-hidden">
@@ -18,6 +19,12 @@ $use_editor = (int)($board['use_editor'] ?? 1) === 1;
           <div class="col-12">
             <label for="title" class="form-label fw-bold text-dark">제목 <span class="text-primary">*</span></label>
             <input class="form-control py-2.5" id="title" name="title" value="<?= smartcms_h($form_values['title'] ?? '') ?>" placeholder="게시글 제목을 입력하세요." required>
+          </div>
+
+          <div class="col-12">
+            <label for="link_url" class="form-label fw-bold text-dark">링크</label>
+            <input class="form-control py-2.5" id="link_url" name="link_url" type="text" value="<?= smartcms_h($form_values['link_url'] ?? '') ?>" placeholder="https://example.com">
+            <div class="form-text">게시글과 함께 보여줄 외부 링크를 입력할 수 있습니다.</div>
           </div>
 
           <div class="col-12">
@@ -96,7 +103,7 @@ $use_editor = (int)($board['use_editor'] ?? 1) === 1;
           <div class="col-12 pt-3">
             <div class="d-flex flex-wrap gap-2">
               <button class="btn <?= $skin_meta['button_class'] ?> rounded-pill px-5 py-2 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?>" type="submit">
-                <i class="bi bi-check2-circle me-1"></i><?= smartcms_h($submit_label ?? '저장하기') ?>
+                <?php if ($show_submit_icon): ?><i class="bi bi-check2-circle me-1"></i><?php endif; ?><?= smartcms_h($submit_label ?? '저장하기') ?>
               </button>
               <a class="btn btn-light border rounded-pill px-4 py-2 fw-bold shadow-none text-secondary" href="<?= smartcms_h($back_url) ?>">
                 <?= smartcms_h($back_label ?? '취소하고 목록으로') ?>
