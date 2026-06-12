@@ -280,6 +280,94 @@ function smartcms_board_delete_editor_images(string $content): void
     smartcms_board_delete_editor_images_removed($content, '');
 }
 
+function smartcms_board_resize_image_file(string $path, string $mime, int $max_width = 1600, int $max_height = 1600, int $quality = 85): bool
+{
+    if (!is_file($path) || !preg_match('#^image/(jpeg|png|gif|webp)$#i', $mime)) {
+        return false;
+    }
+
+    $info = @getimagesize($path);
+    if (!is_array($info) || empty($info[0]) || empty($info[1])) {
+        return false;
+    }
+
+    $width = (int)$info[0];
+    $height = (int)$info[1];
+    if ($width <= 0 || $height <= 0) {
+        return false;
+    }
+
+    if ($width <= $max_width && $height <= $max_height) {
+        return false;
+    }
+
+    $ratio = min($max_width / $width, $max_height / $height);
+    if ($ratio >= 1) {
+        return false;
+    }
+
+    $new_width = max(1, (int)round($width * $ratio));
+    $new_height = max(1, (int)round($height * $ratio));
+
+    $mime = strtolower($mime);
+    $create_source = match ($mime) {
+        'image/jpeg' => function_exists('imagecreatefromjpeg') ? 'imagecreatefromjpeg' : null,
+        'image/png' => function_exists('imagecreatefrompng') ? 'imagecreatefrompng' : null,
+        'image/gif' => function_exists('imagecreatefromgif') ? 'imagecreatefromgif' : null,
+        'image/webp' => function_exists('imagecreatefromwebp') ? 'imagecreatefromwebp' : null,
+        default => null,
+    };
+
+    $save_target = match ($mime) {
+        'image/jpeg' => function_exists('imagejpeg') ? 'imagejpeg' : null,
+        'image/png' => function_exists('imagepng') ? 'imagepng' : null,
+        'image/gif' => function_exists('imagegif') ? 'imagegif' : null,
+        'image/webp' => function_exists('imagewebp') ? 'imagewebp' : null,
+        default => null,
+    };
+
+    if (!$create_source || !$save_target) {
+        return false;
+    }
+
+    $source = @$create_source($path);
+    if (!is_resource($source) && !($source instanceof GdImage)) {
+        return false;
+    }
+
+    $target = imagecreatetruecolor($new_width, $new_height);
+    if ($target === false) {
+        imagedestroy($source);
+        return false;
+    }
+
+    if ($mime === 'image/png' || $mime === 'image/gif' || $mime === 'image/webp') {
+        imagealphablending($target, false);
+        imagesavealpha($target, true);
+        $transparent = imagecolorallocatealpha($target, 0, 0, 0, 127);
+        imagefill($target, 0, 0, $transparent);
+    }
+
+    imagecopyresampled($target, $source, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+    $saved = false;
+    if ($mime === 'image/jpeg') {
+        $saved = (bool)$save_target($target, $path, max(1, min(100, $quality)));
+    } elseif ($mime === 'image/png') {
+        $png_quality = max(0, min(9, (int)round(9 - ($quality / 100) * 9)));
+        $saved = (bool)$save_target($target, $path, $png_quality);
+    } elseif ($mime === 'image/gif') {
+        $saved = (bool)$save_target($target, $path);
+    } elseif ($mime === 'image/webp') {
+        $saved = (bool)$save_target($target, $path, max(1, min(100, $quality)));
+    }
+
+    imagedestroy($source);
+    imagedestroy($target);
+
+    return $saved;
+}
+
 function smartcms_board_render_content(array $post): string
 {
     $content = (string)($post['content'] ?? '');
@@ -950,11 +1038,26 @@ function smartcms_board_store_uploads(array $board, int $post_id, array $user, a
 
         $original_name = basename((string)$name);
         $extension = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+        $mime = substr((string)$types[$index], 0, 120);
+        if (function_exists('finfo_open')) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            if ($finfo !== false) {
+                $detected_mime = (string)finfo_file($finfo, (string)$tmp_names[$index]);
+                finfo_close($finfo);
+                if ($detected_mime !== '') {
+                    $mime = substr($detected_mime, 0, 120);
+                }
+            }
+        }
         $stored_name = date('YmdHis') . '_' . bin2hex(random_bytes(8)) . ($extension !== '' ? '.' . $extension : '');
         $target_path = $upload_root . '/' . $stored_name;
 
         if (!move_uploaded_file((string)$tmp_names[$index], $target_path)) {
             return ['ok' => false, 'message' => '첨부파일 저장에 실패했습니다.', 'count' => $stored_count];
+        }
+
+        if (preg_match('#^image/(jpeg|png|gif|webp)$#i', $mime)) {
+            smartcms_board_resize_image_file($target_path, $mime);
         }
 
         smartcms_execute(
