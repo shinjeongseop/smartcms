@@ -8,7 +8,7 @@ $accent = (string)$skin_meta['accent'];
 $use_editor = (int)($board['use_editor'] ?? 1) === 1;
 ?>
 <article class="smartcms-board-form">
-  <div class="card border shadow-sm overflow-hidden">
+  <div class="card sc-board-surface overflow-hidden">
     <div class="card-body p-4 p-lg-5">
       <form method="post" enctype="<?= smartcms_h($form_enctype ?? 'application/x-www-form-urlencoded') ?>">
         <?= smartcms_csrf_input() ?>
@@ -59,7 +59,7 @@ $use_editor = (int)($board['use_editor'] ?? 1) === 1;
 
           <?php if (!empty($existing_files)): ?>
             <div class="col-12">
-              <section class="rounded-3 border bg-white p-3 p-md-4">
+              <section class="rounded-3 bg-white p-3 p-md-4 sc-board-surface">
                 <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
                   <h3 class="h6 fw-bold mb-0 text-dark"><i class="bi bi-paperclip me-1"></i>현재 첨부파일</h3>
                   <span class="badge text-bg-light border text-body-secondary">삭제 선택 가능</span>
@@ -108,7 +108,7 @@ $use_editor = (int)($board['use_editor'] ?? 1) === 1;
 
       <?php if (!empty($show_hide_form)): ?>
         <section class="mt-5 pt-5 border-top">
-          <div class="alert alert-danger border shadow-sm bg-danger-subtle p-4 mb-0">
+          <div class="alert alert-danger border bg-danger-subtle p-4 mb-0 sc-board-surface">
             <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
               <div>
                 <h3 class="h6 fw-bold mb-1 text-danger">게시글 관리 옵션</h3>

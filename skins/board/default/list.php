@@ -11,7 +11,7 @@ $gallery_mode = (string)($skin_meta['skin'] ?? '') === 'gallery';
 $thumb_config = smartcms_board_thumbnail_config($board, 'list');
 ?>
 <section class="board-list-container">
-  <div class="card border shadow-sm overflow-hidden">
+  <div class="card sc-board-surface overflow-hidden">
     <header class="card-header bg-white border-bottom p-4 p-lg-5">
       <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
         <h2 class="h3 fw-bold mb-0 text-dark">글 목록</h2>
@@ -43,7 +43,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
           <?php foreach ($posts as $post): ?>
             <div class="<?= $gallery_mode ? 'col-6 col-md-4 col-xl-3' : 'col-12 col-md-6 col-xl-4' ?>">
               <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
-              <article class="card h-100 <?= $gallery_mode ? 'border-0 shadow-sm rounded-3 overflow-hidden' : 'border shadow-sm' ?>">
+              <article class="card h-100 sc-board-surface <?= $gallery_mode ? 'rounded-3 overflow-hidden' : 'overflow-hidden' ?>">
                 <?php if ($first_image): ?>
                   <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
                   <a class="d-block bg-light overflow-hidden <?= $gallery_mode ? 'ratio ratio-1x1' : 'ratio ratio-4x3' ?>" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
