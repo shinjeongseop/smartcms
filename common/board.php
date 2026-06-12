@@ -105,7 +105,7 @@ function smartcms_board_sanitize_editor_html(string $html): string
         return smartcms_h($html);
     }
 
-    $allowed = ['p', 'div', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'hr', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+    $allowed = ['p', 'div', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'hr', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'img'];
     $sanitize_node = static function (DOMNode $node) use (&$sanitize_node, $allowed): string {
         if ($node->nodeType === XML_TEXT_NODE) {
             return htmlspecialchars($node->nodeValue ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -130,6 +130,26 @@ function smartcms_board_sanitize_editor_html(string $html): string
             'p', 'div', 'strong', 'b', 'em', 'i', 'u', 'blockquote', 'pre', 'code', 'ul', 'ol', 'li' => '<' . $tag . '>' . $children . '</' . $tag . '>',
             'hr' => '<hr>',
             'span', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' => '<' . $tag . '>' . $children . '</' . $tag . '>',
+            'img' => (function () use ($node): string {
+                $src = '';
+                if ($node->hasAttribute('src')) {
+                    $candidate = trim((string)$node->getAttribute('src'));
+                    if ($candidate !== '' && preg_match('#^(https?:|/|data:image/)#i', $candidate) === 1) {
+                        $src = htmlspecialchars($candidate, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+                    }
+                }
+
+                if ($src === '') {
+                    return '';
+                }
+
+                $alt = '';
+                if ($node->hasAttribute('alt')) {
+                    $alt = htmlspecialchars((string)$node->getAttribute('alt'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+                }
+
+                return '<img src="' . $src . '" alt="' . $alt . '" class="img-fluid rounded-3 d-block my-3" loading="lazy" decoding="async">';
+            })(),
             'a' => (function () use ($node, $children): string {
                 $href = '';
                 if ($node->hasAttribute('href')) {
@@ -230,6 +250,7 @@ function smartcms_board_delete_editor_images_removed(string $old_content, string
     $new_paths = smartcms_board_editor_image_paths($new_content);
     foreach (array_diff($old_paths, $new_paths) as $path) {
         if (is_file($path)) {
+            smartcms_image_delete_thumbnail_cache_for_source($path);
             @unlink($path);
         }
     }
@@ -1057,6 +1078,7 @@ function smartcms_board_delete_uploads(array $board, array $post, array $user, a
     foreach ($files as $file) {
         $path = SMARTCMS_ROOT . '/' . ltrim((string)$file['file_path'], '/');
         if (is_file($path)) {
+            smartcms_image_delete_thumbnail_cache_for_source($path);
             @unlink($path);
         }
     }

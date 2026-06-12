@@ -243,6 +243,25 @@ function smartcms_image_thumbnail_url_from_relative(string $relative_path, int $
     return smartcms_image_thumbnail_url_from_path($source_path, $max_width, $max_height, $quality);
 }
 
+function smartcms_image_delete_thumbnail_cache_for_source(string $source_path, array $sizes = [[480, 270], [640, 360], [760, 520], [900, 506]]): int
+{
+    $deleted = 0;
+    foreach ($sizes as $size) {
+        $max_width = (int)($size[0] ?? 0);
+        $max_height = (int)($size[1] ?? 0);
+        if ($max_width < 1 || $max_height < 1) {
+            continue;
+        }
+
+        $thumb_path = smartcms_image_thumbnail_cache_path($source_path, $max_width, $max_height);
+        if (is_file($thumb_path) && @unlink($thumb_path)) {
+            $deleted++;
+        }
+    }
+
+    return $deleted;
+}
+
 function smartcms_image_source_path_from_url(string $source_url): ?string
 {
     $source_url = trim($source_url);
@@ -293,4 +312,17 @@ function smartcms_image_extract_sources_from_html(string $html): array
     }
 
     return array_values(array_filter(array_unique($sources), static fn(string $src): bool => $src !== ''));
+}
+
+function smartcms_image_delete_thumbnail_cache_from_html(string $html, array $sizes = [[480, 270], [640, 360], [760, 520], [900, 506]]): int
+{
+    $deleted = 0;
+    foreach (smartcms_image_extract_sources_from_html($html) as $source_url) {
+        $source_path = smartcms_image_source_path_from_url($source_url);
+        if ($source_path !== null) {
+            $deleted += smartcms_image_delete_thumbnail_cache_for_source($source_path, $sizes);
+        }
+    }
+
+    return $deleted;
 }

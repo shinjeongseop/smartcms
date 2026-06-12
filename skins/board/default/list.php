@@ -7,6 +7,7 @@ $accent = (string)$skin_meta['accent'];
 $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
 $accent_bg_subtle = 'bg-' . $accent . '-subtle';
 $layout = (string)$skin_meta['layout'];
+$gallery_mode = (string)($skin_meta['skin'] ?? '') === 'gallery';
 ?>
 <section class="board-list-container">
   <div class="card border shadow-sm overflow-hidden">
@@ -39,27 +40,36 @@ $layout = (string)$skin_meta['layout'];
       <div class="p-4 p-lg-5">
         <div class="row g-4">
           <?php foreach ($posts as $post): ?>
-            <div class="col-12 col-md-6 col-xl-4">
+            <div class="<?= $gallery_mode ? 'col-6 col-md-4 col-xl-3' : 'col-12 col-md-6 col-xl-4' ?>">
               <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
-              <article class="card h-100 border shadow-sm">
+              <article class="card h-100 <?= $gallery_mode ? 'border-0 shadow-sm rounded-4 overflow-hidden' : 'border shadow-sm' ?>">
                 <?php if ($first_image): ?>
-                  <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, 640, 360); ?>
-                  <a class="d-block bg-light overflow-hidden ratio ratio-16x9" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                  <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, $gallery_mode ? 480 : 640, $gallery_mode ? 480 : 360); ?>
+                  <a class="d-block bg-light overflow-hidden <?= $gallery_mode ? 'ratio ratio-1x1' : 'ratio ratio-16x9' ?>" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$first_image['id']))) ?>" alt="<?= smartcms_h($first_image['original_name']) ?>">
                   </a>
+                <?php elseif ($gallery_mode): ?>
+                  <a class="d-flex align-items-center justify-content-center bg-light text-secondary ratio ratio-1x1 text-decoration-none"
+                     href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                    <span class="d-flex flex-column align-items-center gap-2">
+                      <i class="bi bi-image fs-1 opacity-50"></i>
+                      <span class="small fw-semibold">이미지 없음</span>
+                    </span>
+                  </a>
                 <?php endif; ?>
-                <div class="card-body p-4 d-flex flex-column gap-3">
-                  <div class="d-flex align-items-start justify-content-between gap-2">
+                <div class="card-body <?= $gallery_mode ? 'p-3 p-lg-4' : 'p-4' ?> d-flex flex-column gap-3">
+                  <div class="d-flex align-items-center justify-content-between gap-2">
                     <?php if ((int)$post['is_notice'] === 1): ?>
                       <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-3 py-2 fw-bold">공지</span>
                     <?php else: ?>
                       <span class="badge bg-light text-secondary border rounded-pill px-3 py-2 fw-bold">#<?= (int)$post['id'] ?></span>
                     <?php endif; ?>
-                    <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?>
-                      <i class="bi bi-paperclip <?= $accent_text ?>"></i>
-                    <?php endif; ?>
+                    <div class="d-flex align-items-center gap-2 text-secondary small">
+                      <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?><i class="bi bi-paperclip <?= $accent_text ?>"></i><?php endif; ?>
+                      <?php if ($gallery_mode && (int)$post['comment_count'] > 0): ?><span class="badge bg-light text-primary border rounded-pill"><?= (int)$post['comment_count'] ?></span><?php endif; ?>
+                    </div>
                   </div>
-                  <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm stretched-link"
+                  <a class="text-decoration-none fw-bold text-dark <?= $gallery_mode ? 'fs-6' : 'fs-5' ?> lh-sm stretched-link"
                      href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                     <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], smartcms_board_title_limit($board))) ?>
@@ -73,7 +83,7 @@ $layout = (string)$skin_meta['layout'];
                       <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                     </time>
                   </div>
-                  <?php if ((int)$post['comment_count'] > 0): ?>
+                  <?php if (!$gallery_mode && (int)$post['comment_count'] > 0): ?>
                     <div>
                       <span class="badge bg-light text-primary border rounded-pill small"><?= (int)$post['comment_count'] ?>개의 댓글</span>
                     </div>

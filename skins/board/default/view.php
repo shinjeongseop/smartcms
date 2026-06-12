@@ -5,7 +5,6 @@
 $skin_meta = smartcms_board_skin_meta($board);
 $accent = (string)$skin_meta['accent'];
 $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
-$editor_images = smartcms_board_editor_images_from_content((string)$post['content']);
 ?>
 <article class="card border shadow-sm overflow-hidden mb-4">
   <div class="card-body p-4 p-lg-5">
@@ -36,31 +35,6 @@ $editor_images = smartcms_board_editor_images_from_content((string)$post['conten
       <span class="opacity-25 d-none d-md-inline">|</span>
       <span class="d-flex align-items-center gap-1"><i class="bi bi-chat-dots fs-6 <?= $accent_text ?>"></i>댓글 <?= count($comments) ?></span>
     </div>
-
-    <?php if ($editor_images): ?>
-      <section class="mb-5">
-        <h3 class="h6 fw-bold mb-3 text-primary"><i class="bi bi-images me-1"></i>본문 이미지</h3>
-        <div class="row g-3">
-          <?php foreach ($editor_images as $image): ?>
-            <div class="col-12 col-md-6">
-              <figure class="border rounded-3 overflow-hidden bg-light mb-0 h-100">
-                <a class="d-block ratio ratio-16x9 bg-white" href="<?= smartcms_h($image['src']) ?>" target="_blank" rel="noopener">
-                  <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($image['thumb_url']) ?>" alt="<?= smartcms_h($image['original_name']) ?>">
-                </a>
-                <figcaption class="d-flex flex-column gap-1 border-top bg-white p-3 small">
-                  <span class="fw-semibold text-dark text-truncate"><?= smartcms_h($image['original_name']) ?></span>
-                  <span class="text-secondary"><?= number_format((int)$image['file_size']) ?> bytes</span>
-                  <div class="d-flex flex-wrap gap-2 pt-1">
-                    <a class="btn btn-light btn-sm border rounded-pill px-3 shadow-none fw-semibold" href="<?= smartcms_h($image['thumb_url']) ?>" target="_blank" rel="noopener">썸네일</a>
-                    <a class="btn btn-light btn-sm border rounded-pill px-3 shadow-none fw-semibold" href="<?= smartcms_h($image['src']) ?>" target="_blank" rel="noopener">원본</a>
-                  </div>
-                </figcaption>
-              </figure>
-            </div>
-          <?php endforeach; ?>
-        </div>
-      </section>
-    <?php endif; ?>
 
     <div class="mb-5 text-break lh-lg small text-dark">
       <?= smartcms_board_render_content($post) ?>
