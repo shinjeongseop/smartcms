@@ -1,6 +1,7 @@
 # smartcms 2.0 Design System
 
 > Version: 2.2 (Bootstrap Standard & Semantic)
+> Encoding: UTF-8
 > Philosophy: **Standard Bootstrap-Native**. 부트스트랩 5의 표준 컴포넌트 구조와 HTML5 시맨틱 태그를 100% 활용합니다. 임의의 배경색이나 테두리 제거를 지양하고 브라우저 기본 폼 스타일을 존중합니다.
 
 ## Overview
@@ -83,4 +84,4 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 
 ---
 
-_Last Updated: 2026-06-10_
+_Last Updated: 2026-06-13_
