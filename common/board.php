@@ -1170,7 +1170,7 @@ function smartcms_board_seed_defaults(int $created_by): array
 function smartcms_board_recent_posts(int $limit = 12): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name
+        "SELECT p.id, p.title, p.excerpt, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled'
@@ -1186,7 +1186,7 @@ function smartcms_board_recent_posts(int $limit = 12): array
 function smartcms_board_recent_posts_by_key(string $board_key, int $limit = 5): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.author_name, p.comment_count, p.attachment_count, p.view_count, p.created_at,
+        "SELECT p.id, p.title, p.excerpt, p.author_name, p.comment_count, p.attachment_count, p.view_count, p.created_at,
                 b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
