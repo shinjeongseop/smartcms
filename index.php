@@ -176,7 +176,6 @@ require SMARTCMS_ROOT . '/head.php';
               <?php foreach ($recent_posts as $post): ?>
                 <?php $recent_image = smartcms_board_first_image_file((int)$post['id']); ?>
                 <?php $recent_youtube = $recent_image ? null : smartcms_board_youtube_link_data($post); ?>
-                <?php $recent_excerpt = smartcms_board_excerpt((string)($post['excerpt'] ?? ''), 90); ?>
                 <a class="list-group-item list-group-item-action p-4"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                   <div class="row g-3 align-items-center">
@@ -195,18 +194,15 @@ require SMARTCMS_ROOT . '/head.php';
                           <i class="bi bi-file-earmark-text text-secondary fs-1 opacity-25"></i>
                         </div>
                       <?php endif; ?>
-                    </div>
-                    <div class="col-8 col-sm-9 col-md-10 min-w-0">
-                      <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                        <span class="badge text-bg-light text-secondary rounded-pill small border"><?= smartcms_h($post['board_name']) ?></span>
-                        <time class="small text-body-secondary fw-medium" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
-                          <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
-                        </time>
                       </div>
-                      <div class="text-dark fw-semibold fs-6 text-truncate mb-1"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></div>
-                      <?php if ($recent_excerpt !== ''): ?>
-                        <p class="small text-body-secondary mb-2 text-truncate"><?= smartcms_h($recent_excerpt) ?></p>
-                      <?php endif; ?>
+                      <div class="col-8 col-sm-9 col-md-10 min-w-0">
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                          <span class="badge text-bg-light text-secondary rounded-pill small border"><?= smartcms_h($post['board_name']) ?></span>
+                          <time class="small text-body-secondary fw-medium" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
+                            <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                          </time>
+                        </div>
+                        <div class="text-dark fw-semibold fs-6 text-truncate mb-1"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></div>
                       <div class="small text-body-secondary">
                         <span class="me-2"><i class="bi bi-person me-1"></i><?= smartcms_h($post['author_name']) ?></span>
                         <span class="me-2"><i class="bi bi-chat-dots me-1"></i><?= number_format((int)$post['comment_count']) ?></span>
