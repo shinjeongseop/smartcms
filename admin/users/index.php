@@ -71,14 +71,25 @@ try {
     $message_type = 'error';
 }
 
+if (array_key_exists('search', $_GET)) {
+    $search_length = function_exists('mb_strlen') ? mb_strlen($search) : strlen($search);
+    if ($search_length === 0) {
+        $message = '검색어를 입력하세요.';
+        $message_type = 'warning';
+    } elseif ($search_length < 2) {
+        $message = '검색어는 2글자 이상 입력하세요.';
+        $message_type = 'warning';
+    }
+}
+
 $SMARTCMS_HEAD = ['title' => '회원 관리', 'body_class' => 'smartcms-admin-page', 'active_menu' => 'users'];
 require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <!-- [MESSAGES] 알림 영역 -->
 <?php if ($message): ?>
-  <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4" role="alert">
-    <i class="bi bi-info-circle-fill fs-5"></i>
+  <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : ($message_type === 'warning' ? 'warning' : 'info') ) ?> d-flex align-items-center gap-2 mb-4" role="alert">
+    <i class="bi <?= $message_type === 'warning' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill' ?> fs-5"></i>
     <div class="fw-medium"><?= smartcms_h($message) ?></div>
   </aside>
 <?php endif; ?>
@@ -86,7 +97,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 <!-- [SEARCH] 검색 영역 -->
 <section class="card border shadow-sm mb-4">
     <div class="card-body p-4">
-        <form method="get" class="row g-3 align-items-center" role="search">
+        <form method="get" class="row g-3 align-items-center" role="search" data-search-min-length="2">
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>

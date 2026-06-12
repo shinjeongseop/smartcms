@@ -23,6 +23,9 @@ if (!$is_login_page) {
 }
 
 $scripts = (array)($SMARTCMS_FOOT['scripts'] ?? []);
+if (!in_array('/common/js/search-validator.js', $scripts, true)) {
+    $scripts[] = '/common/js/search-validator.js';
+}
 
 echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>' . PHP_EOL;
 foreach ($scripts as $script) {

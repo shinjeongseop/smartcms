@@ -13,7 +13,7 @@ $layout = (string)$skin_meta['layout'];
     <header class="card-header bg-white border-bottom p-4 p-lg-5">
       <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
         <h2 class="h3 fw-bold mb-0 text-dark">글 목록</h2>
-        <form class="row g-2 flex-grow-1 justify-content-lg-end mb-0" method="get" role="search">
+        <form class="row g-2 flex-grow-1 justify-content-lg-end mb-0" method="get" role="search" data-search-min-length="2">
           <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
           <div class="col-12 col-lg">
             <div class="input-group">
