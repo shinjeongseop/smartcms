@@ -657,12 +657,21 @@ function smartcms_board_can_manage_post(array $board, array $post, ?array $user)
     return (int)$post['author_id'] === (int)$user['id'] || smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
 }
 
-function smartcms_board_count_once(string $type, int $id, int $ttl = 60): bool
+function smartcms_board_count_once(string $type, int $id, int $ttl = 0): bool
 {
     smartcms_session_start();
     $_SESSION['smartcms_board_count_cache'] ??= [];
 
     $key = $type . ':' . $id;
+    if ($ttl <= 0) {
+        if (!empty($_SESSION['smartcms_board_count_cache'][$key])) {
+            return false;
+        }
+
+        $_SESSION['smartcms_board_count_cache'][$key] = true;
+        return true;
+    }
+
     $now = time();
     $last = (int)($_SESSION['smartcms_board_count_cache'][$key] ?? 0);
     if ($last > 0 && ($now - $last) < $ttl) {

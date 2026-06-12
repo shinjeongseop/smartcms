@@ -35,7 +35,7 @@ if (!is_file($path)) {
     exit;
 }
 
-if (smartcms_board_count_once('download', (int)$file['id'], 120)) {
+if (smartcms_board_count_once('download', (int)$file['id'])) {
     smartcms_execute(
         "UPDATE " . smartcms_table('board_files') . " SET download_count = download_count + 1 WHERE id = :id",
         ['id' => (int)$file['id']]
