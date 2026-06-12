@@ -16,6 +16,7 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 3. **Utility-First Layout**: 모든 레이아웃과 간격은 `p-*`, `m-*`, `d-flex`, `gap-*` 등 부트스트랩 유틸리티를 사용합니다.
 4. **Clean & High Contrast**: 페이지 배경은 `bg-light`로, 카드는 명확한 테두리(`border`)와 은은한 그림자(`shadow-sm`)를 가진 **흰색 배경**으로 구성합니다.
 5. **Rem-Based Scale**: 모든 폰트 크기와 여백, 간격은 `px` 대신 `rem` 기준으로 설정합니다.
+6. **Consistent Rhythm**: 간격은 `0.25rem`, `0.5rem`, `0.75rem`, `1rem`, `1.5rem`, `2rem` 같은 Bootstrap 친화적 리듬을 우선 사용합니다.
 
 ## Color Tokens (via Bootstrap Overrides)
 
@@ -35,6 +36,9 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 - **Body Font**: `Pretendard`
 - **Code Font**: `JetBrains Mono`, `Fira Code`, monospace
 - **Sizing Rule**: 모든 타이포그래피 크기는 `rem`으로만 표기합니다.
+- **Label Size**: `.form-label`은 `0.875rem`을 기본값으로 사용합니다.
+- **Body Size**: 본문은 `1rem`을 기본값으로 사용합니다.
+- **Small Size**: 보조 텍스트는 `0.875rem`을 사용합니다.
 
 | Level     | Size     | Weight | Utility              |
 | --------- | -------- | ------ | -------------------- |
@@ -51,6 +55,8 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 - **Spacing**: `spacer` 단위(1rem 기준) 기반 유틸리티 사용
 - **Containers**: 기본 `.container-xxl` (최대 1320px) 사용
 - **Gutter**: 기본 `g-4` (1.5rem) 사용
+- **Section Spacing**: 섹션 간 간격은 기본 `1.5rem` 이상 확보합니다.
+- **Page Padding**: 페이지 외곽 여백은 기본 `1.5rem` 또는 `2rem`을 사용합니다.
 
 ## Component Guidelines
 
@@ -58,12 +64,14 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 
 - **흰색 배경(`bg-white`)**, **표준 테두리(`border`)**, **은은한 그림자(`shadow-sm`)** 조합을 기본으로 합니다.
 - 내부 패딩은 기본 `p-4` (모바일 `p-3`)를 권장합니다.
+- 카드 내부 요소 간 간격은 `1rem` 내외로 유지합니다.
 
 ### Buttons (`.btn`)
 
 - 주요 액션: `.btn-primary` (Green)
 - 보조 액션: `.btn-secondary` (Gray) 또는 `.btn-light`
 - 스타일: `rounded-pill`을 사용하지 않습니다.
+- 버튼 높이와 패딩은 Bootstrap 기본값을 우선 사용하고, 별도 조정이 필요하면 `rem` 기준으로만 맞춥니다.
 
 ### Forms (`.form-control`)
 
@@ -71,6 +79,13 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 - 레이블은 `.form-label`과 `.fw-semibold`를 조합합니다.
 - `.form-label` 텍스트 크기는 `0.875rem`(14px)로 설정합니다.
 - 폼 관련 폰트 크기와 여백도 모두 `rem` 단위만 사용합니다.
+- 입력 필드, 레이블, 도움말 텍스트의 세로 간격은 `0.5rem`~`1rem` 범위에서 조정합니다.
+
+### Tables (`.table`)
+
+- 표는 기본 Bootstrap 테이블 스타일을 사용합니다.
+- 셀 패딩과 헤더 높이는 `rem` 기준으로만 조정합니다.
+- 강조가 필요한 경우 색상보다 굵기(`fw-semibold`)와 대비를 우선합니다.
 
 ## Do & Don't
 
@@ -86,6 +101,7 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 - 폼 요소에 `bg-light`, `border-0` 등 비표준 스타일 강제 적용
 - 한 페이지에 여러 개의 Primary 버튼 배치
 - 폰트 크기나 여백에 `px` 단위 사용
+- Bootstrap 유틸리티 대신 개별 숫자값을 화면마다 중복 작성
 
 ---
 
