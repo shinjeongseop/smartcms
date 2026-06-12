@@ -92,7 +92,6 @@ function smartcms_create_boards_table(): void
         skin VARCHAR(40) NOT NULL DEFAULT 'default',
         display_type ENUM('auto','card','list','table') NOT NULL DEFAULT 'auto',
         items_per_page TINYINT UNSIGNED NOT NULL DEFAULT 10,
-        title_length_limit SMALLINT UNSIGNED NOT NULL DEFAULT 0,
         use_editor TINYINT(1) NOT NULL DEFAULT 1,
         use_comments TINYINT(1) NOT NULL DEFAULT 1,
         use_attachments TINYINT(1) NOT NULL DEFAULT 1,

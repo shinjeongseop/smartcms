@@ -69,10 +69,10 @@ $gallery_mode = (string)($skin_meta['skin'] ?? '') === 'gallery';
                       <?php if ($gallery_mode && (int)$post['comment_count'] > 0): ?><span class="badge bg-light text-primary border rounded-pill"><?= (int)$post['comment_count'] ?></span><?php endif; ?>
                     </div>
                   </div>
-                  <a class="text-decoration-none fw-bold text-dark <?= $gallery_mode ? 'fs-6' : 'fs-5' ?> lh-sm stretched-link"
+                  <a class="text-decoration-none fw-bold text-dark <?= $gallery_mode ? 'fs-6' : 'fs-5' ?> lh-sm stretched-link d-block text-truncate"
                      href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
-                    <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], smartcms_board_title_limit($board))) ?>
+                    <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
                   </a>
                   <div class="d-flex flex-wrap gap-2 small text-secondary fw-medium">
                     <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h($post['author_name']) ?></span>
@@ -129,7 +129,7 @@ $gallery_mode = (string)($skin_meta['skin'] ?? '') === 'gallery';
                     <a class="text-decoration-none fw-semibold text-dark text-truncate fs-6 d-block flex-grow-1 min-w-0"
                        href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                       <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
-                      <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], smartcms_board_title_limit($board))) ?>
+                      <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
                     </a>
                     <?php if ((int)$post['comment_count'] > 0): ?>
                       <span class="badge bg-light text-primary border rounded-pill small"><?= (int)$post['comment_count'] ?></span>

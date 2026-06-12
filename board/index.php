@@ -103,7 +103,7 @@ require SMARTCMS_ROOT . '/head.php';
 
               <div class="flex-grow-1 min-w-0">
                 <div class="fw-bold text-dark text-truncate mb-1">
-                  <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], (int)($post['title_length_limit'] ?? 0))) ?>
+                  <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
                 </div>
                 <div class="small text-secondary text-truncate">
                   <?= smartcms_h($post['author_name']) ?> · <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>

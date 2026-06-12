@@ -306,31 +306,9 @@ function smartcms_board_file_thumbnail_url(array $file, int $max_width = 480, in
     return smartcms_image_thumbnail_url_from_relative($relative_path, $max_width, $max_height, $quality);
 }
 
-function smartcms_board_title_limit(array $board): int
+function smartcms_board_truncate_title(string $title): string
 {
-    return max(0, (int)($board['title_length_limit'] ?? 0));
-}
-
-function smartcms_board_truncate_title(string $title, int $length): string
-{
-    $title = trim(strip_tags($title));
-    if ($length <= 0 || $title === '') {
-        return $title;
-    }
-
-    if (function_exists('mb_strlen') && function_exists('mb_substr')) {
-        if (mb_strlen($title) <= $length) {
-            return $title;
-        }
-
-        return mb_substr($title, 0, $length) . '...';
-    }
-
-    if (strlen($title) <= $length) {
-        return $title;
-    }
-
-    return substr($title, 0, $length) . '...';
+    return trim(strip_tags($title));
 }
 
 function smartcms_board_post_url(string $board_key, int $post_id): string
@@ -514,7 +492,7 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
 
     $stmt = smartcms_db()->prepare(
         "SELECT p.id, p.title, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
-                b.board_key, b.board_name, b.title_length_limit
+                b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE {$where}
@@ -809,7 +787,7 @@ function smartcms_board_seed_defaults(int $created_by): array
 function smartcms_board_recent_posts(int $limit = 12): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name, b.title_length_limit
+        "SELECT p.id, p.title, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled'
@@ -826,7 +804,7 @@ function smartcms_board_recent_posts_by_key(string $board_key, int $limit = 5): 
 {
     $stmt = smartcms_db()->prepare(
         "SELECT p.id, p.title, p.author_name, p.comment_count, p.attachment_count, p.view_count, p.created_at,
-                b.board_key, b.board_name, b.title_length_limit
+                b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled' AND b.board_key = :board_key
@@ -843,7 +821,7 @@ function smartcms_board_recent_posts_by_key(string $board_key, int $limit = 5): 
 function smartcms_board_popular_posts(int $limit = 5): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.author_name, p.comment_count, p.view_count, p.created_at, b.board_key, b.board_name, b.title_length_limit
+        "SELECT p.id, p.title, p.author_name, p.comment_count, p.view_count, p.created_at, b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled'
