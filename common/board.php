@@ -30,12 +30,12 @@ function smartcms_board_skin_meta(?array $board): array
     $skin = strtolower(preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($board['skin'] ?? 'default')));
     $meta_map = [
         'default' => ['label' => '기본', 'accent' => 'primary', 'layout' => 'table', 'icon' => 'bi-layout-text-window-reverse'],
-        'table' => ['label' => '테이블', 'accent' => 'secondary', 'layout' => 'table', 'icon' => 'bi-table'],
-        'card' => ['label' => '카드', 'accent' => 'success', 'layout' => 'cards', 'icon' => 'bi-postcard-heart-fill'],
-        'gallery' => ['label' => '갤러리', 'accent' => 'info', 'layout' => 'cards', 'icon' => 'bi-grid-3x3-gap-fill'],
-        'qna' => ['label' => 'Q&A', 'accent' => 'warning', 'layout' => 'table', 'icon' => 'bi-question-circle-fill'],
-        'notice' => ['label' => '공지', 'accent' => 'danger', 'layout' => 'table', 'icon' => 'bi-megaphone-fill'],
-        'faq' => ['label' => 'FAQ', 'accent' => 'dark', 'layout' => 'cards', 'icon' => 'bi-patch-question-fill'],
+        'table' => ['label' => '테이블', 'accent' => 'primary', 'layout' => 'table', 'icon' => 'bi-table'],
+        'card' => ['label' => '카드', 'accent' => 'primary', 'layout' => 'cards', 'icon' => 'bi-postcard-heart-fill'],
+        'gallery' => ['label' => '갤러리', 'accent' => 'primary', 'layout' => 'cards', 'icon' => 'bi-grid-3x3-gap-fill'],
+        'qna' => ['label' => 'Q&A', 'accent' => 'primary', 'layout' => 'table', 'icon' => 'bi-question-circle-fill'],
+        'notice' => ['label' => '공지', 'accent' => 'primary', 'layout' => 'table', 'icon' => 'bi-megaphone-fill'],
+        'faq' => ['label' => 'FAQ', 'accent' => 'primary', 'layout' => 'cards', 'icon' => 'bi-patch-question-fill'],
         'webzine' => ['label' => '웹진', 'accent' => 'primary', 'layout' => 'cards', 'icon' => 'bi-journal-richtext'],
     ];
 
