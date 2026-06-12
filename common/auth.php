@@ -58,7 +58,57 @@ function smartcms_require_login(?string $redirect_to = null): array
     }
 
     $target = $redirect_to ?? (string)smartcms_config_value('login_url', '/member/login/');
+    if ($redirect_to === null) {
+        $request_uri = (string)($_SERVER['REQUEST_URI'] ?? '');
+        $request_path = (string)(parse_url($request_uri, PHP_URL_PATH) ?: '');
+        if ($request_uri !== '' && $request_path !== '/member/login/' && $request_path !== '/admin/login/') {
+            $target .= (str_contains($target, '?') ? '&' : '?') . http_build_query(['next' => $request_uri]);
+        }
+    }
+
     smartcms_redirect($target);
+}
+
+function smartcms_member_login_next_target(string $fallback = '/member/mypage/'): string
+{
+    $next = trim((string)($_GET['next'] ?? ($_POST['next'] ?? '')));
+
+    if ($next === '') {
+        $referer = (string)($_SERVER['HTTP_REFERER'] ?? '');
+        if ($referer !== '') {
+            $current_host = (string)($_SERVER['HTTP_HOST'] ?? '');
+            $referer_parts = parse_url($referer);
+            if (is_array($referer_parts)) {
+                $referer_host = (string)($referer_parts['host'] ?? '');
+                $referer_path = (string)($referer_parts['path'] ?? '');
+                if ($referer_path !== '' && ($referer_host === '' || $current_host === '' || strcasecmp($referer_host, $current_host) === 0)) {
+                    $next = $referer_path;
+                    if (isset($referer_parts['query']) && $referer_parts['query'] !== '') {
+                        $next .= '?' . $referer_parts['query'];
+                    }
+                }
+            }
+        }
+    }
+
+    $parts = parse_url($next);
+    if (!is_array($parts)) {
+        return $fallback;
+    }
+
+    if (isset($parts['scheme']) || isset($parts['host']) || isset($parts['user']) || isset($parts['pass'])) {
+        return $fallback;
+    }
+
+    $path = (string)($parts['path'] ?? '');
+    if ($path === '' || $path[0] !== '/') {
+        return $fallback;
+    }
+
+    $query = isset($parts['query']) && $parts['query'] !== '' ? '?' . $parts['query'] : '';
+    $fragment = isset($parts['fragment']) && $parts['fragment'] !== '' ? '#' . $parts['fragment'] : '';
+
+    return $path . $query . $fragment;
 }
 
 function smartcms_require_level(int $required_level, ?string $redirect_to = null): array

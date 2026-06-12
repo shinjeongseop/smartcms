@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../common/ui/components.php';
 $message      = '';
 $message_type = 'info';
 $email        = trim((string)($_POST['email'] ?? ''));
-$next         = (string)($_GET['next'] ?? '/member/mypage/');
+$next         = smartcms_member_login_next_target();
 
 if (smartcms_current_user()) {
     smartcms_redirect($next);
@@ -52,6 +52,7 @@ require SMARTCMS_ROOT . '/head.php';
 
             <form class="d-grid gap-4" method="post" autocomplete="on">
               <?= smartcms_csrf_input() ?>
+              <input type="hidden" name="next" value="<?= smartcms_h($next) ?>">
               <div>
                 <label for="email" class="form-label fw-bold small text-dark">이메일 주소</label>
                 <input class="form-control py-2" id="email" name="email" type="email"
