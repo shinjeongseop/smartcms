@@ -64,7 +64,7 @@ require SMARTCMS_ROOT . '/head.php';
           <div>
             <p class="text-uppercase small fw-semibold text-primary mb-2">Search Result</p>
             <h1 class="h4 fw-bold mb-2">"<?= smartcms_h($keyword) ?>" 검색 결과</h1>
-            <p class="text-secondary mb-0">게시판 이름, 작성자, 제목, 본문에서 찾은 글을 보여줍니다.</p>
+            <p class="text-secondary mb-0">게시글 제목과 본문에서 찾은 글을 보여줍니다.</p>
           </div>
           <a class="btn btn-light border rounded-pill px-4 fw-bold text-secondary" href="/board/">검색 초기화</a>
         </div>
