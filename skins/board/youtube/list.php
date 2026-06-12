@@ -38,19 +38,21 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
           <article class="card border shadow-sm bg-white overflow-hidden">
             <div class="row g-0 align-items-stretch">
               <div class="col-12 col-md-4 col-xl-4">
-                <a class="d-block ratio ratio-16x9 bg-light text-decoration-none overflow-hidden"
-                   href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
-                  <?php if ($thumb_url): ?>
-                    <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url) ?>" alt="<?= smartcms_h((string)$post['title']) ?>">
-                  <?php else: ?>
-                    <div class="d-flex align-items-center justify-content-center text-secondary h-100 w-100">
-                      <span class="text-center">
-                        <i class="bi bi-youtube fs-1 text-danger d-block mb-2"></i>
-                        <span class="small fw-semibold">YouTube</span>
-                      </span>
-                    </div>
-                  <?php endif; ?>
-                </a>
+                <div class="h-100 p-3 p-lg-4 d-flex align-items-center">
+                  <a class="d-block ratio ratio-16x9 w-100 bg-light border rounded-3 text-decoration-none overflow-hidden"
+                     href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                    <?php if ($thumb_url): ?>
+                      <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url) ?>" alt="<?= smartcms_h((string)$post['title']) ?>">
+                    <?php else: ?>
+                      <div class="d-flex align-items-center justify-content-center text-secondary h-100 w-100">
+                        <span class="text-center">
+                          <i class="bi bi-youtube fs-1 text-danger d-block mb-2"></i>
+                          <span class="small fw-semibold">YouTube</span>
+                        </span>
+                      </div>
+                    <?php endif; ?>
+                  </a>
+                </div>
               </div>
               <div class="col-12 col-md-8 col-xl-8">
                 <div class="card-body p-4 p-lg-5 h-100 d-flex flex-column gap-2">
@@ -72,11 +74,6 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                     <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                     <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
                   </a>
-                  <?php if ($video['url'] !== ''): ?>
-                    <a class="text-decoration-none small fw-semibold text-secondary text-break" href="<?= smartcms_h($video['url']) ?>" target="_blank" rel="noopener noreferrer">
-                      <?= smartcms_h($video['url']) ?>
-                    </a>
-                  <?php endif; ?>
                   <?php if ($excerpt !== ''): ?>
                     <p class="mb-0 text-secondary small lh-base"><?= smartcms_h($excerpt) ?></p>
                   <?php endif; ?>
