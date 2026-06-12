@@ -34,11 +34,11 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
         <?php foreach ($posts as $post): ?>
           <?php $video = smartcms_board_youtube_link_data($post); ?>
           <?php $thumb_url = $video['thumb_url'] ?? null; ?>
-          <?php $excerpt = smartcms_board_excerpt((string)($post['content'] ?? $post['excerpt'] ?? ''), 160); ?>
+          <?php $excerpt = smartcms_board_excerpt((string)($post['content'] ?? $post['excerpt'] ?? ''), 120); ?>
           <article class="card border shadow-sm bg-white overflow-hidden">
-            <div class="row g-0">
-              <div class="col-12 col-md-5 col-lg-4">
-                <a class="d-block ratio ratio-16x9 bg-light text-decoration-none position-relative overflow-hidden"
+            <div class="row g-0 align-items-stretch">
+              <div class="col-12 col-md-4 col-xl-4">
+                <a class="d-block ratio ratio-16x9 bg-light text-decoration-none overflow-hidden"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                   <?php if ($thumb_url): ?>
                     <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url) ?>" alt="<?= smartcms_h((string)$post['title']) ?>">
@@ -50,13 +50,10 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                       </span>
                     </div>
                   <?php endif; ?>
-                  <span class="position-absolute top-50 start-50 translate-middle bg-dark bg-opacity-75 text-white rounded-circle p-3">
-                    <i class="bi bi-play-fill fs-2"></i>
-                  </span>
                 </a>
               </div>
-              <div class="col-12 col-md-7 col-lg-8">
-                <div class="card-body p-4 p-lg-5 h-100 d-flex flex-column gap-3">
+              <div class="col-12 col-md-8 col-xl-8">
+                <div class="card-body p-4 p-lg-5 h-100 d-flex flex-column gap-2">
                   <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
                     <div class="d-flex flex-wrap align-items-center gap-2">
                       <?php if ((int)$post['is_notice'] === 1): ?>
@@ -70,18 +67,18 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                       <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                     </time>
                   </div>
-                  <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm d-block"
+                  <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm d-block text-break"
                      href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                     <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
                   </a>
                   <?php if ($video['url'] !== ''): ?>
-                    <a class="text-decoration-none small fw-semibold text-primary text-break" href="<?= smartcms_h($video['url']) ?>" target="_blank" rel="noopener noreferrer">
+                    <a class="text-decoration-none small fw-semibold text-secondary text-break" href="<?= smartcms_h($video['url']) ?>" target="_blank" rel="noopener noreferrer">
                       <?= smartcms_h($video['url']) ?>
                     </a>
                   <?php endif; ?>
                   <?php if ($excerpt !== ''): ?>
-                    <p class="mb-0 text-secondary fs-6 lh-base"><?= smartcms_h($excerpt) ?></p>
+                    <p class="mb-0 text-secondary small lh-base"><?= smartcms_h($excerpt) ?></p>
                   <?php endif; ?>
                   <div class="d-flex flex-wrap gap-2 small text-secondary fw-medium">
                     <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h($post['author_name']) ?></span>
@@ -93,9 +90,9 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                     <?php endif; ?>
                   </div>
                   <div class="mt-auto">
-                    <a class="btn btn-danger btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm"
+                    <a class="btn btn-primary btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm"
                        href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
-                      재생/상세
+                      자세히
                     </a>
                   </div>
                 </div>
@@ -133,7 +130,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
 
     <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
       <footer class="card-footer bg-white border-top p-4 p-lg-5 text-end">
-        <a class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm"
+        <a class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm"
            href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">
           새글
         </a>
