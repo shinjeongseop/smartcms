@@ -44,7 +44,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
           <?php foreach ($posts as $post): ?>
             <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
             <?php $excerpt_source = (string)($post['content'] ?? $post['excerpt'] ?? ''); ?>
-            <?php $excerpt = smartcms_board_excerpt($excerpt_source, 240); ?>
+            <?php $excerpt = smartcms_board_excerpt($excerpt_source, 140); ?>
             <article class="card h-100 border shadow-sm bg-white overflow-hidden">
               <div class="row g-0 h-100">
                 <div class="col-12 col-md-5 col-lg-4 d-flex align-items-center ps-md-3 ps-lg-4">
@@ -89,14 +89,14 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                       <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                       <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
                     </a>
+                    <?php if ($excerpt !== ''): ?>
+                      <p class="mb-0 text-secondary small lh-base"><?= smartcms_h($excerpt) ?></p>
+                    <?php endif; ?>
                     <div class="d-flex flex-wrap gap-2 small text-secondary fw-medium mb-1">
                       <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h($post['author_name']) ?></span>
                       <span class="opacity-25">|</span>
                       <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-eye"></i><?= number_format((int)$post['view_count']) ?></span>
                     </div>
-                    <?php if ($excerpt !== ''): ?>
-                      <p class="mb-0 text-secondary lh-lg fs-6"><?= smartcms_h($excerpt) ?></p>
-                    <?php endif; ?>
                     <div class="mt-auto">
                       <a class="btn btn-primary btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm"
                          href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
