@@ -52,10 +52,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
   <article class="card border shadow-sm overflow-hidden">
       <header class="card-header bg-white border-bottom py-3 px-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
-          <div>
-            <h2 class="h5 mb-1 fw-bold text-dark">활동 로그</h2>
-            <p class="small text-secondary mb-0">접속, 로그인, 게시판 감사 로그를 같은 기준으로 확인합니다.</p>
-          </div>
+          <h2 class="h5 mb-0 fw-bold text-dark">활동 로그</h2>
           <ul class="nav nav-pills gap-2 fw-bold" id="logTab" role="tablist">
               <li class="nav-item">
                   <button class="nav-link active border-0 shadow-none" id="access-tab" data-bs-toggle="tab" data-bs-target="#access-panel" type="button">

@@ -91,12 +91,6 @@ require SMARTCMS_ROOT . '/admin/head.php';
 ?>
 
 <section>
-  <header class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-bold shadow-sm">
-      총 <?= count($pages) ?>개 등록됨
-    </span>
-  </header>
-
   <?php if ($message !== ''): ?>
     <aside class="alert alert-<?= $message_type === 'error' ? 'danger' : ( $message_type === 'success' ? 'success' : 'info' ) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
       <i class="bi bi-info-circle-fill fs-5"></i>
@@ -105,6 +99,12 @@ require SMARTCMS_ROOT . '/admin/head.php';
   <?php endif; ?>
 
   <article class="card border shadow-sm overflow-hidden">
+    <header class="card-header bg-white border-bottom py-3 px-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+      <h2 class="h5 mb-0 fw-bold text-dark">페이지 권한 목록</h2>
+      <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-bold shadow-sm">
+        총 <?= count($pages) ?>개 등록됨
+      </span>
+    </header>
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0 text-nowrap">
           <thead class="table-light">
@@ -124,7 +124,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                     <div class="p-2 bg-light rounded text-primary border shadow-sm"><i class="bi bi-shield-lock fs-5"></i></div>
                     <div>
                       <div class="fw-bold text-dark small mb-1"><?= smartcms_h($page['title']) ?></div>
-                      <div class="text-xs text-secondary opacity-75 fw-medium"><?= smartcms_h($page['page_key']) ?></div>
+                      <div class="small text-secondary opacity-75 fw-medium"><?= smartcms_h($page['page_key']) ?></div>
                     </div>
                   </div>
                 </td>
