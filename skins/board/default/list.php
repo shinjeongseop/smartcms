@@ -40,7 +40,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
 
     <?php if ($webzine_mode): ?>
       <div class="p-4 p-lg-5">
-        <div class="vstack gap-4">
+        <div class="vstack gap-5">
           <?php foreach ($posts as $post): ?>
             <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
             <?php $excerpt_source = (string)($post['content'] ?? $post['excerpt'] ?? ''); ?>
@@ -63,9 +63,9 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                   <?php endif; ?>
                 </div>
                 <div class="col-12 col-md-7 col-lg-8">
-                  <div class="card-body p-3 p-lg-4 h-100 d-flex flex-column gap-3">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
-                      <div class="d-flex align-items-center gap-2">
+                  <div class="card-body p-4 p-lg-5 h-100 d-flex flex-column gap-4">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                      <div class="d-flex flex-wrap align-items-center gap-2">
                         <?php if ((int)$post['is_notice'] === 1): ?>
                           <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-2 py-1 fw-bold">공지</span>
                         <?php else: ?>
@@ -82,18 +82,18 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                         <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                       </time>
                     </div>
-                    <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm d-block"
+                    <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm d-block mb-1"
                        href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                       <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                       <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
                     </a>
-                    <div class="d-flex flex-wrap gap-2 small text-secondary fw-medium">
+                    <div class="d-flex flex-wrap gap-2 small text-secondary fw-medium mb-1">
                       <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h($post['author_name']) ?></span>
                       <span class="opacity-25">|</span>
                       <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-eye"></i><?= number_format((int)$post['view_count']) ?></span>
                     </div>
                     <?php if ($excerpt !== ''): ?>
-                      <p class="mb-0 text-secondary lh-lg"><?= smartcms_h($excerpt) ?></p>
+                      <p class="mb-0 text-secondary lh-lg fs-6"><?= smartcms_h($excerpt) ?></p>
                     <?php endif; ?>
                     <div class="mt-auto">
                       <a class="btn btn-primary btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm"
