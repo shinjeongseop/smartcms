@@ -40,7 +40,14 @@ $layout = (string)$skin_meta['layout'];
         <div class="row g-4">
           <?php foreach ($posts as $post): ?>
             <div class="col-12 col-md-6">
+              <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
               <article class="card h-100 border shadow-sm">
+                <?php if ($first_image): ?>
+                  <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, 640, 360); ?>
+                  <a class="d-block bg-light overflow-hidden ratio ratio-16x9" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                    <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$first_image['id']))) ?>" alt="<?= smartcms_h($first_image['original_name']) ?>">
+                  </a>
+                <?php endif; ?>
                 <div class="card-body p-4 d-flex flex-column gap-3">
                   <div class="d-flex align-items-start justify-content-between gap-2">
                     <?php if ((int)$post['is_notice'] === 1): ?>

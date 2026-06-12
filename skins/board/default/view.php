@@ -44,8 +44,9 @@ $image_files = smartcms_board_image_files($files);
           <?php foreach ($image_files as $file): ?>
             <div class="col-12 col-md-6">
               <figure class="border rounded-3 overflow-hidden bg-light mb-0 h-100">
+                <?php $thumb_url = smartcms_board_file_thumbnail_url($file, 760, 520); ?>
                 <a class="d-block" href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>">
-                  <img class="img-fluid w-100" src="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>" alt="<?= smartcms_h($file['original_name']) ?>">
+                  <img class="img-fluid w-100" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id']))) ?>" alt="<?= smartcms_h($file['original_name']) ?>">
                 </a>
                 <figcaption class="d-flex flex-column gap-1 border-top bg-white p-3 small">
                   <span class="fw-semibold text-dark text-truncate"><?= smartcms_h($file['original_name']) ?></span>

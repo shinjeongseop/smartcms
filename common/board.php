@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/image.php';
 
 function smartcms_board_key(string $value): string
 {
@@ -396,6 +397,28 @@ function smartcms_board_file_is_image(array $file): bool
 function smartcms_board_image_files(array $files): array
 {
     return array_values(array_filter($files, static fn(array $file): bool => smartcms_board_file_is_image($file)));
+}
+
+function smartcms_board_first_image_file(int $post_id): ?array
+{
+    return smartcms_fetch_one(
+        "SELECT id, original_name, stored_name, file_path, file_size, mime_type, download_count, created_at
+         FROM " . smartcms_table('board_files') . "
+         WHERE post_id = :post_id AND mime_type LIKE 'image/%'
+         ORDER BY id ASC
+         LIMIT 1",
+        ['post_id' => $post_id]
+    );
+}
+
+function smartcms_board_file_thumbnail_url(array $file, int $max_width = 480, int $max_height = 360, int $quality = 85): ?string
+{
+    $relative_path = trim((string)($file['file_path'] ?? ''));
+    if ($relative_path === '') {
+        return null;
+    }
+
+    return smartcms_image_thumbnail_url_from_relative($relative_path, $max_width, $max_height, $quality);
 }
 
 function smartcms_board_title_limit(array $board): int

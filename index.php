@@ -171,13 +171,36 @@ require SMARTCMS_ROOT . '/head.php';
           <div class="list-group list-group-flush">
             <?php if ($recent_posts): ?>
               <?php foreach ($recent_posts as $post): ?>
-                <a class="list-group-item list-group-item-action p-4 d-flex align-items-center gap-3"
+                <?php $recent_image = smartcms_board_first_image_file((int)$post['id']); ?>
+                <a class="list-group-item list-group-item-action p-4"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-                  <span class="badge text-bg-light text-secondary rounded-pill small flex-shrink-0 border"><?= smartcms_h($post['board_name']) ?></span>
-                  <span class="text-dark fw-semibold text-truncate flex-grow-1"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], (int)($post['title_length_limit'] ?? 0))) ?></span>
-                  <time class="small text-body-secondary flex-shrink-0 fw-medium" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
-                    <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
-                  </time>
+                  <?php if ($recent_image): ?>
+                    <?php $recent_thumb = smartcms_board_file_thumbnail_url($recent_image, 240, 180); ?>
+                    <div class="row g-3 align-items-center">
+                      <div class="col-4 col-sm-3 col-md-2">
+                        <div class="ratio ratio-1x1 rounded-3 overflow-hidden bg-light border">
+                          <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($recent_thumb ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$recent_image['id']))) ?>" alt="<?= smartcms_h($recent_image['original_name']) ?>">
+                        </div>
+                      </div>
+                      <div class="col-8 col-sm-9 col-md-10 min-w-0">
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                          <span class="badge text-bg-light text-secondary rounded-pill small border"><?= smartcms_h($post['board_name']) ?></span>
+                        </div>
+                        <div class="text-dark fw-semibold text-truncate mb-1"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], (int)($post['title_length_limit'] ?? 0))) ?></div>
+                        <time class="small text-body-secondary fw-medium" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
+                          <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                        </time>
+                      </div>
+                    </div>
+                  <?php else: ?>
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="badge text-bg-light text-secondary rounded-pill small flex-shrink-0 border"><?= smartcms_h($post['board_name']) ?></span>
+                      <span class="text-dark fw-semibold text-truncate flex-grow-1"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], (int)($post['title_length_limit'] ?? 0))) ?></span>
+                      <time class="small text-body-secondary flex-shrink-0 fw-medium" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
+                        <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                      </time>
+                    </div>
+                  <?php endif; ?>
                 </a>
               <?php endforeach; ?>
             <?php else: ?>
@@ -210,12 +233,32 @@ require SMARTCMS_ROOT . '/head.php';
                   <div class="list-group list-group-flush small">
                     <?php if ($widget['posts']): ?>
                       <?php foreach ($widget['posts'] as $post): ?>
-                        <a class="list-group-item list-group-item-action bg-white px-0 py-2 d-flex justify-content-between align-items-center gap-2"
+                        <?php $widget_image = smartcms_board_first_image_file((int)$post['id']); ?>
+                        <a class="list-group-item list-group-item-action bg-white px-0 py-2"
                           href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-                          <span class="text-truncate fw-medium"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], (int)($post['title_length_limit'] ?? 0))) ?></span>
-                          <time class="text-xs text-body-secondary flex-shrink-0" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
-                            <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
-                          </time>
+                          <?php if ($widget_image): ?>
+                            <?php $widget_thumb = smartcms_board_file_thumbnail_url($widget_image, 180, 180); ?>
+                            <div class="row g-2 align-items-center">
+                              <div class="col-3">
+                                <div class="ratio ratio-1x1 rounded-2 overflow-hidden bg-light border">
+                                  <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($widget_thumb ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$widget_image['id']))) ?>" alt="<?= smartcms_h($widget_image['original_name']) ?>">
+                                </div>
+                              </div>
+                              <div class="col-9 min-w-0">
+                                <span class="text-truncate fw-medium d-block"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], (int)($post['title_length_limit'] ?? 0))) ?></span>
+                                <time class="text-xs text-body-secondary" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
+                                  <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                                </time>
+                              </div>
+                            </div>
+                          <?php else: ?>
+                            <div class="d-flex justify-content-between align-items-center gap-2">
+                              <span class="text-truncate fw-medium"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'], (int)($post['title_length_limit'] ?? 0))) ?></span>
+                              <time class="text-xs text-body-secondary flex-shrink-0" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
+                                <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                              </time>
+                            </div>
+                          <?php endif; ?>
                         </a>
                       <?php endforeach; ?>
                     <?php else: ?>
