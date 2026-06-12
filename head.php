@@ -47,8 +47,11 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
         </div>
         <div class="d-flex gap-3 ms-auto">
           <?php if ($user): ?>
-            <span class="text-dark fw-bold"><i class="bi bi-person-circle me-1"></i><?= smartcms_h($user['name']) ?></span>
-            <a href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>" class="link-secondary text-decoration-none">로그아웃</a>
+            <a href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>" class="d-inline-flex align-items-center gap-2 text-decoration-none text-dark fw-bold">
+              <?= smartcms_user_avatar_markup($user, 'sc-avatar-32', 'fs-6') ?>
+              <span><?= smartcms_h(smartcms_user_display_name($user)) ?></span>
+            </a>
+            <a href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>" class="link-secondary text-decoration-none align-self-center">로그아웃</a>
           <?php else: ?>
             <a href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>" class="link-secondary text-decoration-none">로그인</a>
             <a href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>" class="link-secondary text-decoration-none">회원가입</a>

@@ -29,6 +29,11 @@ body {
   height: 72px;
 }
 
+.sc-avatar-32 {
+  width: 32px;
+  height: 32px;
+}
+
 /* Heading Improvements */
 h1,
 h2,
