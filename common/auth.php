@@ -22,16 +22,131 @@ function smartcms_session_start(): void
     session_start();
 }
 
+function smartcms_ensure_user_avatar_column(): void
+{
+    static $checked = false;
+    if ($checked) {
+        return;
+    }
+    $checked = true;
+
+    try {
+        $exists = (int)smartcms_fetch_value(
+            "SELECT COUNT(*)
+             FROM INFORMATION_SCHEMA.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = :table_name
+               AND COLUMN_NAME = 'avatar_path'",
+            ['table_name' => smartcms_table('users')]
+        );
+
+        if ($exists === 0) {
+            smartcms_execute(
+                "ALTER TABLE " . smartcms_table('users') . "
+                 ADD COLUMN avatar_path VARCHAR(255) DEFAULT NULL AFTER company_name"
+            );
+        }
+    } catch (Throwable $e) {
+        // Keep the app usable even if schema migration is not allowed.
+    }
+}
+
+function smartcms_user_avatar_url(?array $user): ?string
+{
+    $path = trim((string)($user['avatar_path'] ?? ''));
+    if ($path === '') {
+        return null;
+    }
+
+    $relative_path = ltrim($path, '/');
+    $absolute_path = SMARTCMS_ROOT . '/' . $relative_path;
+    if (!is_file($absolute_path)) {
+        return null;
+    }
+
+    return smartcms_asset_url('/' . $relative_path);
+}
+
+function smartcms_store_user_avatar_upload(int $user_id, array $upload, ?string $current_avatar_path = null): array
+{
+    if (!isset($upload['error']) || (int)$upload['error'] !== UPLOAD_ERR_OK) {
+        return ['ok' => false, 'message' => '아바타 이미지를 선택하세요.'];
+    }
+
+    $size = (int)($upload['size'] ?? 0);
+    if ($size <= 0) {
+        return ['ok' => false, 'message' => '아바타 파일을 읽을 수 없습니다.'];
+    }
+    if ($size > 2 * 1024 * 1024) {
+        return ['ok' => false, 'message' => '아바타 이미지는 2MB 이하만 업로드할 수 있습니다.'];
+    }
+
+    $tmp_path = (string)($upload['tmp_name'] ?? '');
+    if ($tmp_path === '' || !is_uploaded_file($tmp_path)) {
+        return ['ok' => false, 'message' => '업로드된 파일을 확인할 수 없습니다.'];
+    }
+
+    $original_name = basename((string)($upload['name'] ?? 'avatar'));
+    $extension = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+    $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    if (!in_array($extension, $allowed_extensions, true)) {
+        return ['ok' => false, 'message' => 'JPG, PNG, GIF, WEBP 파일만 허용됩니다.'];
+    }
+
+    $image_info = @getimagesize($tmp_path);
+    if (!is_array($image_info) || empty($image_info['mime'])) {
+        return ['ok' => false, 'message' => '이미지 파일만 업로드할 수 있습니다.'];
+    }
+
+    $allowed_mimes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!in_array((string)$image_info['mime'], $allowed_mimes, true)) {
+        return ['ok' => false, 'message' => '이미지 형식을 확인할 수 없습니다.'];
+    }
+
+    $upload_root = SMARTCMS_ROOT . '/uploads/avatar';
+    if (!is_dir($upload_root)) {
+        mkdir($upload_root, 0755, true);
+    }
+
+    $safe_extension = $extension === 'jpeg' ? 'jpg' : $extension;
+    $stored_name = 'user_' . $user_id . '_' . date('YmdHis') . '_' . bin2hex(random_bytes(8)) . '.' . $safe_extension;
+    $target_path = $upload_root . '/' . $stored_name;
+
+    if (!move_uploaded_file($tmp_path, $target_path)) {
+        return ['ok' => false, 'message' => '아바타 저장에 실패했습니다.'];
+    }
+
+    $avatar_path = 'uploads/avatar/' . $stored_name;
+    smartcms_execute(
+        "UPDATE " . smartcms_table('users') . " SET avatar_path = :avatar_path WHERE id = :id",
+        [
+            'avatar_path' => $avatar_path,
+            'id' => $user_id,
+        ]
+    );
+
+    $previous_path = trim((string)$current_avatar_path);
+    if ($previous_path !== '' && $previous_path !== $avatar_path) {
+        $previous_file = SMARTCMS_ROOT . '/' . ltrim($previous_path, '/');
+        if (is_file($previous_file)) {
+            @unlink($previous_file);
+        }
+    }
+
+    return ['ok' => true, 'message' => '아바타를 변경했습니다.', 'avatar_path' => $avatar_path];
+}
+
 function smartcms_current_user(): ?array
 {
     smartcms_session_start();
+    smartcms_ensure_user_avatar_column();
     $user_id = (int)($_SESSION['smartcms_user_id'] ?? 0);
     if ($user_id <= 0) {
         return null;
     }
 
     return smartcms_fetch_one(
-        "SELECT id, email, name, company_name, role, level, status, last_login_at, created_at
+        "SELECT id, email, name, company_name, avatar_path, role, level, status, last_login_at, created_at
          FROM " . smartcms_table('users') . "
          WHERE id = :id AND status = 'active'
          LIMIT 1",
@@ -193,6 +308,8 @@ function smartcms_require_page_view(string $page_key, string $page_path, string 
 
 function smartcms_register_user(string $email, string $password, string $name, ?string $company_name = null): array
 {
+    smartcms_ensure_user_avatar_column();
+
     if (!smartcms_setting_bool('allow_registration', true)) {
         return ['ok' => false, 'message' => '현재 회원가입이 중지되어 있습니다.'];
     }
@@ -221,8 +338,8 @@ function smartcms_register_user(string $email, string $password, string $name, ?
 
     smartcms_execute(
         "INSERT INTO " . smartcms_table('users') . "
-         (email, password_hash, name, company_name, role, level, status)
-         VALUES (:email, :password_hash, :name, :company_name, 'user', :level, 'active')",
+         (email, password_hash, name, company_name, avatar_path, role, level, status)
+         VALUES (:email, :password_hash, :name, :company_name, NULL, 'user', :level, 'active')",
         [
             'email' => $email,
             'password_hash' => password_hash($password, PASSWORD_DEFAULT),
@@ -263,9 +380,10 @@ function smartcms_change_password(int $user_id, string $current_password, string
 
 function smartcms_login(string $email, string $password): array
 {
+    smartcms_ensure_user_avatar_column();
     $email = trim($email);
     $user = smartcms_fetch_one(
-        "SELECT id, email, password_hash, name, role, level, status
+        "SELECT id, email, password_hash, name, avatar_path, role, level, status
          FROM " . smartcms_table('users') . "
          WHERE email = :email
          LIMIT 1",

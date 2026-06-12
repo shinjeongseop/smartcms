@@ -41,7 +41,7 @@ try {
 
     $total_users = (int)smartcms_fetch_value("SELECT COUNT(*) FROM " . smartcms_table('users') . $where, $params);
     $total_pages = (int)ceil($total_users / $limit);
-    $query = "SELECT id, email, name, role, level, status, last_login_at, created_at FROM " . smartcms_table('users') . $where . " ORDER BY id DESC LIMIT $limit OFFSET $offset";
+    $query = "SELECT id, email, name, avatar_path, role, level, status, last_login_at, created_at FROM " . smartcms_table('users') . $where . " ORDER BY id DESC LIMIT $limit OFFSET $offset";
     $users = smartcms_fetch_all($query, $params);
 } catch (Throwable $e) {
     $users = [];
@@ -109,9 +109,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                         <td class="ps-4 text-secondary small">#<?= (int)$user['id'] ?></td>
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center sc-admin-avatar-36">
-                                    <?= smartcms_h(mb_substr((string)$user['name'], 0, 1)) ?>
-                                </div>
+                                <?= smartcms_user_avatar_markup($user, 'sc-admin-avatar-36', 'fw-bold small') ?>
                                 <div class="lh-sm">
                                     <div class="fw-bold text-dark mb-1"><?= smartcms_h($user['name']) ?></div>
                                     <div class="text-xs text-secondary"><?= smartcms_h($user['email']) ?></div>

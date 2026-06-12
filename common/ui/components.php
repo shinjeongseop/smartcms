@@ -36,3 +36,23 @@ if (!function_exists('smartcms_admin_nav_items')) {
         ];
     }
 }
+
+if (!function_exists('smartcms_user_avatar_markup')) {
+    function smartcms_user_avatar_markup(?array $user, string $size_class = 'sc-avatar-72', string $fallback_text_class = 'fw-bold'): string
+    {
+        $size_class = trim($size_class);
+        $fallback_text_class = trim($fallback_text_class);
+        $avatar_url = smartcms_user_avatar_url($user);
+
+        if ($avatar_url !== null) {
+            return '<img src="' . smartcms_h($avatar_url) . '" alt="" class="rounded-circle object-fit-cover shadow-sm ' . smartcms_h($size_class) . '">';
+        }
+
+        $label = trim(mb_substr((string)($user['name'] ?? ''), 0, 1));
+        if ($label === '') {
+            $label = '?';
+        }
+
+        return '<span class="rounded-circle d-inline-flex align-items-center justify-content-center bg-primary text-white shadow-sm ' . smartcms_h($size_class) . ' ' . smartcms_h($fallback_text_class) . '">' . smartcms_h($label) . '</span>';
+    }
+}

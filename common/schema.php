@@ -26,6 +26,7 @@ function smartcms_create_users_table(): void
         password_hash VARCHAR(255) NOT NULL,
         name VARCHAR(80) NOT NULL,
         company_name VARCHAR(120) DEFAULT NULL,
+        avatar_path VARCHAR(255) DEFAULT NULL,
         role ENUM('admin','manager','user') NOT NULL DEFAULT 'user',
         level TINYINT UNSIGNED NOT NULL DEFAULT 2,
         status ENUM('active','pending','blocked','left') NOT NULL DEFAULT 'active',

@@ -65,9 +65,7 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
       <?php if ($admin): ?>
         <section class="card border rounded-3 mb-2 mt-4 shadow-none border">
           <div class="card-body p-3 d-flex align-items-center gap-2">
-            <div class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center shadow-sm sc-admin-avatar-34">
-              <?= smartcms_h(mb_substr((string)$admin['name'], 0, 1)) ?>
-            </div>
+            <?= smartcms_user_avatar_markup($admin, 'sc-admin-avatar-34', 'fw-bold small') ?>
             <div class="min-w-0 flex-grow-1">
               <strong class="d-block text-body text-truncate small fw-bold"><?= smartcms_h($admin['name']) ?></strong>
               <small class="text-secondary d-block fw-medium sc-admin-time-xs">LV <?= (int)$admin['level'] ?> Admin</small>
