@@ -72,7 +72,7 @@ if (!function_exists('smartcms_user_avatar_markup')) {
         $avatar_url = smartcms_user_avatar_url($user);
 
         if ($avatar_url !== null) {
-            return '<img src="' . smartcms_h($avatar_url) . '" alt="" width="' . $avatar_size . '" height="' . $avatar_size . '" class="rounded-circle object-fit-cover shadow-sm ' . smartcms_h($size_class) . '">';
+            return '<img src="' . smartcms_h($avatar_url) . '" alt="" width="' . $avatar_size . '" height="' . $avatar_size . '" class="rounded-circle object-fit-cover shadow-sm d-block mx-auto ' . smartcms_h($size_class) . '">';
         }
 
         $display_name = smartcms_user_display_name($user);

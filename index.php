@@ -314,7 +314,7 @@ require SMARTCMS_ROOT . '/head.php';
       <?php if ($user): ?>
         <article class="card border shadow-sm mb-4 overflow-hidden bg-white">
           <div class="card-body p-4 text-center">
-            <div class="mb-3">
+            <div class="d-flex justify-content-center mb-3">
               <?= smartcms_user_avatar_markup($user, 'sc-avatar-72', 'fs-2') ?>
             </div>
             <h2 class="h5 fw-bold mb-1"><?= smartcms_h(smartcms_user_display_name($user)) ?>님</h2>
