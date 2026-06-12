@@ -45,37 +45,44 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
             <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
             <?php $excerpt_source = (string)($post['content'] ?? $post['excerpt'] ?? ''); ?>
             <?php $excerpt = smartcms_board_excerpt($excerpt_source, 160); ?>
-              <article class="card h-100 border shadow-sm bg-white overflow-hidden">
+            <article class="card h-100 border shadow-sm bg-white overflow-hidden">
               <div class="row g-0 h-100">
-                <div class="col-12 col-md-4">
+                <div class="col-12 col-md-5 col-lg-4">
                   <?php if ($first_image): ?>
                     <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
-                    <a class="d-block ratio ratio-16x9 bg-light overflow-hidden" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                    <a class="d-block ratio ratio-4x3 bg-light overflow-hidden" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                       <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$first_image['id']))) ?>" alt="<?= smartcms_h($first_image['original_name']) ?>">
                     </a>
                   <?php else: ?>
-                    <a class="d-flex align-items-center justify-content-center ratio ratio-16x9 bg-light text-decoration-none text-secondary" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
-                      <span class="text-center">
+                    <a class="d-flex align-items-center justify-content-center ratio ratio-4x3 bg-light text-decoration-none text-secondary" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                      <span class="text-center px-3">
                         <i class="bi bi-image fs-1 opacity-25 d-block mb-2"></i>
                         <span class="small fw-semibold">이미지 없음</span>
                       </span>
                     </a>
                   <?php endif; ?>
                 </div>
-                <div class="col-12 col-md-8">
-                  <div class="card-body p-4 p-lg-5 h-100 d-flex flex-column gap-3">
-                    <div class="d-flex align-items-center justify-content-between gap-2">
-                      <?php if ((int)$post['is_notice'] === 1): ?>
-                        <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-2 py-1 fw-bold">공지</span>
-                      <?php else: ?>
-                        <span class="badge bg-light text-secondary border rounded-pill px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
-                      <?php endif; ?>
-                      <div class="d-flex align-items-center gap-2 text-secondary small">
-                        <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?><i class="bi bi-paperclip <?= $accent_text ?>"></i><?php endif; ?>
-                        <?php if ((int)$post['comment_count'] > 0): ?><span class="badge bg-light text-primary border rounded-pill"><?= (int)$post['comment_count'] ?></span><?php endif; ?>
+                <div class="col-12 col-md-7 col-lg-8">
+                  <div class="card-body p-3 p-lg-4 h-100 d-flex flex-column gap-3">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                      <div class="d-flex align-items-center gap-2">
+                        <?php if ((int)$post['is_notice'] === 1): ?>
+                          <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-2 py-1 fw-bold">공지</span>
+                        <?php else: ?>
+                          <span class="badge bg-light text-secondary border rounded-pill px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
+                        <?php endif; ?>
+                        <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?>
+                          <span class="badge bg-light text-secondary border rounded-pill px-2 py-1 fw-bold">첨부</span>
+                        <?php endif; ?>
+                        <?php if ((int)$post['comment_count'] > 0): ?>
+                          <span class="badge bg-light text-primary border rounded-pill px-2 py-1 fw-bold"><?= (int)$post['comment_count'] ?></span>
+                        <?php endif; ?>
                       </div>
+                      <time class="small text-secondary fw-medium" datetime="<?= date('Y-m-d H:i:s', strtotime((string)$post['created_at'])) ?>">
+                        <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                      </time>
                     </div>
-                    <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm d-block text-truncate"
+                    <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm d-block"
                        href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                       <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                       <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
@@ -84,16 +91,12 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                       <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h($post['author_name']) ?></span>
                       <span class="opacity-25">|</span>
                       <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-eye"></i><?= number_format((int)$post['view_count']) ?></span>
-                      <span class="opacity-25">|</span>
-                      <time datetime="<?= date('Y-m-d H:i:s', strtotime((string)$post['created_at'])) ?>">
-                        <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
-                      </time>
                     </div>
                     <?php if ($excerpt !== ''): ?>
                       <p class="mb-0 text-secondary lh-lg"><?= smartcms_h($excerpt) ?></p>
                     <?php endif; ?>
                     <div class="mt-auto">
-                      <a class="btn btn-light border rounded-pill px-3 py-2 fw-bold shadow-none text-secondary"
+                      <a class="btn btn-primary btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm"
                          href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                         자세히
                       </a>
