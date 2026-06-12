@@ -58,22 +58,20 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
 
       <div class="row align-items-center g-3 py-3">
         <div class="col-12 col-md-3 text-center text-md-start">
-          <a class="navbar-brand fs-2 fw-bold text-primary" href="<?= $brand_url ?>">smartcms<span class="text-dark">.</span></a>
+          <a class="navbar-brand fs-2 fw-bold text-primary" href="<?= $brand_url ?>">smartcms</a>
         </div>
-        <div class="col-12 col-md-6">
-          <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" class="position-relative" role="search">
+        <div class="col-12 col-md-9">
+          <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" role="search">
             <div class="input-group input-group-lg">
-              <input type="search" name="q" class="form-control rounded-pill ps-4" placeholder="궁금한 것을 검색해보세요">
-              <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y text-primary z-3 me-2" type="submit">
-                <i class="bi bi-search fs-5"></i>
+              <span class="input-group-text bg-white border-end-0 rounded-start-pill px-3">
+                <i class="bi bi-search text-primary"></i>
+              </span>
+              <input type="search" name="q" class="form-control border-start-0 shadow-none" placeholder="궁금한 것을 검색해보세요" aria-label="게시판 검색">
+              <button class="btn btn-primary rounded-end-pill px-4 fw-bold" type="submit">
+                검색
               </button>
             </div>
           </form>
-        </div>
-        <div class="col-md-3 d-none d-md-flex justify-content-end">
-          <a href="<?= smartcms_h(smartcms_base_url('/board/write/')) ?>" class="btn btn-primary rounded-pill px-4 shadow-sm">
-            <i class="bi bi-pencil-square me-2"></i>글쓰기
-          </a>
         </div>
       </div>
     </div>
