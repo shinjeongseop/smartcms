@@ -55,8 +55,10 @@ try {
     $where = " WHERE 1=1";
     $params = [];
     if ($search !== '') {
-        $where .= " AND (email LIKE :search OR name LIKE :search OR nickname LIKE :search)";
-        $params['search'] = "%$search%";
+        $where .= " AND (email LIKE :search_email OR name LIKE :search_name OR nickname LIKE :search_nickname)";
+        $params['search_email'] = "%$search%";
+        $params['search_name'] = "%$search%";
+        $params['search_nickname'] = "%$search%";
     }
 
     $total_users = (int)smartcms_fetch_value("SELECT COUNT(*) FROM " . smartcms_table('users') . $where, $params);
@@ -89,7 +91,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
                     <input type="search" name="search" class="form-control border-start-0 ps-0" 
-                           placeholder="이름 또는 이메일 검색" value="<?= smartcms_h($search) ?>">
+                           placeholder="이름, 닉네임 또는 이메일 검색" value="<?= smartcms_h($search) ?>">
                     <button class="btn btn-primary px-4 shadow-none" type="submit">검색</button>
                 </div>
             </div>
