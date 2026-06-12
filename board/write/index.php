@@ -51,7 +51,10 @@ $active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], 
     ? (string)$board['board_key']
     : 'boards';
 $SMARTCMS_HEAD = ['title' => '새 글 작성', 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
-$SMARTCMS_HEAD['stylesheets'][] = 'https://cdn.jsdelivr.net/npm/jodit@4/es2021/jodit.min.css';
+$use_editor = (int)($board['use_editor'] ?? 1) === 1;
+if ($use_editor) {
+    $SMARTCMS_HEAD['stylesheets'][] = '/common/vendor/jodit/jodit.min.css';
+}
 require SMARTCMS_ROOT . '/head.php';
 
 // Skin variables
@@ -59,13 +62,15 @@ $message = (string)smartcms_flash_get('message', $message);
 $message_type = (string)smartcms_flash_get('message_type', $message_type);
 $form_action = 'create';
 $form_enctype = 'multipart/form-data';
-$form_values = ['title' => '', 'content' => '', 'content_mode' => 'editor', 'is_notice' => false, 'is_secret' => false];
+$form_values = ['title' => '', 'content' => '', 'content_mode' => $use_editor ? 'editor' : 'text', 'is_notice' => false, 'is_secret' => false];
 $show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
 $submit_label = '게시글 등록';
 $back_url = smartcms_board_url((string)$board['board_key']);
 $back_label = '목록으로';
-$SMARTCMS_FOOT['scripts'][] = 'https://cdn.jsdelivr.net/npm/jodit@4/es2021/jodit.min.js';
-$SMARTCMS_FOOT['scripts'][] = '/common/js/board-editor.js';
+if ($use_editor) {
+    $SMARTCMS_FOOT['scripts'][] = '/common/vendor/jodit/jodit.min.js';
+    $SMARTCMS_FOOT['scripts'][] = '/common/js/board-editor.js';
+}
 ?>
 
 <div class="container-fluid container-xxl pt-4 pt-lg-5">

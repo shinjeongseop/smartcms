@@ -88,7 +88,10 @@ $active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], 
     ? (string)$board['board_key']
     : 'boards';
 $SMARTCMS_HEAD = ['title' => '게시글 수정', 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
-$SMARTCMS_HEAD['stylesheets'][] = 'https://cdn.jsdelivr.net/npm/jodit@4/es2021/jodit.min.css';
+$use_editor = (int)($board['use_editor'] ?? 1) === 1;
+if ($use_editor) {
+    $SMARTCMS_HEAD['stylesheets'][] = '/common/vendor/jodit/jodit.min.css';
+}
 require SMARTCMS_ROOT . '/head.php';
 
 // Skin variables
@@ -98,7 +101,7 @@ $form_action = 'update';
 $form_values = [
     'title' => (string)$post['title'],
     'content' => (string)$post['content'],
-    'content_mode' => smartcms_board_normalize_content_mode((string)($post['content_mode'] ?? ((int)($board['use_editor'] ?? 1) === 1 ? 'editor' : 'text'))),
+    'content_mode' => $use_editor ? 'editor' : 'text',
     'is_notice' => (int)$post['is_notice'] === 1,
     'is_secret' => (int)$post['is_secret'] === 1,
 ];
@@ -108,8 +111,10 @@ $show_hide_form = true;
 $submit_label = '변경 사항 저장';
 $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);
 $back_label = '취소 및 돌아가기';
-$SMARTCMS_FOOT['scripts'][] = 'https://cdn.jsdelivr.net/npm/jodit@4/es2021/jodit.min.js';
-$SMARTCMS_FOOT['scripts'][] = '/common/js/board-editor.js';
+if ($use_editor) {
+    $SMARTCMS_FOOT['scripts'][] = '/common/vendor/jodit/jodit.min.js';
+    $SMARTCMS_FOOT['scripts'][] = '/common/js/board-editor.js';
+}
 ?>
 
 <div class="container-fluid container-xxl pt-4 pt-lg-5">

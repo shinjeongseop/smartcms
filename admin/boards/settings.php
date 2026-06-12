@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // 1. 게시판 기본 설정 업데이트
-        smartcms_execute(
+            smartcms_execute(
             "UPDATE " . smartcms_table('boards') . "
              SET board_name = :name, description = :desc, skin = :skin, items_per_page = :ipp,
                  title_length_limit = :title_length_limit,
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'skin'        => trim((string)$_POST['skin']),
                 'ipp'         => max(1, min(100, (int)$_POST['items_per_page'])),
                 'title_length_limit' => max(0, min(255, (int)($_POST['title_length_limit'] ?? 0))),
-                'editor'      => isset($_POST['use_editor']) ? 1 : 0,
+                'editor'      => (string)($_POST['use_editor'] ?? '0') === '1' ? 1 : 0,
                 'comments'    => isset($_POST['use_comments']) ? 1 : 0,
                 'attachments' => isset($_POST['use_attachments']) ? 1 : 0,
                 'status'      => (string)$_POST['status']
@@ -196,10 +196,12 @@ require SMARTCMS_ROOT . '/admin/head.php';
             </header>
             <div class="card-body p-4">
               <div class="vstack gap-3 mb-4">
-                <div class="form-check form-switch p-3 bg-light rounded-3 border-0">
-                  <input class="form-check-input ms-0" type="checkbox" name="use_editor" id="u_editor" <?= $board['use_editor'] ? 'checked' : '' ?>>
-                  <label class="form-check-label fw-bold text-dark ms-3" for="u_editor">WYSIWYG 에디터</label>
-                </div>
+                <label class="form-label fw-bold small text-secondary text-uppercase" for="u_editor">본문 작성 방식</label>
+                <select class="form-select py-2 fw-bold" name="use_editor" id="u_editor">
+                  <option value="0" <?= !(int)$board['use_editor'] ? 'selected' : '' ?>>텍스트 모드</option>
+                  <option value="1" <?= (int)$board['use_editor'] ? 'selected' : '' ?>>에디터 모드</option>
+                </select>
+                <div class="form-text small text-secondary">이 게시판의 글쓰기/수정 화면은 선택한 방식으로만 표시됩니다.</div>
                 <div class="form-check form-switch p-3 bg-light rounded-3 border-0">
                   <input class="form-check-input ms-0" type="checkbox" name="use_comments" id="u_comments" <?= $board['use_comments'] ? 'checked' : '' ?>>
                   <label class="form-check-label fw-bold text-dark ms-3" for="u_comments">실시간 댓글 시스템</label>
