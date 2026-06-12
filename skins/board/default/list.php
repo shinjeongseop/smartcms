@@ -8,6 +8,7 @@ $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
 $accent_bg_subtle = 'bg-' . $accent . '-subtle';
 $layout = (string)$skin_meta['layout'];
 $gallery_mode = (string)($skin_meta['skin'] ?? '') === 'gallery';
+$webzine_mode = $layout === 'webzine';
 $thumb_config = smartcms_board_thumbnail_config($board, 'list');
 ?>
 <section class="board-list-container">
@@ -37,7 +38,79 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
       </div>
     </header>
 
-    <?php if ($layout === 'cards'): ?>
+    <?php if ($webzine_mode): ?>
+      <div class="p-4 p-lg-5">
+        <div class="vstack gap-4">
+          <?php foreach ($posts as $post): ?>
+            <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
+            <?php $excerpt = smartcms_board_excerpt((string)($post['excerpt'] ?? ''), 160); ?>
+            <article class="card h-100 sc-board-surface overflow-hidden">
+              <div class="row g-0 h-100">
+                <div class="col-12 col-md-4">
+                  <?php if ($first_image): ?>
+                    <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
+                    <a class="d-block ratio ratio-16x9 bg-light overflow-hidden" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                      <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$first_image['id']))) ?>" alt="<?= smartcms_h($first_image['original_name']) ?>">
+                    </a>
+                  <?php else: ?>
+                    <a class="d-flex align-items-center justify-content-center ratio ratio-16x9 bg-light text-decoration-none text-secondary" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                      <span class="text-center">
+                        <i class="bi bi-image fs-1 opacity-25 d-block mb-2"></i>
+                        <span class="small fw-semibold">이미지 없음</span>
+                      </span>
+                    </a>
+                  <?php endif; ?>
+                </div>
+                <div class="col-12 col-md-8">
+                  <div class="card-body p-4 p-lg-5 h-100 d-flex flex-column gap-3">
+                    <div class="d-flex align-items-center justify-content-between gap-2">
+                      <?php if ((int)$post['is_notice'] === 1): ?>
+                        <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-2 py-1 fw-bold">공지</span>
+                      <?php else: ?>
+                        <span class="badge bg-light text-secondary border rounded-pill px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
+                      <?php endif; ?>
+                      <div class="d-flex align-items-center gap-2 text-secondary small">
+                        <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?><i class="bi bi-paperclip <?= $accent_text ?>"></i><?php endif; ?>
+                        <?php if ((int)$post['comment_count'] > 0): ?><span class="badge bg-light text-primary border rounded-pill"><?= (int)$post['comment_count'] ?></span><?php endif; ?>
+                      </div>
+                    </div>
+                    <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm d-block text-truncate"
+                       href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                      <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
+                      <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
+                    </a>
+                    <div class="d-flex flex-wrap gap-2 small text-secondary fw-medium">
+                      <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h($post['author_name']) ?></span>
+                      <span class="opacity-25">|</span>
+                      <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-eye"></i><?= number_format((int)$post['view_count']) ?></span>
+                      <span class="opacity-25">|</span>
+                      <time datetime="<?= date('Y-m-d H:i:s', strtotime((string)$post['created_at'])) ?>">
+                        <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                      </time>
+                    </div>
+                    <?php if ($excerpt !== ''): ?>
+                      <p class="mb-0 text-secondary lh-lg"><?= smartcms_h($excerpt) ?></p>
+                    <?php endif; ?>
+                    <div class="mt-auto">
+                      <a class="btn btn-light border rounded-pill px-3 py-2 fw-bold shadow-none text-secondary"
+                         href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                        자세히
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          <?php endforeach; ?>
+          <?php if (!$posts): ?>
+            <div class="text-center text-secondary py-5">
+              <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
+              등록된 게시글이 없습니다.
+            </div>
+          <?php endif; ?>
+        </div>
+      </div>
+    <?php elseif ($layout === 'cards'): ?>
       <div class="<?= $gallery_mode ? 'p-3 p-lg-4' : 'p-4 p-lg-5' ?>">
         <div class="row <?= $gallery_mode ? 'g-3 g-lg-4' : 'g-4' ?>">
           <?php foreach ($posts as $post): ?>

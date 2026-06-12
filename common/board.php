@@ -36,7 +36,7 @@ function smartcms_board_skin_meta(?array $board): array
         'qna' => ['label' => 'Q&A', 'accent' => 'primary', 'layout' => 'table', 'icon' => 'bi-question-circle-fill'],
         'notice' => ['label' => '공지', 'accent' => 'primary', 'layout' => 'table', 'icon' => 'bi-megaphone-fill'],
         'faq' => ['label' => 'FAQ', 'accent' => 'primary', 'layout' => 'cards', 'icon' => 'bi-patch-question-fill'],
-        'webzine' => ['label' => '웹진', 'accent' => 'primary', 'layout' => 'cards', 'icon' => 'bi-journal-richtext'],
+        'webzine' => ['label' => '웹진', 'accent' => 'primary', 'layout' => 'webzine', 'icon' => 'bi-journal-richtext'],
     ];
 
     $meta = $meta_map[$skin] ?? $meta_map['default'];
@@ -122,7 +122,7 @@ function smartcms_board_thumbnail_config(?array $board, string $context = 'list'
             'list' => [640, 360],
             'view' => [900, 506],
             'widget' => [480, 270],
-            'columns' => 2,
+            'columns' => 1,
         ],
     ];
 
@@ -580,7 +580,7 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
     $total = (int)($count_stmt->fetch()['cnt'] ?? 0);
 
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
+        "SELECT p.id, p.title, p.excerpt, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
                 b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id

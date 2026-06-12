@@ -153,7 +153,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                     </div>
                   </td>
                   <td class="py-3">
-                    <select class="form-select form-select-sm fw-bold" name="skin">
+                    <select class="form-select form-select-sm fw-bold" name="skin" form="board-update-<?= smartcms_h($board['board_key']) ?>">
                       <?php foreach (smartcms_board_skin_options() as $skin_key => $skin_label): ?>
                         <option value="<?= smartcms_h($skin_key) ?>" <?= (string)$board['skin'] === $skin_key ? 'selected' : '' ?>><?= smartcms_h($skin_label) ?></option>
                       <?php endforeach; ?>
@@ -181,7 +181,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                     </div>
                   </td>
                   <td class="text-end pe-4 py-3">
-                    <form class="d-inline-flex gap-2 align-items-center" method="post">
+                    <form id="board-update-<?= smartcms_h($board['board_key']) ?>" class="d-inline-flex gap-2 align-items-center" method="post">
                       <?= smartcms_csrf_input() ?>
                       <input type="hidden" name="action" value="update">
                       <input type="hidden" name="board_key" value="<?= smartcms_h($board['board_key']) ?>">
