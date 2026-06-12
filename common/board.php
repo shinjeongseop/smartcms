@@ -280,7 +280,7 @@ function smartcms_board_delete_editor_images(string $content): void
     smartcms_board_delete_editor_images_removed($content, '');
 }
 
-function smartcms_board_resize_image_file(string $path, string $mime, int $max_width = 1600, int $max_height = 1600, int $quality = 85): bool
+function smartcms_board_resize_image_file(string $path, string $mime, int $max_width = 1200, int $max_height = 1200, int $quality = 85): bool
 {
     if (!is_file($path) || !preg_match('#^image/(jpeg|png|gif|webp)$#i', $mime)) {
         return false;
