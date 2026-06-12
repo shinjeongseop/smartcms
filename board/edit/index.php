@@ -112,7 +112,7 @@ $form_values = [
 $form_enctype = 'multipart/form-data';
 $show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
 $show_hide_form = true;
-$submit_label = '수정';
+$submit_label = '저장';
 $show_submit_icon = false;
 $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);
 $back_label = '목록';

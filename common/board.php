@@ -37,6 +37,7 @@ function smartcms_board_skin_meta(?array $board): array
         'notice' => ['label' => '공지', 'accent' => 'primary', 'layout' => 'table', 'icon' => 'bi-megaphone-fill'],
         'faq' => ['label' => 'FAQ', 'accent' => 'primary', 'layout' => 'cards', 'icon' => 'bi-patch-question-fill'],
         'webzine' => ['label' => '웹진', 'accent' => 'primary', 'layout' => 'webzine', 'icon' => 'bi-journal-richtext'],
+        'youtube' => ['label' => '유튜브', 'accent' => 'danger', 'layout' => 'webzine', 'icon' => 'bi-youtube'],
     ];
 
     $meta = $meta_map[$skin] ?? $meta_map['default'];
@@ -60,6 +61,7 @@ function smartcms_board_skin_options(): array
         'notice' => '공지사항',
         'faq' => 'FAQ',
         'webzine' => '웹진',
+        'youtube' => '유튜브',
     ];
 }
 
@@ -124,6 +126,12 @@ function smartcms_board_thumbnail_config(?array $board, string $context = 'list'
             'widget' => [480, 270],
             'columns' => 1,
         ],
+        'youtube' => [
+            'list' => [640, 360],
+            'view' => [960, 540],
+            'widget' => [480, 270],
+            'columns' => 1,
+        ],
     ];
 
     $skin_config = $map[$skin] ?? $map['default'];
@@ -182,6 +190,89 @@ function smartcms_board_normalize_link_url(string $value): string
     }
 
     return $value;
+}
+
+function smartcms_board_youtube_video_id_from_url(string $url): ?string
+{
+    $url = trim($url);
+    if ($url === '') {
+        return null;
+    }
+
+    $video_id = null;
+    $parts = parse_url($url);
+    $host = strtolower((string)($parts['host'] ?? ''));
+    $path = trim((string)($parts['path'] ?? ''), '/');
+    $query = (string)($parts['query'] ?? '');
+
+    if ($query !== '') {
+        parse_str($query, $params);
+        $candidate = (string)($params['v'] ?? '');
+        if ($candidate !== '' && preg_match('/^[A-Za-z0-9_-]{11}$/', $candidate) === 1) {
+            return $candidate;
+        }
+    }
+
+    $segments = array_values(array_filter(explode('/', $path), static fn(string $segment): bool => $segment !== ''));
+    if (str_contains($host, 'youtu.be') && !empty($segments)) {
+        $candidate = $segments[0];
+        if (preg_match('/^[A-Za-z0-9_-]{11}$/', $candidate) === 1) {
+            return $candidate;
+        }
+    }
+
+    foreach (['embed', 'shorts', 'live', 'v'] as $marker) {
+        $index = array_search($marker, $segments, true);
+        if ($index !== false && isset($segments[$index + 1]) && preg_match('/^[A-Za-z0-9_-]{11}$/', $segments[$index + 1]) === 1) {
+            return $segments[$index + 1];
+        }
+    }
+
+    foreach ($segments as $segment) {
+        if (preg_match('/^[A-Za-z0-9_-]{11}$/', $segment) === 1) {
+            return $segment;
+        }
+    }
+
+    return $video_id;
+}
+
+function smartcms_board_youtube_thumbnail_url_from_id(string $video_id, string $quality = 'hqdefault'): string
+{
+    $quality = preg_replace('/[^a-z0-9_.-]/i', '', $quality);
+    if ($quality === '') {
+        $quality = 'hqdefault';
+    }
+
+    return 'https://img.youtube.com/vi/' . rawurlencode($video_id) . '/' . rawurlencode($quality) . '.jpg';
+}
+
+function smartcms_board_youtube_embed_url_from_id(string $video_id): string
+{
+    return 'https://www.youtube.com/embed/' . rawurlencode($video_id) . '?rel=0';
+}
+
+function smartcms_board_youtube_link_data(array $post): array
+{
+    $links = smartcms_board_post_links($post);
+    foreach ($links as $url) {
+        $video_id = smartcms_board_youtube_video_id_from_url($url);
+        if ($video_id !== null) {
+            return [
+                'url' => $url,
+                'video_id' => $video_id,
+                'thumb_url' => smartcms_board_youtube_thumbnail_url_from_id($video_id),
+                'embed_url' => smartcms_board_youtube_embed_url_from_id($video_id),
+            ];
+        }
+    }
+
+    return [
+        'url' => '',
+        'video_id' => null,
+        'thumb_url' => null,
+        'embed_url' => null,
+    ];
 }
 
 function smartcms_board_post_links(array $post): array
@@ -609,7 +700,7 @@ function smartcms_board_posts(int $board_id, int $page = 1, int $per_page = 10, 
     $total = (int)($count_stmt->fetch()['cnt'] ?? 0);
 
     $stmt = smartcms_db()->prepare(
-        "SELECT id, title, excerpt, author_name, is_notice, is_secret, view_count, comment_count, attachment_count, created_at
+        "SELECT id, title, link_url, link_url_1, link_url_2, excerpt, author_name, is_notice, is_secret, view_count, comment_count, attachment_count, created_at
          FROM " . smartcms_table('board_posts') . "
          WHERE {$where}
          ORDER BY is_notice DESC, id DESC
@@ -665,7 +756,7 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
     $total = (int)($count_stmt->fetch()['cnt'] ?? 0);
 
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.content, p.excerpt, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
+        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.content, p.excerpt, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
                 b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
@@ -1113,7 +1204,7 @@ function smartcms_board_recent_posts_by_key(string $board_key, int $limit = 5): 
 function smartcms_board_popular_posts(int $limit = 5): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.author_name, p.comment_count, p.view_count, p.created_at, b.board_key, b.board_name
+        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.author_name, p.comment_count, p.view_count, p.created_at, b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled'

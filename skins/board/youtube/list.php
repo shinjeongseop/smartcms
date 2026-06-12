@@ -1,0 +1,143 @@
+<?php
+/* 게시판 글 목록 스킨 - youtube/list.php */
+$skin_meta = smartcms_board_skin_meta($board);
+$thumb_config = smartcms_board_thumbnail_config($board, 'list');
+?>
+<section class="board-list-container">
+  <div class="card border shadow-sm bg-white overflow-hidden">
+    <header class="card-header bg-white border-bottom p-4 p-lg-5">
+      <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+        <h2 class="fs-5 fw-bold mb-0 text-dark"><i class="bi bi-youtube text-danger me-2"></i>유튜브 게시판</h2>
+        <form class="row g-2 flex-grow-1 justify-content-lg-end mb-0" method="get" role="search" data-search-min-length="2">
+          <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
+          <div class="col-12 col-lg">
+            <div class="input-group">
+              <span class="input-group-text bg-white border"><i class="bi bi-search text-muted"></i></span>
+              <input type="search" class="form-control" name="q" value="<?= smartcms_h($pagination['keyword']) ?>" placeholder="제목, 설명, 작성자 검색">
+            </div>
+          </div>
+          <div class="col-12 col-lg-auto">
+            <button class="btn btn-danger rounded-pill px-4 w-100 shadow-none fw-bold" type="submit">검색</button>
+          </div>
+          <?php if ($pagination['keyword'] !== ''): ?>
+            <div class="col-12 col-lg-auto">
+              <a class="btn btn-light border rounded-pill px-4 w-100 shadow-none fw-bold text-secondary"
+                 href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">초기화</a>
+            </div>
+          <?php endif; ?>
+        </form>
+      </div>
+    </header>
+
+    <div class="p-4 p-lg-5">
+      <div class="vstack gap-4">
+        <?php foreach ($posts as $post): ?>
+          <?php $video = smartcms_board_youtube_link_data($post); ?>
+          <?php $thumb_url = $video['thumb_url'] ?? null; ?>
+          <?php $excerpt = smartcms_board_excerpt((string)($post['content'] ?? $post['excerpt'] ?? ''), 160); ?>
+          <article class="card border shadow-sm bg-white overflow-hidden">
+            <div class="row g-0">
+              <div class="col-12 col-md-5 col-lg-4">
+                <a class="d-block ratio ratio-16x9 bg-light text-decoration-none position-relative overflow-hidden"
+                   href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                  <?php if ($thumb_url): ?>
+                    <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url) ?>" alt="<?= smartcms_h((string)$post['title']) ?>">
+                  <?php else: ?>
+                    <div class="d-flex align-items-center justify-content-center text-secondary h-100 w-100">
+                      <span class="text-center">
+                        <i class="bi bi-youtube fs-1 text-danger d-block mb-2"></i>
+                        <span class="small fw-semibold">YouTube</span>
+                      </span>
+                    </div>
+                  <?php endif; ?>
+                  <span class="position-absolute top-50 start-50 translate-middle bg-dark bg-opacity-75 text-white rounded-circle p-3">
+                    <i class="bi bi-play-fill fs-2"></i>
+                  </span>
+                </a>
+              </div>
+              <div class="col-12 col-md-7 col-lg-8">
+                <div class="card-body p-4 p-lg-5 h-100 d-flex flex-column gap-3">
+                  <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                      <?php if ((int)$post['is_notice'] === 1): ?>
+                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1 fw-bold">공지</span>
+                      <?php else: ?>
+                        <span class="badge bg-light text-secondary border rounded-pill px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
+                      <?php endif; ?>
+                      <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1 fw-bold">YouTube</span>
+                    </div>
+                    <time class="small text-secondary fw-medium" datetime="<?= date('Y-m-d H:i:s', strtotime((string)$post['created_at'])) ?>">
+                      <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                    </time>
+                  </div>
+                  <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm d-block"
+                     href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                    <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
+                    <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
+                  </a>
+                  <?php if ($video['url'] !== ''): ?>
+                    <a class="text-decoration-none small fw-semibold text-primary text-break" href="<?= smartcms_h($video['url']) ?>" target="_blank" rel="noopener noreferrer">
+                      <?= smartcms_h($video['url']) ?>
+                    </a>
+                  <?php endif; ?>
+                  <?php if ($excerpt !== ''): ?>
+                    <p class="mb-0 text-secondary fs-6 lh-base"><?= smartcms_h($excerpt) ?></p>
+                  <?php endif; ?>
+                  <div class="d-flex flex-wrap gap-2 small text-secondary fw-medium">
+                    <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h($post['author_name']) ?></span>
+                    <span class="opacity-25">|</span>
+                    <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-eye"></i><?= number_format((int)$post['view_count']) ?></span>
+                    <?php if ((int)$post['comment_count'] > 0): ?>
+                      <span class="opacity-25">|</span>
+                      <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-chat-dots"></i><?= (int)$post['comment_count'] ?></span>
+                    <?php endif; ?>
+                  </div>
+                  <div class="mt-auto">
+                    <a class="btn btn-danger btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm"
+                       href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                      재생/상세
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        <?php endforeach; ?>
+        <?php if (!$posts): ?>
+          <div class="text-center text-secondary py-5">
+            <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
+            등록된 게시글이 없습니다.
+          </div>
+        <?php endif; ?>
+      </div>
+    </div>
+
+    <?php if ((int)$pagination['pages'] > 1): ?>
+      <footer class="card-footer bg-white p-4 p-lg-5 border-top">
+        <nav aria-label="게시글 페이지 목록">
+          <ul class="pagination pagination-sm justify-content-center mb-0 gap-1">
+            <?php for ($i = 1; $i <= (int)$pagination['pages']; $i++): ?>
+              <li class="page-item <?= $i === (int)$pagination['page'] ? 'active' : '' ?>">
+                <a class="page-link border-0 rounded-circle px-3 py-2 fw-bold shadow-none"
+                   href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])
+                       . '&page=' . $i
+                       . '&q=' . rawurlencode((string)$pagination['keyword'])) ?>">
+                  <?= $i ?>
+                </a>
+              </li>
+            <?php endfor; ?>
+          </ul>
+        </nav>
+      </footer>
+    <?php endif; ?>
+
+    <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
+      <footer class="card-footer bg-white border-top p-4 p-lg-5 text-end">
+        <a class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm"
+           href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">
+          새글
+        </a>
+      </footer>
+    <?php endif; ?>
+  </div>
+</section>
