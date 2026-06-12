@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'update') {
         $board_key = smartcms_board_key((string)($_POST['board_key'] ?? ''));
         $board_name = trim((string)($_POST['board_name'] ?? ''));
+        $skin = smartcms_board_normalize_skin((string)($_POST['skin'] ?? 'default'));
         $status = (string)($_POST['status'] ?? 'active');
 
         if ($board_key === '' || $board_name === '' || !in_array($status, ['active', 'hidden', 'disabled'], true)) {
@@ -35,12 +36,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             smartcms_execute(
                 "UPDATE " . smartcms_table('boards') . "
-                 SET board_name = :board_name, description = :description, status = :status
+                 SET board_name = :board_name, description = :description, skin = :skin, status = :status
                  WHERE board_key = :board_key",
                 [
                     'board_key' => $board_key,
                     'board_name' => $board_name,
                     'description' => trim((string)($_POST['description'] ?? '')) ?: null,
+                    'skin' => $skin,
                     'status' => $status,
                 ]
             );
@@ -130,6 +132,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <thead class="table-light">
               <tr class="small text-uppercase fw-bold text-secondary">
                 <th scope="col" class="ps-4 py-3">게시판 정보</th>
+                <th scope="col" class="py-3">스킨</th>
                 <th scope="col" class="py-3">권한 요약 (Level)</th>
                 <th scope="col" class="py-3">상태</th>
                 <th scope="col" class="text-end pe-4 py-3">관리</th>
@@ -148,6 +151,13 @@ require SMARTCMS_ROOT . '/admin/head.php';
                         </a>
                       </div>
                     </div>
+                  </td>
+                  <td class="py-3">
+                    <select class="form-select form-select-sm fw-bold" name="skin">
+                      <?php foreach (smartcms_board_skin_options() as $skin_key => $skin_label): ?>
+                        <option value="<?= smartcms_h($skin_key) ?>" <?= (string)$board['skin'] === $skin_key ? 'selected' : '' ?>><?= smartcms_h($skin_label) ?></option>
+                      <?php endforeach; ?>
+                    </select>
                   </td>
                   <td class="py-3">
                     <div class="d-flex gap-2">
@@ -189,7 +199,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <?php endforeach; ?>
               <?php if (!$boards): ?>
                 <tr>
-                  <td colspan="4" class="text-center py-5 text-secondary fw-medium opacity-75">생성된 게시판이 없습니다.</td>
+                  <td colspan="5" class="text-center py-5 text-secondary fw-medium opacity-75">생성된 게시판이 없습니다.</td>
                 </tr>
               <?php endif; ?>
             </tbody>
