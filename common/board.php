@@ -105,7 +105,7 @@ function smartcms_board_sanitize_editor_html(string $html): string
         return smartcms_h($html);
     }
 
-    $allowed = ['p', 'div', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a', 'img', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'hr', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+    $allowed = ['p', 'div', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'hr', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
     $sanitize_node = static function (DOMNode $node) use (&$sanitize_node, $allowed): string {
         if ($node->nodeType === XML_TEXT_NODE) {
             return htmlspecialchars($node->nodeValue ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -130,34 +130,6 @@ function smartcms_board_sanitize_editor_html(string $html): string
             'p', 'div', 'strong', 'b', 'em', 'i', 'u', 'blockquote', 'pre', 'code', 'ul', 'ol', 'li' => '<' . $tag . '>' . $children . '</' . $tag . '>',
             'hr' => '<hr>',
             'span', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' => '<' . $tag . '>' . $children . '</' . $tag . '>',
-            'img' => (function () use ($node): string {
-                $src = '';
-                if ($node->hasAttribute('src')) {
-                    $candidate = trim((string)$node->getAttribute('src'));
-                    if ($candidate !== '' && preg_match('#^(https?:|/|data:)#i', $candidate) === 1) {
-                        $src = htmlspecialchars($candidate, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-                    }
-                }
-
-                if ($src === '') {
-                    return '';
-                }
-
-                $alt = '';
-                if ($node->hasAttribute('alt')) {
-                    $alt = htmlspecialchars((string)$node->getAttribute('alt'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
-                }
-
-                $title = '';
-                if ($node->hasAttribute('title')) {
-                    $title_value = trim((string)$node->getAttribute('title'));
-                    if ($title_value !== '') {
-                        $title = ' title="' . htmlspecialchars($title_value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '"';
-                    }
-                }
-
-                return '<img src="' . $src . '" alt="' . $alt . '" class="img-fluid rounded-3" loading="lazy"' . $title . '>';
-            })(),
             'a' => (function () use ($node, $children): string {
                 $href = '';
                 if ($node->hasAttribute('href')) {
@@ -183,190 +155,6 @@ function smartcms_board_sanitize_editor_html(string $html): string
     }
 
     return $output;
-}
-
-function smartcms_board_editor_upload_dir(array $board): string
-{
-    $board_key = smartcms_board_key((string)($board['board_key'] ?? 'editor'));
-    if ($board_key === '') {
-        $board_key = 'editor';
-    }
-
-    return SMARTCMS_ROOT . '/uploads/board/editor/' . $board_key;
-}
-
-function smartcms_board_editor_upload_url(array $board, string $stored_name): string
-{
-    $board_key = smartcms_board_key((string)($board['board_key'] ?? 'editor'));
-    if ($board_key === '') {
-        $board_key = 'editor';
-    }
-
-    return smartcms_base_url('/uploads/board/editor/' . rawurlencode($board_key) . '/' . rawurlencode($stored_name));
-}
-
-function smartcms_board_editor_image_paths(string $html): array
-{
-    $html = trim($html);
-    if ($html === '') {
-        return [];
-    }
-
-    $sources = [];
-    if (class_exists(DOMDocument::class)) {
-        $previous = libxml_use_internal_errors(true);
-        $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadHTML('<?xml encoding="utf-8"?><div id="smartcms-editor-image-root">' . $html . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        libxml_clear_errors();
-        libxml_use_internal_errors($previous);
-
-        $root = $dom->getElementById('smartcms-editor-image-root');
-        if ($root instanceof DOMElement) {
-            foreach ($root->getElementsByTagName('img') as $img) {
-                if ($img->hasAttribute('src')) {
-                    $sources[] = trim((string)$img->getAttribute('src'));
-                }
-            }
-        }
-    } elseif (preg_match_all('#<img[^>]+src=[\"\\\']([^\"\\\']+)[\"\\\']#i', $html, $matches)) {
-        $sources = array_map('trim', $matches[1]);
-    }
-
-    $paths = [];
-    foreach ($sources as $source) {
-        if ($source === '') {
-            continue;
-        }
-
-        $path = (string)(parse_url($source, PHP_URL_PATH) ?: $source);
-        $marker = '/uploads/board/editor/';
-        $pos = strpos($path, $marker);
-        if ($pos !== false) {
-            $relative = ltrim(substr($path, $pos + 1), '/');
-        } elseif (str_starts_with($path, 'uploads/board/editor/')) {
-            $relative = $path;
-        } else {
-            continue;
-        }
-
-        $absolute = SMARTCMS_ROOT . '/' . ltrim($relative, '/');
-        $real = realpath($absolute);
-        if ($real !== false && is_file($real)) {
-            $paths[] = $real;
-        } elseif (is_file($absolute)) {
-            $paths[] = $absolute;
-        }
-    }
-
-    return array_values(array_unique($paths));
-}
-
-function smartcms_board_delete_editor_images_removed(string $old_content, string $new_content): void
-{
-    $old_paths = smartcms_board_editor_image_paths($old_content);
-    if (!$old_paths) {
-        return;
-    }
-
-    $new_paths = smartcms_board_editor_image_paths($new_content);
-    foreach (array_diff($old_paths, $new_paths) as $path) {
-        if (is_file($path)) {
-            @unlink($path);
-        }
-    }
-}
-
-function smartcms_board_delete_editor_images(string $content): void
-{
-    smartcms_board_delete_editor_images_removed($content, '');
-}
-
-function smartcms_board_resize_image_file(string $path, string $mime, int $max_width = 1200, int $max_height = 1200, int $quality = 85): bool
-{
-    if (!is_file($path) || !preg_match('#^image/(jpeg|png|gif|webp)$#i', $mime)) {
-        return false;
-    }
-
-    $info = @getimagesize($path);
-    if (!is_array($info) || empty($info[0]) || empty($info[1])) {
-        return false;
-    }
-
-    $width = (int)$info[0];
-    $height = (int)$info[1];
-    if ($width <= 0 || $height <= 0) {
-        return false;
-    }
-
-    if ($width <= $max_width && $height <= $max_height) {
-        return false;
-    }
-
-    $ratio = min($max_width / $width, $max_height / $height);
-    if ($ratio >= 1) {
-        return false;
-    }
-
-    $new_width = max(1, (int)round($width * $ratio));
-    $new_height = max(1, (int)round($height * $ratio));
-
-    $mime = strtolower($mime);
-    $create_source = match ($mime) {
-        'image/jpeg' => function_exists('imagecreatefromjpeg') ? 'imagecreatefromjpeg' : null,
-        'image/png' => function_exists('imagecreatefrompng') ? 'imagecreatefrompng' : null,
-        'image/gif' => function_exists('imagecreatefromgif') ? 'imagecreatefromgif' : null,
-        'image/webp' => function_exists('imagecreatefromwebp') ? 'imagecreatefromwebp' : null,
-        default => null,
-    };
-
-    $save_target = match ($mime) {
-        'image/jpeg' => function_exists('imagejpeg') ? 'imagejpeg' : null,
-        'image/png' => function_exists('imagepng') ? 'imagepng' : null,
-        'image/gif' => function_exists('imagegif') ? 'imagegif' : null,
-        'image/webp' => function_exists('imagewebp') ? 'imagewebp' : null,
-        default => null,
-    };
-
-    if (!$create_source || !$save_target) {
-        return false;
-    }
-
-    $source = @$create_source($path);
-    if (!is_resource($source) && !($source instanceof GdImage)) {
-        return false;
-    }
-
-    $target = imagecreatetruecolor($new_width, $new_height);
-    if ($target === false) {
-        imagedestroy($source);
-        return false;
-    }
-
-    if ($mime === 'image/png' || $mime === 'image/gif' || $mime === 'image/webp') {
-        imagealphablending($target, false);
-        imagesavealpha($target, true);
-        $transparent = imagecolorallocatealpha($target, 0, 0, 0, 127);
-        imagefill($target, 0, 0, $transparent);
-    }
-
-    imagecopyresampled($target, $source, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-
-    $saved = false;
-    if ($mime === 'image/jpeg') {
-        $saved = (bool)$save_target($target, $path, max(1, min(100, $quality)));
-    } elseif ($mime === 'image/png') {
-        $png_quality = max(0, min(9, (int)round(9 - ($quality / 100) * 9)));
-        $saved = (bool)$save_target($target, $path, $png_quality);
-    } elseif ($mime === 'image/gif') {
-        $saved = (bool)$save_target($target, $path);
-    } elseif ($mime === 'image/webp') {
-        $saved = (bool)$save_target($target, $path, max(1, min(100, $quality)));
-    }
-
-    imagedestroy($source);
-    imagedestroy($target);
-
-    return $saved;
 }
 
 function smartcms_board_render_content(array $post): string
@@ -399,6 +187,82 @@ function smartcms_board_image_files(array $files): array
     return array_values(array_filter($files, static fn(array $file): bool => smartcms_board_file_is_image($file)));
 }
 
+function smartcms_board_editor_upload_dir(array $board): string
+{
+    $board_key = smartcms_board_key((string)($board['board_key'] ?? 'editor'));
+    if ($board_key === '') {
+        $board_key = 'editor';
+    }
+
+    return SMARTCMS_ROOT . '/uploads/board/editor/' . $board_key;
+}
+
+function smartcms_board_editor_upload_url(array $board, string $stored_name): string
+{
+    $board_key = smartcms_board_key((string)($board['board_key'] ?? 'editor'));
+    if ($board_key === '') {
+        $board_key = 'editor';
+    }
+
+    return smartcms_base_url('/uploads/board/editor/' . rawurlencode($board_key) . '/' . rawurlencode($stored_name));
+}
+
+function smartcms_board_editor_image_paths(string $html): array
+{
+    $paths = [];
+    foreach (smartcms_image_extract_sources_from_html($html) as $source) {
+        $real = smartcms_image_source_path_from_url($source);
+        if ($real !== null) {
+            $paths[] = $real;
+        }
+    }
+
+    return array_values(array_unique($paths));
+}
+
+function smartcms_board_delete_editor_images_removed(string $old_content, string $new_content): void
+{
+    $old_paths = smartcms_board_editor_image_paths($old_content);
+    if (!$old_paths) {
+        return;
+    }
+
+    $new_paths = smartcms_board_editor_image_paths($new_content);
+    foreach (array_diff($old_paths, $new_paths) as $path) {
+        if (is_file($path)) {
+            @unlink($path);
+        }
+    }
+}
+
+function smartcms_board_delete_editor_images(string $content): void
+{
+    smartcms_board_delete_editor_images_removed($content, '');
+}
+
+function smartcms_board_editor_images_from_content(string $content): array
+{
+    $items = [];
+    foreach (smartcms_image_extract_sources_from_html($content) as $source) {
+        $path = smartcms_image_source_path_from_url($source);
+        if ($path === null) {
+            continue;
+        }
+
+        $relative = ltrim(str_replace('\\', '/', str_replace(SMARTCMS_ROOT, '', $path)), '/');
+        $thumb_url = smartcms_image_thumbnail_url_from_path($path, 900, 506);
+        $items[] = [
+            'src' => $source,
+            'path' => $path,
+            'thumb_url' => $thumb_url ?? smartcms_asset_url('/' . $relative),
+            'original_name' => basename((string)(parse_url($source, PHP_URL_PATH) ?: $source)),
+            'file_size' => filesize($path) ?: 0,
+        ];
+    }
+
+    return $items;
+}
+
 function smartcms_board_first_image_file(int $post_id): ?array
 {
     return smartcms_fetch_one(
@@ -411,7 +275,7 @@ function smartcms_board_first_image_file(int $post_id): ?array
     );
 }
 
-function smartcms_board_file_thumbnail_url(array $file, int $max_width = 480, int $max_height = 360, int $quality = 85): ?string
+function smartcms_board_file_thumbnail_url(array $file, int $max_width = 480, int $max_height = 270, int $quality = 85): ?string
 {
     $relative_path = trim((string)($file['file_path'] ?? ''));
     if ($relative_path === '') {
@@ -1080,7 +944,7 @@ function smartcms_board_store_uploads(array $board, int $post_id, array $user, a
         }
 
         if (preg_match('#^image/(jpeg|png|gif|webp)$#i', $mime)) {
-            smartcms_board_resize_image_file($target_path, $mime);
+            smartcms_image_resize_file($target_path, $target_path);
         }
 
         smartcms_execute(

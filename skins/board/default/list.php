@@ -39,7 +39,7 @@ $layout = (string)$skin_meta['layout'];
       <div class="p-4 p-lg-5">
         <div class="row g-4">
           <?php foreach ($posts as $post): ?>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-6 col-xl-4">
               <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
               <article class="card h-100 border shadow-sm">
                 <?php if ($first_image): ?>

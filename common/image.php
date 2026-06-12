@@ -159,7 +159,7 @@ function smartcms_image_get_size_by_rule(int $src_w, int $src_h, int $dst_size, 
 이름 : smartcms_image_resize_file
 용도 : 이미지 파일을 비율 유지로 축소하여 다른 파일로 저장
 */
-function smartcms_image_resize_file(string $source_path, string $target_path, int $max_width = 1200, int $max_height = 1200, int $quality = 85): bool
+function smartcms_image_resize_file(string $source_path, string $target_path, int $max_width = 1024, int $max_height = 1024, int $quality = 85): bool
 {
     $image = smartcms_image_load_resource($source_path);
     if (!$image) {
@@ -171,6 +171,10 @@ function smartcms_image_resize_file(string $source_path, string $target_path, in
     $src_type = (int)$image[3];
 
     if ($src_w <= $max_width && $src_h <= $max_height) {
+        if ($source_path === $target_path) {
+            return true;
+        }
+
         return copy($source_path, $target_path);
     }
 
@@ -237,4 +241,56 @@ function smartcms_image_thumbnail_url_from_relative(string $relative_path, int $
 {
     $source_path = SMARTCMS_ROOT . '/' . ltrim(str_replace('\\', '/', $relative_path), '/');
     return smartcms_image_thumbnail_url_from_path($source_path, $max_width, $max_height, $quality);
+}
+
+function smartcms_image_source_path_from_url(string $source_url): ?string
+{
+    $source_url = trim($source_url);
+    if ($source_url === '') {
+        return null;
+    }
+
+    $path = (string)(parse_url($source_url, PHP_URL_PATH) ?: $source_url);
+    $path = ltrim(str_replace('\\', '/', $path), '/');
+    if ($path === '') {
+        return null;
+    }
+
+    $absolute = SMARTCMS_ROOT . '/' . $path;
+    $real = realpath($absolute);
+    if ($real !== false && is_file($real)) {
+        return $real;
+    }
+
+    return is_file($absolute) ? $absolute : null;
+}
+
+function smartcms_image_extract_sources_from_html(string $html): array
+{
+    $html = trim($html);
+    if ($html === '') {
+        return [];
+    }
+
+    $sources = [];
+    if (class_exists(DOMDocument::class)) {
+        $previous = libxml_use_internal_errors(true);
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->loadHTML('<?xml encoding="utf-8"?><div id="smartcms-image-root">' . $html . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+
+        $root = $dom->getElementById('smartcms-image-root');
+        if ($root instanceof DOMElement) {
+            foreach ($root->getElementsByTagName('img') as $img) {
+                if ($img->hasAttribute('src')) {
+                    $sources[] = trim((string)$img->getAttribute('src'));
+                }
+            }
+        }
+    } elseif (preg_match_all('#<img[^>]+src=[\"\\\']([^\"\\\']+)[\"\\\']#i', $html, $matches)) {
+        $sources = array_map('trim', $matches[1]);
+    }
+
+    return array_values(array_filter(array_unique($sources), static fn(string $src): bool => $src !== ''));
 }

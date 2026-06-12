@@ -175,10 +175,10 @@ require SMARTCMS_ROOT . '/head.php';
                 <a class="list-group-item list-group-item-action p-4"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                   <?php if ($recent_image): ?>
-                    <?php $recent_thumb = smartcms_board_file_thumbnail_url($recent_image, 240, 180); ?>
+                    <?php $recent_thumb = smartcms_board_file_thumbnail_url($recent_image, 480, 270); ?>
                     <div class="row g-3 align-items-center">
                       <div class="col-4 col-sm-3 col-md-2">
-                        <div class="ratio ratio-1x1 rounded-3 overflow-hidden bg-light border">
+                        <div class="ratio ratio-16x9 rounded-3 overflow-hidden bg-light border">
                           <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($recent_thumb ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$recent_image['id']))) ?>" alt="<?= smartcms_h($recent_image['original_name']) ?>">
                         </div>
                       </div>
@@ -237,10 +237,10 @@ require SMARTCMS_ROOT . '/head.php';
                         <a class="list-group-item list-group-item-action bg-white px-0 py-2"
                           href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                           <?php if ($widget_image): ?>
-                            <?php $widget_thumb = smartcms_board_file_thumbnail_url($widget_image, 180, 180); ?>
+                            <?php $widget_thumb = smartcms_board_file_thumbnail_url($widget_image, 480, 270); ?>
                             <div class="row g-2 align-items-center">
                               <div class="col-3">
-                                <div class="ratio ratio-1x1 rounded-2 overflow-hidden bg-light border">
+                                <div class="ratio ratio-16x9 rounded-2 overflow-hidden bg-light border">
                                   <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($widget_thumb ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$widget_image['id']))) ?>" alt="<?= smartcms_h($widget_image['original_name']) ?>">
                                 </div>
                               </div>
