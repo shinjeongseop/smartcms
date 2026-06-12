@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-if (smartcms_board_count_once('view', (int)$post['id'])) {
+if (smartcms_board_should_count_view($board, $post, $user) && smartcms_board_count_once('view', (int)$post['id'], 86400)) {
     smartcms_board_increment_view((int)$post['id']);
     $post['view_count'] = (int)$post['view_count'] + 1;
 }

@@ -657,7 +657,33 @@ function smartcms_board_can_manage_post(array $board, array $post, ?array $user)
     return (int)$post['author_id'] === (int)$user['id'] || smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
 }
 
-function smartcms_board_count_once(string $type, int $id, int $ttl = 0): bool
+function smartcms_board_should_count_view(array $board, array $post, ?array $user): bool
+{
+    if (!$user) {
+        return true;
+    }
+
+    if ((int)($post['author_id'] ?? 0) === (int)$user['id']) {
+        return false;
+    }
+
+    return !smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
+}
+
+function smartcms_board_should_count_download(array $board, array $file, ?array $user): bool
+{
+    if (!$user) {
+        return true;
+    }
+
+    if ((int)($file['author_id'] ?? 0) === (int)$user['id']) {
+        return false;
+    }
+
+    return !smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
+}
+
+function smartcms_board_count_once(string $type, int $id, int $ttl = 86400): bool
 {
     smartcms_session_start();
     $_SESSION['smartcms_board_count_cache'] ??= [];
