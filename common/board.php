@@ -524,7 +524,7 @@ function smartcms_board_posts(int $board_id, int $page = 1, int $per_page = 10, 
     $total = (int)($count_stmt->fetch()['cnt'] ?? 0);
 
     $stmt = smartcms_db()->prepare(
-        "SELECT id, title, author_name, is_notice, is_secret, view_count, comment_count, attachment_count, created_at
+        "SELECT id, title, excerpt, author_name, is_notice, is_secret, view_count, comment_count, attachment_count, created_at
          FROM " . smartcms_table('board_posts') . "
          WHERE {$where}
          ORDER BY is_notice DESC, id DESC
