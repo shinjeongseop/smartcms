@@ -47,20 +47,22 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
             <?php $excerpt = smartcms_board_excerpt($excerpt_source, 240); ?>
             <article class="card h-100 border shadow-sm bg-white overflow-hidden">
               <div class="row g-0 h-100">
-                <div class="col-12 col-md-5 col-lg-4">
-                  <?php if ($first_image): ?>
-                    <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
-                    <a class="d-block ratio ratio-16x9 bg-light overflow-hidden" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
-                      <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$first_image['id']))) ?>" alt="<?= smartcms_h($first_image['original_name']) ?>">
-                    </a>
-                  <?php else: ?>
-                    <a class="d-flex align-items-center justify-content-center ratio ratio-16x9 bg-light text-decoration-none text-secondary" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
-                      <span class="text-center px-3">
-                        <i class="bi bi-image fs-1 opacity-25 d-block mb-2"></i>
-                        <span class="small fw-semibold">이미지 없음</span>
-                      </span>
-                    </a>
-                  <?php endif; ?>
+                <div class="col-12 col-md-5 col-lg-4 d-flex align-items-center ps-md-3 ps-lg-4">
+                  <div class="w-100">
+                    <?php if ($first_image): ?>
+                      <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
+                      <a class="d-block ratio ratio-16x9 bg-light overflow-hidden" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                        <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$first_image['id']))) ?>" alt="<?= smartcms_h($first_image['original_name']) ?>">
+                      </a>
+                    <?php else: ?>
+                      <a class="d-flex align-items-center justify-content-center ratio ratio-16x9 bg-light text-decoration-none text-secondary" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                        <span class="text-center px-3">
+                          <i class="bi bi-image fs-1 opacity-25 d-block mb-2"></i>
+                          <span class="small fw-semibold">이미지 없음</span>
+                        </span>
+                      </a>
+                    <?php endif; ?>
+                  </div>
                 </div>
                 <div class="col-12 col-md-7 col-lg-8">
                   <div class="card-body p-4 p-lg-5 h-100 d-flex flex-column gap-4">
