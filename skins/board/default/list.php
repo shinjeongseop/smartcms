@@ -15,7 +15,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
   <div class="card border shadow-sm bg-white overflow-hidden">
     <header class="card-header bg-white border-bottom p-4 p-lg-5">
       <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
-        <h2 class="h3 fw-bold mb-0 text-dark">글 목록</h2>
+        <h2 class="fs-5 fw-bold mb-0 text-dark">글 목록</h2>
         <form class="row g-2 flex-grow-1 justify-content-lg-end mb-0" method="get" role="search" data-search-min-length="2">
           <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
           <div class="col-12 col-lg">
@@ -90,7 +90,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                       <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
                     </a>
                     <?php if ($excerpt !== ''): ?>
-                      <p class="mb-0 text-secondary small lh-base"><?= smartcms_h($excerpt) ?></p>
+                      <p class="mb-0 text-secondary fs-6 lh-base"><?= smartcms_h($excerpt) ?></p>
                     <?php endif; ?>
                     <div class="d-flex flex-wrap gap-2 small text-secondary fw-medium mb-1">
                       <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h($post['author_name']) ?></span>
@@ -149,8 +149,8 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                       <?php if ($gallery_mode && (int)$post['comment_count'] > 0): ?><span class="badge bg-light text-primary border rounded-pill"><?= (int)$post['comment_count'] ?></span><?php endif; ?>
                     </div>
                   </div>
-                  <a class="text-decoration-none fw-bold text-dark <?= $gallery_mode ? 'fs-6' : 'fs-5' ?> lh-sm stretched-link d-block text-truncate"
-                     href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                    <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm stretched-link d-block text-truncate"
+                       href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                     <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
                   </a>
@@ -206,7 +206,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                 </td>
                 <td class="min-w-0">
                   <div class="d-flex align-items-center gap-2 min-w-0">
-                    <a class="text-decoration-none fw-semibold text-dark text-truncate fs-6 d-block flex-grow-1 min-w-0"
+                    <a class="text-decoration-none fw-semibold text-dark text-truncate fs-5 d-block flex-grow-1 min-w-0"
                        href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                       <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                       <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>

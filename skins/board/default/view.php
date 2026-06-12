@@ -18,7 +18,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
           <?php if ((int)$post['is_notice'] === 1): ?><span class="badge bg-<?= smartcms_h($accent) ?> rounded-pill me-1 px-3">공지</span><?php endif; ?>
           <?php if ((int)$post['is_secret'] === 1): ?><span class="badge bg-dark rounded-pill me-1 px-3"><i class="bi bi-lock-fill me-1"></i>비밀글</span><?php endif; ?>
         </div>
-        <h2 class="fs-6 fw-bold mb-0 text-dark"><?= smartcms_h($post['title']) ?></h2>
+        <h2 class="fs-5 fw-bold mb-0 text-dark"><?= smartcms_h($post['title']) ?></h2>
       </div>
     </header>
 
@@ -55,13 +55,13 @@ $image_columns = max(1, (int)$thumb_config['columns']);
       </section>
     <?php endif; ?>
 
-    <div class="mb-5 text-break lh-lg small text-dark">
+    <div class="mb-5 text-break lh-lg fs-6 text-dark">
       <?= smartcms_board_render_content($post) ?>
     </div>
 
     <?php if ($attachment_files): ?>
       <section class="mb-5">
-        <h3 class="h6 fw-bold mb-3 text-primary">첨부파일</h3>
+        <h3 class="fs-5 fw-bold mb-3 text-primary">첨부파일</h3>
         <div class="list-group list-group-flush rounded-3 overflow-hidden border shadow-sm bg-white">
           <?php foreach ($attachment_files as $file): ?>
             <a class="list-group-item list-group-item-action bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 p-3"
@@ -108,7 +108,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
   <div class="card-body p-4 p-lg-5">
     <div class="d-flex align-items-center gap-2 mb-5">
       <i class="bi bi-chat-left-text-fill fs-4 text-primary"></i>
-      <h2 class="h5 fw-bold mb-0 text-dark">전체 댓글 <span class="text-primary ms-1"><?= count($comments) ?></span></h2>
+      <h2 class="fs-5 fw-bold mb-0 text-dark">전체 댓글 <span class="text-primary ms-1"><?= count($comments) ?></span></h2>
     </div>
 
     <?php if ($comments): ?>
@@ -119,7 +119,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
               <span class="fw-bold text-dark"><i class="bi bi-person me-1"></i><?= smartcms_h($comment['author_name']) ?></span>
               <time class="text-secondary small fw-medium"><?= smartcms_h($comment['created_at']) ?></time>
             </header>
-            <div class="mb-0 text-dark fw-medium lh-base">
+            <div class="mb-0 text-dark fw-medium lh-base fs-6">
               <?= nl2br(smartcms_h((int)$comment['is_hidden'] === 1 ? '⚠️ 관리자에 의해 숨김 처리된 댓글입니다.' : $comment['content'])) ?>
             </div>
             <?php if ($can_manage_board && (int)$comment['is_hidden'] !== 1): ?>
@@ -142,7 +142,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
 
     <?php if ($can_comment && $user): ?>
       <section class="mt-5 pt-5 border-top">
-        <h3 class="h6 fw-bold mb-3 text-dark">댓글 작성하기</h3>
+        <h3 class="fs-5 fw-bold mb-3 text-dark">댓글 작성하기</h3>
         <form class="vstack gap-3" method="post">
           <?= smartcms_csrf_input() ?>
           <input type="hidden" name="action" value="comment_create">

@@ -6,8 +6,8 @@ $board_skin_meta = fn(array $item): array => smartcms_board_skin_meta($item);
 ?>
 <section class="smartcms-board-registry py-4">
   <header class="mb-5 text-center">
-    <h2 class="h3 fw-bold text-dark mb-2">커뮤니티 게시판 목록</h2>
-    <p class="text-secondary fw-medium mb-0">SmartCMS가 제공하는 다양한 소통 공간입니다.</p>
+    <h2 class="fs-5 fw-bold text-dark mb-2">커뮤니티 게시판 목록</h2>
+    <p class="text-secondary fw-medium fs-6 mb-0">SmartCMS가 제공하는 다양한 소통 공간입니다.</p>
   </header>
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
@@ -26,16 +26,16 @@ $board_skin_meta = fn(array $item): array => smartcms_board_skin_meta($item);
               </div>
             </div>
             
-            <h3 class="h4 fw-bold mb-3">
+            <h3 class="fs-5 fw-bold mb-3">
               <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" class="text-decoration-none text-dark stretched-link">
                 <?= smartcms_h($board['board_name']) ?>
               </a>
             </h3>
 
             <?php if (!empty($board['description'])): ?>
-              <p class="text-secondary mb-0 small fw-medium lh-base"><?= smartcms_h($board['description']) ?></p>
+              <p class="text-secondary mb-0 fs-6 fw-medium lh-base"><?= smartcms_h($board['description']) ?></p>
             <?php else: ?>
-              <p class="text-secondary mb-0 small opacity-50 italic">이 게시판에 대한 설명이 없습니다.</p>
+              <p class="text-secondary mb-0 fs-6 opacity-50">이 게시판에 대한 설명이 없습니다.</p>
             <?php endif; ?>
           </div>
         </article>
