@@ -51,59 +51,63 @@ require SMARTCMS_ROOT . '/admin/head.php';
   <?php endif; ?>
 
   <article class="card border shadow-sm overflow-hidden">
-      <header class="card-header bg-white border-bottom-0 pt-4 px-4">
-          <ul class="nav nav-tabs card-header-tabs border-bottom-0 gap-2 fw-bold" id="logTab" role="tablist">
+      <header class="card-header bg-white border-bottom py-3 px-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <div>
+            <h2 class="h5 mb-1 fw-bold text-dark">활동 로그</h2>
+            <p class="small text-secondary mb-0">접속, 로그인, 게시판 감사 로그를 같은 기준으로 확인합니다.</p>
+          </div>
+          <ul class="nav nav-pills gap-2 fw-bold" id="logTab" role="tablist">
               <li class="nav-item">
-                  <button class="nav-link active border-0 py-3 px-4 shadow-none" id="access-tab" data-bs-toggle="tab" data-bs-target="#access-panel" type="button">
+                  <button class="nav-link active border-0 shadow-none" id="access-tab" data-bs-toggle="tab" data-bs-target="#access-panel" type="button">
                     <i class="bi bi-activity me-2"></i>접속 로그
                   </button>
               </li>
               <li class="nav-item">
-                  <button class="nav-link border-0 py-3 px-4 shadow-none" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-panel" type="button">
+                  <button class="nav-link border-0 shadow-none" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-panel" type="button">
                     <i class="bi bi-key-fill me-2"></i>로그인 이력
                   </button>
               </li>
               <li class="nav-item">
-                  <button class="nav-link border-0 py-3 px-4 shadow-none" id="audit-tab" data-bs-toggle="tab" data-bs-target="#audit-panel" type="button">
+                  <button class="nav-link border-0 shadow-none" id="audit-tab" data-bs-toggle="tab" data-bs-target="#audit-panel" type="button">
                     <i class="bi bi-shield-check me-2"></i>게시판 감사
                   </button>
               </li>
           </ul>
       </header>
-      <div class="tab-content border-top">
+      <div class="tab-content">
           <!-- 접속 로그 패널 -->
           <section class="tab-pane fade show active" id="access-panel" role="tabpanel" aria-labelledby="access-tab">
               <div class="table-responsive">
                   <table class="table table-hover align-middle mb-0 text-nowrap">
                       <thead class="table-light">
                           <tr class="small text-uppercase fw-bold text-secondary">
-                              <th scope="col" class="ps-4">일시</th>
-                              <th scope="col">유형</th>
-                              <th scope="col">대상 및 경로</th>
-                              <th scope="col">IP 식별</th>
-                              <th scope="col" class="text-end pe-4">상태</th>
+                              <th scope="col" class="ps-4 py-3">일시</th>
+                              <th scope="col" class="py-3">유형</th>
+                              <th scope="col" class="py-3">대상 및 경로</th>
+                              <th scope="col" class="py-3">IP 식별</th>
+                              <th scope="col" class="text-end pe-4 py-3">상태</th>
                           </tr>
                       </thead>
                       <tbody class="table-group-divider">
                           <?php foreach ($access_logs as $log): ?>
                               <tr>
-                                  <td class="ps-4">
+                                  <td class="ps-4 py-3">
                                       <div class="d-flex flex-column lh-sm">
                                           <time class="fw-bold text-dark small" datetime="<?= smartcms_h((string)$log['created_at']) ?>"><?= date('m.d', strtotime((string)$log['created_at'])) ?></time>
                                           <time class="text-secondary opacity-50 small fw-medium sc-admin-time-xs"><?= date('H:i:s', strtotime((string)$log['created_at'])) ?></time>
                                       </div>
                                   </td>
-                                  <td>
+                                  <td class="py-3">
                                       <span class="badge bg-secondary-subtle text-secondary small text-uppercase fw-bold sc-admin-badge-xs">
                                           <?= smartcms_h($log['access_type']) ?>
                                       </span>
                                   </td>
-                                  <td>
+                                  <td class="py-3">
                                       <div class="fw-bold small text-dark mb-1"><?= smartcms_h($log['target_type']) ?>: <?= smartcms_h($log['target_key'] ?? '-') ?></div>
                                       <div class="text-xs text-secondary fw-medium opacity-75"><?= smartcms_h($log['request_path']) ?></div>
                                   </td>
-                                  <td><code class="text-xs text-muted fw-bold"><?= smartcms_h(substr((string)($log['ip_hash'] ?? 'N/A'), 0, 12)) ?>...</code></td>
-                                  <td class="text-end pe-4">
+                                  <td class="py-3"><code class="text-xs text-muted fw-bold"><?= smartcms_h(substr((string)($log['ip_hash'] ?? 'N/A'), 0, 12)) ?>...</code></td>
+                                  <td class="text-end pe-4 py-3">
                                       <?php $status_theme = $log['status_code'] >= 400 ? 'danger' : 'success'; ?>
                                       <span class="badge bg-<?= $status_theme ?>-subtle text-<?= $status_theme ?> fw-bold border border-<?= $status_theme ?>-subtle">
                                           <?= (int)$log['status_code'] ?>
@@ -122,17 +126,17 @@ require SMARTCMS_ROOT . '/admin/head.php';
                   <table class="table table-hover align-middle mb-0 text-nowrap">
                       <thead class="table-light">
                           <tr class="small text-uppercase fw-bold text-secondary">
-                              <th scope="col" class="ps-4">일시</th>
-                              <th scope="col">로그인 시도 계정 (Email)</th>
-                              <th scope="col" class="text-end pe-4">결과</th>
+                              <th scope="col" class="ps-4 py-3">일시</th>
+                              <th scope="col" class="py-3">로그인 시도 계정 (Email)</th>
+                              <th scope="col" class="text-end pe-4 py-3">결과</th>
                           </tr>
                       </thead>
                       <tbody class="table-group-divider">
                           <?php foreach ($login_logs as $log): ?>
                               <tr>
-                                  <td class="ps-4 fw-medium small"><time datetime="<?= smartcms_h($log['created_at']) ?>"><?= smartcms_h($log['created_at']) ?></time></td>
-                                  <td class="fw-bold text-dark small"><?= smartcms_h($log['email']) ?></td>
-                                  <td class="text-end pe-4">
+                                  <td class="ps-4 py-3 fw-medium small"><time datetime="<?= smartcms_h($log['created_at']) ?>"><?= smartcms_h($log['created_at']) ?></time></td>
+                                  <td class="py-3 fw-bold text-dark small"><?= smartcms_h($log['email']) ?></td>
+                                  <td class="text-end pe-4 py-3">
                                       <span class="badge bg-<?= $log['result'] === 'success' ? 'success' : 'danger' ?> text-uppercase fw-bold sc-admin-badge-sm">
                                           <?= smartcms_h($log['result']) ?>
                                       </span>
@@ -150,17 +154,17 @@ require SMARTCMS_ROOT . '/admin/head.php';
                   <table class="table table-hover align-middle mb-0 text-nowrap">
                       <thead class="table-light">
                           <tr class="small text-uppercase fw-bold text-secondary">
-                              <th scope="col" class="ps-4">일시</th>
-                              <th scope="col">액션 (Action)</th>
-                              <th scope="col" class="pe-4">상세 내역</th>
+                              <th scope="col" class="ps-4 py-3">일시</th>
+                              <th scope="col" class="py-3">액션 (Action)</th>
+                              <th scope="col" class="pe-4 py-3">상세 내역</th>
                           </tr>
                       </thead>
                       <tbody class="table-group-divider">
                           <?php foreach ($board_logs as $log): ?>
                               <tr>
-                                  <td class="ps-4 fw-medium small"><time datetime="<?= smartcms_h($log['created_at']) ?>"><?= smartcms_h($log['created_at']) ?></time></td>
-                                  <td><span class="badge bg-info-subtle text-info border-0 fw-bold"><?= smartcms_h($log['action']) ?></span></td>
-                                  <td class="small text-secondary fw-medium pe-4"><?= smartcms_h($log['message']) ?></td>
+                                  <td class="ps-4 py-3 fw-medium small"><time datetime="<?= smartcms_h($log['created_at']) ?>"><?= smartcms_h($log['created_at']) ?></time></td>
+                                  <td class="py-3"><span class="badge bg-info-subtle text-info border-0 fw-bold"><?= smartcms_h($log['action']) ?></span></td>
+                                  <td class="py-3 small text-secondary fw-medium pe-4"><?= smartcms_h($log['message']) ?></td>
                               </tr>
                           <?php endforeach; ?>
                       </tbody>

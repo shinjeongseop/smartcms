@@ -39,7 +39,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <span class="badge bg-primary-subtle text-primary p-3 rounded-3 shadow-sm"><i class="bi bi-people fs-4"></i></span>
           </div>
           <div>
-            <small class="d-block text-secondary mb-1 fw-bold text-uppercase letter-spacing-1">전체 회원</small>
+            <small class="d-block text-secondary mb-1 fw-bold text-uppercase">전체 회원</small>
             <h2 class="h4 card-title mb-0 fw-bold text-dark"><?= number_format($stats['users']) ?></h2>
           </div>
         </div>
@@ -58,7 +58,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <span class="badge bg-info-subtle text-info p-3 rounded-3 shadow-sm"><i class="bi bi-layout-text-window fs-4"></i></span>
           </div>
           <div>
-            <small class="d-block text-secondary mb-1 fw-bold text-uppercase letter-spacing-1">운영 게시판</small>
+            <small class="d-block text-secondary mb-1 fw-bold text-uppercase">운영 게시판</small>
             <h2 class="h4 card-title mb-0 fw-bold text-dark"><?= number_format($stats['boards']) ?></h2>
           </div>
         </div>
@@ -77,7 +77,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <span class="badge bg-success-subtle text-success p-3 rounded-3 shadow-sm"><i class="bi bi-chat-left-text fs-4"></i></span>
           </div>
           <div>
-            <small class="d-block text-secondary mb-1 fw-bold text-uppercase letter-spacing-1">전체 게시물</small>
+            <small class="d-block text-secondary mb-1 fw-bold text-uppercase">전체 게시물</small>
             <h2 class="h4 card-title mb-0 fw-bold text-dark"><?= number_format($stats['posts']) ?></h2>
           </div>
         </div>
@@ -96,7 +96,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <span class="badge bg-warning-subtle text-warning p-3 rounded-3 shadow-sm"><i class="bi bi-activity fs-4"></i></span>
           </div>
           <div>
-            <small class="d-block text-secondary mb-1 fw-bold text-uppercase letter-spacing-1">오늘의 로그</small>
+            <small class="d-block text-secondary mb-1 fw-bold text-uppercase">오늘의 로그</small>
             <h2 class="h4 card-title mb-0 fw-bold text-dark"><?= number_format($stats['today_logs']) ?></h2>
           </div>
         </div>
@@ -114,7 +114,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
     <section class="card border shadow-sm h-100">
       <header class="card-header bg-white border-bottom p-4 d-flex align-items-center justify-content-between">
         <h2 class="h5 mb-0 fw-bold text-dark">최근 가입 회원</h2>
-        <a href="/admin/users/" class="btn btn-sm btn-primary-subtle text-primary fw-bold rounded-pill px-3 shadow-none border-0">전체보기</a>
+        <a href="/admin/users/" class="btn btn-light border btn-sm rounded-pill px-3 fw-bold shadow-none text-primary">전체보기</a>
       </header>
       <div class="card-body p-0">
         <div class="table-responsive">
@@ -158,7 +158,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
     <section class="card border shadow-sm h-100">
       <header class="card-header bg-white border-bottom p-4 d-flex align-items-center justify-content-between">
         <h2 class="h5 mb-0 fw-bold text-dark">최근 시스템 활동</h2>
-        <a href="/admin/logs/" class="btn btn-sm btn-secondary-subtle text-secondary fw-bold rounded-pill px-3 shadow-none border-0">로그 전체보기</a>
+        <a href="/admin/logs/" class="btn btn-light border btn-sm rounded-pill px-3 fw-bold shadow-none text-secondary">로그 전체보기</a>
       </header>
       <div class="card-body p-0">
         <div class="list-group list-group-flush">

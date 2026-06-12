@@ -27,7 +27,7 @@ require SMARTCMS_ROOT . '/head.php';
 
         <div class="card-body p-4 p-md-5">
           <section class="mb-5">
-            <h2 class="h6 fw-bold text-uppercase text-primary letter-spacing-1 mb-4">계정 상세 정보</h2>
+            <h2 class="h6 fw-bold text-uppercase text-primary mb-4">계정 상세 정보</h2>
             <div class="row g-4">
               <div class="col-12 col-md-6">
                 <div class="p-3 bg-light rounded-3 border-0">
