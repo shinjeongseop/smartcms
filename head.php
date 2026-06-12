@@ -63,11 +63,11 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
         <div class="col-12 col-md-9">
           <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" role="search">
             <div class="input-group input-group-lg">
-              <span class="input-group-text bg-white border-end-0 rounded-start-pill px-3">
+              <span class="input-group-text">
                 <i class="bi bi-search text-primary"></i>
               </span>
-              <input type="search" name="q" class="form-control border-start-0 shadow-none" placeholder="궁금한 것을 검색해보세요" aria-label="게시판 검색">
-              <button class="btn btn-primary rounded-end-pill px-4 fw-bold" type="submit">
+              <input type="search" name="q" class="form-control" placeholder="궁금한 것을 검색해보세요" aria-label="게시판 검색">
+              <button class="btn btn-primary" type="submit">
                 검색
               </button>
             </div>
