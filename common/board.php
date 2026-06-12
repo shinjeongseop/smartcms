@@ -49,6 +49,73 @@ function smartcms_board_skin_meta(?array $board): array
     return $meta;
 }
 
+function smartcms_board_thumbnail_config(?array $board, string $context = 'list'): array
+{
+    $skin = strtolower(preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($board['skin'] ?? 'default')));
+    $context = strtolower(trim($context));
+    $context = in_array($context, ['list', 'view', 'widget'], true) ? $context : 'list';
+
+    $map = [
+        'default' => [
+            'list' => [640, 360],
+            'view' => [900, 506],
+            'widget' => [480, 270],
+            'columns' => 1,
+        ],
+        'table' => [
+            'list' => [640, 360],
+            'view' => [900, 506],
+            'widget' => [480, 270],
+            'columns' => 1,
+        ],
+        'card' => [
+            'list' => [640, 360],
+            'view' => [900, 506],
+            'widget' => [480, 270],
+            'columns' => 2,
+        ],
+        'gallery' => [
+            'list' => [480, 480],
+            'view' => [900, 506],
+            'widget' => [480, 270],
+            'columns' => 2,
+        ],
+        'qna' => [
+            'list' => [640, 360],
+            'view' => [900, 506],
+            'widget' => [480, 270],
+            'columns' => 1,
+        ],
+        'notice' => [
+            'list' => [640, 360],
+            'view' => [900, 506],
+            'widget' => [480, 270],
+            'columns' => 1,
+        ],
+        'faq' => [
+            'list' => [640, 360],
+            'view' => [900, 506],
+            'widget' => [480, 270],
+            'columns' => 2,
+        ],
+        'webzine' => [
+            'list' => [640, 360],
+            'view' => [900, 506],
+            'widget' => [480, 270],
+            'columns' => 2,
+        ],
+    ];
+
+    $skin_config = $map[$skin] ?? $map['default'];
+    $size = $skin_config[$context] ?? $skin_config['list'];
+
+    return [
+        'width' => (int)$size[0],
+        'height' => (int)$size[1],
+        'columns' => (int)($skin_config['columns'] ?? 1),
+    ];
+}
+
 function smartcms_board_normalize_content_mode(string $value): string
 {
     return strtolower(trim($value)) === 'editor' ? 'editor' : 'text';

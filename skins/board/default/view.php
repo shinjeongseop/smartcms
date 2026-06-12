@@ -7,6 +7,8 @@ $accent = (string)$skin_meta['accent'];
 $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
 $image_files = smartcms_board_image_files($files);
 $attachment_files = array_values(array_filter($files, static fn(array $file): bool => !smartcms_board_file_is_image($file)));
+$thumb_config = smartcms_board_thumbnail_config($board, 'view');
+$image_columns = max(1, (int)$thumb_config['columns']);
 ?>
 <article class="card border shadow-sm overflow-hidden mb-4">
   <div class="card-body p-4 p-lg-5">
@@ -34,8 +36,8 @@ $attachment_files = array_values(array_filter($files, static fn(array $file): bo
       <section class="mb-5">
         <div class="row g-3">
           <?php foreach ($image_files as $image): ?>
-            <?php $thumb_url = smartcms_board_file_thumbnail_url($image, 900, 506); ?>
-            <div class="col-12 col-md-6">
+            <?php $thumb_url = smartcms_board_file_thumbnail_url($image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
+            <div class="<?= $image_columns > 1 ? 'col-12 col-md-6' : 'col-12' ?>">
               <figure class="card border-0 shadow-sm h-100 overflow-hidden mb-0">
                 <a class="d-block ratio ratio-16x9 bg-light text-decoration-none"
                    href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id'])) ?>"
