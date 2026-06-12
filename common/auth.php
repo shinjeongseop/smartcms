@@ -51,6 +51,45 @@ function smartcms_ensure_user_avatar_column(): void
     }
 }
 
+function smartcms_ensure_user_nickname_column(): void
+{
+    static $checked = false;
+    if ($checked) {
+        return;
+    }
+    $checked = true;
+
+    try {
+        $exists = (int)smartcms_fetch_value(
+            "SELECT COUNT(*)
+             FROM INFORMATION_SCHEMA.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = :table_name
+               AND COLUMN_NAME = 'nickname'",
+            ['table_name' => smartcms_table('users')]
+        );
+
+        if ($exists === 0) {
+            smartcms_execute(
+                "ALTER TABLE " . smartcms_table('users') . "
+                 ADD COLUMN nickname VARCHAR(80) DEFAULT NULL AFTER name"
+            );
+        }
+    } catch (Throwable $e) {
+        // Keep the app usable even if schema migration is not allowed.
+    }
+}
+
+function smartcms_user_display_name(?array $user): string
+{
+    $nickname = trim((string)($user['nickname'] ?? ''));
+    if ($nickname !== '') {
+        return $nickname;
+    }
+
+    return trim((string)($user['name'] ?? ''));
+}
+
 function smartcms_user_avatar_url(?array $user): ?string
 {
     $path = trim((string)($user['avatar_path'] ?? ''));
@@ -140,13 +179,14 @@ function smartcms_current_user(): ?array
 {
     smartcms_session_start();
     smartcms_ensure_user_avatar_column();
+    smartcms_ensure_user_nickname_column();
     $user_id = (int)($_SESSION['smartcms_user_id'] ?? 0);
     if ($user_id <= 0) {
         return null;
     }
 
     return smartcms_fetch_one(
-        "SELECT id, email, name, company_name, avatar_path, role, level, status, last_login_at, created_at
+        "SELECT id, email, name, nickname, company_name, avatar_path, role, level, status, last_login_at, created_at
          FROM " . smartcms_table('users') . "
          WHERE id = :id AND status = 'active'
          LIMIT 1",
@@ -306,9 +346,10 @@ function smartcms_require_page_view(string $page_key, string $page_path, string 
     return $user;
 }
 
-function smartcms_register_user(string $email, string $password, string $name, ?string $company_name = null): array
+function smartcms_register_user(string $email, string $password, string $name, ?string $nickname = null, ?string $company_name = null): array
 {
     smartcms_ensure_user_avatar_column();
+    smartcms_ensure_user_nickname_column();
 
     if (!smartcms_setting_bool('allow_registration', true)) {
         return ['ok' => false, 'message' => '현재 회원가입이 중지되어 있습니다.'];
@@ -316,6 +357,7 @@ function smartcms_register_user(string $email, string $password, string $name, ?
 
     $email = trim($email);
     $name = trim($name);
+    $nickname = trim((string)$nickname);
     $company_name = trim((string)$company_name);
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -326,6 +368,15 @@ function smartcms_register_user(string $email, string $password, string $name, ?
     }
     if (strlen($password) < 8) {
         return ['ok' => false, 'message' => '비밀번호는 8자 이상이어야 합니다.'];
+    }
+    if (function_exists('mb_strlen') ? mb_strlen($name) > 80 : strlen($name) > 80) {
+        return ['ok' => false, 'message' => '이름은 80자 이하로 입력하세요.'];
+    }
+    if ($nickname !== '' && (function_exists('mb_strlen') ? mb_strlen($nickname) > 80 : strlen($nickname) > 80)) {
+        return ['ok' => false, 'message' => '닉네임은 80자 이하로 입력하세요.'];
+    }
+    if ($company_name !== '' && (function_exists('mb_strlen') ? mb_strlen($company_name) > 120 : strlen($company_name) > 120)) {
+        return ['ok' => false, 'message' => '회사명은 120자 이하로 입력하세요.'];
     }
 
     $exists = smartcms_fetch_one(
@@ -338,18 +389,58 @@ function smartcms_register_user(string $email, string $password, string $name, ?
 
     smartcms_execute(
         "INSERT INTO " . smartcms_table('users') . "
-         (email, password_hash, name, company_name, avatar_path, role, level, status)
-         VALUES (:email, :password_hash, :name, :company_name, NULL, 'user', :level, 'active')",
+         (email, password_hash, name, nickname, company_name, avatar_path, role, level, status)
+         VALUES (:email, :password_hash, :name, :nickname, :company_name, NULL, 'user', :level, 'active')",
         [
             'email' => $email,
             'password_hash' => password_hash($password, PASSWORD_DEFAULT),
             'name' => $name,
+            'nickname' => $nickname !== '' ? $nickname : null,
             'company_name' => $company_name !== '' ? $company_name : null,
             'level' => smartcms_setting_int('default_member_level', (int)smartcms_config_value('default_member_level', 2)),
         ]
     );
 
     return ['ok' => true, 'message' => '회원가입이 완료되었습니다. 로그인하세요.'];
+}
+
+function smartcms_update_user_profile(int $user_id, string $name, ?string $nickname = null, ?string $company_name = null): array
+{
+    smartcms_ensure_user_avatar_column();
+    smartcms_ensure_user_nickname_column();
+
+    $name = trim($name);
+    $nickname = trim((string)$nickname);
+    $company_name = trim((string)$company_name);
+
+    if ($name === '') {
+        return ['ok' => false, 'message' => '이름을 입력하세요.'];
+    }
+    if (function_exists('mb_strlen') ? mb_strlen($name) > 80 : strlen($name) > 80) {
+        return ['ok' => false, 'message' => '이름은 80자 이하로 입력하세요.'];
+    }
+    if ($nickname !== '' && (function_exists('mb_strlen') ? mb_strlen($nickname) > 80 : strlen($nickname) > 80)) {
+        return ['ok' => false, 'message' => '닉네임은 80자 이하로 입력하세요.'];
+    }
+    if ($company_name !== '' && (function_exists('mb_strlen') ? mb_strlen($company_name) > 120 : strlen($company_name) > 120)) {
+        return ['ok' => false, 'message' => '회사명은 120자 이하로 입력하세요.'];
+    }
+
+    smartcms_execute(
+        "UPDATE " . smartcms_table('users') . "
+         SET name = :name,
+             nickname = :nickname,
+             company_name = :company_name
+         WHERE id = :id",
+        [
+            'id' => $user_id,
+            'name' => $name,
+            'nickname' => $nickname !== '' ? $nickname : null,
+            'company_name' => $company_name !== '' ? $company_name : null,
+        ]
+    );
+
+    return ['ok' => true, 'message' => '프로필을 저장했습니다.'];
 }
 
 function smartcms_change_password(int $user_id, string $current_password, string $new_password): array

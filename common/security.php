@@ -53,3 +53,27 @@ function smartcms_verify_csrf_or_fail(): void
     echo 'Invalid CSRF token.';
     exit;
 }
+
+function smartcms_flash_set(string $key, mixed $value): void
+{
+    smartcms_security_session_start();
+    $_SESSION['smartcms_flash'] ??= [];
+    $_SESSION['smartcms_flash'][$key] = $value;
+}
+
+function smartcms_flash_get(string $key, mixed $default = null): mixed
+{
+    smartcms_security_session_start();
+    if (!isset($_SESSION['smartcms_flash']) || !is_array($_SESSION['smartcms_flash']) || !array_key_exists($key, $_SESSION['smartcms_flash'])) {
+        return $default;
+    }
+
+    $value = $_SESSION['smartcms_flash'][$key];
+    unset($_SESSION['smartcms_flash'][$key]);
+
+    if (empty($_SESSION['smartcms_flash'])) {
+        unset($_SESSION['smartcms_flash']);
+    }
+
+    return $value;
+}
