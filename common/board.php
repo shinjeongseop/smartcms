@@ -226,6 +226,70 @@ function smartcms_board_posts(int $board_id, int $page = 1, int $per_page = 10, 
     ];
 }
 
+function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_page = 12): array
+{
+    $page = max(1, $page);
+    $per_page = max(1, min(100, $per_page));
+    $offset = ($page - 1) * $per_page;
+    $keyword = smartcms_board_search_term($keyword);
+    $where = "p.is_hidden = 0 AND b.status <> 'disabled'";
+    $params = [];
+
+    if ($keyword !== '') {
+        $where .= " AND (
+            p.title LIKE :keyword_title
+            OR p.content LIKE :keyword_content
+            OR p.author_name LIKE :keyword_author
+            OR b.board_name LIKE :keyword_board_name
+            OR b.board_key LIKE :keyword_board_key
+        )";
+        $like = '%' . $keyword . '%';
+        $params['keyword_title'] = $like;
+        $params['keyword_content'] = $like;
+        $params['keyword_author'] = $like;
+        $params['keyword_board_name'] = $like;
+        $params['keyword_board_key'] = $like;
+    }
+
+    $count_stmt = smartcms_db()->prepare(
+        "SELECT COUNT(*) AS cnt
+         FROM " . smartcms_table('board_posts') . " p
+         INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         WHERE {$where}"
+    );
+    $count_stmt->execute($params);
+    $total = (int)($count_stmt->fetch()['cnt'] ?? 0);
+
+    $stmt = smartcms_db()->prepare(
+        "SELECT p.id, p.title, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
+                b.board_key, b.board_name, b.title_length_limit
+         FROM " . smartcms_table('board_posts') . " p
+         INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         WHERE {$where}
+         ORDER BY p.is_notice DESC, p.id DESC
+         LIMIT :limit OFFSET :offset"
+    );
+    if ($keyword !== '') {
+        $stmt->bindValue('keyword_title', '%' . $keyword . '%', PDO::PARAM_STR);
+        $stmt->bindValue('keyword_content', '%' . $keyword . '%', PDO::PARAM_STR);
+        $stmt->bindValue('keyword_author', '%' . $keyword . '%', PDO::PARAM_STR);
+        $stmt->bindValue('keyword_board_name', '%' . $keyword . '%', PDO::PARAM_STR);
+        $stmt->bindValue('keyword_board_key', '%' . $keyword . '%', PDO::PARAM_STR);
+    }
+    $stmt->bindValue('limit', $per_page, PDO::PARAM_INT);
+    $stmt->bindValue('offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return [
+        'items' => $stmt->fetchAll(),
+        'total' => $total,
+        'page' => $page,
+        'per_page' => $per_page,
+        'pages' => max(1, (int)ceil($total / $per_page)),
+        'keyword' => $keyword,
+    ];
+}
+
 function smartcms_board_post_find(int $board_id, int $post_id): ?array
 {
     return smartcms_fetch_one(
