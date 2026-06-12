@@ -112,7 +112,7 @@ require SMARTCMS_ROOT . '/head.php';
     <div class="col-12 col-lg-8">
       <article class="card border shadow-sm h-100 bg-white">
         <div class="card-body p-4 d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-          <div class="d-flex align-items-start gap-3">
+          <div class="d-flex align-items-center gap-3">
             <span class="badge bg-primary-subtle text-primary p-2 rounded-3 shadow-sm">
               <i class="bi bi-megaphone-fill fs-5"></i>
             </span>
