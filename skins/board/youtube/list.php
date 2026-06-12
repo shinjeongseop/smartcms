@@ -34,12 +34,12 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
         <?php foreach ($posts as $post): ?>
           <?php $video = smartcms_board_youtube_link_data($post); ?>
           <?php $thumb_url = $video['thumb_url'] ?? null; ?>
-          <?php $excerpt = smartcms_board_excerpt((string)($post['content'] ?? $post['excerpt'] ?? ''), 120); ?>
+          <?php $excerpt = smartcms_board_excerpt((string)($post['content'] ?? $post['excerpt'] ?? ''), 90); ?>
           <article class="card border shadow-sm bg-white overflow-hidden">
             <div class="row g-0 align-items-stretch">
-              <div class="col-12 col-md-4 col-xl-4">
-                <div class="h-100 p-3 p-lg-4 d-flex align-items-center">
-                  <a class="d-block ratio ratio-16x9 w-100 bg-light border rounded-3 text-decoration-none overflow-hidden"
+              <div class="col-12 col-md-5 col-xl-5">
+                <div class="h-100 p-2 p-lg-3 d-flex align-items-center">
+                  <a class="d-block ratio ratio-16x9 w-100 bg-light border rounded-4 text-decoration-none overflow-hidden shadow-sm"
                      href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <?php if ($thumb_url): ?>
                       <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url) ?>" alt="<?= smartcms_h((string)$post['title']) ?>">
@@ -54,8 +54,8 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                   </a>
                 </div>
               </div>
-              <div class="col-12 col-md-8 col-xl-8">
-                <div class="card-body p-4 p-lg-5 h-100 d-flex flex-column gap-2">
+              <div class="col-12 col-md-7 col-xl-7">
+                <div class="card-body p-3 p-lg-4 h-100 d-flex flex-column gap-2">
                   <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
                     <div class="d-flex flex-wrap align-items-center gap-2">
                       <?php if ((int)$post['is_notice'] === 1): ?>
