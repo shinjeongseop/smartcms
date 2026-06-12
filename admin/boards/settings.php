@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'key'         => $board_key,
                 'name'        => trim((string)$_POST['board_name']),
                 'desc'        => trim((string)$_POST['description']),
-                'skin'        => trim((string)$_POST['skin']),
+                'skin'        => smartcms_board_normalize_skin((string)($_POST['skin'] ?? 'default')),
                 'ipp'         => max(1, min(100, (int)$_POST['items_per_page'])),
                 'editor'      => (string)($_POST['use_editor'] ?? '0') === '1' ? 1 : 0,
                 'comments'    => isset($_POST['use_comments']) ? 1 : 0,
@@ -107,9 +107,6 @@ require SMARTCMS_ROOT . '/admin/head.php';
       <!-- 기본 정보 및 디자인 영역 -->
       <div class="col-12 col-xl-8">
         <article class="card border shadow-sm mb-4 overflow-hidden">
-          <header class="card-header bg-white border-bottom py-3 px-4">
-            <h2 class="card-title h6 mb-0 fw-bold text-dark">기본 정보 및 스킨 설정</h2>
-          </header>
           <div class="card-body p-4 p-lg-5">
             <div class="row g-4">
               <div class="col-md-6">
@@ -127,8 +124,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <div class="col-md-6">
                 <label for="skin" class="form-label fw-bold small text-dark text-uppercase">적용 디자인 스킨</label>
                 <select id="skin" name="skin" class="form-select py-2 fw-bold">
-                  <?php foreach(['default', 'table', 'card', 'gallery', 'qna', 'notice', 'faq', 'webzine'] as $skin): ?>
-                    <option value="<?= $skin ?>" <?= $board['skin'] === $skin ? 'selected' : '' ?>><?= ucfirst($skin) ?></option>
+                  <?php foreach (smartcms_board_skin_options() as $skin_key => $skin_label): ?>
+                    <option value="<?= smartcms_h($skin_key) ?>" <?= (string)$board['skin'] === $skin_key ? 'selected' : '' ?>><?= smartcms_h($skin_label) ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>

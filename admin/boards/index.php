@@ -99,7 +99,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <input class="form-control py-2" id="board_name" name="board_name" placeholder="표시될 이름 (예: 공지사항)" required>
             </div>
             <div class="col-12 col-md-4">
-              <label for="skin" class="form-label fw-bold small text-dark">스킨</label>
+              <label for="skin" class="form-label fw-bold small text-dark">적용 디자인 스킨</label>
               <select class="form-select py-2 fw-bold" id="skin" name="skin">
                 <?php foreach (smartcms_board_skin_options() as $skin_key => $skin_label): ?>
                   <option value="<?= smartcms_h($skin_key) ?>" <?= $skin_key === 'default' ? 'selected' : '' ?>><?= smartcms_h($skin_label) ?></option>
