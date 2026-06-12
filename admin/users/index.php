@@ -17,17 +17,37 @@ $total_pages = 0;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
     $user_id = (int)($_POST['user_id'] ?? 0);
+    $name = trim((string)($_POST['name'] ?? ''));
+    $nickname = trim((string)($_POST['nickname'] ?? ''));
     $role = (string)($_POST['role'] ?? 'user');
     $level = (int)($_POST['level'] ?? 2);
     $status = (string)($_POST['status'] ?? 'active');
 
     if ($user_id > 0) {
-        smartcms_execute(
-            "UPDATE " . smartcms_table('users') . " SET role = :role, level = :level, status = :status WHERE id = :id",
-            ['role' => $role, 'level' => $level, 'status' => $status, 'id' => $user_id]
-        );
-        $message = '회원 권한이 성공적으로 수정되었습니다.';
-        $message_type = 'success';
+        if ($name === '') {
+            $message = '이름을 입력하세요.';
+            $message_type = 'error';
+        } elseif ((function_exists('mb_strlen') ? mb_strlen($name) : strlen($name)) > 80) {
+            $message = '이름은 80자 이하로 입력하세요.';
+            $message_type = 'error';
+        } elseif ($nickname !== '' && (function_exists('mb_strlen') ? mb_strlen($nickname) : strlen($nickname)) > 80) {
+            $message = '닉네임은 80자 이하로 입력하세요.';
+            $message_type = 'error';
+        } else {
+            smartcms_execute(
+                "UPDATE " . smartcms_table('users') . " SET name = :name, nickname = :nickname, role = :role, level = :level, status = :status WHERE id = :id",
+                [
+                    'name' => $name,
+                    'nickname' => $nickname !== '' ? $nickname : null,
+                    'role' => $role,
+                    'level' => $level,
+                    'status' => $status,
+                    'id' => $user_id,
+                ]
+            );
+            $message = '회원 정보가 성공적으로 수정되었습니다.';
+            $message_type = 'success';
+        }
     }
 }
 
@@ -35,13 +55,13 @@ try {
     $where = " WHERE 1=1";
     $params = [];
     if ($search !== '') {
-        $where .= " AND (email LIKE :search OR name LIKE :search)";
+        $where .= " AND (email LIKE :search OR name LIKE :search OR nickname LIKE :search)";
         $params['search'] = "%$search%";
     }
 
     $total_users = (int)smartcms_fetch_value("SELECT COUNT(*) FROM " . smartcms_table('users') . $where, $params);
     $total_pages = (int)ceil($total_users / $limit);
-    $query = "SELECT id, email, name, avatar_path, role, level, status, last_login_at, created_at FROM " . smartcms_table('users') . $where . " ORDER BY id DESC LIMIT $limit OFFSET $offset";
+    $query = "SELECT id, email, name, nickname, avatar_path, role, level, status, last_login_at, created_at FROM " . smartcms_table('users') . $where . " ORDER BY id DESC LIMIT $limit OFFSET $offset";
     $users = smartcms_fetch_all($query, $params);
 } catch (Throwable $e) {
     $users = [];
@@ -110,9 +130,10 @@ require SMARTCMS_ROOT . '/admin/head.php';
                         <td>
                             <div class="d-flex align-items-center gap-3">
                                 <?= smartcms_user_avatar_markup($user, 'sc-admin-avatar-36', 'fw-bold small') ?>
-                                <div class="lh-sm">
-                                    <div class="fw-bold text-dark mb-1"><?= smartcms_h($user['name']) ?></div>
-                                    <div class="text-xs text-secondary"><?= smartcms_h($user['email']) ?></div>
+                                <div class="lh-sm flex-grow-1 min-w-0">
+                                    <input type="text" name="name" form="form-user-<?= (int)$user['id'] ?>" class="form-control form-control-sm fw-bold text-dark mb-2" value="<?= smartcms_h($user['name']) ?>" maxlength="80" aria-label="이름">
+                                    <input type="text" name="nickname" form="form-user-<?= (int)$user['id'] ?>" class="form-control form-control-sm text-secondary mb-2" value="<?= smartcms_h((string)($user['nickname'] ?? '')) ?>" maxlength="80" placeholder="닉네임 (선택)" aria-label="닉네임">
+                                    <div class="text-xs text-secondary text-truncate"><?= smartcms_h($user['email']) ?></div>
                                 </div>
                             </div>
                         </td>

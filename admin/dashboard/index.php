@@ -15,7 +15,7 @@ try {
     ];
 
     // 최근 가입 회원 5명
-    $recent_users = smartcms_db()->query("SELECT id, name, email, avatar_path, created_at FROM " . smartcms_table('users') . " ORDER BY id DESC LIMIT 5")->fetchAll();
+    $recent_users = smartcms_db()->query("SELECT id, name, nickname, email, avatar_path, created_at FROM " . smartcms_table('users') . " ORDER BY id DESC LIMIT 5")->fetchAll();
 
     // 최근 시스템 로그 5건
     $recent_logs = smartcms_db()->query("SELECT access_type, target_type, created_at, status_code FROM " . smartcms_table('access_logs') . " ORDER BY id DESC LIMIT 5")->fetchAll();
@@ -133,7 +133,10 @@ require SMARTCMS_ROOT . '/admin/head.php';
                     <div class="d-flex align-items-center">
                       <div class="me-3"><?= smartcms_user_avatar_markup($u, 'sc-admin-avatar-40', 'fw-bold small') ?></div>
                       <div class="lh-sm">
-                        <div class="fw-bold text-dark small mb-1"><?= smartcms_h($u['name']) ?></div>
+                        <div class="fw-bold text-dark small mb-1"><?= smartcms_h(smartcms_user_display_name($u)) ?></div>
+                        <?php if (trim((string)($u['nickname'] ?? '')) !== '' && trim((string)($u['nickname'] ?? '')) !== trim((string)($u['name'] ?? ''))): ?>
+                          <div class="text-xs text-secondary fw-medium mb-1">이름: <?= smartcms_h($u['name']) ?></div>
+                        <?php endif; ?>
                         <div class="text-xs text-secondary opacity-75 fw-medium"><?= smartcms_h($u['email']) ?></div>
                       </div>
                     </div>

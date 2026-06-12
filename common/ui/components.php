@@ -48,7 +48,8 @@ if (!function_exists('smartcms_user_avatar_markup')) {
             return '<img src="' . smartcms_h($avatar_url) . '" alt="" class="rounded-circle object-fit-cover shadow-sm ' . smartcms_h($size_class) . '">';
         }
 
-        $label = trim(mb_substr((string)($user['name'] ?? ''), 0, 1));
+        $display_name = smartcms_user_display_name($user);
+        $label = trim(mb_substr($display_name, 0, 1));
         if ($label === '') {
             $label = '?';
         }

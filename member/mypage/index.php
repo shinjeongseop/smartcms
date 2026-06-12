@@ -7,9 +7,34 @@ require_once __DIR__ . '/../../common/ui/components.php';
 $user = smartcms_require_login();
 $message = '';
 $message_type = 'info';
+$profile_values = [
+    'name' => trim((string)smartcms_flash_get('profile.name', $user['name'] ?? '')),
+    'nickname' => trim((string)smartcms_flash_get('profile.nickname', $user['nickname'] ?? '')),
+    'company_name' => trim((string)smartcms_flash_get('profile.company_name', $user['company_name'] ?? '')),
+];
+
+$flash_message = smartcms_flash_get('message', '');
+$flash_type = (string)smartcms_flash_get('message_type', 'info');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
+    $action = (string)($_POST['action'] ?? 'avatar');
+
+    if ($action === 'profile') {
+        $result = smartcms_update_user_profile(
+            (int)$user['id'],
+            (string)($_POST['name'] ?? ''),
+            (string)($_POST['nickname'] ?? ''),
+            (string)($_POST['company_name'] ?? '')
+        );
+
+        smartcms_flash_set('message', (string)($result['message'] ?? ''));
+        smartcms_flash_set('message_type', !empty($result['ok']) ? 'success' : 'error');
+        smartcms_flash_set('profile.name', (string)($_POST['name'] ?? ''));
+        smartcms_flash_set('profile.nickname', (string)($_POST['nickname'] ?? ''));
+        smartcms_flash_set('profile.company_name', (string)($_POST['company_name'] ?? ''));
+        smartcms_redirect('/member/mypage/');
+    }
 
     $upload = $_FILES['avatar_file'] ?? [];
     $upload = is_array($upload) ? $upload : [];
@@ -20,13 +45,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         (string)($user['avatar_path'] ?? '')
     );
 
-    $message = (string)($result['message'] ?? '');
-    $message_type = !empty($result['ok']) ? 'success' : 'error';
-
-    if (!empty($result['ok'])) {
-        $user = smartcms_current_user() ?? $user;
-    }
+    smartcms_flash_set('message', (string)($result['message'] ?? ''));
+    smartcms_flash_set('message_type', !empty($result['ok']) ? 'success' : 'error');
+    smartcms_redirect('/member/mypage/');
 }
+
+$message = $flash_message !== '' ? $flash_message : $message;
+$message_type = $flash_message !== '' ? $flash_type : $message_type;
 
 $SMARTCMS_HEAD = ['title' => '마이페이지'];
 require SMARTCMS_ROOT . '/head.php';
@@ -48,7 +73,7 @@ require SMARTCMS_ROOT . '/head.php';
             <?= smartcms_user_avatar_markup($user, 'sc-avatar-72', 'fs-2 fw-bold') ?>
             <div>
               <p class="text-uppercase small fw-bold text-white-50 mb-1">Personal Account</p>
-              <h1 class="h3 fw-bold mb-0"><?= smartcms_h($user['name']) ?>님의 프로필</h1>
+              <h1 class="h3 fw-bold mb-0"><?= smartcms_h(smartcms_user_display_name($user)) ?>님의 프로필</h1>
             </div>
           </div>
         </header>
@@ -78,18 +103,50 @@ require SMARTCMS_ROOT . '/head.php';
           </section>
 
           <section class="mb-5">
-            <h2 class="h6 fw-bold text-uppercase text-primary mb-4">계정 상세 정보</h2>
-            <div class="row g-4">
-              <div class="col-12 col-md-6">
-                <div class="p-3 bg-light rounded-3 border-0">
-                  <dt class="text-secondary small fw-bold text-uppercase mb-1">이름</dt>
-                  <dd class="fw-bold text-dark mb-0 fs-5"><?= smartcms_h($user['name']) ?></dd>
+            <h2 class="h6 fw-bold text-uppercase text-primary mb-4">프로필 정보</h2>
+            <form method="post" class="card border bg-light-subtle shadow-none">
+              <div class="card-body p-4">
+                <?= smartcms_csrf_input() ?>
+                <input type="hidden" name="action" value="profile">
+                <div class="row g-3 align-items-end">
+                  <div class="col-12 col-md-4">
+                    <label for="name" class="form-label fw-bold text-dark mb-2">이름</label>
+                    <input class="form-control" type="text" name="name" id="name" value="<?= smartcms_h($profile_values['name']) ?>" maxlength="80" required>
+                  </div>
+                  <div class="col-12 col-md-4">
+                    <label for="nickname" class="form-label fw-bold text-dark mb-2">닉네임</label>
+                    <input class="form-control" type="text" name="nickname" id="nickname" value="<?= smartcms_h($profile_values['nickname']) ?>" maxlength="80" placeholder="선택 입력">
+                  </div>
+                  <div class="col-12 col-md-4">
+                    <label for="company_name" class="form-label fw-bold text-dark mb-2">회사명</label>
+                    <input class="form-control" type="text" name="company_name" id="company_name" value="<?= smartcms_h($profile_values['company_name']) ?>" maxlength="120" placeholder="선택 입력">
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
+                      <i class="bi bi-save me-2"></i>프로필 저장
+                    </button>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-text small text-secondary mb-0">이름과 닉네임은 각각 따로 저장됩니다. 닉네임은 비워두면 표시되지 않습니다.</div>
+                  </div>
                 </div>
               </div>
+            </form>
+          </section>
+
+          <section class="mb-5">
+            <h2 class="h6 fw-bold text-uppercase text-primary mb-4">계정 정보</h2>
+            <div class="row g-4">
               <div class="col-12 col-md-6">
                 <div class="p-3 bg-light rounded-3 border-0">
                   <dt class="text-secondary small fw-bold text-uppercase mb-1">이메일 주소</dt>
                   <dd class="fw-bold text-dark mb-0 fs-5"><?= smartcms_h($user['email']) ?></dd>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="p-3 bg-light rounded-3 border-0">
+                  <dt class="text-secondary small fw-bold text-uppercase mb-1">닉네임</dt>
+                  <dd class="fw-bold text-dark mb-0 fs-5"><?= smartcms_h($user['nickname'] ?: '미설정') ?></dd>
                 </div>
               </div>
               <div class="col-12 col-md-6">
