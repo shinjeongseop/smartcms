@@ -55,7 +55,7 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
       <nav class="nav nav-pills flex-column gap-1 mb-auto" aria-label="관리자 메뉴">
         <p class="text-uppercase small fw-bold text-secondary opacity-50 mb-3 px-2 sc-admin-menu-eyebrow">Admin Menu</p>
         <?php foreach (smartcms_admin_nav_items() as $key => $item): ?>
-          <a class="nav-link d-flex align-items-center gap-2 py-2.5 px-3 rounded-2 <?= $key === $active_menu ? 'active shadow fw-bold' : 'text-secondary hover-bg-light' ?>" href="<?= smartcms_h($item['href']) ?>">
+          <a class="nav-link d-flex align-items-center gap-2 py-2.5 px-3 rounded-2 <?= $key === $active_menu ? 'active fw-bold' : 'text-secondary' ?>" href="<?= smartcms_h($item['href']) ?>">
             <i class="bi <?= smartcms_h($item['icon']) ?> fs-5"></i>
             <span class="fw-medium"><?= smartcms_h($item['label']) ?></span>
           </a>
