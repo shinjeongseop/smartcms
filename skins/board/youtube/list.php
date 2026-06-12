@@ -78,7 +78,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                     <p class="mb-0 text-secondary small lh-base"><?= smartcms_h($excerpt) ?></p>
                   <?php endif; ?>
                   <div class="d-flex flex-wrap gap-2 small text-secondary fw-medium">
-                    <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h($post['author_name']) ?></span>
+                    <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h(smartcms_board_author_display_name($board, $post)) ?></span>
                     <span class="opacity-25">|</span>
                     <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-eye"></i><?= number_format((int)$post['view_count']) ?></span>
                     <?php if ((int)$post['comment_count'] > 0): ?>

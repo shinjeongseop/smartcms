@@ -91,6 +91,7 @@ function smartcms_create_boards_table(): void
         description TEXT DEFAULT NULL,
         skin VARCHAR(40) NOT NULL DEFAULT 'default',
         display_type ENUM('auto','card','list','table') NOT NULL DEFAULT 'auto',
+        author_display_mode ENUM('name','nickname','name_nickname') NOT NULL DEFAULT 'name',
         items_per_page TINYINT UNSIGNED NOT NULL DEFAULT 10,
         use_editor TINYINT(1) NOT NULL DEFAULT 1,
         use_comments TINYINT(1) NOT NULL DEFAULT 1,

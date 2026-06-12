@@ -204,7 +204,7 @@ require SMARTCMS_ROOT . '/head.php';
                         </div>
                         <div class="text-dark fw-semibold fs-6 text-truncate mb-1"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></div>
                       <div class="small text-body-secondary">
-                        <span class="me-2"><i class="bi bi-person me-1"></i><?= smartcms_h($post['author_name']) ?></span>
+                        <span class="me-2"><i class="bi bi-person me-1"></i><?= smartcms_h(smartcms_board_author_display_name(null, $post)) ?></span>
                         <span class="me-2"><i class="bi bi-chat-dots me-1"></i><?= number_format((int)$post['comment_count']) ?></span>
                         <span><i class="bi bi-paperclip me-1"></i><?= number_format((int)$post['attachment_count']) ?></span>
                       </div>

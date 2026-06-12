@@ -149,6 +149,106 @@ function smartcms_board_normalize_content_mode(string $value): string
     return strtolower(trim($value)) === 'editor' ? 'editor' : 'text';
 }
 
+function smartcms_board_author_display_options(): array
+{
+    return [
+        'name' => '회원명',
+        'nickname' => '닉네임',
+        'name_nickname' => '회원명 + 닉네임',
+    ];
+}
+
+function smartcms_board_normalize_author_display_mode(string $value): string
+{
+    $value = strtolower(trim($value));
+    return array_key_exists($value, smartcms_board_author_display_options()) ? $value : 'name';
+}
+
+function smartcms_board_author_display_mode(?array $board): string
+{
+    return smartcms_board_normalize_author_display_mode((string)($board['author_display_mode'] ?? 'name'));
+}
+
+function smartcms_ensure_boards_author_display_mode_column(): void
+{
+    static $checked = false;
+    if ($checked) {
+        return;
+    }
+    $checked = true;
+
+    try {
+        $exists = (int)smartcms_fetch_value(
+            "SELECT COUNT(*)
+             FROM INFORMATION_SCHEMA.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = :table_name
+               AND COLUMN_NAME = 'author_display_mode'",
+            ['table_name' => smartcms_table('boards')]
+        );
+
+        if ($exists === 0) {
+            smartcms_execute(
+                "ALTER TABLE " . smartcms_table('boards') . "
+                 ADD COLUMN author_display_mode ENUM('name','nickname','name_nickname') NOT NULL DEFAULT 'name' AFTER display_type"
+            );
+        }
+    } catch (Throwable $e) {
+        // Keep the app usable even if schema migration is not allowed.
+    }
+}
+
+function smartcms_board_user_profile_by_id(int $user_id): ?array
+{
+    static $cache = [];
+    if ($user_id < 1) {
+        return null;
+    }
+
+    if (array_key_exists($user_id, $cache)) {
+        return $cache[$user_id];
+    }
+
+    smartcms_ensure_user_nickname_column();
+    $cache[$user_id] = smartcms_fetch_one(
+        "SELECT id, name, nickname
+         FROM " . smartcms_table('users') . "
+         WHERE id = :id
+         LIMIT 1",
+        ['id' => $user_id]
+    ) ?: null;
+
+    return $cache[$user_id];
+}
+
+function smartcms_board_author_display_name(?array $board, array $post): string
+{
+    $mode = smartcms_board_author_display_mode($board);
+    if ($mode === 'name' && isset($post['author_display_mode'])) {
+        $mode = smartcms_board_normalize_author_display_mode((string)$post['author_display_mode']);
+    }
+
+    $author_id = (int)($post['author_id'] ?? 0);
+    $author_name = trim((string)($post['author_name'] ?? ''));
+    $profile = $author_id > 0 ? smartcms_board_user_profile_by_id($author_id) : null;
+    $name = trim((string)($profile['name'] ?? ''));
+    $nickname = trim((string)($profile['nickname'] ?? ''));
+
+    if ($mode === 'nickname') {
+        return $nickname !== '' ? $nickname : ($name !== '' ? $name : $author_name);
+    }
+
+    if ($mode === 'name_nickname') {
+        if ($name !== '' && $nickname !== '' && $name !== $nickname) {
+            return $name . ' (' . $nickname . ')';
+        }
+
+        return $nickname !== '' ? $nickname : ($name !== '' ? $name : $author_name);
+    }
+
+    return $name !== '' ? $name : ($nickname !== '' ? $nickname : $author_name);
+}
+
 function smartcms_ensure_board_posts_content_mode_column(): void
 {
     static $checked = false;
@@ -672,6 +772,7 @@ function smartcms_home_date(?string $value): string
 
 function smartcms_board_list(bool $include_disabled = false): array
 {
+    smartcms_ensure_boards_author_display_mode_column();
     $sql = "SELECT b.*, p.board_list_level, p.board_view_level, p.board_write_level, p.allow_guest_list, p.allow_guest_view
          FROM " . smartcms_table('boards') . " b
          LEFT JOIN " . smartcms_table('board_permissions') . " p ON p.board_key = b.board_key";
@@ -687,6 +788,7 @@ function smartcms_board_list(bool $include_disabled = false): array
 
 function smartcms_board_find(string $board_key): ?array
 {
+    smartcms_ensure_boards_author_display_mode_column();
     return smartcms_fetch_one(
         "SELECT b.*, p.board_list_level, p.board_view_level, p.board_write_level, p.board_comment_level,
                 p.board_upload_level, p.board_manage_level, p.allow_guest_list, p.allow_guest_view, p.status AS permission_status
@@ -752,11 +854,11 @@ function smartcms_board_posts(int $board_id, int $page = 1, int $per_page = 10, 
     $per_page = max(1, min(100, $per_page));
     $offset = ($page - 1) * $per_page;
     $keyword = smartcms_board_search_term($keyword);
-    $where = "board_id = :board_id AND is_hidden = 0";
+    $where = "p.board_id = :board_id AND p.is_hidden = 0";
     $params = ['board_id' => $board_id];
 
     if ($keyword !== '') {
-        $where .= " AND (title LIKE :keyword_title OR content LIKE :keyword_content OR author_name LIKE :keyword_author)";
+        $where .= " AND (p.title LIKE :keyword_title OR p.content LIKE :keyword_content OR p.author_name LIKE :keyword_author OR u.nickname LIKE :keyword_author)";
         $params['keyword_title'] = '%' . $keyword . '%';
         $params['keyword_content'] = '%' . $keyword . '%';
         $params['keyword_author'] = '%' . $keyword . '%';
@@ -764,17 +866,22 @@ function smartcms_board_posts(int $board_id, int $page = 1, int $per_page = 10, 
 
     $count_stmt = smartcms_db()->prepare(
         "SELECT COUNT(*) AS cnt
-         FROM " . smartcms_table('board_posts') . "
+         FROM " . smartcms_table('board_posts') . " p
+         INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         LEFT JOIN " . smartcms_table('users') . " u ON u.id = p.author_id
          WHERE {$where}"
     );
     $count_stmt->execute($params);
     $total = (int)($count_stmt->fetch()['cnt'] ?? 0);
 
     $stmt = smartcms_db()->prepare(
-        "SELECT id, title, link_url, link_url_1, link_url_2, excerpt, author_name, is_notice, is_secret, view_count, comment_count, attachment_count, created_at
-         FROM " . smartcms_table('board_posts') . "
+        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.excerpt, p.author_id, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
+                b.author_display_mode
+         FROM " . smartcms_table('board_posts') . " p
+         INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         LEFT JOIN " . smartcms_table('users') . " u ON u.id = p.author_id
          WHERE {$where}
-         ORDER BY is_notice DESC, id DESC
+         ORDER BY p.is_notice DESC, p.id DESC
          LIMIT :limit OFFSET :offset"
     );
     $stmt->bindValue('board_id', $board_id, PDO::PARAM_INT);
@@ -811,26 +918,31 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
         $where .= " AND (
             p.title LIKE :keyword_title
             OR p.content LIKE :keyword_content
+            OR p.author_name LIKE :keyword_author
+            OR u.nickname LIKE :keyword_author
         )";
         $like = '%' . $keyword . '%';
         $params['keyword_title'] = $like;
         $params['keyword_content'] = $like;
+        $params['keyword_author'] = $like;
     }
 
     $count_stmt = smartcms_db()->prepare(
         "SELECT COUNT(*) AS cnt
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         LEFT JOIN " . smartcms_table('users') . " u ON u.id = p.author_id
          WHERE {$where}"
     );
     $count_stmt->execute($params);
     $total = (int)($count_stmt->fetch()['cnt'] ?? 0);
 
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.content, p.excerpt, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
-                b.board_key, b.board_name
+        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.content, p.excerpt, p.author_id, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
+                b.board_key, b.board_name, b.author_display_mode
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         LEFT JOIN " . smartcms_table('users') . " u ON u.id = p.author_id
          WHERE {$where}
          ORDER BY p.is_notice DESC, p.id DESC
          LIMIT :limit OFFSET :offset"
@@ -838,6 +950,7 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
     if ($keyword !== '') {
         $stmt->bindValue('keyword_title', '%' . $keyword . '%', PDO::PARAM_STR);
         $stmt->bindValue('keyword_content', '%' . $keyword . '%', PDO::PARAM_STR);
+        $stmt->bindValue('keyword_author', '%' . $keyword . '%', PDO::PARAM_STR);
     }
     $stmt->bindValue('limit', $per_page, PDO::PARAM_INT);
     $stmt->bindValue('offset', $offset, PDO::PARAM_INT);
@@ -858,9 +971,11 @@ function smartcms_board_post_find(int $board_id, int $post_id): ?array
     smartcms_ensure_board_posts_content_mode_column();
     smartcms_ensure_board_posts_link_column();
     return smartcms_fetch_one(
-        "SELECT id, board_id, title, link_url, link_url_1, link_url_2, content, content_mode, author_id, author_name, is_notice, is_secret, view_count, comment_count, created_at, updated_at
-         FROM " . smartcms_table('board_posts') . "
-         WHERE board_id = :board_id AND id = :id AND is_hidden = 0
+        "SELECT p.id, p.board_id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.content, p.content_mode, p.author_id, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.created_at, p.updated_at,
+                b.author_display_mode
+         FROM " . smartcms_table('board_posts') . " p
+         INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         WHERE p.board_id = :board_id AND p.id = :id AND p.is_hidden = 0
          LIMIT 1",
         [
             'board_id' => $board_id,
@@ -1184,6 +1299,7 @@ function smartcms_board_create(string $board_key, string $board_name, string $de
         return ['ok' => false, 'message' => '게시판 키와 이름을 입력하세요.'];
     }
 
+    smartcms_ensure_boards_author_display_mode_column();
     $exists = smartcms_board_find($board_key);
     if ($exists) {
         return ['ok' => false, 'message' => '이미 존재하는 게시판 키입니다.'];
@@ -1241,7 +1357,7 @@ function smartcms_board_seed_defaults(int $created_by): array
 function smartcms_board_recent_posts(int $limit = 12): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.excerpt, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name
+        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.excerpt, p.author_id, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name, b.author_display_mode
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled'
@@ -1257,8 +1373,8 @@ function smartcms_board_recent_posts(int $limit = 12): array
 function smartcms_board_recent_posts_by_key(string $board_key, int $limit = 5): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.excerpt, p.author_name, p.comment_count, p.attachment_count, p.view_count, p.created_at,
-                b.board_key, b.board_name
+        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.excerpt, p.author_id, p.author_name, p.comment_count, p.attachment_count, p.view_count, p.created_at,
+                b.board_key, b.board_name, b.author_display_mode
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled' AND b.board_key = :board_key
@@ -1275,7 +1391,7 @@ function smartcms_board_recent_posts_by_key(string $board_key, int $limit = 5): 
 function smartcms_board_popular_posts(int $limit = 5): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.author_name, p.comment_count, p.view_count, p.created_at, b.board_key, b.board_name
+        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.author_id, p.author_name, p.comment_count, p.view_count, p.created_at, b.board_key, b.board_name, b.author_display_mode
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled'

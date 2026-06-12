@@ -24,7 +24,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
     </header>
 
     <div class="d-flex flex-wrap align-items-center gap-3 py-3 border-top border-bottom text-secondary small mb-5 fw-medium">
-      <span class="d-flex align-items-center gap-1"><i class="bi bi-person-circle fs-6 <?= $accent_text ?>"></i><?= smartcms_h($post['author_name']) ?></span>
+      <span class="d-flex align-items-center gap-1"><i class="bi bi-person-circle fs-6 <?= $accent_text ?>"></i><?= smartcms_h(smartcms_board_author_display_name($board, $post)) ?></span>
       <span class="opacity-25">|</span>
       <span class="d-flex align-items-center gap-1"><i class="bi bi-clock fs-6 <?= $accent_text ?>"></i><?= smartcms_h($post['created_at']) ?></span>
       <span class="opacity-25">|</span>
@@ -131,7 +131,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
         <?php foreach ($comments as $comment): ?>
           <article class="p-3 bg-light rounded-3 border-start border-primary border-4 shadow-none">
             <header class="d-flex justify-content-between align-items-center gap-2 mb-2">
-              <span class="fw-bold text-dark"><i class="bi bi-person me-1"></i><?= smartcms_h($comment['author_name']) ?></span>
+              <span class="fw-bold text-dark"><i class="bi bi-person me-1"></i><?= smartcms_h(smartcms_board_author_display_name($board, $comment)) ?></span>
               <time class="text-secondary small fw-medium"><?= smartcms_h($comment['created_at']) ?></time>
             </header>
             <div class="mb-0 text-dark fw-medium lh-base fs-6">
