@@ -43,7 +43,8 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
         <div class="vstack gap-4">
           <?php foreach ($posts as $post): ?>
             <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
-            <?php $excerpt = smartcms_board_excerpt((string)($post['excerpt'] ?? ''), 160); ?>
+            <?php $excerpt_source = (string)($post['content'] ?? $post['excerpt'] ?? ''); ?>
+            <?php $excerpt = smartcms_board_excerpt($excerpt_source, 160); ?>
               <article class="card h-100 border shadow-sm bg-white overflow-hidden">
               <div class="row g-0 h-100">
                 <div class="col-12 col-md-4">

@@ -580,7 +580,7 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
     $total = (int)($count_stmt->fetch()['cnt'] ?? 0);
 
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.excerpt, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
+        "SELECT p.id, p.title, p.content, p.excerpt, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.attachment_count, p.created_at,
                 b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
