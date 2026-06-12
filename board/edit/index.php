@@ -50,13 +50,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             isset($_POST['is_secret'])
         );
         if ($result['ok']) {
-            smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
+            $remove_files = (array)($_POST['remove_files'] ?? []);
+            if ($remove_files) {
+                $delete_result = smartcms_board_delete_uploads($board, $post, $user, $remove_files);
+                if (!$delete_result['ok']) {
+                    $result = $delete_result;
+                }
+            }
+
+            if ($result['ok'] && isset($_FILES['attachments'])) {
+                $file_result = smartcms_board_store_uploads($board, (int)$post['id'], $user, $_FILES['attachments']);
+                if (!$file_result['ok']) {
+                    $result = $file_result;
+                }
+            }
+
+            if ($result['ok']) {
+                smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
+            }
         }
     }
 
     $message = $result['message'];
     $message_type = $result['ok'] ? 'success' : 'error';
 }
+
+$existing_files = smartcms_board_files((int)$post['id']);
 
 $active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
     ? (string)$board['board_key']
@@ -72,7 +91,8 @@ $form_values = [
     'is_notice' => (int)$post['is_notice'] === 1,
     'is_secret' => (int)$post['is_secret'] === 1,
 ];
-$show_attachments = false;
+$form_enctype = 'multipart/form-data';
+$show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
 $show_hide_form = true;
 $submit_label = '변경 사항 저장';
 $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);

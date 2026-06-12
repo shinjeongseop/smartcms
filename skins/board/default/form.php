@@ -39,11 +39,39 @@ $accent = (string)$skin_meta['accent'];
             <textarea class="form-control" id="content" name="content" rows="16" placeholder="자유롭게 내용을 작성해주세요." required><?= smartcms_h($form_values['content'] ?? '') ?></textarea>
           </div>
 
+          <?php if (!empty($existing_files)): ?>
+            <div class="col-12">
+              <section class="rounded-3 border bg-white p-3 p-md-4">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+                  <h3 class="h6 fw-bold mb-0 text-dark"><i class="bi bi-paperclip me-1"></i>현재 첨부파일</h3>
+                  <span class="badge text-bg-light border text-body-secondary">삭제 선택 가능</span>
+                </div>
+                <div class="list-group">
+                  <?php foreach ($existing_files as $file): ?>
+                    <label class="list-group-item d-flex align-items-start justify-content-between gap-3">
+                      <span class="d-flex align-items-start gap-2 min-w-0">
+                        <input class="form-check-input mt-1 flex-shrink-0" type="checkbox" name="remove_files[]" value="<?= smartcms_h($file['id']) ?>" id="remove_file_<?= smartcms_h($file['id']) ?>">
+                        <span class="min-w-0">
+                          <span class="fw-semibold text-dark d-block text-truncate">
+                            <span class="visually-hidden">파일 선택:</span><?= smartcms_h($file['original_name']) ?>
+                          </span>
+                          <small class="text-secondary d-block"><?= number_format((int)$file['file_size']) ?> bytes · 다운로드 <?= (int)$file['download_count'] ?>회</small>
+                        </span>
+                      </span>
+                      <span class="small text-body-secondary flex-shrink-0">삭제</span>
+                    </label>
+                  <?php endforeach; ?>
+                </div>
+                <p class="form-text mt-3 mb-0">체크한 파일은 저장 시 삭제됩니다.</p>
+              </section>
+            </div>
+          <?php endif; ?>
+
           <?php if (!empty($show_attachments)): ?>
             <div class="col-12">
               <label for="attachments" class="form-label fw-bold text-dark">첨부파일</label>
               <input class="form-control py-2" id="attachments" name="attachments[]" type="file" multiple>
-              <div class="form-text small text-secondary">파일당 최대 <?= smartcms_h(smartcms_setting_int('upload_max_mb', 10)) ?>MB까지 업로드 가능합니다.</div>
+              <div class="form-text small text-secondary">파일당 최대 <?= smartcms_h(smartcms_setting_int('upload_max_mb', 10)) ?>MB까지, 여러 파일을 한 번에 업로드할 수 있습니다.</div>
             </div>
           <?php endif; ?>
 

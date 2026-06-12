@@ -716,3 +716,89 @@ function smartcms_board_store_uploads(array $board, int $post_id, array $user, a
 
     return ['ok' => true, 'message' => '첨부파일을 저장했습니다.', 'count' => $stored_count];
 }
+
+function smartcms_board_delete_uploads(array $board, array $post, array $user, array $file_ids): array
+{
+    if (empty($file_ids)) {
+        return ['ok' => true, 'message' => '삭제할 첨부파일이 없습니다.', 'count' => 0];
+    }
+
+    if (!smartcms_board_can_manage_post($board, $post, $user)) {
+        return ['ok' => false, 'message' => '첨부파일 삭제 권한이 없습니다.', 'count' => 0];
+    }
+
+    $file_ids = array_values(array_unique(array_filter(array_map('intval', is_array($file_ids) ? $file_ids : [$file_ids]), static function (int $file_id): bool {
+        return $file_id > 0;
+    })));
+
+    if (!$file_ids) {
+        return ['ok' => true, 'message' => '삭제할 첨부파일이 없습니다.', 'count' => 0];
+    }
+
+    $placeholders = [];
+    $params = [
+        'board_id' => (int)$board['id'],
+        'post_id' => (int)$post['id'],
+    ];
+
+    foreach ($file_ids as $index => $file_id) {
+        $key = 'file_id_' . $index;
+        $placeholders[] = ':' . $key;
+        $params[$key] = $file_id;
+    }
+
+    $stmt = smartcms_db()->prepare(
+        "SELECT id, file_path
+         FROM " . smartcms_table('board_files') . "
+         WHERE board_id = :board_id AND post_id = :post_id AND id IN (" . implode(', ', $placeholders) . ")
+         ORDER BY id ASC"
+    );
+    $stmt->execute($params);
+    $files = $stmt->fetchAll();
+
+    if (count($files) !== count($file_ids)) {
+        return ['ok' => false, 'message' => '삭제할 첨부파일을 찾지 못했습니다.', 'count' => 0];
+    }
+
+    $db = smartcms_db();
+    $db->beginTransaction();
+
+    try {
+        $delete_stmt = $db->prepare(
+            "DELETE FROM " . smartcms_table('board_files') . "
+             WHERE id = :id AND board_id = :board_id AND post_id = :post_id"
+        );
+        $decrement_stmt = $db->prepare(
+            "UPDATE " . smartcms_table('board_posts') . "
+             SET attachment_count = CASE WHEN attachment_count > 0 THEN attachment_count - 1 ELSE 0 END
+             WHERE id = :id"
+        );
+
+        foreach ($files as $file) {
+            $delete_stmt->execute([
+                'id' => (int)$file['id'],
+                'board_id' => (int)$board['id'],
+                'post_id' => (int)$post['id'],
+            ]);
+            $decrement_stmt->execute(['id' => (int)$post['id']]);
+        }
+
+        $db->commit();
+    } catch (Throwable $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+
+        return ['ok' => false, 'message' => '첨부파일 삭제 중 오류가 발생했습니다.', 'count' => 0];
+    }
+
+    foreach ($files as $file) {
+        $path = SMARTCMS_ROOT . '/' . ltrim((string)$file['file_path'], '/');
+        if (is_file($path)) {
+            @unlink($path);
+        }
+    }
+
+    smartcms_board_audit($board, $post, $user, 'file_delete', '첨부파일을 삭제했습니다.');
+    return ['ok' => true, 'message' => '첨부파일을 삭제했습니다.', 'count' => count($files)];
+}
