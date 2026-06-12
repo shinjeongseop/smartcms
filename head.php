@@ -60,8 +60,8 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
         <div class="col-12 col-md-3 text-center text-md-start">
           <a class="navbar-brand fs-2 fw-bold text-primary" href="<?= $brand_url ?>">smartcms</a>
         </div>
-        <div class="col-12 col-md-9 d-flex justify-content-md-center">
-          <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" role="search" data-search-min-length="2" class="sc-header-search mx-auto">
+        <div class="col-12 col-md-9 col-lg-8 col-xl-7 mx-md-auto">
+          <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" role="search" data-search-min-length="2">
             <div class="input-group input-group-lg">
               <span class="input-group-text">
                 <i class="bi bi-search text-primary"></i>
