@@ -59,16 +59,18 @@ require SMARTCMS_ROOT . '/head.php';
             <form method="post" enctype="multipart/form-data" class="card border bg-light-subtle shadow-none">
               <div class="card-body p-4">
                 <?= smartcms_csrf_input() ?>
-                <div class="row g-3 align-items-center">
+                <div class="row g-3 align-items-end">
                   <div class="col-12 col-md-8">
                     <label for="avatar_file" class="form-label fw-bold text-dark mb-2">아바타 이미지</label>
                     <input class="form-control" type="file" name="avatar_file" id="avatar_file" accept="image/jpeg,image/png,image/gif,image/webp">
-                    <div class="form-text small text-secondary mt-2">JPG, PNG, GIF, WEBP 형식만 가능하며 최대 2MB까지 업로드할 수 있습니다.</div>
                   </div>
                   <div class="col-12 col-md-4 d-flex justify-content-md-end">
                     <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm w-100">
                       <i class="bi bi-upload me-2"></i>아바타 저장
                     </button>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-text small text-secondary mb-0">JPG, PNG, GIF, WEBP 형식만 가능하며 최대 2MB까지 업로드할 수 있습니다.</div>
                   </div>
                 </div>
               </div>
@@ -80,7 +82,7 @@ require SMARTCMS_ROOT . '/head.php';
             <div class="row g-4">
               <div class="col-12 col-md-6">
                 <div class="p-3 bg-light rounded-3 border-0">
-                  <dt class="text-secondary small fw-bold text-uppercase mb-1">이름 / 닉네임</dt>
+                  <dt class="text-secondary small fw-bold text-uppercase mb-1">이름</dt>
                   <dd class="fw-bold text-dark mb-0 fs-5"><?= smartcms_h($user['name']) ?></dd>
                 </div>
               </div>

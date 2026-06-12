@@ -114,6 +114,7 @@ function smartcms_create_board_posts_table(): void
         category VARCHAR(80) DEFAULT NULL,
         title VARCHAR(255) NOT NULL,
         content MEDIUMTEXT NOT NULL,
+        content_mode ENUM('text','editor') NOT NULL DEFAULT 'text',
         excerpt VARCHAR(500) DEFAULT NULL,
         author_id BIGINT UNSIGNED DEFAULT NULL,
         author_name VARCHAR(80) NOT NULL,
