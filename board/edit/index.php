@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             smartcms_redirect('/board/?board=' . rawurlencode((string)$board['board_key']));
         }
     } else {
-        $content_mode = smartcms_board_normalize_content_mode((string)($_POST['content_mode'] ?? (string)($post['content_mode'] ?? ((int)($board['use_editor'] ?? 1) === 1 ? 'editor' : 'text'))));
+        $content_mode = smartcms_board_normalize_content_mode((string)($_POST['content_mode'] ?? ((int)($board['use_editor'] ?? 1) === 1 ? 'editor' : 'text')));
         $result = smartcms_board_update_post(
             $board,
             $post,

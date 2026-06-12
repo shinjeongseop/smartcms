@@ -50,7 +50,7 @@ foreach ($scripts as $script) {
         }
     }
 
-    echo '<script src="' . smartcms_h($script_url) . ($asset_file ? asset_v($asset_file) : '') . '"></script>' . PHP_EOL;
+    echo '<script src="' . smartcms_h($script_url) . '"></script>' . PHP_EOL;
 }
 ?>
 </body></html>

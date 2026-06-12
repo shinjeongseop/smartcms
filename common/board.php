@@ -104,7 +104,7 @@ function smartcms_board_sanitize_editor_html(string $html): string
         return smartcms_h($html);
     }
 
-    $allowed = ['p', 'div', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a'];
+    $allowed = ['p', 'div', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a', 'img', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'hr', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
     $sanitize_node = static function (DOMNode $node) use (&$sanitize_node, $allowed): string {
         if ($node->nodeType === XML_TEXT_NODE) {
             return htmlspecialchars($node->nodeValue ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
@@ -127,6 +127,36 @@ function smartcms_board_sanitize_editor_html(string $html): string
         return match ($tag) {
             'br' => '<br>',
             'p', 'div', 'strong', 'b', 'em', 'i', 'u', 'blockquote', 'pre', 'code', 'ul', 'ol', 'li' => '<' . $tag . '>' . $children . '</' . $tag . '>',
+            'hr' => '<hr>',
+            'span', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' => '<' . $tag . '>' . $children . '</' . $tag . '>',
+            'img' => (function () use ($node): string {
+                $src = '';
+                if ($node->hasAttribute('src')) {
+                    $candidate = trim((string)$node->getAttribute('src'));
+                    if ($candidate !== '' && preg_match('#^(https?:|/|data:)#i', $candidate) === 1) {
+                        $src = htmlspecialchars($candidate, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+                    }
+                }
+
+                if ($src === '') {
+                    return '';
+                }
+
+                $alt = '';
+                if ($node->hasAttribute('alt')) {
+                    $alt = htmlspecialchars((string)$node->getAttribute('alt'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+                }
+
+                $title = '';
+                if ($node->hasAttribute('title')) {
+                    $title_value = trim((string)$node->getAttribute('title'));
+                    if ($title_value !== '') {
+                        $title = ' title="' . htmlspecialchars($title_value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '"';
+                    }
+                }
+
+                return '<img src="' . $src . '" alt="' . $alt . '" class="img-fluid rounded-3" loading="lazy"' . $title . '>';
+            })(),
             'a' => (function () use ($node, $children): string {
                 $href = '';
                 if ($node->hasAttribute('href')) {
@@ -152,6 +182,102 @@ function smartcms_board_sanitize_editor_html(string $html): string
     }
 
     return $output;
+}
+
+function smartcms_board_editor_upload_dir(array $board): string
+{
+    $board_key = smartcms_board_key((string)($board['board_key'] ?? 'editor'));
+    if ($board_key === '') {
+        $board_key = 'editor';
+    }
+
+    return SMARTCMS_ROOT . '/uploads/board/editor/' . $board_key;
+}
+
+function smartcms_board_editor_upload_url(array $board, string $stored_name): string
+{
+    $board_key = smartcms_board_key((string)($board['board_key'] ?? 'editor'));
+    if ($board_key === '') {
+        $board_key = 'editor';
+    }
+
+    return smartcms_base_url('/uploads/board/editor/' . rawurlencode($board_key) . '/' . rawurlencode($stored_name));
+}
+
+function smartcms_board_editor_image_paths(string $html): array
+{
+    $html = trim($html);
+    if ($html === '') {
+        return [];
+    }
+
+    $sources = [];
+    if (class_exists(DOMDocument::class)) {
+        $previous = libxml_use_internal_errors(true);
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->loadHTML('<?xml encoding="utf-8"?><div id="smartcms-editor-image-root">' . $html . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+
+        $root = $dom->getElementById('smartcms-editor-image-root');
+        if ($root instanceof DOMElement) {
+            foreach ($root->getElementsByTagName('img') as $img) {
+                if ($img->hasAttribute('src')) {
+                    $sources[] = trim((string)$img->getAttribute('src'));
+                }
+            }
+        }
+    } elseif (preg_match_all('#<img[^>]+src=[\"\\\']([^\"\\\']+)[\"\\\']#i', $html, $matches)) {
+        $sources = array_map('trim', $matches[1]);
+    }
+
+    $paths = [];
+    foreach ($sources as $source) {
+        if ($source === '') {
+            continue;
+        }
+
+        $path = (string)(parse_url($source, PHP_URL_PATH) ?: $source);
+        $marker = '/uploads/board/editor/';
+        $pos = strpos($path, $marker);
+        if ($pos !== false) {
+            $relative = ltrim(substr($path, $pos + 1), '/');
+        } elseif (str_starts_with($path, 'uploads/board/editor/')) {
+            $relative = $path;
+        } else {
+            continue;
+        }
+
+        $absolute = SMARTCMS_ROOT . '/' . ltrim($relative, '/');
+        $real = realpath($absolute);
+        if ($real !== false && is_file($real)) {
+            $paths[] = $real;
+        } elseif (is_file($absolute)) {
+            $paths[] = $absolute;
+        }
+    }
+
+    return array_values(array_unique($paths));
+}
+
+function smartcms_board_delete_editor_images_removed(string $old_content, string $new_content): void
+{
+    $old_paths = smartcms_board_editor_image_paths($old_content);
+    if (!$old_paths) {
+        return;
+    }
+
+    $new_paths = smartcms_board_editor_image_paths($new_content);
+    foreach (array_diff($old_paths, $new_paths) as $path) {
+        if (is_file($path)) {
+            @unlink($path);
+        }
+    }
+}
+
+function smartcms_board_delete_editor_images(string $content): void
+{
+    smartcms_board_delete_editor_images_removed($content, '');
 }
 
 function smartcms_board_render_content(array $post): string
@@ -554,6 +680,8 @@ function smartcms_board_update_post(array $board, array $post, array $user, stri
             'is_secret' => $is_secret ? 1 : 0,
         ]
     );
+
+    smartcms_board_delete_editor_images_removed((string)($post['content'] ?? ''), $content);
 
     smartcms_board_audit($board, $post, $user, 'post_update', '게시글을 수정했습니다.');
     return ['ok' => true, 'message' => '글을 수정했습니다.'];

@@ -45,7 +45,10 @@ $use_editor = (int)($board['use_editor'] ?? 1) === 1;
                 rows="16"
                 placeholder="자유롭게 내용을 작성해주세요."
                 required
-                data-board-editor="jodit"
+                data-ob-editor="jodit"
+                data-ob-upload-url="<?= smartcms_h(smartcms_base_url('/board/editor-upload/')) ?>"
+                data-ob-board-code="<?= smartcms_h((string)$board['board_key']) ?>"
+                data-ob-csrf="<?= smartcms_h(smartcms_csrf_token()) ?>"
               ><?= smartcms_h($form_values['content'] ?? '') ?></textarea>
               <div class="form-text mt-2">에디터가 활성화된 게시판입니다. 본문 이미지는 첨부파일 영역에서 따로 관리됩니다.</div>
             <?php else: ?>
