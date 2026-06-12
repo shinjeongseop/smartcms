@@ -590,6 +590,22 @@ function smartcms_board_can_manage_post(array $board, array $post, ?array $user)
     return (int)$post['author_id'] === (int)$user['id'] || smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
 }
 
+function smartcms_board_count_once(string $type, int $id, int $ttl = 60): bool
+{
+    smartcms_session_start();
+    $_SESSION['smartcms_board_count_cache'] ??= [];
+
+    $key = $type . ':' . $id;
+    $now = time();
+    $last = (int)($_SESSION['smartcms_board_count_cache'][$key] ?? 0);
+    if ($last > 0 && ($now - $last) < $ttl) {
+        return false;
+    }
+
+    $_SESSION['smartcms_board_count_cache'][$key] = $now;
+    return true;
+}
+
 function smartcms_board_create_comment(array $board, array $post, array $user, string $content): array
 {
     $content = trim($content);
@@ -677,6 +693,61 @@ function smartcms_board_hide_post(array $board, array $post, array $user): array
 
     smartcms_board_audit($board, $post, $user, 'post_hide', '게시글을 숨김 처리했습니다.');
     return ['ok' => true, 'message' => '글을 숨김 처리했습니다.'];
+}
+
+function smartcms_board_delete_post(array $board, array $post, array $user): array
+{
+    if (!smartcms_board_can_manage_post($board, $post, $user)) {
+        return ['ok' => false, 'message' => '글 삭제 권한이 없습니다.'];
+    }
+
+    $files = smartcms_board_files((int)$post['id']);
+    $db = smartcms_db();
+    $db->beginTransaction();
+
+    try {
+        smartcms_execute(
+            "DELETE FROM " . smartcms_table('board_comments') . " WHERE post_id = :post_id AND board_id = :board_id",
+            [
+                'post_id' => (int)$post['id'],
+                'board_id' => (int)$board['id'],
+            ]
+        );
+        smartcms_execute(
+            "DELETE FROM " . smartcms_table('board_files') . " WHERE post_id = :post_id AND board_id = :board_id",
+            [
+                'post_id' => (int)$post['id'],
+                'board_id' => (int)$board['id'],
+            ]
+        );
+        smartcms_execute(
+            "DELETE FROM " . smartcms_table('board_posts') . " WHERE id = :id AND board_id = :board_id",
+            [
+                'id' => (int)$post['id'],
+                'board_id' => (int)$board['id'],
+            ]
+        );
+
+        $db->commit();
+    } catch (Throwable $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+
+        return ['ok' => false, 'message' => '글 삭제 중 오류가 발생했습니다.'];
+    }
+
+    foreach ($files as $file) {
+        $path = SMARTCMS_ROOT . '/' . ltrim((string)$file['file_path'], '/');
+        smartcms_image_delete_thumbnail_cache_for_source($path);
+        if (is_file($path)) {
+            @unlink($path);
+        }
+    }
+
+    smartcms_board_delete_editor_images((string)($post['content'] ?? ''));
+    smartcms_board_audit($board, $post, $user, 'post_delete', '게시글을 삭제했습니다.');
+    return ['ok' => true, 'message' => '글을 삭제했습니다.'];
 }
 
 function smartcms_board_hide_comment(array $board, array $post, array $user, int $comment_id): array

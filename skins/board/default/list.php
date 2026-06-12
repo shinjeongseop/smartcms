@@ -188,7 +188,7 @@ $gallery_mode = (string)($skin_meta['skin'] ?? '') === 'gallery';
       <footer class="card-footer bg-white border-top p-4 p-lg-5 text-end">
         <a class="btn <?= smartcms_h((string)$skin_meta['button_class']) ?> rounded-pill px-4 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?>"
            href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">
-          <i class="bi bi-pencil-square me-2"></i>글쓰기
+          새글
         </a>
       </footer>
     <?php endif; ?>

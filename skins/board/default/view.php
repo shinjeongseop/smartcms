@@ -5,6 +5,8 @@
 $skin_meta = smartcms_board_skin_meta($board);
 $accent = (string)$skin_meta['accent'];
 $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
+$image_files = smartcms_board_image_files($files);
+$attachment_files = array_values(array_filter($files, static fn(array $file): bool => !smartcms_board_file_is_image($file)));
 ?>
 <article class="card border shadow-sm overflow-hidden mb-4">
   <div class="card-body p-4 p-lg-5">
@@ -16,14 +18,6 @@ $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
         </div>
         <h2 class="fs-6 fw-bold mb-0 text-dark"><?= smartcms_h($post['title']) ?></h2>
       </div>
-      <?php if ($can_manage_post): ?>
-        <a class="btn btn-light border btn-sm rounded-pill px-3 shadow-none fw-bold"
-           href="<?= smartcms_h(smartcms_base_url('/board/edit/')
-               . '?board=' . rawurlencode((string)$board['board_key'])
-               . '&id=' . rawurlencode((string)$post['id'])) ?>">
-          <i class="bi bi-pencil-square me-1"></i>수정
-        </a>
-      <?php endif; ?>
     </header>
 
     <div class="d-flex flex-wrap align-items-center gap-3 py-3 border-top border-bottom text-secondary small mb-5 fw-medium">
@@ -36,15 +30,38 @@ $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
       <span class="d-flex align-items-center gap-1"><i class="bi bi-chat-dots fs-6 <?= $accent_text ?>"></i>댓글 <?= count($comments) ?></span>
     </div>
 
+    <?php if ($image_files): ?>
+      <section class="mb-5">
+        <div class="row g-3">
+          <?php foreach ($image_files as $image): ?>
+            <?php $thumb_url = smartcms_board_file_thumbnail_url($image, 900, 506); ?>
+            <div class="col-12 col-md-6">
+              <figure class="card border-0 shadow-sm h-100 overflow-hidden mb-0">
+                <a class="d-block ratio ratio-16x9 bg-light text-decoration-none"
+                   href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id'])) ?>"
+                   target="_blank" rel="noopener">
+                  <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id']))) ?>" alt="<?= smartcms_h($image['original_name']) ?>">
+                </a>
+                <figcaption class="card-body p-3 small">
+                  <div class="fw-semibold text-dark text-truncate"><?= smartcms_h($image['original_name']) ?></div>
+                  <div class="text-secondary"><?= number_format((int)$image['file_size']) ?> bytes · 다운로드 <?= (int)$image['download_count'] ?>회</div>
+                </figcaption>
+              </figure>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </section>
+    <?php endif; ?>
+
     <div class="mb-5 text-break lh-lg small text-dark">
       <?= smartcms_board_render_content($post) ?>
     </div>
 
-    <?php if ($files): ?>
+    <?php if ($attachment_files): ?>
       <section class="mb-5">
-        <h3 class="h6 fw-bold mb-3 text-primary"><i class="bi bi-paperclip me-1"></i>첨부파일</h3>
+        <h3 class="h6 fw-bold mb-3 text-primary">첨부파일</h3>
         <div class="list-group list-group-flush border rounded-3 overflow-hidden shadow-sm">
-          <?php foreach ($files as $file): ?>
+          <?php foreach ($attachment_files as $file): ?>
             <a class="list-group-item list-group-item-action bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 p-3"
                href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>">
               <span class="fw-bold text-dark"><i class="bi bi-file-earmark-arrow-down me-2"></i><?= smartcms_h($file['original_name']) ?></span>
@@ -56,10 +73,30 @@ $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
     <?php endif; ?>
 
     <footer class="pt-4 border-top">
-      <a class="btn <?= $skin_meta['button_class'] ?> rounded-pill px-4 fw-bold shadow-none <?= smartcms_h((string)$skin_meta['button_text_class']) ?>"
-         href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
-        <i class="bi bi-list-ul me-1"></i>목록으로 이동
-      </a>
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <div class="d-flex flex-wrap gap-2">
+          <?php if ($user && smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
+            <a class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">새글</a>
+          <?php endif; ?>
+          <?php if ($can_manage_post): ?>
+            <a class="btn btn-light border rounded-pill px-4 fw-bold shadow-none text-secondary"
+               href="<?= smartcms_h(smartcms_base_url('/board/edit/')
+                   . '?board=' . rawurlencode((string)$board['board_key'])
+                   . '&id=' . rawurlencode((string)$post['id'])) ?>">
+              수정
+            </a>
+            <form class="d-inline" method="post">
+              <?= smartcms_csrf_input() ?>
+              <input type="hidden" name="action" value="post_delete">
+              <button class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm" type="submit">삭제</button>
+            </form>
+          <?php endif; ?>
+        </div>
+        <a class="btn btn-light border rounded-pill px-4 fw-bold shadow-none text-secondary"
+           href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
+          목록
+        </a>
+      </div>
     </footer>
   </div>
 </article>

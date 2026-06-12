@@ -64,9 +64,9 @@ $form_action = 'create';
 $form_enctype = 'multipart/form-data';
 $form_values = ['title' => '', 'content' => '', 'content_mode' => $use_editor ? 'editor' : 'text', 'is_notice' => false, 'is_secret' => false];
 $show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
-$submit_label = '게시글 등록';
+$submit_label = '새글';
 $back_url = smartcms_board_url((string)$board['board_key']);
-$back_label = '목록으로';
+$back_label = '목록';
 if ($use_editor) {
     $SMARTCMS_FOOT['scripts'][] = '/common/vendor/jodit/jodit.min.js';
     $SMARTCMS_FOOT['scripts'][] = '/common/js/board-editor.js';

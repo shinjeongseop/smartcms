@@ -39,31 +39,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = (string)($_POST['action'] ?? 'comment_create');
     if ($action === 'comment_hide') {
         if (!$can_manage_board || !$user) {
-            $message = '댓글 숨김 권한이 없습니다.';
-            $message_type = 'error';
+            smartcms_flash_set('message', '댓글 숨김 권한이 없습니다.');
+            smartcms_flash_set('message_type', 'error');
+            smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
         } else {
             $result = smartcms_board_hide_comment($board, $post, $user, (int)($_POST['comment_id'] ?? 0));
-            $message = $result['message'];
-            $message_type = $result['ok'] ? 'success' : 'error';
-            if ($result['ok']) {
-                smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
-            }
-        }
-    } elseif (!$can_comment || !$user) {
-        $message = '댓글 작성 권한이 없습니다.';
-        $message_type = 'error';
-      } else {
-        $result = smartcms_board_create_comment($board, $post, $user, (string)($_POST['content'] ?? ''));
-        $message = $result['message'];
-        $message_type = $result['ok'] ? 'success' : 'error';
-        if ($result['ok']) {
+            smartcms_flash_set('message', $result['message']);
+            smartcms_flash_set('message_type', $result['ok'] ? 'success' : 'error');
             smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
         }
+    } elseif ($action === 'post_delete') {
+        if (!$can_manage_post || !$user) {
+            smartcms_flash_set('message', '글 삭제 권한이 없습니다.');
+            smartcms_flash_set('message_type', 'error');
+            smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
+        } else {
+            $result = smartcms_board_delete_post($board, $post, $user);
+            smartcms_flash_set('message', $result['message']);
+            smartcms_flash_set('message_type', $result['ok'] ? 'success' : 'error');
+            smartcms_redirect('/board/?board=' . rawurlencode((string)$board['board_key']));
+        }
+    } elseif (!$can_comment || !$user) {
+        smartcms_flash_set('message', '댓글 작성 권한이 없습니다.');
+        smartcms_flash_set('message_type', 'error');
+        smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
+      } else {
+        $result = smartcms_board_create_comment($board, $post, $user, (string)($_POST['content'] ?? ''));
+        smartcms_flash_set('message', $result['message']);
+        smartcms_flash_set('message_type', $result['ok'] ? 'success' : 'error');
+        smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
     }
 }
 
-smartcms_board_increment_view((int)$post['id']);
-$post['view_count'] = (int)$post['view_count'] + 1;
+if (smartcms_board_count_once('view', (int)$post['id'], 120)) {
+    smartcms_board_increment_view((int)$post['id']);
+    $post['view_count'] = (int)$post['view_count'] + 1;
+}
 $comments = smartcms_board_comments((int)$post['id']);
 $files = smartcms_board_files((int)$post['id']);
 
@@ -75,6 +86,8 @@ require SMARTCMS_ROOT . '/head.php';
 ?>
 
 <div class="container-fluid container-xxl pt-4 pt-lg-5">
+  <?php $message = (string)smartcms_flash_get('message', $message); ?>
+  <?php $message_type = (string)smartcms_flash_get('message_type', $message_type); ?>
   <div class="row g-4 align-items-start">
     <section class="col-12">
       <?php if ($message !== ''): ?>

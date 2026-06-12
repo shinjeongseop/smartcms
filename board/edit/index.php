@@ -108,9 +108,9 @@ $form_values = [
 $form_enctype = 'multipart/form-data';
 $show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
 $show_hide_form = true;
-$submit_label = '변경 사항 저장';
+$submit_label = '수정';
 $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);
-$back_label = '취소 및 돌아가기';
+$back_label = '목록';
 if ($use_editor) {
     $SMARTCMS_FOOT['scripts'][] = '/common/vendor/jodit/jodit.min.js';
     $SMARTCMS_FOOT['scripts'][] = '/common/js/board-editor.js';

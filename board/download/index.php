@@ -35,10 +35,12 @@ if (!is_file($path)) {
     exit;
 }
 
-smartcms_execute(
-    "UPDATE " . smartcms_table('board_files') . " SET download_count = download_count + 1 WHERE id = :id",
-    ['id' => (int)$file['id']]
-);
+if (smartcms_board_count_once('download', (int)$file['id'], 120)) {
+    smartcms_execute(
+        "UPDATE " . smartcms_table('board_files') . " SET download_count = download_count + 1 WHERE id = :id",
+        ['id' => (int)$file['id']]
+    );
+}
 smartcms_board_audit($board, ['id' => (int)$file['post_id']], $user, 'file_download', '첨부파일을 다운로드했습니다.');
 
 header('Content-Type: application/octet-stream');
