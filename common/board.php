@@ -237,6 +237,68 @@ function smartcms_board_youtube_video_id_from_url(string $url): ?string
     return $video_id;
 }
 
+function smartcms_board_youtube_thumbnail_cache_path(string $video_id, string $quality = 'hqdefault'): string
+{
+    $video_id = preg_replace('/[^A-Za-z0-9_-]/', '', $video_id);
+    $quality = preg_replace('/[^A-Za-z0-9_.-]/', '', $quality);
+    if ($quality === '') {
+        $quality = 'hqdefault';
+    }
+
+    $dir = SMARTCMS_ROOT . '/uploads/board/youtube-thumbs/' . $quality;
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+
+    return $dir . '/' . $video_id . '.jpg';
+}
+
+function smartcms_board_download_remote_file(string $url, string $target_path): bool
+{
+    $dir = dirname($target_path);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+
+    $data = false;
+    if (function_exists('curl_init')) {
+        $curl = curl_init($url);
+        if ($curl !== false) {
+            curl_setopt_array($curl, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_CONNECTTIMEOUT => 5,
+                CURLOPT_TIMEOUT => 15,
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYHOST => 2,
+                CURLOPT_USERAGENT => 'SmartCMS/1.0',
+            ]);
+            $data = curl_exec($curl);
+            curl_close($curl);
+        }
+    }
+
+    if ($data === false || $data === '') {
+        $context = stream_context_create([
+            'http' => [
+                'timeout' => 15,
+                'header' => "User-Agent: SmartCMS/1.0\r\n",
+            ],
+            'ssl' => [
+                'verify_peer' => true,
+                'verify_peer_name' => true,
+            ],
+        ]);
+        $data = @file_get_contents($url, false, $context);
+    }
+
+    if ($data === false || $data === '') {
+        return false;
+    }
+
+    return file_put_contents($target_path, $data, LOCK_EX) !== false;
+}
+
 function smartcms_board_youtube_thumbnail_url_from_id(string $video_id, string $quality = 'hqdefault'): string
 {
     $quality = preg_replace('/[^a-z0-9_.-]/i', '', $quality);
@@ -244,7 +306,16 @@ function smartcms_board_youtube_thumbnail_url_from_id(string $video_id, string $
         $quality = 'hqdefault';
     }
 
-    return 'https://img.youtube.com/vi/' . rawurlencode($video_id) . '/' . rawurlencode($quality) . '.jpg';
+    $cache_path = smartcms_board_youtube_thumbnail_cache_path($video_id, $quality);
+    if (!is_file($cache_path) || filesize($cache_path) === 0) {
+        $remote_url = 'https://img.youtube.com/vi/' . rawurlencode($video_id) . '/' . rawurlencode($quality) . '.jpg';
+        if (!smartcms_board_download_remote_file($remote_url, $cache_path)) {
+            return $remote_url;
+        }
+    }
+
+    $relative = ltrim(str_replace('\\', '/', str_replace(SMARTCMS_ROOT, '', $cache_path)), '/');
+    return smartcms_asset_url('/' . $relative);
 }
 
 function smartcms_board_youtube_embed_url_from_id(string $video_id): string
@@ -1170,7 +1241,7 @@ function smartcms_board_seed_defaults(int $created_by): array
 function smartcms_board_recent_posts(int $limit = 12): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.excerpt, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name
+        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.excerpt, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.is_hidden = 0 AND b.status <> 'disabled'
@@ -1186,7 +1257,7 @@ function smartcms_board_recent_posts(int $limit = 12): array
 function smartcms_board_recent_posts_by_key(string $board_key, int $limit = 5): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT p.id, p.title, p.excerpt, p.author_name, p.comment_count, p.attachment_count, p.view_count, p.created_at,
+        "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.excerpt, p.author_name, p.comment_count, p.attachment_count, p.view_count, p.created_at,
                 b.board_key, b.board_name
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id

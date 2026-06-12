@@ -175,6 +175,7 @@ require SMARTCMS_ROOT . '/head.php';
             <?php if ($recent_posts): ?>
               <?php foreach ($recent_posts as $post): ?>
                 <?php $recent_image = smartcms_board_first_image_file((int)$post['id']); ?>
+                <?php $recent_youtube = $recent_image ? null : smartcms_board_youtube_link_data($post); ?>
                 <?php $recent_excerpt = smartcms_board_excerpt((string)($post['excerpt'] ?? ''), 90); ?>
                 <a class="list-group-item list-group-item-action p-4"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
@@ -184,6 +185,10 @@ require SMARTCMS_ROOT . '/head.php';
                         <?php $recent_thumb = smartcms_board_file_thumbnail_url($recent_image, 480, 360); ?>
                         <div class="ratio ratio-4x3 rounded-3 overflow-hidden bg-light border shadow-sm">
                           <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($recent_thumb ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$recent_image['id']))) ?>" alt="<?= smartcms_h($recent_image['original_name']) ?>">
+                        </div>
+                      <?php elseif (!empty($recent_youtube['thumb_url'])): ?>
+                        <div class="ratio ratio-4x3 rounded-3 overflow-hidden bg-light border shadow-sm">
+                          <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h((string)$recent_youtube['thumb_url']) ?>" alt="<?= smartcms_h((string)$post['title']) ?>">
                         </div>
                       <?php else: ?>
                         <div class="ratio ratio-4x3 rounded-3 overflow-hidden bg-light border d-flex align-items-center justify-content-center shadow-sm">
