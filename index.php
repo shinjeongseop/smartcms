@@ -17,27 +17,30 @@ $message = '';
 
 try {
     $boards = smartcms_board_list();
-    foreach ($boards as $board) {
-        $board_map[(string)$board['board_key']] = $board;
-    }
     $board_counts = smartcms_board_post_counts();
     $recent_posts = smartcms_board_recent_posts(8);
     $popular_posts = smartcms_board_popular_posts(5);
     $notice_posts = smartcms_board_recent_posts_by_key('notice', 4);
 
-    foreach ([
-        'free' => '자유롭게 이야기를 나누는 공간',
-        'qna' => '궁금한 점을 남기고 답을 찾는 공간',
-        'notice' => '운영 소식과 중요한 안내',
-    ] as $board_key => $summary) {
-        if (!isset($board_map[$board_key])) {
+    foreach ($boards as $board) {
+        if ((string)($board['status'] ?? '') !== 'active') {
             continue;
         }
 
+        $skin_meta = smartcms_board_skin_meta($board);
+        $summary = trim((string)($board['description'] ?? ''));
+        if ($summary === '') {
+            $summary = (string)($skin_meta['skin'] ?? '') === 'gallery'
+                ? '최신 이미지를 모아 보여주는 공간입니다.'
+                : '최신 글을 확인해보세요.';
+        }
+
+        $limit = (string)($skin_meta['skin'] ?? '') === 'gallery' ? 2 : 5;
         $board_widgets[] = [
-            'board' => $board_map[$board_key],
+            'board' => $board,
+            'skin_meta' => $skin_meta,
             'summary' => $summary,
-            'posts' => smartcms_board_recent_posts_by_key($board_key, 5),
+            'posts' => smartcms_board_recent_posts_by_key((string)$board['board_key'], $limit),
         ];
     }
 } catch (Throwable $e) {
@@ -229,43 +232,76 @@ require SMARTCMS_ROOT . '/head.php';
                     <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" class="btn btn-light btn-sm rounded-pill px-3 flex-shrink-0 fw-bold shadow-none border text-primary">전체보기</a>
                   </div>
                 </header>
-                <div class="card-body p-4">
-                  <div class="list-group list-group-flush small">
+                <?php $is_gallery_widget = (string)($widget['skin_meta']['skin'] ?? '') === 'gallery'; ?>
+                <?php if ($is_gallery_widget): ?>
+                  <div class="card-body p-4">
                     <?php if ($widget['posts']): ?>
-                      <?php foreach ($widget['posts'] as $post): ?>
-                        <?php $widget_image = smartcms_board_first_image_file((int)$post['id']); ?>
-                        <a class="list-group-item list-group-item-action bg-white px-0 py-2"
-                          href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-                          <?php if ($widget_image): ?>
-                            <?php $widget_thumb = smartcms_board_file_thumbnail_url($widget_image, 480, 270); ?>
-                            <div class="row g-2 align-items-center">
-                              <div class="col-3">
-                                <div class="ratio ratio-16x9 rounded-2 overflow-hidden bg-light border">
-                                  <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($widget_thumb ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$widget_image['id']))) ?>" alt="<?= smartcms_h($widget_image['original_name']) ?>">
+                      <div class="row row-cols-2 g-3">
+                        <?php foreach ($widget['posts'] as $post): ?>
+                          <?php $gallery_image = smartcms_board_first_image_file((int)$post['id']); ?>
+                          <?php $gallery_thumb = $gallery_image ? smartcms_board_file_thumbnail_url($gallery_image, 640, 640) : null; ?>
+                          <div class="col">
+                            <a class="card border-0 shadow-sm h-100 text-decoration-none overflow-hidden rounded-4" href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
+                              <div class="ratio ratio-1x1 bg-light">
+                                <?php if ($gallery_thumb): ?>
+                                  <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($gallery_thumb ?? '') ?>" alt="<?= smartcms_h($gallery_image['original_name']) ?>">
+                                <?php else: ?>
+                                  <div class="d-flex align-items-center justify-content-center text-secondary">
+                                    <span class="text-center">
+                                      <i class="bi bi-image fs-1 d-block mb-1 opacity-50"></i>
+                                      <span class="small fw-semibold">이미지 없음</span>
+                                    </span>
+                                  </div>
+                                <?php endif; ?>
+                              </div>
+                              <span class="visually-hidden"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></span>
+                            </a>
+                          </div>
+                        <?php endforeach; ?>
+                      </div>
+                    <?php else: ?>
+                      <div class="text-body-secondary small opacity-75">등록된 이미지가 없습니다.</div>
+                    <?php endif; ?>
+                  </div>
+                <?php else: ?>
+                  <div class="card-body p-4">
+                    <div class="list-group list-group-flush small">
+                      <?php if ($widget['posts']): ?>
+                        <?php foreach ($widget['posts'] as $post): ?>
+                          <?php $widget_image = smartcms_board_first_image_file((int)$post['id']); ?>
+                          <a class="list-group-item list-group-item-action bg-white px-0 py-2"
+                            href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
+                            <?php if ($widget_image): ?>
+                              <?php $widget_thumb = smartcms_board_file_thumbnail_url($widget_image, 480, 270); ?>
+                              <div class="row g-2 align-items-center">
+                                <div class="col-3">
+                                  <div class="ratio ratio-16x9 rounded-2 overflow-hidden bg-light border">
+                                    <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($widget_thumb ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$widget_image['id']))) ?>" alt="<?= smartcms_h($widget_image['original_name']) ?>">
+                                  </div>
+                                </div>
+                                <div class="col-9 min-w-0">
+                                  <span class="text-truncate fw-medium d-block"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></span>
+                                  <time class="text-xs text-body-secondary" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
+                                    <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                                  </time>
                                 </div>
                               </div>
-                              <div class="col-9 min-w-0">
-                                <span class="text-truncate fw-medium d-block"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></span>
-                                <time class="text-xs text-body-secondary" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
+                            <?php else: ?>
+                              <div class="d-flex justify-content-between align-items-center gap-2">
+                                <span class="text-truncate fw-medium"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></span>
+                                <time class="text-xs text-body-secondary flex-shrink-0" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
                                   <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                                 </time>
                               </div>
-                            </div>
-                          <?php else: ?>
-                            <div class="d-flex justify-content-between align-items-center gap-2">
-                              <span class="text-truncate fw-medium"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></span>
-                              <time class="text-xs text-body-secondary flex-shrink-0" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
-                                <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
-                              </time>
-                            </div>
-                          <?php endif; ?>
-                        </a>
-                      <?php endforeach; ?>
-                    <?php else: ?>
-                      <div class="text-body-secondary small opacity-75">등록된 글이 없습니다.</div>
-                    <?php endif; ?>
+                            <?php endif; ?>
+                          </a>
+                        <?php endforeach; ?>
+                      <?php else: ?>
+                        <div class="text-body-secondary small opacity-75">등록된 글이 없습니다.</div>
+                      <?php endif; ?>
+                    </div>
                   </div>
-                </div>
+                <?php endif; ?>
               </article>
             </div>
           <?php endforeach; ?>

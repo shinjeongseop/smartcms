@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once dirname(__DIR__) . '/config.php';
 require_once dirname(__DIR__) . '/security.php';
 require_once dirname(__DIR__) . '/auth.php';
+require_once dirname(__DIR__) . '/board.php';
 
 /* ─────────────────────────────────────────
    1. 데이터 인터페이스
@@ -12,13 +13,38 @@ require_once dirname(__DIR__) . '/auth.php';
 if (!function_exists('smartcms_site_nav_items')) {
     function smartcms_site_nav_items(): array
     {
-        return [
+        $items = [
             'home' => ['label' => '홈', 'href' => '/', 'icon' => 'bi-house-fill'],
             'boards' => ['label' => '게시판', 'href' => '/board/', 'icon' => 'bi-grid-3x3-gap-fill'],
-            'notice' => ['label' => '공지사항', 'href' => '/board/?board=notice', 'icon' => 'bi-megaphone-fill'],
-            'free' => ['label' => '자유게시판', 'href' => '/board/?board=free', 'icon' => 'bi-chat-square-text-fill'],
-            'qna' => ['label' => '질문과 답변', 'href' => '/board/?board=qna', 'icon' => 'bi-question-circle-fill'],
         ];
+
+        try {
+            foreach (smartcms_board_list() as $board) {
+                if ((string)($board['status'] ?? '') !== 'active') {
+                    continue;
+                }
+
+                $board_key = (string)($board['board_key'] ?? '');
+                if ($board_key === '') {
+                    continue;
+                }
+
+                $skin_meta = smartcms_board_skin_meta($board);
+                $items['board:' . $board_key] = [
+                    'label' => (string)($board['board_name'] ?? $board_key),
+                    'href' => '/board/?board=' . rawurlencode($board_key),
+                    'icon' => (string)($skin_meta['icon'] ?? 'bi-grid-3x3-gap-fill'),
+                ];
+            }
+        } catch (Throwable $e) {
+            $items += [
+                'notice' => ['label' => '공지사항', 'href' => '/board/?board=notice', 'icon' => 'bi-megaphone-fill'],
+                'free' => ['label' => '자유게시판', 'href' => '/board/?board=free', 'icon' => 'bi-chat-square-text-fill'],
+                'qna' => ['label' => '질문과 답변', 'href' => '/board/?board=qna', 'icon' => 'bi-question-circle-fill'],
+            ];
+        }
+
+        return $items;
     }
 }
 
