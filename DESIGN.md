@@ -15,6 +15,7 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 2. **Bootstrap Standard Style**: 폼 요소(Input, Select)는 부트스트랩 표준인 **흰색 배경과 1px 테두리**를 유지합니다.
 3. **Utility-First Layout**: 모든 레이아웃과 간격은 `p-*`, `m-*`, `d-flex`, `gap-*` 등 부트스트랩 유틸리티를 사용합니다.
 4. **Clean & High Contrast**: 페이지 배경은 `bg-light`로, 카드는 명확한 테두리(`border`)와 은은한 그림자(`shadow-sm`)를 가진 **흰색 배경**으로 구성합니다.
+5. **Rem-Based Scale**: 모든 폰트 크기와 여백, 간격은 `px` 대신 `rem` 기준으로 설정합니다.
 
 ## Color Tokens (via Bootstrap Overrides)
 
@@ -33,6 +34,7 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 
 - **Body Font**: `Pretendard`
 - **Code Font**: `JetBrains Mono`, `Fira Code`, monospace
+- **Sizing Rule**: 모든 타이포그래피 크기는 `rem`으로만 표기합니다.
 
 | Level     | Size     | Weight | Utility              |
 | --------- | -------- | ------ | -------------------- |
@@ -46,7 +48,7 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 ## Layout Rules
 
 - **Grid**: Bootstrap 12-column grid (`.row`, `.col-*`)
-- **Spacing**: `spacer` 단위 (1rem = 16px) 기반 유틸리티 사용
+- **Spacing**: `spacer` 단위(1rem 기준) 기반 유틸리티 사용
 - **Containers**: 기본 `.container-xxl` (최대 1320px) 사용
 - **Gutter**: 기본 `g-4` (1.5rem) 사용
 
@@ -67,6 +69,8 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 
 - **부트스트랩 표준 스타일(흰색 배경 + 테두리)**을 기본으로 합니다. `bg-light`나 `border-0`를 지양합니다.
 - 레이블은 `.form-label`과 `.fw-semibold`를 조합합니다.
+- `.form-label` 텍스트 크기는 `0.875rem`(14px)로 설정합니다.
+- 폼 관련 폰트 크기와 여백도 모두 `rem` 단위만 사용합니다.
 
 ## Do & Don't
 
@@ -81,6 +85,7 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 - 인라인 스타일 (`style="..."`) 사용
 - 폼 요소에 `bg-light`, `border-0` 등 비표준 스타일 강제 적용
 - 한 페이지에 여러 개의 Primary 버튼 배치
+- 폰트 크기나 여백에 `px` 단위 사용
 
 ---
 
