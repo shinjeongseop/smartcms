@@ -11,6 +11,7 @@ function smartcms_default_settings(): array
         'default_member_level' => (string)smartcms_config_value('default_member_level', 2),
         'admin_level' => (string)smartcms_config_value('admin_level', 8),
         'upload_max_mb' => '10',
+        'author_display_mode' => 'name',
     ];
 }
 

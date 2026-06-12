@@ -166,7 +166,7 @@ function smartcms_board_normalize_author_display_mode(string $value): string
 
 function smartcms_board_author_display_mode(?array $board): string
 {
-    return smartcms_board_normalize_author_display_mode((string)($board['author_display_mode'] ?? 'name'));
+    return smartcms_board_normalize_author_display_mode((string)smartcms_setting('author_display_mode', 'name'));
 }
 
 function smartcms_ensure_boards_author_display_mode_column(): void

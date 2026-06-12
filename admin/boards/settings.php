@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 1. 게시판 기본 설정 업데이트
             smartcms_execute(
             "UPDATE " . smartcms_table('boards') . "
-             SET board_name = :name, description = :desc, skin = :skin, author_display_mode = :author_display_mode, items_per_page = :ipp,
+             SET board_name = :name, description = :desc, skin = :skin, items_per_page = :ipp,
                  use_editor = :editor, use_comments = :comments, use_attachments = :attachments, status = :status
              WHERE board_key = :key",
             [
@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'name'        => trim((string)$_POST['board_name']),
                 'desc'        => trim((string)$_POST['description']),
                 'skin'        => smartcms_board_normalize_skin((string)($_POST['skin'] ?? 'default')),
-                'author_display_mode' => smartcms_board_normalize_author_display_mode((string)($_POST['author_display_mode'] ?? 'name')),
                 'ipp'         => max(1, min(100, (int)$_POST['items_per_page'])),
                 'editor'      => (string)($_POST['use_editor'] ?? '0') === '1' ? 1 : 0,
                 'comments'    => isset($_POST['use_comments']) ? 1 : 0,
@@ -124,14 +123,6 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <div class="col-md-6">
                 <label for="items_per_page" class="form-label fw-bold small text-dark text-uppercase">페이지당 게시물 노출 수</label>
                 <input type="number" id="items_per_page" name="items_per_page" class="form-control py-2" value="<?= (int)$board['items_per_page'] ?>" min="1" max="100">
-              </div>
-              <div class="col-md-6">
-                <label for="author_display_mode" class="form-label fw-bold small text-dark text-uppercase">글쓴이 표시 방식</label>
-                <select id="author_display_mode" name="author_display_mode" class="form-select py-2 fw-bold">
-                  <?php foreach (smartcms_board_author_display_options() as $mode_key => $mode_label): ?>
-                    <option value="<?= smartcms_h($mode_key) ?>" <?= smartcms_board_author_display_mode($board) === $mode_key ? 'selected' : '' ?>><?= smartcms_h($mode_label) ?></option>
-                  <?php endforeach; ?>
-                </select>
               </div>
             </div>
           </div>
