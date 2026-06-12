@@ -206,7 +206,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                 </td>
                 <td class="min-w-0">
                   <div class="d-flex align-items-center gap-2 min-w-0">
-                    <a class="text-decoration-none fw-semibold text-dark text-truncate fs-5 d-block flex-grow-1 min-w-0"
+                    <a class="text-decoration-none fw-semibold text-dark text-truncate fs-6 d-block flex-grow-1 min-w-0"
                        href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                       <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
                       <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
