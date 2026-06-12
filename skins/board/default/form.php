@@ -5,6 +5,8 @@
  */
 $skin_meta = smartcms_board_skin_meta($board);
 $accent = (string)$skin_meta['accent'];
+$use_editor = (int)($board['use_editor'] ?? 1) === 1;
+$content_mode = smartcms_board_normalize_content_mode((string)($form_values['content_mode'] ?? ($use_editor ? 'editor' : 'text')));
 ?>
 <article class="smartcms-board-form">
   <div class="card border shadow-sm overflow-hidden">
@@ -12,6 +14,7 @@ $accent = (string)$skin_meta['accent'];
       <form method="post" enctype="<?= smartcms_h($form_enctype ?? 'application/x-www-form-urlencoded') ?>">
         <?= smartcms_csrf_input() ?>
         <input type="hidden" name="action" value="<?= smartcms_h($form_action ?? 'update') ?>">
+        <input type="hidden" name="content_mode" value="<?= smartcms_h($content_mode) ?>">
 
         <div class="row g-4">
           <div class="col-12">
@@ -36,7 +39,25 @@ $accent = (string)$skin_meta['accent'];
 
           <div class="col-12">
             <label for="content" class="form-label fw-bold text-dark">내용 <span class="text-primary">*</span></label>
-            <textarea class="form-control" id="content" name="content" rows="16" placeholder="자유롭게 내용을 작성해주세요." required><?= smartcms_h($form_values['content'] ?? '') ?></textarea>
+
+            <div class="btn-group mb-3" role="group" aria-label="본문 작성 방식">
+              <input class="btn-check" type="radio" name="content_mode_select" id="content_mode_text" value="text" <?= $content_mode === 'text' ? 'checked' : '' ?>>
+              <label class="btn btn-secondary btn-sm" for="content_mode_text">일반 텍스트아리아</label>
+              <input class="btn-check" type="radio" name="content_mode_select" id="content_mode_editor" value="editor" <?= $content_mode === 'editor' ? 'checked' : '' ?>>
+              <label class="btn btn-secondary btn-sm" for="content_mode_editor">에디터</label>
+            </div>
+
+            <textarea
+              class="form-control"
+              id="content"
+              name="content"
+              rows="16"
+              placeholder="자유롭게 내용을 작성해주세요."
+              required
+              data-board-editor="jodit"
+            ><?= smartcms_h($form_values['content'] ?? '') ?></textarea>
+
+            <div class="form-text mt-2">에디터 모드에서는 Jodit이 적용되며, 본문 이미지는 첨부파일 영역에서 따로 관리됩니다.</div>
           </div>
 
           <?php if (!empty($existing_files)): ?>

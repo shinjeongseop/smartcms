@@ -37,15 +37,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'hide') {
         $result = smartcms_board_hide_post($board, $post, $user);
         if ($result['ok']) {
+            smartcms_flash_set('message', $result['message']);
+            smartcms_flash_set('message_type', 'success');
             smartcms_redirect('/board/?board=' . rawurlencode((string)$board['board_key']));
         }
     } else {
+        $content_mode = smartcms_board_normalize_content_mode((string)($_POST['content_mode'] ?? (string)($post['content_mode'] ?? ((int)($board['use_editor'] ?? 1) === 1 ? 'editor' : 'text'))));
         $result = smartcms_board_update_post(
             $board,
             $post,
             $user,
             (string)($_POST['title'] ?? ''),
             (string)($_POST['content'] ?? ''),
+            $content_mode,
             isset($_POST['is_notice']),
             isset($_POST['is_secret'])
         );
@@ -66,13 +70,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if ($result['ok']) {
+                smartcms_flash_set('message', $result['message']);
+                smartcms_flash_set('message_type', 'success');
                 smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
             }
         }
     }
 
-    $message = $result['message'];
-    $message_type = $result['ok'] ? 'success' : 'error';
+    smartcms_flash_set('message', $result['message']);
+    smartcms_flash_set('message_type', 'error');
+    smartcms_redirect('/board/edit/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
 }
 
 $existing_files = smartcms_board_files((int)$post['id']);
@@ -81,13 +88,17 @@ $active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], 
     ? (string)$board['board_key']
     : 'boards';
 $SMARTCMS_HEAD = ['title' => '게시글 수정', 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
+$SMARTCMS_HEAD['stylesheets'][] = 'https://cdn.jsdelivr.net/npm/jodit@4/es2021/jodit.min.css';
 require SMARTCMS_ROOT . '/head.php';
 
 // Skin variables
+$message = (string)smartcms_flash_get('message', $message);
+$message_type = (string)smartcms_flash_get('message_type', $message_type);
 $form_action = 'update';
 $form_values = [
     'title' => (string)$post['title'],
     'content' => (string)$post['content'],
+    'content_mode' => smartcms_board_normalize_content_mode((string)($post['content_mode'] ?? ((int)($board['use_editor'] ?? 1) === 1 ? 'editor' : 'text'))),
     'is_notice' => (int)$post['is_notice'] === 1,
     'is_secret' => (int)$post['is_secret'] === 1,
 ];
@@ -97,6 +108,8 @@ $show_hide_form = true;
 $submit_label = '변경 사항 저장';
 $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);
 $back_label = '취소 및 돌아가기';
+$SMARTCMS_FOOT['scripts'][] = 'https://cdn.jsdelivr.net/npm/jodit@4/es2021/jodit.min.js';
+$SMARTCMS_FOOT['scripts'][] = '/common/js/board-editor.js';
 ?>
 
 <div class="container-fluid container-xxl pt-4 pt-lg-5">
@@ -113,8 +126,4 @@ $back_label = '취소 및 돌아가기';
 
   <?php require smartcms_board_skin_template($board, 'form'); ?>
 </div>
-
-<?php
-$SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/foot.php';
-?>
+<?php require SMARTCMS_ROOT . '/foot.php'; ?>

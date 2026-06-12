@@ -48,6 +48,142 @@ function smartcms_board_skin_meta(?array $board): array
     return $meta;
 }
 
+function smartcms_board_normalize_content_mode(string $value): string
+{
+    return strtolower(trim($value)) === 'editor' ? 'editor' : 'text';
+}
+
+function smartcms_ensure_board_posts_content_mode_column(): void
+{
+    static $checked = false;
+    if ($checked) {
+        return;
+    }
+    $checked = true;
+
+    try {
+        $exists = (int)smartcms_fetch_value(
+            "SELECT COUNT(*)
+             FROM INFORMATION_SCHEMA.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = :table_name
+               AND COLUMN_NAME = 'content_mode'",
+            ['table_name' => smartcms_table('board_posts')]
+        );
+
+        if ($exists === 0) {
+            smartcms_execute(
+                "ALTER TABLE " . smartcms_table('board_posts') . "
+                 ADD COLUMN content_mode ENUM('text','editor') NOT NULL DEFAULT 'text' AFTER content"
+            );
+        }
+    } catch (Throwable $e) {
+        // Keep the app usable even if schema migration is not allowed.
+    }
+}
+
+function smartcms_board_sanitize_editor_html(string $html): string
+{
+    $html = trim($html);
+    if ($html === '') {
+        return '';
+    }
+
+    if (!class_exists(DOMDocument::class)) {
+        return nl2br(smartcms_h(strip_tags($html)));
+    }
+
+    $previous = libxml_use_internal_errors(true);
+    $dom = new DOMDocument('1.0', 'UTF-8');
+    $dom->loadHTML('<?xml encoding="utf-8"?><div id="smartcms-editor-root">' . $html . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+    libxml_clear_errors();
+    libxml_use_internal_errors($previous);
+
+    $root = $dom->getElementById('smartcms-editor-root');
+    if (!$root) {
+        return smartcms_h($html);
+    }
+
+    $allowed = ['p', 'div', 'br', 'strong', 'b', 'em', 'i', 'u', 'ul', 'ol', 'li', 'blockquote', 'pre', 'code', 'a'];
+    $sanitize_node = static function (DOMNode $node) use (&$sanitize_node, $allowed): string {
+        if ($node->nodeType === XML_TEXT_NODE) {
+            return htmlspecialchars($node->nodeValue ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        }
+
+        if ($node->nodeType !== XML_ELEMENT_NODE) {
+            return '';
+        }
+
+        $tag = strtolower($node->nodeName);
+        $children = '';
+        foreach ($node->childNodes as $child) {
+            $children .= $sanitize_node($child);
+        }
+
+        if (!in_array($tag, $allowed, true)) {
+            return $children;
+        }
+
+        return match ($tag) {
+            'br' => '<br>',
+            'p', 'div', 'strong', 'b', 'em', 'i', 'u', 'blockquote', 'pre', 'code', 'ul', 'ol', 'li' => '<' . $tag . '>' . $children . '</' . $tag . '>',
+            'a' => (function () use ($node, $children): string {
+                $href = '';
+                if ($node->hasAttribute('href')) {
+                    $candidate = trim((string)$node->getAttribute('href'));
+                    if ($candidate !== '' && preg_match('#^(https?:|mailto:|/|\\#)#i', $candidate) === 1) {
+                        $href = htmlspecialchars($candidate, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+                    }
+                }
+
+                if ($href === '') {
+                    return $children;
+                }
+
+                return '<a href="' . $href . '" rel="nofollow noopener noreferrer">' . $children . '</a>';
+            })(),
+            default => $children,
+        };
+    };
+
+    $output = '';
+    foreach ($root->childNodes as $child) {
+        $output .= $sanitize_node($child);
+    }
+
+    return $output;
+}
+
+function smartcms_board_render_content(array $post): string
+{
+    $content = (string)($post['content'] ?? '');
+    if (smartcms_board_normalize_content_mode((string)($post['content_mode'] ?? 'text')) === 'editor') {
+        return smartcms_board_sanitize_editor_html($content);
+    }
+
+    return nl2br(smartcms_h($content));
+}
+
+function smartcms_board_file_is_image(array $file): bool
+{
+    $mime = strtolower(trim((string)($file['mime_type'] ?? '')));
+    if ($mime !== '' && str_starts_with($mime, 'image/')) {
+        return true;
+    }
+
+    $path = strtolower(trim((string)($file['file_path'] ?? '')));
+    if ($path === '') {
+        $path = strtolower(trim((string)($file['original_name'] ?? '')));
+    }
+
+    return (bool)preg_match('/\.(png|jpe?g|gif|webp|bmp|avif)$/i', $path);
+}
+
+function smartcms_board_image_files(array $files): array
+{
+    return array_values(array_filter($files, static fn(array $file): bool => smartcms_board_file_is_image($file)));
+}
+
 function smartcms_board_title_limit(array $board): int
 {
     return max(0, (int)($board['title_length_limit'] ?? 0));
@@ -283,8 +419,9 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
 
 function smartcms_board_post_find(int $board_id, int $post_id): ?array
 {
+    smartcms_ensure_board_posts_content_mode_column();
     return smartcms_fetch_one(
-        "SELECT id, board_id, title, content, author_id, author_name, is_notice, is_secret, view_count, comment_count, created_at, updated_at
+        "SELECT id, board_id, title, content, content_mode, author_id, author_name, is_notice, is_secret, view_count, comment_count, created_at, updated_at
          FROM " . smartcms_table('board_posts') . "
          WHERE board_id = :board_id AND id = :id AND is_hidden = 0
          LIMIT 1",
@@ -319,7 +456,7 @@ function smartcms_board_comments(int $post_id): array
 function smartcms_board_files(int $post_id): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT id, original_name, file_size, download_count, created_at
+        "SELECT id, original_name, stored_name, file_path, file_size, mime_type, download_count, created_at
          FROM " . smartcms_table('board_files') . "
          WHERE post_id = :post_id
          ORDER BY id ASC"
@@ -382,14 +519,16 @@ function smartcms_board_create_comment(array $board, array $post, array $user, s
     return ['ok' => true, 'message' => '댓글을 등록했습니다.'];
 }
 
-function smartcms_board_update_post(array $board, array $post, array $user, string $title, string $content, bool $is_notice, bool $is_secret): array
+function smartcms_board_update_post(array $board, array $post, array $user, string $title, string $content, string $content_mode, bool $is_notice, bool $is_secret): array
 {
+    smartcms_ensure_board_posts_content_mode_column();
     if (!smartcms_board_can_manage_post($board, $post, $user)) {
         return ['ok' => false, 'message' => '글 수정 권한이 없습니다.'];
     }
 
     $title = trim($title);
     $content = trim($content);
+    $content_mode = smartcms_board_normalize_content_mode($content_mode);
     if ($title === '' || $content === '') {
         return ['ok' => false, 'message' => '제목과 내용을 입력하세요.'];
     }
@@ -399,6 +538,7 @@ function smartcms_board_update_post(array $board, array $post, array $user, stri
         "UPDATE " . smartcms_table('board_posts') . "
          SET title = :title,
              content = :content,
+             content_mode = :content_mode,
              excerpt = :excerpt,
              is_notice = :is_notice,
              is_secret = :is_secret
@@ -408,6 +548,7 @@ function smartcms_board_update_post(array $board, array $post, array $user, stri
             'board_id' => (int)$board['id'],
             'title' => $title,
             'content' => $content,
+            'content_mode' => $content_mode,
             'excerpt' => smartcms_board_excerpt($content),
             'is_notice' => $can_notice && $is_notice ? 1 : 0,
             'is_secret' => $is_secret ? 1 : 0,
@@ -609,22 +750,25 @@ function smartcms_board_post_counts(): array
     return $counts;
 }
 
-function smartcms_board_create_post(array $board, array $user, string $title, string $content, bool $is_notice = false, bool $is_secret = false): array
+function smartcms_board_create_post(array $board, array $user, string $title, string $content, string $content_mode = 'text', bool $is_notice = false, bool $is_secret = false): array
 {
+    smartcms_ensure_board_posts_content_mode_column();
     $title = trim($title);
     $content = trim($content);
+    $content_mode = smartcms_board_normalize_content_mode($content_mode);
     if ($title === '' || $content === '') {
         return ['ok' => false, 'message' => '제목과 내용을 입력하세요.'];
     }
 
     smartcms_execute(
         "INSERT INTO " . smartcms_table('board_posts') . "
-         (board_id, title, content, excerpt, author_id, author_name, is_notice, is_secret)
-         VALUES (:board_id, :title, :content, :excerpt, :author_id, :author_name, :is_notice, :is_secret)",
+         (board_id, title, content, content_mode, excerpt, author_id, author_name, is_notice, is_secret)
+         VALUES (:board_id, :title, :content, :content_mode, :excerpt, :author_id, :author_name, :is_notice, :is_secret)",
         [
             'board_id' => (int)$board['id'],
             'title' => $title,
             'content' => $content,
+            'content_mode' => $content_mode,
             'excerpt' => smartcms_board_excerpt($content),
             'author_id' => (int)$user['id'],
             'author_name' => (string)$user['name'],

@@ -17,45 +17,55 @@ $message_type = 'info';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
+    $content_mode = smartcms_board_normalize_content_mode((string)($_POST['content_mode'] ?? ((int)($board['use_editor'] ?? 1) === 1 ? 'editor' : 'text')));
     $result = smartcms_board_create_post(
         $board,
         $user,
         (string)($_POST['title'] ?? ''),
         (string)($_POST['content'] ?? ''),
+        $content_mode,
         isset($_POST['is_notice']) && smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user),
         isset($_POST['is_secret'])
     );
-    $message = $result['message'];
-    $message_type = $result['ok'] ? 'success' : 'error';
+    if (!$result['ok']) {
+        smartcms_flash_set('message', $result['message']);
+        smartcms_flash_set('message_type', 'error');
+        smartcms_redirect('/board/write/?board=' . rawurlencode((string)$board['board_key']));
+    }
 
-    if ($result['ok']) {
-        if (isset($_FILES['attachments'])) {
-            $file_result = smartcms_board_store_uploads($board, (int)$result['post_id'], $user, $_FILES['attachments']);
-            if (!$file_result['ok']) {
-                $message = $file_result['message'];
-                $message_type = 'error';
-            }
-        }
-        if ($message_type === 'success') {
+    if (isset($_FILES['attachments'])) {
+        $file_result = smartcms_board_store_uploads($board, (int)$result['post_id'], $user, $_FILES['attachments']);
+        if (!$file_result['ok']) {
+            smartcms_flash_set('message', $file_result['message']);
+            smartcms_flash_set('message_type', 'error');
             smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$result['post_id']));
         }
     }
+
+    smartcms_flash_set('message', $result['message']);
+    smartcms_flash_set('message_type', 'success');
+    smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$result['post_id']));
 }
 
 $active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
     ? (string)$board['board_key']
     : 'boards';
 $SMARTCMS_HEAD = ['title' => '새 글 작성', 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
+$SMARTCMS_HEAD['stylesheets'][] = 'https://cdn.jsdelivr.net/npm/jodit@4/es2021/jodit.min.css';
 require SMARTCMS_ROOT . '/head.php';
 
 // Skin variables
+$message = (string)smartcms_flash_get('message', $message);
+$message_type = (string)smartcms_flash_get('message_type', $message_type);
 $form_action = 'create';
 $form_enctype = 'multipart/form-data';
-$form_values = ['title' => '', 'content' => '', 'is_notice' => false, 'is_secret' => false];
+$form_values = ['title' => '', 'content' => '', 'content_mode' => 'editor', 'is_notice' => false, 'is_secret' => false];
 $show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
 $submit_label = '게시글 등록';
 $back_url = smartcms_board_url((string)$board['board_key']);
 $back_label = '목록으로';
+$SMARTCMS_FOOT['scripts'][] = 'https://cdn.jsdelivr.net/npm/jodit@4/es2021/jodit.min.js';
+$SMARTCMS_FOOT['scripts'][] = '/common/js/board-editor.js';
 ?>
 
 <div class="container-fluid container-xxl pt-4 pt-lg-5">
@@ -72,8 +82,4 @@ $back_label = '목록으로';
 
   <?php require smartcms_board_skin_template($board, 'form'); ?>
 </div>
-
-<?php
-$SMARTCMS_FOOT = [];
-require SMARTCMS_ROOT . '/foot.php';
-?>
+<?php require SMARTCMS_ROOT . '/foot.php'; ?>

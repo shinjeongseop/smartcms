@@ -5,6 +5,7 @@
 $skin_meta = smartcms_board_skin_meta($board);
 $accent = (string)$skin_meta['accent'];
 $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
+$image_files = smartcms_board_image_files($files);
 ?>
 <article class="card border shadow-sm overflow-hidden mb-4">
   <div class="card-body p-4 p-lg-5">
@@ -36,8 +37,25 @@ $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
       <span class="d-flex align-items-center gap-1"><i class="bi bi-chat-dots fs-6 <?= $accent_text ?>"></i>댓글 <?= count($comments) ?></span>
     </div>
 
+    <?php if ($image_files): ?>
+      <section class="mb-5">
+        <h3 class="h6 fw-bold mb-3 text-primary"><i class="bi bi-images me-1"></i>본문 이미지</h3>
+        <div class="row g-3">
+          <?php foreach ($image_files as $file): ?>
+            <div class="col-12 col-md-6">
+              <figure class="border rounded-3 overflow-hidden bg-light mb-0">
+                <a class="d-block" href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>">
+                  <img class="img-fluid w-100" src="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>" alt="<?= smartcms_h($file['original_name']) ?>">
+                </a>
+              </figure>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </section>
+    <?php endif; ?>
+
     <div class="mb-5 text-break lh-lg small text-dark">
-      <?= nl2br(smartcms_h($post['content'])) ?>
+      <?= smartcms_board_render_content($post) ?>
     </div>
 
     <?php if ($files): ?>
