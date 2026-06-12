@@ -184,6 +184,19 @@ function smartcms_board_normalize_link_url(string $value): string
     return $value;
 }
 
+function smartcms_board_post_links(array $post): array
+{
+    $links = [];
+    foreach (['link_url_1', 'link_url_2', 'link_url'] as $key) {
+        $url = smartcms_board_normalize_link_url((string)($post[$key] ?? ''));
+        if ($url !== '' && !in_array($url, $links, true)) {
+            $links[] = $url;
+        }
+    }
+
+    return $links;
+}
+
 function smartcms_ensure_board_posts_link_column(): void
 {
     static $checked = false;
@@ -193,19 +206,48 @@ function smartcms_ensure_board_posts_link_column(): void
     $checked = true;
 
     try {
-        $exists = (int)smartcms_fetch_value(
-            "SELECT COUNT(*)
-             FROM INFORMATION_SCHEMA.COLUMNS
-             WHERE TABLE_SCHEMA = DATABASE()
-               AND TABLE_NAME = :table_name
-               AND COLUMN_NAME = 'link_url'",
-            ['table_name' => smartcms_table('board_posts')]
-        );
+        $table_name = smartcms_table('board_posts');
+        $columns = ['link_url', 'link_url_1', 'link_url_2'];
+        $existing = [];
+        foreach ($columns as $column) {
+            $existing[$column] = (int)smartcms_fetch_value(
+                "SELECT COUNT(*)
+                 FROM INFORMATION_SCHEMA.COLUMNS
+                 WHERE TABLE_SCHEMA = DATABASE()
+                   AND TABLE_NAME = :table_name
+                   AND COLUMN_NAME = :column_name",
+                [
+                    'table_name' => $table_name,
+                    'column_name' => $column,
+                ]
+            );
+        }
 
-        if ($exists === 0) {
+        if ($existing['link_url'] === 0) {
             smartcms_execute(
-                "ALTER TABLE " . smartcms_table('board_posts') . "
+                "ALTER TABLE " . $table_name . "
                  ADD COLUMN link_url VARCHAR(500) DEFAULT NULL AFTER title"
+            );
+        }
+        if ($existing['link_url_1'] === 0) {
+            smartcms_execute(
+                "ALTER TABLE " . $table_name . "
+                 ADD COLUMN link_url_1 VARCHAR(500) DEFAULT NULL AFTER link_url"
+            );
+        }
+        if ($existing['link_url_2'] === 0) {
+            smartcms_execute(
+                "ALTER TABLE " . $table_name . "
+                 ADD COLUMN link_url_2 VARCHAR(500) DEFAULT NULL AFTER link_url_1"
+            );
+        }
+
+        if ($existing['link_url'] === 1 && $existing['link_url_1'] === 1) {
+            smartcms_execute(
+                "UPDATE " . $table_name . "
+                 SET link_url_1 = COALESCE(NULLIF(link_url_1, ''), link_url)
+                 WHERE (link_url_1 IS NULL OR link_url_1 = '')
+                   AND link_url IS NOT NULL AND link_url <> ''"
             );
         }
     } catch (Throwable $e) {
@@ -654,7 +696,7 @@ function smartcms_board_post_find(int $board_id, int $post_id): ?array
     smartcms_ensure_board_posts_content_mode_column();
     smartcms_ensure_board_posts_link_column();
     return smartcms_fetch_one(
-        "SELECT id, board_id, title, link_url, content, content_mode, author_id, author_name, is_notice, is_secret, view_count, comment_count, created_at, updated_at
+        "SELECT id, board_id, title, link_url, link_url_1, link_url_2, content, content_mode, author_id, author_name, is_notice, is_secret, view_count, comment_count, created_at, updated_at
          FROM " . smartcms_table('board_posts') . "
          WHERE board_id = :board_id AND id = :id AND is_hidden = 0
          LIMIT 1",
@@ -803,7 +845,7 @@ function smartcms_board_create_comment(array $board, array $post, array $user, s
     return ['ok' => true, 'message' => '댓글을 등록했습니다.'];
 }
 
-function smartcms_board_update_post(array $board, array $post, array $user, string $title, string $link_url, string $content, string $content_mode, bool $is_notice, bool $is_secret): array
+function smartcms_board_update_post(array $board, array $post, array $user, string $title, string $link_url_1, string $link_url_2, string $content, string $content_mode, bool $is_notice, bool $is_secret): array
 {
     smartcms_ensure_board_posts_content_mode_column();
     smartcms_ensure_board_posts_link_column();
@@ -812,7 +854,8 @@ function smartcms_board_update_post(array $board, array $post, array $user, stri
     }
 
     $title = trim($title);
-    $link_url = smartcms_board_normalize_link_url($link_url);
+    $link_url_1 = smartcms_board_normalize_link_url($link_url_1);
+    $link_url_2 = smartcms_board_normalize_link_url($link_url_2);
     $content = trim($content);
     $content_mode = smartcms_board_normalize_content_mode($content_mode);
     if ($title === '' || $content === '') {
@@ -824,6 +867,8 @@ function smartcms_board_update_post(array $board, array $post, array $user, stri
         "UPDATE " . smartcms_table('board_posts') . "
          SET title = :title,
              link_url = :link_url,
+             link_url_1 = :link_url_1,
+             link_url_2 = :link_url_2,
              content = :content,
              content_mode = :content_mode,
              excerpt = :excerpt,
@@ -834,7 +879,9 @@ function smartcms_board_update_post(array $board, array $post, array $user, stri
             'id' => (int)$post['id'],
             'board_id' => (int)$board['id'],
             'title' => $title,
-            'link_url' => $link_url !== '' ? $link_url : null,
+            'link_url' => $link_url_1 !== '' ? $link_url_1 : null,
+            'link_url_1' => $link_url_1 !== '' ? $link_url_1 : null,
+            'link_url_2' => $link_url_2 !== '' ? $link_url_2 : null,
             'content' => $content,
             'content_mode' => $content_mode,
             'excerpt' => smartcms_board_excerpt($content),
@@ -1097,12 +1144,13 @@ function smartcms_board_post_counts(): array
     return $counts;
 }
 
-function smartcms_board_create_post(array $board, array $user, string $title, string $link_url, string $content, string $content_mode = 'text', bool $is_notice = false, bool $is_secret = false): array
+function smartcms_board_create_post(array $board, array $user, string $title, string $link_url_1, string $link_url_2, string $content, string $content_mode = 'text', bool $is_notice = false, bool $is_secret = false): array
 {
     smartcms_ensure_board_posts_content_mode_column();
     smartcms_ensure_board_posts_link_column();
     $title = trim($title);
-    $link_url = smartcms_board_normalize_link_url($link_url);
+    $link_url_1 = smartcms_board_normalize_link_url($link_url_1);
+    $link_url_2 = smartcms_board_normalize_link_url($link_url_2);
     $content = trim($content);
     $content_mode = smartcms_board_normalize_content_mode($content_mode);
     if ($title === '' || $content === '') {
@@ -1111,12 +1159,14 @@ function smartcms_board_create_post(array $board, array $user, string $title, st
 
     smartcms_execute(
         "INSERT INTO " . smartcms_table('board_posts') . "
-         (board_id, title, link_url, content, content_mode, excerpt, author_id, author_name, is_notice, is_secret)
-         VALUES (:board_id, :title, :link_url, :content, :content_mode, :excerpt, :author_id, :author_name, :is_notice, :is_secret)",
+         (board_id, title, link_url, link_url_1, link_url_2, content, content_mode, excerpt, author_id, author_name, is_notice, is_secret)
+         VALUES (:board_id, :title, :link_url, :link_url_1, :link_url_2, :content, :content_mode, :excerpt, :author_id, :author_name, :is_notice, :is_secret)",
         [
             'board_id' => (int)$board['id'],
             'title' => $title,
-            'link_url' => $link_url !== '' ? $link_url : null,
+            'link_url' => $link_url_1 !== '' ? $link_url_1 : null,
+            'link_url_1' => $link_url_1 !== '' ? $link_url_1 : null,
+            'link_url_2' => $link_url_2 !== '' ? $link_url_2 : null,
             'content' => $content,
             'content_mode' => $content_mode,
             'excerpt' => smartcms_board_excerpt($content),

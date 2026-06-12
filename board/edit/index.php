@@ -48,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $post,
             $user,
             (string)($_POST['title'] ?? ''),
-            (string)($_POST['link_url'] ?? ''),
+            (string)($_POST['link_url_1'] ?? ''),
+            (string)($_POST['link_url_2'] ?? ''),
             (string)($_POST['content'] ?? ''),
             $content_mode,
             isset($_POST['is_notice']),
@@ -101,7 +102,8 @@ $message_type = (string)smartcms_flash_get('message_type', $message_type);
 $form_action = 'update';
 $form_values = [
     'title' => (string)$post['title'],
-    'link_url' => (string)($post['link_url'] ?? ''),
+    'link_url_1' => (string)($post['link_url_1'] ?? $post['link_url'] ?? ''),
+    'link_url_2' => (string)($post['link_url_2'] ?? ''),
     'content' => (string)$post['content'],
     'content_mode' => $use_editor ? 'editor' : 'text',
     'is_notice' => (int)$post['is_notice'] === 1,
@@ -111,6 +113,7 @@ $form_enctype = 'multipart/form-data';
 $show_attachments = (int)($board['use_attachments'] ?? 1) === 1 && smartcms_has_level((int)($board['board_upload_level'] ?? 8), $user);
 $show_hide_form = true;
 $submit_label = '수정';
+$show_submit_icon = false;
 $back_url = smartcms_base_url('/board/view/') . '?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']);
 $back_label = '목록';
 if ($use_editor) {

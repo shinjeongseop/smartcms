@@ -5,7 +5,7 @@
 $skin_meta = smartcms_board_skin_meta($board);
 $accent = (string)$skin_meta['accent'];
 $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
-$post_link_url = smartcms_board_normalize_link_url((string)($post['link_url'] ?? ''));
+$post_links = smartcms_board_post_links($post);
 $image_files = smartcms_board_image_files($files);
 $attachment_files = array_values(array_filter($files, static fn(array $file): bool => !smartcms_board_file_is_image($file)));
 $thumb_config = smartcms_board_thumbnail_config($board, 'view');
@@ -33,14 +33,17 @@ $image_columns = max(1, (int)$thumb_config['columns']);
       <span class="d-flex align-items-center gap-1"><i class="bi bi-chat-dots fs-6 <?= $accent_text ?>"></i>댓글 <?= count($comments) ?></span>
     </div>
 
-    <?php if ($post_link_url !== ''): ?>
-      <div class="mb-5">
-        <a class="btn btn-light border rounded-pill px-4 py-2 fw-bold shadow-none text-secondary"
-           href="<?= smartcms_h($post_link_url) ?>"
-           target="_blank"
-           rel="noopener noreferrer">
-          <i class="bi bi-link-45deg me-1"></i>링크 열기
-        </a>
+    <?php if ($post_links): ?>
+      <div class="mb-5 vstack gap-2">
+        <?php foreach ($post_links as $index => $link_url): ?>
+          <a class="d-inline-flex align-items-center gap-2 text-decoration-none fw-semibold text-primary text-break"
+             href="<?= smartcms_h($link_url) ?>"
+             target="_blank"
+             rel="noopener noreferrer">
+            <span class="badge text-bg-light border text-body-secondary rounded-pill">링크 <?= (int)$index + 1 ?></span>
+            <span><?= smartcms_h($link_url) ?></span>
+          </a>
+        <?php endforeach; ?>
       </div>
     <?php endif; ?>
 

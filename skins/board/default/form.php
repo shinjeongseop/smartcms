@@ -22,9 +22,17 @@ $show_submit_icon = $show_submit_icon ?? true;
           </div>
 
           <div class="col-12">
-            <label for="link_url" class="form-label fw-bold text-dark">링크</label>
-            <input class="form-control py-2.5" id="link_url" name="link_url" type="text" value="<?= smartcms_h($form_values['link_url'] ?? '') ?>" placeholder="https://example.com">
-            <div class="form-text">게시글과 함께 보여줄 외부 링크를 입력할 수 있습니다.</div>
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label for="link_url_1" class="form-label fw-bold text-dark">링크 1</label>
+                <input class="form-control py-2.5" id="link_url_1" name="link_url_1" type="text" value="<?= smartcms_h($form_values['link_url_1'] ?? '') ?>" placeholder="https://example.com">
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="link_url_2" class="form-label fw-bold text-dark">링크 2</label>
+                <input class="form-control py-2.5" id="link_url_2" name="link_url_2" type="text" value="<?= smartcms_h($form_values['link_url_2'] ?? '') ?>" placeholder="https://example.com">
+              </div>
+            </div>
+            <div class="form-text">그누보드처럼 링크를 2개까지 입력할 수 있습니다.</div>
           </div>
 
           <div class="col-12">
