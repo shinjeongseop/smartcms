@@ -10,7 +10,7 @@ $attachment_files = array_values(array_filter($files, static fn(array $file): bo
 $thumb_config = smartcms_board_thumbnail_config($board, 'view');
 $image_columns = max(1, (int)$thumb_config['columns']);
 ?>
-<article class="card sc-board-surface overflow-hidden mb-4">
+<article class="card border shadow-sm bg-white overflow-hidden mb-4">
   <div class="card-body p-4 p-lg-5">
     <header class="d-flex align-items-start justify-content-between gap-3 mb-4">
       <div>
@@ -38,7 +38,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
           <?php foreach ($image_files as $image): ?>
             <?php $thumb_url = smartcms_board_file_thumbnail_url($image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
             <div class="<?= $image_columns > 1 ? 'col-12 col-md-6' : 'col-12' ?>">
-              <figure class="card sc-board-surface h-100 overflow-hidden mb-0">
+              <figure class="card border shadow-sm bg-white h-100 overflow-hidden mb-0">
                 <a class="d-block ratio ratio-16x9 bg-light text-decoration-none"
                    href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id'])) ?>"
                    target="_blank" rel="noopener">
@@ -62,7 +62,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
     <?php if ($attachment_files): ?>
       <section class="mb-5">
         <h3 class="h6 fw-bold mb-3 text-primary">첨부파일</h3>
-        <div class="list-group list-group-flush rounded-3 overflow-hidden sc-board-surface">
+        <div class="list-group list-group-flush rounded-3 overflow-hidden border shadow-sm bg-white">
           <?php foreach ($attachment_files as $file): ?>
             <a class="list-group-item list-group-item-action bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 p-3"
                href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>">
@@ -104,7 +104,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
 </article>
 
 <!-- [COMMENTS] 댓글 섹션 -->
-<section class="card sc-board-surface mt-4 overflow-hidden">
+<section class="card border shadow-sm bg-white mt-4 overflow-hidden">
   <div class="card-body p-4 p-lg-5">
     <div class="d-flex align-items-center gap-2 mb-5">
       <i class="bi bi-chat-left-text-fill fs-4 text-primary"></i>

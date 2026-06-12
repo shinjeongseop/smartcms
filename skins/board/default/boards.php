@@ -15,7 +15,7 @@ $board_skin_meta = fn(array $item): array => smartcms_board_skin_meta($item);
       <?php if ((string)$board['status'] === 'hidden') continue; ?>
       <?php $skin_meta = $board_skin_meta($board); ?>
       <div class="col">
-        <article class="card h-100 sc-board-surface overflow-hidden <?= $skin_meta['header_class'] ?>">
+        <article class="card h-100 border shadow-sm bg-white overflow-hidden <?= $skin_meta['header_class'] ?>">
           <div class="card-body p-4 p-lg-5">
             <div class="d-flex align-items-start justify-content-between mb-3">
               <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-3 py-2 fw-bold">
@@ -44,7 +44,7 @@ $board_skin_meta = fn(array $item): array => smartcms_board_skin_meta($item);
 
     <?php if (!$boards): ?>
       <div class="col-12">
-        <aside class="alert alert-light border p-5 text-center sc-board-surface">
+        <aside class="alert alert-light border shadow-sm p-5 text-center bg-white">
           <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
           <p class="mb-0 fw-bold text-secondary">현재 운영 중인 게시판이 없습니다.</p>
         </aside>
