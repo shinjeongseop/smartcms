@@ -17,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             (string)($_POST['board_key'] ?? ''),
             (string)($_POST['board_name'] ?? ''),
             (string)($_POST['description'] ?? ''),
-            (int)$admin['id']
+            (int)$admin['id'],
+            (string)($_POST['skin'] ?? 'default')
         );
         $message = $result['message'];
         $message_type = $result['ok'] ? 'success' : 'error';
@@ -51,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $boards = [];
 try {
-    $boards = smartcms_board_list();
+    $boards = smartcms_board_list(true);
 } catch (Throwable $e) {
     $message = '게시판 목록을 불러오지 못했습니다: ' . $e->getMessage();
     $message_type = 'error';
@@ -96,6 +97,14 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <input class="form-control py-2" id="board_name" name="board_name" placeholder="표시될 이름 (예: 공지사항)" required>
             </div>
             <div class="col-12 col-md-4">
+              <label for="skin" class="form-label fw-bold small text-dark">스킨</label>
+              <select class="form-select py-2 fw-bold" id="skin" name="skin">
+                <?php foreach (smartcms_board_skin_options() as $skin_key => $skin_label): ?>
+                  <option value="<?= smartcms_h($skin_key) ?>" <?= $skin_key === 'default' ? 'selected' : '' ?>><?= smartcms_h($skin_label) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="col-12">
               <label for="description" class="form-label fw-bold small text-dark">간략 설명</label>
               <input class="form-control py-2" id="description" name="description" placeholder="게시판 용도 설명">
             </div>
@@ -149,7 +158,15 @@ require SMARTCMS_ROOT . '/admin/head.php';
                   </td>
                   <td class="py-3">
                     <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-<?= $board['status'] === 'active' ? 'success' : 'secondary' ?> p-1 rounded-circle sc-admin-dot-8"></span>
+                      <?php
+                        $status_badge_class = match ((string)$board['status']) {
+                            'active' => 'success',
+                            'hidden' => 'warning',
+                            'disabled' => 'danger',
+                            default => 'secondary',
+                        };
+                      ?>
+                      <span class="badge bg-<?= $status_badge_class ?> p-1 rounded-circle sc-admin-dot-8"></span>
                       <span class="small fw-bold text-capitalize text-dark"><?= $board['status'] ?></span>
                     </div>
                   </td>

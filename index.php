@@ -18,7 +18,7 @@ $message = '';
 try {
     $boards = smartcms_board_list();
     $board_counts = smartcms_board_post_counts();
-    $recent_posts = smartcms_board_recent_posts(8);
+    $recent_posts = smartcms_board_recent_posts(5);
     $popular_posts = smartcms_board_popular_posts(5);
     $notice_posts = smartcms_board_recent_posts_by_key('notice', 4);
 
@@ -314,10 +314,10 @@ require SMARTCMS_ROOT . '/head.php';
       <?php if ($user): ?>
         <article class="card border shadow-sm mb-4 overflow-hidden bg-white">
           <div class="card-body p-4 text-center">
-            <div class="d-inline-flex align-items-center justify-content-center rounded-circle bg-primary text-white shadow-sm mb-3 p-3">
-              <i class="bi bi-person-fill fs-3"></i>
+            <div class="mb-3">
+              <?= smartcms_user_avatar_markup($user, 'sc-avatar-72', 'fs-2') ?>
             </div>
-            <h2 class="h5 fw-bold mb-1"><?= smartcms_h($user['name']) ?>님</h2>
+            <h2 class="h5 fw-bold mb-1"><?= smartcms_h(smartcms_user_display_name($user)) ?>님</h2>
             <p class="small text-body-secondary mb-3">level <?= smartcms_h($user['level']) ?> · <?= smartcms_h($user['email']) ?></p>
             <div class="row g-2">
               <div class="col-6">

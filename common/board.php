@@ -49,6 +49,26 @@ function smartcms_board_skin_meta(?array $board): array
     return $meta;
 }
 
+function smartcms_board_skin_options(): array
+{
+    return [
+        'default' => '기본',
+        'table' => '테이블',
+        'card' => '카드',
+        'gallery' => '갤러리',
+        'qna' => 'Q&A',
+        'notice' => '공지사항',
+        'faq' => 'FAQ',
+        'webzine' => '웹진',
+    ];
+}
+
+function smartcms_board_normalize_skin(string $skin): string
+{
+    $skin = strtolower(trim(preg_replace('/[^a-zA-Z0-9_-]/', '', $skin)));
+    return array_key_exists($skin, smartcms_board_skin_options()) ? $skin : 'default';
+}
+
 function smartcms_board_thumbnail_config(?array $board, string $context = 'list'): array
 {
     $skin = strtolower(preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($board['skin'] ?? 'default')));
@@ -403,15 +423,17 @@ function smartcms_home_date(?string $value): string
     return $ts ? date('m.d', $ts) : $value;
 }
 
-function smartcms_board_list(): array
+function smartcms_board_list(bool $include_disabled = false): array
 {
-    $stmt = smartcms_db()->query(
-        "SELECT b.*, p.board_list_level, p.board_view_level, p.board_write_level, p.allow_guest_list, p.allow_guest_view
+    $sql = "SELECT b.*, p.board_list_level, p.board_view_level, p.board_write_level, p.allow_guest_list, p.allow_guest_view
          FROM " . smartcms_table('boards') . " b
-         LEFT JOIN " . smartcms_table('board_permissions') . " p ON p.board_key = b.board_key
-         WHERE b.status <> 'disabled'
-         ORDER BY b.id DESC"
-    );
+         LEFT JOIN " . smartcms_table('board_permissions') . " p ON p.board_key = b.board_key";
+    if (!$include_disabled) {
+        $sql .= " WHERE b.status <> 'disabled'";
+    }
+    $sql .= " ORDER BY b.id DESC";
+
+    $stmt = smartcms_db()->query($sql);
 
     return $stmt->fetchAll();
 }
@@ -895,10 +917,11 @@ function smartcms_board_audit(array $board, ?array $post, ?array $user, string $
     }
 }
 
-function smartcms_board_create(string $board_key, string $board_name, string $description, int $created_by): array
+function smartcms_board_create(string $board_key, string $board_name, string $description, int $created_by, string $skin = 'default'): array
 {
     $board_key = smartcms_board_key($board_key);
     $board_name = trim($board_name);
+    $skin = smartcms_board_normalize_skin($skin);
 
     if ($board_key === '' || $board_name === '') {
         return ['ok' => false, 'message' => '게시판 키와 이름을 입력하세요.'];
@@ -911,12 +934,13 @@ function smartcms_board_create(string $board_key, string $board_name, string $de
 
     smartcms_execute(
         "INSERT INTO " . smartcms_table('boards') . "
-         (board_key, board_name, description, created_by)
-         VALUES (:board_key, :board_name, :description, :created_by)",
+         (board_key, board_name, description, skin, created_by)
+         VALUES (:board_key, :board_name, :description, :skin, :created_by)",
         [
             'board_key' => $board_key,
             'board_name' => $board_name,
             'description' => trim($description) !== '' ? trim($description) : null,
+            'skin' => $skin,
             'created_by' => $created_by,
         ]
     );
