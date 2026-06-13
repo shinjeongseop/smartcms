@@ -20,16 +20,16 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 
 ## Color Tokens (via Bootstrap Overrides)
 
-모든 색상은 `common/css/common.css`의 CSS 변수를 통해 부트스트랩 기본값을 덮어씁니다.
+모든 색상은 `common/css/common.css`의 CSS 변수를 통해 부트스트랩 기본값을 덮어씁니다. 현재 직접 오버라이드되는 토큰은 아래 항목입니다. 나머지 색상은 Bootstrap 기본값을 따릅니다.
 
 | Variable               | Value     | Role                                     |
 | ---------------------- | --------- | ---------------------------------------- |
 | `--bs-primary`         | `#03c75a` | 브랜드 메인 컬러 (네이버 그린), 핵심 CTA |
-| `--bs-body-bg`         | `#f8f9fa` | 페이지 전체 배경색 (Standard bg-light)   |
-| `--bs-body-color`      | `#444444` | 본문 텍스트 컬러                         |
-| `--bs-emphasis-color`  | `#111111` | 제목 및 강조 텍스트 컬러                 |
-| `--bs-secondary-color` | `#767676` | 보조 텍스트, 메타 정보                   |
-| `--bs-border-color`    | `#dee2e6` | 표준 테두리 색상                         |
+| `--bs-primary-rgb`     | `3, 199, 90` | `--bs-primary`의 RGB 값                |
+| `--bs-primary-bg-subtle` | `#e8f8ef` | 연한 보조 배경색                         |
+| `--bs-primary-border-subtle` | `#b8ebcf` | 연한 보조 테두리 색상               |
+| `--bs-primary-text-emphasis` | `#027a39` | 강조 텍스트 색상                    |
+| `--bs-emphasis-color`  | `#212529` | 제목 및 강조 텍스트 컬러                 |
 
 ## Typography
 
