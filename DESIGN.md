@@ -36,7 +36,6 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 - **Body Font**: `Pretendard`
 - **Code Font**: `JetBrains Mono`, `Fira Code`, monospace
 - **Sizing Rule**: 모든 타이포그래피 크기는 `rem`으로만 표기합니다.
-- **Label Size**: `.form-label`은 `0.875rem`을 기본값으로 사용합니다.
 - **Body Size**: 본문은 `1rem`을 기본값으로 사용합니다.
 - **Small Size**: 보조 텍스트는 `0.875rem`을 사용합니다.
 
