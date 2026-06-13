@@ -58,6 +58,15 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 - **Section Spacing**: 섹션 간 간격은 기본 `1.5rem` 이상 확보합니다.
 - **Page Padding**: 페이지 외곽 여백은 기본 `1.5rem` 또는 `2rem`을 사용합니다.
 
+## Responsive Rules
+
+- **Mobile First**: 기본 스타일은 모바일 기준으로 작성하고, 필요한 경우 상위 브레이크포인트에서 확장합니다.
+- **Breakpoint Priority**: `sm` → `md` → `lg` → `xl` → `xxl` 순서로 단계적으로 레이아웃을 확장합니다.
+- **Visibility Control**: 화면 노출 제어는 `d-none`, `d-sm-*`, `d-md-*`, `d-lg-*` 같은 Bootstrap 반응형 유틸리티를 사용합니다.
+- **Stacking Rule**: 좁은 화면에서는 요소를 세로로 쌓고, 넓은 화면에서만 가로 배치를 적용합니다.
+- **Column Rule**: 컬럼 폭은 `col-12`, `col-md-*`, `col-lg-*` 패턴을 우선 사용합니다.
+- **Text Wrap**: 긴 텍스트와 메타 정보는 모바일에서 줄바꿈과 간격 유지가 가능하도록 설계합니다.
+
 ## Component Guidelines
 
 ### Cards (`.card`)
@@ -86,6 +95,14 @@ smartcms 2.0은 부트스트랩 5의 강력한 유틸리티 엔진 위에 구축
 - 표는 기본 Bootstrap 테이블 스타일을 사용합니다.
 - 셀 패딩과 헤더 높이는 `rem` 기준으로만 조정합니다.
 - 강조가 필요한 경우 색상보다 굵기(`fw-semibold`)와 대비를 우선합니다.
+
+### Lists (`.list-group`, `.list-unstyled`)
+
+- 목록은 상황에 따라 `list-group` 또는 의미 없는 목록은 `list-unstyled`를 사용합니다.
+- 항목 간 간격은 `rem` 기준으로 통일하고, 숫자값은 화면마다 따로 만들지 않습니다.
+- 정보 목록은 `d-flex`, `justify-content-between`, `gap-*` 조합으로 정렬합니다.
+- 긴 항목은 줄바꿈을 허용하고, 모바일에서 가로 스크롤에 의존하지 않습니다.
+- 리스트 내부 액션 버튼은 한 줄에 과도하게 배치하지 않고 우선순위를 분리합니다.
 
 ## Do & Don't
 
