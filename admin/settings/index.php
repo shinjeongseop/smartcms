@@ -70,6 +70,16 @@ require SMARTCMS_ROOT . '/admin/head.php';
         </div>
 
         <div class="col-12 col-md-6">
+          <label for="author_display_mode" class="form-label fw-bold small text-secondary text-uppercase mb-2">게시판 글쓴이 표시 정책</label>
+          <select class="form-select py-2.5 fw-bold" id="author_display_mode" name="author_display_mode">
+            <?php foreach (smartcms_board_author_display_options() as $mode_key => $mode_label): ?>
+              <option value="<?= smartcms_h($mode_key) ?>" <?= (string)($settings['author_display_mode'] ?? 'name') === $mode_key ? 'selected' : '' ?>><?= smartcms_h($mode_label) ?></option>
+            <?php endforeach; ?>
+          </select>
+          <div class="form-text text-muted small mt-2 fw-medium">사이트 전체 게시판과 최신글, 검색 결과의 작성자 표시 방식에 적용됩니다.</div>
+        </div>
+
+        <div class="col-12 col-md-6">
           <label for="site_name" class="form-label fw-bold small text-secondary text-uppercase mb-2">공식 사이트 이름</label>
           <input class="form-control py-2.5 fw-bold" id="site_name" name="site_name" value="<?= smartcms_h($settings['site_name'] ?? 'smartcms') ?>" required>
           <div class="form-text text-muted small mt-2 fw-medium">브라우저 탭 타이틀과 로고 영역에 표시될 프로젝트 이름입니다.</div>
@@ -79,16 +89,6 @@ require SMARTCMS_ROOT . '/admin/head.php';
           <label for="upload_max_mb" class="form-label fw-bold small text-secondary text-uppercase mb-2">첨부파일 단일 최대 용량 (MB)</label>
           <input class="form-control py-2.5 fw-bold" id="upload_max_mb" name="upload_max_mb" type="number" min="1" max="100" value="<?= smartcms_h($settings['upload_max_mb'] ?? '10') ?>" required>
           <div class="form-text text-muted small mt-2 fw-medium">게시판 파일 업로드 시 적용되는 용량 제한입니다. (서버 설정 범위 내)</div>
-        </div>
-
-        <div class="col-12 col-md-6">
-          <label for="author_display_mode" class="form-label fw-bold small text-secondary text-uppercase mb-2">게시판 글쓴이 표시 정책</label>
-          <select class="form-select py-2.5 fw-bold" id="author_display_mode" name="author_display_mode">
-            <?php foreach (smartcms_board_author_display_options() as $mode_key => $mode_label): ?>
-              <option value="<?= smartcms_h($mode_key) ?>" <?= (string)($settings['author_display_mode'] ?? 'name') === $mode_key ? 'selected' : '' ?>><?= smartcms_h($mode_label) ?></option>
-            <?php endforeach; ?>
-          </select>
-          <div class="form-text text-muted small mt-2 fw-medium">사이트 전체 게시판과 최신글, 검색 결과의 작성자 표시 방식에 적용됩니다.</div>
         </div>
 
         <div class="col-12 my-2"><hr class="opacity-10"></div>
