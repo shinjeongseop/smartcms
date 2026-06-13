@@ -60,7 +60,15 @@ require SMARTCMS_ROOT . '/admin/head.php';
     <div class="card-body p-4 p-lg-5">
       <form class="row g-4" method="post">
         <?= smartcms_csrf_input() ?>
-        
+
+        <div class="col-12">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <i class="bi bi-sliders text-primary"></i>
+            <h3 class="h6 mb-0 fw-bold text-dark">사이트 정책</h3>
+          </div>
+          <p class="small text-muted mb-0">사이트 전체에 공통 적용되는 기본 정책입니다.</p>
+        </div>
+
         <div class="col-12 col-md-6">
           <label for="site_name" class="form-label fw-bold small text-secondary text-uppercase mb-2">공식 사이트 이름</label>
           <input class="form-control py-2.5 fw-bold" id="site_name" name="site_name" value="<?= smartcms_h($settings['site_name'] ?? 'smartcms') ?>" required>
@@ -84,6 +92,14 @@ require SMARTCMS_ROOT . '/admin/head.php';
         </div>
 
         <div class="col-12 my-2"><hr class="opacity-10"></div>
+
+        <div class="col-12">
+          <div class="d-flex align-items-center gap-2 mb-1">
+            <i class="bi bi-people text-primary"></i>
+            <h3 class="h6 mb-0 fw-bold text-dark">회원 정책</h3>
+          </div>
+          <p class="small text-muted mb-0">가입과 기본 권한에 관련된 운영 기준입니다.</p>
+        </div>
 
         <div class="col-12 col-md-4">
           <label for="default_member_level" class="form-label fw-bold small text-secondary text-uppercase mb-2">신규 회원 가입 레벨</label>
