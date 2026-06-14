@@ -30,7 +30,6 @@
 - OAuth state 검증 및 CSRF 방어
 - provider callback 처리
 - 기존 회원과 소셜 계정 연결
-- 기존 이메일 회원 연결 시 최초 1회 기존 비밀번호 확인
 - 신규 소셜 로그인 사용자 자동 가입
 - 로그인 성공/실패 로그 기록
 
@@ -123,21 +122,10 @@ provider별 설정:
 4. userinfo 조회
 5. `provider_user_id` 기준으로 기존 연결 계정 조회
 6. 연결 계정이 있으면 해당 user로 로그인
-7. 연결 계정이 없고 같은 email 사용자가 있으면 소셜 연결 대기 세션을 생성
-8. 기존 비밀번호 확인 화면으로 이동
-9. 사용자가 기존 비밀번호를 1회 확인하면 해당 user에 소셜 계정을 연결
-10. 연결 계정이 없고 같은 email도 없으면 자동 가입 설정에 따라 신규 user 생성
-11. 세션 로그인 처리 및 `last_login_at`, 로그 갱신
-12. 안전한 `next` 경로로 redirect
-
-### 기존 이메일 회원 연결 확인
-
-1. callback에서 같은 email의 기존 `users` 레코드를 찾는다.
-2. 즉시 연결하지 않고 provider 정보, provider user id, next 경로를 세션에 임시 저장한다.
-3. `/member/social/confirm/`에서 기존 이메일과 비밀번호를 확인한다.
-4. `password_verify()` 성공 시 `user_social_accounts`에 연결 정보를 저장한다.
-5. 확인 실패 시 일반 로그인 실패 메시지를 보여주고 연결하지 않는다.
-6. 연결 성공 후에는 임시 세션 값을 삭제하고 기존 `users.id`로 로그인한다.
+7. 연결 계정이 없고 같은 email 사용자가 있으면 해당 user에 연결
+8. 연결 계정이 없고 같은 email도 없으면 자동 가입 설정에 따라 신규 user 생성
+9. 세션 로그인 처리 및 `last_login_at`, 로그 갱신
+10. 안전한 `next` 경로로 redirect
 
 ## 8. 보안 요구사항
 
@@ -148,8 +136,6 @@ provider별 설정:
 - 토큰 원문은 DB에 저장하지 않고 해시 또는 최소 정보만 저장한다.
 - provider 응답 email이 없거나 검증되지 않은 경우 가입을 막는다.
 - blocked/left 상태 사용자는 소셜 로그인으로 우회 로그인할 수 없다.
-- 기존 이메일 회원과 소셜 계정 연결은 최초 1회 기존 비밀번호 확인 후에만 허용한다.
-- 소셜 연결 대기 세션은 짧은 만료 시간을 두고, 성공/실패 후 즉시 삭제한다.
 - 실패 사유는 사용자에게 일반화해 노출하고 상세 내용은 서버 로그 또는 로그인 로그에 남긴다.
 
 ## 9. 파일 변경 계획
@@ -159,14 +145,12 @@ provider별 설정:
 - `common/social_auth.php`
 - `member/social/start/index.php`
 - `member/social/callback/index.php`
-- `member/social/confirm/index.php`
 
 수정:
 
 - `common/schema.php`: `user_social_accounts` 테이블 생성
 - `common/settings.php`: 소셜 로그인 기본 설정 추가
 - `common/auth.php`: 소셜 로그인 세션 생성 헬퍼 추가 또는 기존 로그인 세션 함수 분리
-- `common/auth.php`: 기존 회원 비밀번호 확인 재사용 함수 추가
 - `member/login/index.php`: 소셜 로그인 버튼 영역 추가
 - `admin/settings/index.php`: 소셜 로그인 설정 UI 및 저장 처리 추가
 - `common/css/common.css`: 소셜 로그인 버튼 최소 스타일
@@ -179,11 +163,9 @@ provider별 설정:
 4. OAuth start/callback 라우트 작성
 5. provider별 token/userinfo 정규화 함수 작성
 6. 회원 로그인 화면에 활성 provider 버튼 표시
-7. 기존 email 계정 발견 시 비밀번호 확인 화면으로 분기
-8. 비밀번호 확인 성공 시 소셜 계정 연결 처리
-9. 신규 자동 가입 처리
-10. 로그 기록과 예외 처리 정리
-11. 문법 검사 및 수동 OAuth 테스트
+7. 기존 email 계정 연결 및 신규 자동 가입 처리
+8. 로그 기록과 예외 처리 정리
+9. 문법 검사 및 수동 OAuth 테스트
 
 ## 11. 성공 기준
 
@@ -192,8 +174,7 @@ provider별 설정:
 - 비활성 provider 버튼은 로그인 화면에 표시되지 않음
 - 활성 provider 클릭 시 provider 인증 페이지로 이동
 - callback state 불일치 시 로그인 실패 처리
-- 기존 email 회원은 최초 1회 기존 비밀번호 확인 후 새 계정을 만들지 않고 연결됨
-- 기존 비밀번호 확인 실패 시 소셜 계정이 연결되지 않음
+- 기존 email 회원은 새 계정을 만들지 않고 연결됨
 - 신규 소셜 사용자는 설정에 따라 자동 가입 또는 가입 차단됨
 - 로그인 성공 후 기존 세션 권한 체계를 그대로 사용
 - `php -l` 문법 검사 통과
@@ -204,17 +185,13 @@ provider별 설정:
 - provider별 OAuth 응답 포맷 차이
 - Client Secret 저장 방식
 - 이메일 미제공 또는 미검증 provider 계정 처리
-- 기존 이메일 계정 연결 확인 UX 복잡도
+- 기존 이메일 계정 자동 연결 시 계정 탈취 우려
 - 운영 도메인과 Redirect URI 불일치
 
 ## 13. 결정 필요 사항
 
 1. 1차 provider를 Google, Kakao, Naver로 확정할지
 2. 신규 소셜 사용자 자동 가입을 기본 허용할지
-3. Client Secret 암호화를 위해 별도 앱 키를 도입할지
-4. 소셜 로그인을 회원 로그인에만 적용할지, 추후 관리자 로그인에도 확장할지
-
-## 14. 확정 정책
-
-- 기존 이메일 계정과 소셜 계정 연결은 최초 1회 기존 비밀번호 확인을 요구한다.
-- 같은 email 사용자가 있더라도 provider callback만으로 자동 연결하지 않는다.
+3. 기존 이메일 계정 자동 연결을 허용할지, 최초 1회 비밀번호 확인을 요구할지
+4. Client Secret 암호화를 위해 별도 앱 키를 도입할지
+5. 소셜 로그인을 회원 로그인에만 적용할지, 추후 관리자 로그인에도 확장할지
