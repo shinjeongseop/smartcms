@@ -55,6 +55,21 @@ function smartcms_table(string $name): string
 function smartcms_base_url(string $path = ''): string
 {
     $base = rtrim((string)smartcms_config_value('base_url', ''), '/');
+    if ($base === '') {
+        $scheme = 'https';
+        $forwarded_proto = strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''));
+        if ($forwarded_proto === 'http' || $forwarded_proto === 'https') {
+            $scheme = $forwarded_proto;
+        } elseif (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+            $scheme = 'https';
+        } else {
+            $scheme = 'http';
+        }
+
+        $host = (string)($_SERVER['HTTP_HOST'] ?? 'localhost');
+        $base = $scheme . '://' . $host;
+    }
+
     return $base . '/' . ltrim($path, '/');
 }
 
