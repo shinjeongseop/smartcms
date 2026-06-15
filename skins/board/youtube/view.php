@@ -140,10 +140,7 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
             <?php foreach ($audit_logs as $log): ?>
               <div class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 py-3 px-4">
                 <div class="d-flex flex-column gap-1">
-                  <div class="fw-semibold text-dark">
-                    <span class="badge bg-light text-secondary border rounded-2 me-2">#<?= smartcms_h((string)$log['id']) ?></span>
-                    <?= smartcms_h(smartcms_board_audit_action_label((string)$log['action'])) ?>
-                  </div>
+                  <div class="fw-semibold text-dark"><?= smartcms_h(smartcms_board_audit_action_label((string)$log['action'])) ?></div>
                   <div class="text-secondary small"><?= smartcms_h((string)$log['message']) ?></div>
                 </div>
                 <div class="text-md-end small text-secondary fw-medium">
