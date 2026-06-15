@@ -157,7 +157,7 @@ function smartcms_password_reset_email_body(string $name, string $reset_url): st
         . "{$site_name} 비밀번호 재설정 요청이 접수되었습니다.\n"
         . "아래 링크를 열어 새 비밀번호를 설정해 주세요.\n\n"
         . $reset_url . "\n\n"
-        . "이 링크는 일정 시간이 지나면 만료됩니다.\n"
+        . "이 링크는 1시간 후 만료됩니다.\n"
         . "본인이 요청하지 않았다면 이 메일을 무시하셔도 됩니다.\n"
     ) . "\n";
 }
