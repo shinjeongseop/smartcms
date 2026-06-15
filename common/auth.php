@@ -13,6 +13,8 @@ function smartcms_session_start(): void
         return;
     }
 
+    $idle_timeout = smartcms_session_idle_timeout_seconds();
+    ini_set('session.gc_maxlifetime', (string)$idle_timeout);
     session_name((string)smartcms_config_value('session_name', 'smartcms_session'));
     session_set_cookie_params([
         'path' => (string)smartcms_config_value('cookie_path', '/'),
@@ -21,6 +23,53 @@ function smartcms_session_start(): void
         'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
     ]);
     session_start();
+}
+
+function smartcms_logout_session_only(): void
+{
+    smartcms_session_start();
+    $_SESSION = [];
+    if (ini_get('session.use_cookies')) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'] ?? '', (bool)$params['secure'], (bool)$params['httponly']);
+    }
+    session_destroy();
+}
+
+function smartcms_session_last_activity(): int
+{
+    smartcms_session_start();
+    return (int)($_SESSION[smartcms_session_last_activity_key()] ?? 0);
+}
+
+function smartcms_session_touch(): void
+{
+    smartcms_session_start();
+    if (isset($_SESSION['smartcms_user_id'])) {
+        $_SESSION[smartcms_session_last_activity_key()] = time();
+    }
+}
+
+function smartcms_session_require_active(): bool
+{
+    smartcms_session_start();
+
+    $user_id = (int)($_SESSION['smartcms_user_id'] ?? 0);
+    if ($user_id <= 0) {
+        return false;
+    }
+
+    $last_activity = smartcms_session_last_activity();
+    $timeout = smartcms_session_idle_timeout_seconds();
+    if ($last_activity > 0 && (time() - $last_activity) >= $timeout) {
+        smartcms_logout_session_only();
+        smartcms_flash_set('message', '로그인 세션이 만료되었습니다. 다시 로그인해 주세요.');
+        smartcms_flash_set('message_type', 'info');
+        return false;
+    }
+
+    $_SESSION[smartcms_session_last_activity_key()] = time();
+    return true;
 }
 
 function smartcms_ensure_user_avatar_column(): void
@@ -373,6 +422,9 @@ function smartcms_store_user_avatar_upload(int $user_id, array $upload, ?string 
 function smartcms_current_user(): ?array
 {
     smartcms_session_start();
+    if (!smartcms_session_require_active()) {
+        return null;
+    }
     smartcms_ensure_user_avatar_column();
     smartcms_ensure_user_nickname_column();
     $user_id = (int)($_SESSION['smartcms_user_id'] ?? 0);
@@ -688,6 +740,7 @@ function smartcms_login(string $email, string $password): array
     $_SESSION['smartcms_user_id'] = (int)$user['id'];
     $_SESSION['smartcms_user_level'] = (int)$user['level'];
     $_SESSION['smartcms_user_role'] = (string)$user['role'];
+    $_SESSION[smartcms_session_last_activity_key()] = time();
 
     smartcms_execute(
         "UPDATE " . smartcms_table('users') . " SET last_login_at = NOW() WHERE id = :id",
@@ -706,12 +759,7 @@ function smartcms_logout(): void
         smartcms_log_access('logout', 'member', 'logout', 'success', 200, (int)$user['id']);
     }
 
-    $_SESSION = [];
-    if (ini_get('session.use_cookies')) {
-        $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'] ?? '', (bool)$params['secure'], (bool)$params['httponly']);
-    }
-    session_destroy();
+    smartcms_logout_session_only();
 }
 
 function smartcms_log_login(?int $user_id, string $email, string $result): void

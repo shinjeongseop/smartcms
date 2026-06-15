@@ -82,6 +82,16 @@ function smartcms_asset_url(string $path): string
     return '/' . ltrim($path, '/');
 }
 
+function smartcms_session_idle_timeout_seconds(): int
+{
+    return max(300, (int)smartcms_config_value('session_idle_timeout_seconds', 10800));
+}
+
+function smartcms_session_last_activity_key(): string
+{
+    return 'smartcms_last_activity';
+}
+
 function smartcms_h(mixed $value): string
 {
     return htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');

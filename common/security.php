@@ -10,6 +10,7 @@ function smartcms_security_session_start(): void
         return;
     }
 
+    ini_set('session.gc_maxlifetime', (string)smartcms_session_idle_timeout_seconds());
     session_name((string)smartcms_config_value('session_name', 'smartcms_session'));
     session_set_cookie_params([
         'path' => (string)smartcms_config_value('cookie_path', '/'),
