@@ -131,7 +131,7 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
                     <span class="badge bg-light text-secondary border rounded-2 me-2">#<?= smartcms_h((string)$log['id']) ?></span>
                     <?= smartcms_h(smartcms_board_audit_action_label((string)$log['action'])) ?>
                   </div>
-                  <div class="text-secondary small">대상 게시판: <?= smartcms_h((string)($log['board_name'] ?? $board['board_name'])) ?></div>
+                  <div class="text-secondary small"><?= smartcms_h((string)$log['message']) ?></div>
                 </div>
                 <div class="text-md-end small text-secondary fw-medium">
                   <div><?= smartcms_h(smartcms_board_audit_actor_name($log)) ?></div>

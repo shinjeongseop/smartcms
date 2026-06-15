@@ -1403,7 +1403,7 @@ function smartcms_board_move_post_to_board(array $source_board, array $post, arr
         return ['ok' => false, 'message' => '글 이동 중 오류가 발생했습니다.'];
     }
 
-    smartcms_board_audit($target_board, ['id' => (int)$post['id']], $user, 'post_move', '[' . (string)$target_board['board_name'] . ']에서 이동');
+    smartcms_board_audit($target_board, ['id' => (int)$post['id']], $user, 'post_move', '[' . (string)$source_board['board_name'] . ']에서 이동');
     return ['ok' => true, 'message' => '선택한 글을 이동했습니다.'];
 }
 
@@ -1463,7 +1463,7 @@ function smartcms_board_copy_post_to_board(array $source_board, array $post, arr
         return ['ok' => false, 'message' => '글 복사 중 오류가 발생했습니다.'];
     }
 
-    smartcms_board_audit($target_board, ['id' => $target_post_id], $user, 'post_copy', '[' . (string)$target_board['board_name'] . ']에서 복사');
+    smartcms_board_audit($target_board, ['id' => $target_post_id], $user, 'post_copy', '[' . (string)$source_board['board_name'] . ']에서 복사');
     return ['ok' => true, 'message' => '선택한 글을 복사했습니다.'];
 }
 
