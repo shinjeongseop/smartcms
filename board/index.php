@@ -36,7 +36,7 @@ try {
                 $result = smartcms_board_bulk_action_posts($board, $user, $selected_ids, $bulk_action, $target_board_key !== '' ? $target_board_key : null);
                 smartcms_flash_set('message', $result['message']);
                 smartcms_flash_set('message_type', $result['ok'] ? 'success' : 'error');
-                smartcms_redirect(smartcms_board_index_url((string)$board['board_key'])
+                smartcms_redirect(smartcms_board_url((string)$board['board_key'])
                     . ($keyword !== '' ? '&q=' . rawurlencode($keyword) : '')
                     . '&page=' . $page);
             }
