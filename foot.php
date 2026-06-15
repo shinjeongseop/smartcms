@@ -3,7 +3,7 @@
       <div class="container-xxl">
         <div class="row g-4">
           <div class="col-12 col-lg-4">
-            <a class="navbar-brand fs-3 fw-bold text-white d-block mb-3" href="<?= smartcms_h(smartcms_base_url('/')) ?>">smartcms<span class="text-primary">.</span></a>
+            <a class="navbar-brand fs-3 fw-bold text-white d-block mb-3" href="<?= smartcms_h(smartcms_base_url('/')) ?>"><?= smartcms_h(smartcms_site_name()) ?></a>
             <p class="small mb-4">Bootstrap 5 Native Community CMS<br>모던한 기술로 구축하는 커뮤니티의 새로운 기준</p>
             <div class="d-flex gap-3 fs-5 text-white"><i class="bi bi-github"></i><i class="bi bi-discord"></i><i class="bi bi-youtube"></i></div>
           </div>
@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="border-top border-secondary border-opacity-25 pt-4 mt-5 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 small fw-medium">
-          <span>&copy; <?= date('Y') ?> smartcms. All rights reserved.</span><span class="text-white-50">Powered by Bootstrap 5 & Optimized PHP</span>
+          <span>&copy; <?= date('Y') ?> <?= smartcms_h(smartcms_site_name()) ?>. All rights reserved.</span><span class="text-white-50">Powered by Bootstrap 5 & Optimized PHP</span>
         </div>
       </div>
     </footer>

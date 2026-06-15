@@ -35,6 +35,7 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
     $site_nav = smartcms_site_nav_items();
     $user = smartcms_current_user();
     $brand_url = smartcms_h(smartcms_base_url('/'));
+    $site_name = smartcms_site_name();
   ?>
 
   <!-- [HEADER] 상단 유틸리티 및 브랜드 -->
@@ -61,7 +62,7 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
 
       <div class="row align-items-center g-3 py-3">
         <div class="col-12 col-md-3 text-center text-md-start">
-          <a class="navbar-brand fs-2 fw-bold text-primary" href="<?= $brand_url ?>">smartcms</a>
+          <a class="navbar-brand fs-2 fw-bold text-primary" href="<?= $brand_url ?>"><?= smartcms_h($site_name) ?></a>
         </div>
         <div class="col-12 col-md-9 col-lg-8 col-xl-7 mx-md-auto">
           <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" role="search" data-search-min-length="2">
@@ -111,7 +112,7 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
 
     <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="siteNavOffcanvas" aria-labelledby="siteNavOffcanvasLabel">
       <div class="offcanvas-header border-bottom">
-        <h2 class="offcanvas-title h5 fw-bold text-primary" id="siteNavOffcanvasLabel">smartcms</h2>
+        <h2 class="offcanvas-title h5 fw-bold text-primary" id="siteNavOffcanvasLabel"><?= smartcms_h($site_name) ?></h2>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="메뉴 닫기"></button>
       </div>
       <div class="offcanvas-body">
