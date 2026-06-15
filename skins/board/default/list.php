@@ -13,7 +13,21 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
 $board_bulk_can_manage = smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
 $board_bulk_form_id = 'boardBulkForm_' . (int)$board['id'];
 $board_bulk_select_all_id = $board_bulk_form_id . '_all';
-$board_bulk_targets = $board_bulk_can_manage ? smartcms_board_bulk_target_options($board, $user) : [];
+$board_bulk_targets = [];
+if ($board_bulk_can_manage && !empty($boards) && is_array($boards)) {
+  foreach ($boards as $candidate) {
+    if ((int)($candidate['id'] ?? 0) === (int)$board['id']) {
+      continue;
+    }
+    if ((string)($candidate['status'] ?? '') === 'disabled') {
+      continue;
+    }
+    if (!smartcms_has_level((int)($candidate['board_write_level'] ?? 8), $user)) {
+      continue;
+    }
+    $board_bulk_targets[] = $candidate;
+  }
+}
 
 if (!isset($SMARTCMS_FOOT['scripts']) || !is_array($SMARTCMS_FOOT['scripts'])) {
   $SMARTCMS_FOOT['scripts'] = [];

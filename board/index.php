@@ -53,8 +53,12 @@ try {
         $search_posts = $search_pagination['items'];
     }
 } catch (Throwable $e) {
+    error_log('[smartcms board] ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
     $message = '게시판을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
     $message_type = 'error';
+    if ($user && (int)$user['level'] >= 8) {
+        $message = '게시판을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요. (' . $e->getMessage() . ')';
+    }
 }
 
 $message = (string)smartcms_flash_get('message', $message);
