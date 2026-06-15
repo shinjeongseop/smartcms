@@ -2,6 +2,17 @@
 /* 게시판 글 목록 스킨 - youtube/list.php */
 $skin_meta = smartcms_board_skin_meta($board);
 $thumb_config = smartcms_board_thumbnail_config($board, 'list');
+$board_bulk_can_manage = smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
+$board_bulk_form_id = 'boardBulkForm_' . (int)$board['id'];
+$board_bulk_select_all_id = $board_bulk_form_id . '_all';
+$board_bulk_targets = $board_bulk_can_manage ? smartcms_board_bulk_target_options($board, $user) : [];
+
+if (!isset($SMARTCMS_FOOT['scripts']) || !is_array($SMARTCMS_FOOT['scripts'])) {
+  $SMARTCMS_FOOT['scripts'] = [];
+}
+if (!in_array('/common/js/board-bulk-actions.js', $SMARTCMS_FOOT['scripts'], true)) {
+  $SMARTCMS_FOOT['scripts'][] = '/common/js/board-bulk-actions.js';
+}
 ?>
 <section class="board-list-container">
   <div class="card border shadow-sm bg-white overflow-hidden">
@@ -29,13 +40,20 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
       </div>
     </header>
 
+    <?php require SMARTCMS_ROOT . '/skins/board/_bulk_toolbar.php'; ?>
+
     <div class="p-4 p-lg-5">
       <div class="vstack gap-4">
         <?php foreach ($posts as $post): ?>
           <?php $video = smartcms_board_youtube_link_data($post); ?>
           <?php $thumb_url = $video['thumb_url'] ?? null; ?>
           <?php $excerpt = smartcms_board_excerpt((string)($post['content'] ?? $post['excerpt'] ?? ''), 90); ?>
-          <article class="card border shadow-sm bg-white overflow-hidden">
+          <article class="card border shadow-sm bg-white overflow-hidden position-relative">
+            <?php if ($board_bulk_can_manage): ?>
+              <div class="position-absolute top-0 start-0 p-3 z-3">
+                <input class="form-check-input shadow-sm m-0" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
+              </div>
+            <?php endif; ?>
             <div class="row g-0 align-items-stretch">
               <div class="col-12 col-md-5 col-xl-5">
                 <div class="h-100 p-2 p-lg-3 d-flex align-items-center">

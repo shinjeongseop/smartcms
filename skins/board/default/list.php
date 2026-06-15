@@ -10,6 +10,17 @@ $layout = (string)$skin_meta['layout'];
 $gallery_mode = (string)($skin_meta['skin'] ?? '') === 'gallery';
 $webzine_mode = $layout === 'webzine';
 $thumb_config = smartcms_board_thumbnail_config($board, 'list');
+$board_bulk_can_manage = smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
+$board_bulk_form_id = 'boardBulkForm_' . (int)$board['id'];
+$board_bulk_select_all_id = $board_bulk_form_id . '_all';
+$board_bulk_targets = $board_bulk_can_manage ? smartcms_board_bulk_target_options($board, $user) : [];
+
+if (!isset($SMARTCMS_FOOT['scripts']) || !is_array($SMARTCMS_FOOT['scripts'])) {
+  $SMARTCMS_FOOT['scripts'] = [];
+}
+if (!in_array('/common/js/board-bulk-actions.js', $SMARTCMS_FOOT['scripts'], true)) {
+  $SMARTCMS_FOOT['scripts'][] = '/common/js/board-bulk-actions.js';
+}
 ?>
 <section class="board-list-container">
   <div class="card border shadow-sm bg-white overflow-hidden">
@@ -38,6 +49,8 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
       </div>
     </header>
 
+    <?php require SMARTCMS_ROOT . '/skins/board/_bulk_toolbar.php'; ?>
+
     <?php if ($webzine_mode): ?>
       <div class="p-4 p-lg-5">
         <div class="vstack gap-5">
@@ -45,7 +58,12 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
             <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
             <?php $excerpt_source = (string)($post['content'] ?? $post['excerpt'] ?? ''); ?>
             <?php $excerpt = smartcms_board_excerpt($excerpt_source, 140); ?>
-            <article class="card h-100 border shadow-sm bg-white overflow-hidden">
+            <article class="card h-100 border shadow-sm bg-white overflow-hidden position-relative">
+              <?php if ($board_bulk_can_manage): ?>
+                <div class="position-absolute top-0 start-0 p-3 z-3">
+                  <input class="form-check-input shadow-sm m-0" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
+                </div>
+              <?php endif; ?>
               <div class="row g-0 h-100">
                 <div class="col-12 col-md-5 col-lg-4 d-flex align-items-center ps-md-3 ps-lg-4">
                   <div class="w-100">
@@ -122,7 +140,12 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
           <?php foreach ($posts as $post): ?>
             <div class="<?= $gallery_mode ? 'col-6 col-md-4 col-xl-3' : 'col-12 col-md-6 col-xl-4' ?>">
               <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
-              <article class="card h-100 border shadow-sm bg-white <?= $gallery_mode ? 'rounded-3 overflow-hidden' : 'overflow-hidden' ?>">
+              <article class="card h-100 border shadow-sm bg-white <?= $gallery_mode ? 'rounded-3 overflow-hidden' : 'overflow-hidden' ?> position-relative">
+                <?php if ($board_bulk_can_manage): ?>
+                  <div class="position-absolute top-0 start-0 p-3 z-3">
+                    <input class="form-check-input shadow-sm m-0" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
+                  </div>
+                <?php endif; ?>
                 <?php if ($first_image): ?>
                   <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
                   <a class="d-block bg-light overflow-hidden <?= $gallery_mode ? 'ratio ratio-1x1' : 'ratio ratio-4x3' ?>" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
@@ -187,6 +210,9 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
         <table class="table table-hover align-middle mb-0 text-nowrap">
           <thead class="table-light">
             <tr class="text-uppercase small fw-bold text-secondary">
+              <?php if ($board_bulk_can_manage): ?>
+                <th scope="col" class="ps-4 ps-lg-5 py-3 text-nowrap sc-col-4">선택</th>
+              <?php endif; ?>
               <th scope="col" class="ps-4 ps-lg-5 py-3 text-nowrap sc-col-5">번호</th>
               <th scope="col" class="py-3 text-nowrap">제목</th>
               <th scope="col" class="d-none d-md-table-cell py-3 text-nowrap sc-col-9">작성자</th>
@@ -197,6 +223,11 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
           <tbody class="table-group-divider">
             <?php foreach ($posts as $post): ?>
               <tr class="<?= (int)$post['is_notice'] === 1 ? 'table-' . $accent . ' opacity-90' : '' ?>">
+                <?php if ($board_bulk_can_manage): ?>
+                  <td class="ps-4 ps-lg-5 align-middle">
+                    <input class="form-check-input m-0 shadow-sm" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
+                  </td>
+                <?php endif; ?>
                 <td class="ps-4 ps-lg-5 text-secondary small">
                   <?php if ((int)$post['is_notice'] === 1): ?>
                     <span class="badge <?= $skin_meta['badge_class'] ?> rounded-2">공지</span>
@@ -234,7 +265,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
             <?php endforeach; ?>
             <?php if (!$posts): ?>
               <tr>
-                <td colspan="5" class="text-center text-secondary py-5">
+                <td colspan="<?= $board_bulk_can_manage ? 6 : 5 ?>" class="text-center text-secondary py-5">
                   <i class="bi bi-inbox fs-1 d-block mb-3 opacity-25"></i>
                   등록된 게시글이 없습니다.
                 </td>
