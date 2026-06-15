@@ -4,12 +4,12 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../common/auth.php';
 require_once __DIR__ . '/../../common/ui/components.php';
 
-$message      = '';
-$message_type = 'info';
+$message       = '';
+$message_type  = 'info';
 $flash_message = smartcms_flash_get('message', '');
-$flash_type = (string)smartcms_flash_get('message_type', 'info');
-$email        = trim((string)(smartcms_flash_get('email', '') ?: ($_POST['email'] ?? '')));
-$next         = smartcms_member_login_next_target();
+$flash_type    = (string)smartcms_flash_get('message_type', 'info');
+$email         = trim((string)(smartcms_flash_get('email', '') ?: ($_POST['login_email'] ?? '')));
+$next          = smartcms_member_login_next_target();
 
 if (smartcms_current_user()) {
     smartcms_redirect($next);
@@ -17,7 +17,8 @@ if (smartcms_current_user()) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
-    $result       = smartcms_login($email, (string)($_POST['password'] ?? ''));
+    $password = (string)($_POST['login_password'] ?? '');
+    $result = smartcms_login($email, $password);
     if ($result['ok']) {
         smartcms_redirect($next);
     }
@@ -66,21 +67,22 @@ require SMARTCMS_ROOT . '/head.php';
             기존 계정으로 로그인하여 게시판, 마이페이지, 회원 기능을 계속 이용하세요.
           </p>
 
-          <form class="d-grid gap-4" method="post" autocomplete="on">
+          <form class="d-grid gap-4" method="post" autocomplete="off" autocapitalize="off" spellcheck="false">
             <?= smartcms_csrf_input() ?>
             <input type="hidden" name="next" value="<?= smartcms_h($next) ?>">
             <div>
-              <label for="email" class="form-label fw-bold small text-dark">이메일 주소</label>
-              <input class="form-control py-2" id="email" name="email" type="email"
-                     placeholder="name@example.com" value="<?= smartcms_h($email) ?>" autocomplete="email" required>
+              <label for="login_email" class="form-label fw-bold small text-dark">이메일 주소</label>
+              <input class="form-control py-2" id="login_email" name="login_email" type="email"
+                     placeholder="name@example.com" value="<?= smartcms_h($email) ?>"
+                     autocomplete="off" inputmode="email" autocapitalize="off" spellcheck="false" required>
             </div>
             <div>
               <div class="d-flex justify-content-between align-items-center mb-2">
-                <label for="password" class="form-label fw-bold small text-dark mb-0">비밀번호</label>
+                <label for="login_password" class="form-label fw-bold small text-dark mb-0">비밀번호</label>
                 <a href="<?= smartcms_h(smartcms_base_url('/member/forgot/')) ?>" class="small text-decoration-none fw-bold">비밀번호 찾기</a>
               </div>
-              <input class="form-control py-2" id="password" name="password" type="password"
-                     placeholder="••••••••" autocomplete="current-password" required>
+              <input class="form-control py-2" id="login_password" name="login_password" type="password"
+                     placeholder="••••••••" autocomplete="new-password" required>
             </div>
             <div class="d-grid pt-2">
               <button type="submit" class="btn btn-primary rounded-2 px-4 py-2 fw-bold shadow-sm">로그인하기</button>

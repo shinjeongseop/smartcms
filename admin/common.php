@@ -10,6 +10,6 @@ function smartcms_admin_user(): array
 {
     return smartcms_require_level(
         smartcms_setting_int('admin_level', (int)smartcms_config_value('admin_level', 8)),
-        (string)smartcms_config_value('admin_login_url', '/admin/login/')
+        (string)smartcms_config_value('admin_login_url', '/member/login/')
     );
 }
