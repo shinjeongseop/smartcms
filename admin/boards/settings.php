@@ -146,16 +146,16 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <?php endforeach; ?>
               
               <div class="col-12">
-                <div class="p-4 bg-light rounded-4 border-0">
+                <div class="p-4 bg-light rounded-3 border">
                   <div class="row g-4">
                     <div class="col-md-6">
-                      <div class="form-check form-switch custom-switch">
+                      <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" name="allow_guest_list" id="g_list" <?= $permission['allow_guest_list'] ? 'checked' : '' ?>>
                         <label class="form-check-label fw-bold text-dark ms-2" for="g_list">비회원 목록 접근 허용 (Guest List)</label>
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <div class="form-check form-switch custom-switch">
+                      <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" name="allow_guest_view" id="g_view" <?= $permission['allow_guest_view'] ? 'checked' : '' ?>>
                         <label class="form-check-label fw-bold text-dark ms-2" for="g_view">비회원 본문 읽기 허용 (Guest View)</label>
                       </div>
@@ -170,7 +170,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
       <!-- 기능 스위치 및 액션 패널 -->
       <div class="col-12 col-xl-4">
-        <aside class="sticky-top sc-admin-sticky-panel">
+        <aside class="sc-admin-sticky-panel">
           <article class="card border shadow-sm mb-4 overflow-hidden border-top border-primary border-4">
             <header class="card-header bg-white border-bottom py-3 px-4 text-center">
               <h2 class="card-title h6 mb-0 fw-bold text-primary text-uppercase">기능 활성화 스위치</h2>
@@ -183,11 +183,11 @@ require SMARTCMS_ROOT . '/admin/head.php';
                   <option value="1" <?= (int)$board['use_editor'] ? 'selected' : '' ?>>에디터 모드</option>
                 </select>
                 <div class="form-text small text-secondary">이 게시판의 글쓰기/수정 화면은 선택한 방식으로만 표시됩니다.</div>
-                <div class="form-check form-switch p-3 bg-light rounded-3 border-0">
+                <div class="form-check form-switch p-3 bg-light rounded-3 border">
                   <input class="form-check-input ms-0" type="checkbox" name="use_comments" id="u_comments" <?= $board['use_comments'] ? 'checked' : '' ?>>
                   <label class="form-check-label fw-bold text-dark ms-3" for="u_comments">실시간 댓글 시스템</label>
                 </div>
-                <div class="form-check form-switch p-3 bg-light rounded-3 border-0">
+                <div class="form-check form-switch p-3 bg-light rounded-3 border">
                   <input class="form-check-input ms-0" type="checkbox" name="use_attachments" id="u_files" <?= $board['use_attachments'] ? 'checked' : '' ?>>
                   <label class="form-check-label fw-bold text-dark ms-3" for="u_files">멀티 첨부파일 업로드</label>
                 </div>
@@ -202,10 +202,12 @@ require SMARTCMS_ROOT . '/admin/head.php';
                 </select>
               </div>
 
-              <button type="submit" class="btn btn-primary w-100 py-3 fw-bold shadow-sm mb-2 rounded-3">
-                <i class="bi bi-cloud-check-fill me-2"></i>모든 설정 저장하기
-              </button>
-              <a href="/admin/boards/" class="btn btn-light border-0 w-100 py-2 text-secondary small fw-bold">취소하고 목록으로 돌아가기</a>
+              <div class="sc-admin-action-bar">
+                <button type="submit" class="btn btn-primary w-100 py-3 fw-bold shadow-sm mb-2 rounded-3">
+                  <i class="bi bi-cloud-check-fill me-2"></i>모든 설정 저장하기
+                </button>
+                <a href="/admin/boards/" class="btn btn-light border w-100 py-2 text-secondary small fw-bold">취소하고 목록으로 돌아가기</a>
+              </div>
             </div>
           </article>
         </aside>

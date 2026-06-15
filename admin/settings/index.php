@@ -52,7 +52,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
   <article class="card border shadow-sm overflow-hidden">
     <header class="card-header bg-white border-bottom py-4 px-4 p-lg-5">
       <div class="d-flex align-items-center gap-3">
-        <div class="p-3 bg-primary-subtle text-primary rounded-4 shadow-sm lh-1"><i class="bi bi-gear-wide-connected fs-4"></i></div>
+        <div class="p-3 bg-primary-subtle text-primary rounded-3 shadow-sm lh-1"><i class="bi bi-gear-wide-connected fs-4"></i></div>
         <h2 class="h5 mb-0 fw-bold text-dark">시스템 운영 및 정책 설정</h2>
       </div>
     </header>
@@ -121,7 +121,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
         <div class="col-12 col-md-4">
           <label class="form-label fw-bold small text-secondary text-uppercase mb-2">회원 가입 정책</label>
-          <div class="p-2 bg-light rounded-3 border-0">
+          <div class="p-2 bg-light rounded-3 border">
             <div class="form-check form-switch py-1 ms-2">
               <input class="form-check-input ms-0" type="checkbox" name="allow_registration" value="1" id="allow_registration" <?= (string)($settings['allow_registration'] ?? '1') === '1' ? 'checked' : '' ?>>
               <label class="form-check-label fw-bold text-dark ms-3" for="allow_registration">신규 자유 가입 허용</label>
@@ -129,8 +129,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
           </div>
         </div>
 
-        <footer class="col-12 mt-5 pt-3">
-          <button type="submit" class="btn btn-primary btn-lg rounded-2 px-5 fw-bold shadow-sm py-3 w-100 w-auto">
+        <footer class="col-12 mt-5 pt-3 sc-admin-action-bar">
+          <button type="submit" class="btn btn-primary btn-lg rounded-2 px-5 fw-bold shadow-sm py-3">
             <i class="bi bi-cloud-check me-2"></i>모든 시스템 설정 저장
           </button>
         </footer>

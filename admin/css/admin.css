@@ -20,6 +20,7 @@ body.smartcms-admin-page {
   }
 
   .sc-admin-sticky-panel {
+    position: sticky;
     top: 5.5rem;
   }
 }
@@ -158,6 +159,27 @@ body.smartcms-admin-auth {
 }
 
 @media (max-width: 767.98px) {
+  .sc-admin-topbar .btn {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+  }
+
+  .sc-admin-action-bar {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    margin-right: -1rem;
+    margin-left: -1rem;
+    padding: 1rem;
+    background-color: var(--bs-body-bg);
+    border-top: 1px solid var(--bs-border-color);
+    box-shadow: 0 -0.5rem 1rem rgba(33, 37, 41, 0.08);
+  }
+
+  .sc-admin-action-bar .btn {
+    width: 100%;
+  }
+
   .sc-admin-stack-table thead {
     display: none;
   }
@@ -172,6 +194,7 @@ body.smartcms-admin-auth {
 
   .sc-admin-stack-table tr {
     border-bottom: 1px solid var(--bs-border-color);
+    background-color: var(--bs-body-bg);
     padding: 0.75rem 1rem;
   }
 
@@ -181,6 +204,14 @@ body.smartcms-admin-auth {
     white-space: normal;
   }
 
+  .sc-admin-stack-table td.ps-4,
+  .sc-admin-stack-table td.pe-4,
+  .sc-admin-stack-table td.text-end {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    text-align: left !important;
+  }
+
   .sc-admin-stack-table td::before {
     content: attr(data-label);
     display: block;
@@ -188,5 +219,54 @@ body.smartcms-admin-auth {
     color: var(--bs-secondary-color);
     font-size: 0.75rem;
     font-weight: 700;
+  }
+
+  .sc-admin-stack-table td:empty {
+    display: none;
+  }
+
+  .sc-admin-stack-table td[colspan]::before {
+    display: none;
+  }
+
+  .sc-admin-stack-table td > form,
+  .sc-admin-stack-table td form {
+    align-items: stretch !important;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .sc-admin-stack-table td > .d-flex {
+    align-items: flex-start !important;
+    flex-wrap: wrap;
+    gap: 0.5rem !important;
+    width: 100%;
+  }
+
+  .sc-admin-stack-table .form-control,
+  .sc-admin-stack-table .form-select,
+  .sc-admin-stack-table .btn,
+  .sc-admin-stack-table .sc-admin-select-role,
+  .sc-admin-stack-table .sc-admin-select-level,
+  .sc-admin-stack-table .sc-admin-select-status,
+  .sc-admin-stack-table .sc-admin-select-page-level,
+  .sc-admin-stack-table .sc-admin-input-board-name {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .sc-admin-stack-table code,
+  .sc-admin-stack-table .text-truncate {
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .sc-admin-input-confirm {
+    width: 100%;
+  }
+
+  .smartcms-admin-page .pagination {
+    flex-wrap: wrap;
   }
 }

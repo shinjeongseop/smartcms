@@ -53,7 +53,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
   <article class="card border shadow-sm overflow-hidden">
       <header class="card-header bg-white border-bottom py-3 px-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
           <h2 class="h5 mb-0 fw-bold text-dark">활동 로그</h2>
-          <ul class="nav nav-pills gap-2 fw-bold" id="logTab" role="tablist">
+          <ul class="nav nav-pills flex-nowrap overflow-auto gap-2 fw-bold pb-1" id="logTab" role="tablist">
               <li class="nav-item">
                   <button class="nav-link active border-0 shadow-none" id="access-tab" data-bs-toggle="tab" data-bs-target="#access-panel" type="button" role="tab" aria-controls="access-panel" aria-selected="true">
                     <i class="bi bi-activity me-2"></i>접속 로그
@@ -133,7 +133,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                               <tr>
                                   <td class="ps-4 py-3 fw-medium small" data-label="일시"><time datetime="<?= smartcms_h($log['created_at']) ?>"><?= smartcms_h($log['created_at']) ?></time></td>
                                   <td class="py-3 fw-bold text-dark small" data-label="계정"><?= smartcms_h($log['email']) ?></td>
-                                  <td class="text-end pe-4 py-3">
+                                  <td class="text-end pe-4 py-3" data-label="결과">
                                       <span class="badge bg-<?= $log['result'] === 'success' ? 'success' : 'danger' ?> text-uppercase fw-bold sc-admin-badge-sm">
                                           <?= smartcms_h($log['result']) ?>
                                       </span>

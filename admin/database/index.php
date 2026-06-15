@@ -102,7 +102,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
           <p class="text-secondary small mb-4 fw-medium">
             현재 사용 중인 테이블 Prefix <strong><?= smartcms_h($prefix) ?></strong>로 시작하는 모든 구조와 데이터를 SQL 파일로 생성하여 내려받습니다. 정기적인 백업을 권장합니다.
           </p>
-          <form method="post">
+          <form method="post" class="d-grid d-sm-block">
             <?= smartcms_csrf_input() ?>
             <input type="hidden" name="action" value="backup">
             <button class="btn btn-primary rounded-2 px-5 fw-bold shadow-sm py-2" type="submit">
@@ -132,8 +132,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <label for="backup_file" class="form-label fw-bold small text-dark text-uppercase">백업 SQL 파일 선택</label>
               <input class="form-control py-2 fw-bold" id="backup_file" name="backup_file" type="file" accept=".sql" required>
             </div>
-            <div class="pt-2">
-              <button class="btn btn-dark rounded-2 px-5 fw-bold shadow-sm py-2" type="submit">
+            <div class="pt-2 d-grid d-sm-block">
+              <button class="btn btn-secondary rounded-2 px-5 fw-bold shadow-sm py-2" type="submit">
                 <i class="bi bi-arrow-repeat me-2"></i>SQL 복구 실행
               </button>
             </div>

@@ -97,18 +97,20 @@ require SMARTCMS_ROOT . '/admin/head.php';
 <!-- [SEARCH] 검색 영역 -->
 <section class="card border shadow-sm mb-4">
     <div class="card-body p-4">
-        <form method="get" class="row g-3 align-items-center" role="search" data-search-min-length="2">
+        <form method="get" class="row g-2 g-md-3 align-items-center" role="search" data-search-min-length="2">
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
                     <input type="search" name="search" class="form-control border-start-0 ps-0" 
                            placeholder="이름, 닉네임 또는 이메일 검색" value="<?= smartcms_h($search) ?>">
-                    <button class="btn btn-primary px-4 shadow-none" type="submit">검색</button>
                 </div>
             </div>
+            <div class="col-6 col-sm-auto d-grid">
+                <button class="btn btn-primary px-4 shadow-none" type="submit">검색</button>
+            </div>
             <?php if ($search !== ''): ?>
-                <div class="col-auto">
-                    <a href="?" class="btn btn-light border btn-sm rounded-2 px-3 shadow-none">필터 초기화</a>
+                <div class="col-6 col-sm-auto d-grid">
+                    <a href="?" class="btn btn-light border rounded-2 px-3 shadow-none">필터 초기화</a>
                 </div>
             <?php endif; ?>
         </form>

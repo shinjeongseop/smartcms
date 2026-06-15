@@ -118,7 +118,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
       </header>
       <div class="card-body p-0">
         <div class="table-responsive">
-          <table class="table table-hover align-middle mb-0">
+          <table class="table table-hover align-middle mb-0 text-nowrap sc-admin-stack-table">
             <thead class="table-light">
               <tr class="small text-uppercase fw-bold text-secondary">
                 <th scope="col" class="px-4 py-3">회원</th>
@@ -129,7 +129,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <tbody class="table-group-divider">
               <?php foreach ($recent_users as $u): ?>
                 <tr>
-                  <td class="px-4 py-3">
+                  <td class="px-4 py-3" data-label="회원">
                     <div class="d-flex align-items-center">
                       <div class="me-3"><?= smartcms_user_avatar_markup($u, 'sc-admin-avatar-40', 'fw-bold small') ?></div>
                       <div class="lh-sm">
@@ -141,11 +141,11 @@ require SMARTCMS_ROOT . '/admin/head.php';
                       </div>
                     </div>
                   </td>
-                  <td class="px-4 py-3 small text-secondary fw-medium">
+                  <td class="px-4 py-3 small text-secondary fw-medium" data-label="가입일">
                     <time datetime="<?= date('Y-m-d', strtotime($u['created_at'])) ?>"><?= date('Y-m-d', strtotime($u['created_at'])) ?></time>
                   </td>
-                  <td class="px-4 py-3 text-end">
-                    <button class="btn btn-link btn-sm text-secondary p-0 shadow-none border-0"><i class="bi bi-three-dots-vertical fs-5"></i></button>
+                  <td class="px-4 py-3 text-end" data-label="액션">
+                    <button class="btn btn-link btn-sm text-secondary p-0 shadow-none border-0" type="button" aria-label="<?= smartcms_h(smartcms_user_display_name($u)) ?> 회원 작업 더보기"><i class="bi bi-three-dots-vertical fs-5"></i></button>
                   </td>
                 </tr>
               <?php endforeach; ?>
@@ -164,8 +164,8 @@ require SMARTCMS_ROOT . '/admin/head.php';
       <div class="card-body p-0">
         <div class="list-group list-group-flush">
           <?php foreach ($recent_logs as $log): ?>
-            <div class="list-group-item bg-white border-0 px-4 py-3 d-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center">
+            <div class="list-group-item bg-white border-0 px-4 py-3 d-flex align-items-center justify-content-between gap-3 flex-wrap">
+              <div class="d-flex align-items-center min-w-0">
                 <?php
                 $log_theme = [
                     'login_success' => 'success',
@@ -177,9 +177,9 @@ require SMARTCMS_ROOT . '/admin/head.php';
                 <div class="badge bg-<?= $log_theme ?>-subtle text-<?= $log_theme ?> p-2 rounded-3 me-3 shadow-sm border border-<?= $log_theme ?>-subtle">
                   <i class="bi bi-record-circle fs-5"></i>
                 </div>
-                <div class="lh-sm">
+                <div class="lh-sm min-w-0">
                   <div class="fw-bold small text-dark mb-1"><?= smartcms_h($log['access_type']) ?></div>
-                  <div class="small text-secondary fw-medium"><?= smartcms_h($log['target_type']) ?> · Status: <?= (int)$log['status_code'] ?></div>
+                  <div class="small text-secondary fw-medium text-truncate"><?= smartcms_h($log['target_type']) ?> · Status: <?= (int)$log['status_code'] ?></div>
                 </div>
               </div>
               <time class="small text-secondary fw-bold opacity-75" datetime="<?= date('Y-m-d H:i:s', strtotime($log['created_at'])) ?>"><?= date('H:i', strtotime($log['created_at'])) ?></time>

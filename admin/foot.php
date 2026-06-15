@@ -8,7 +8,7 @@ if (!$is_login_page) {
     ?>
     </div>
     </main>
-    <footer class="mt-auto bg-white border-top py-4 mt-4 mx-n3 mx-lg-n4">
+    <footer class="mt-auto bg-white border-top py-4 mt-4">
       <div class="container-fluid px-3 px-md-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-secondary">
         <span>&copy; <?= date('Y') ?> <a href="<?= smartcms_h(smartcms_base_url('/admin/dashboard/')) ?>" class="text-decoration-none fw-bold">smartcms</a>. All rights reserved.</span>
         <div class="d-flex gap-3">

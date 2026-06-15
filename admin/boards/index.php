@@ -192,7 +192,9 @@ require SMARTCMS_ROOT . '/admin/head.php';
                         <?php endforeach; ?>
                       </select>
                       <button class="btn btn-primary btn-sm px-3 fw-bold shadow-none" type="submit">변경</button>
-                      <a href="/admin/boards/settings.php?key=<?= urlencode($board['board_key']) ?>" class="btn btn-light border btn-sm shadow-none" title="상세 설정"><i class="bi bi-gear-fill"></i></a>
+                      <a href="/admin/boards/settings.php?key=<?= urlencode($board['board_key']) ?>" class="btn btn-light border btn-sm shadow-none" title="상세 설정" aria-label="<?= smartcms_h($board['board_name']) ?> 상세 설정">
+                        <i class="bi bi-gear-fill"></i><span class="ms-1 d-md-none">상세 설정</span>
+                      </a>
                     </form>
                   </td>
                 </tr>
