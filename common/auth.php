@@ -224,7 +224,7 @@ function smartcms_require_login(?string $redirect_to = null): array
     smartcms_redirect($target);
 }
 
-function smartcms_member_login_next_target(string $fallback = '/member/mypage/'): string
+function smartcms_member_login_next_target(string $fallback = '/'): string
 {
     $next = trim((string)($_GET['next'] ?? ($_POST['next'] ?? '')));
 
@@ -236,7 +236,8 @@ function smartcms_member_login_next_target(string $fallback = '/member/mypage/')
             if (is_array($referer_parts)) {
                 $referer_host = (string)($referer_parts['host'] ?? '');
                 $referer_path = (string)($referer_parts['path'] ?? '');
-                if ($referer_path !== '' && ($referer_host === '' || $current_host === '' || strcasecmp($referer_host, $current_host) === 0)) {
+                $is_login_referer = in_array($referer_path, ['/member/login/', '/admin/login/'], true);
+                if (!$is_login_referer && $referer_path !== '' && ($referer_host === '' || $current_host === '' || strcasecmp($referer_host, $current_host) === 0)) {
                     $next = $referer_path;
                     if (isset($referer_parts['query']) && $referer_parts['query'] !== '') {
                         $next .= '?' . $referer_parts['query'];
