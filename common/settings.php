@@ -63,6 +63,12 @@ function smartcms_setting_bool(string $key, bool $default): bool
     return (string)smartcms_setting($key, $default ? '1' : '0') === '1';
 }
 
+function smartcms_site_name(): string
+{
+    $site_name = trim((string)smartcms_setting('site_name', smartcms_config_value('site_name', 'smartcms')));
+    return $site_name !== '' ? $site_name : 'smartcms';
+}
+
 function smartcms_save_settings(array $values): void
 {
     smartcms_ensure_settings_table();
