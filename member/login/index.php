@@ -81,7 +81,7 @@ require SMARTCMS_ROOT . '/head.php';
             <div>
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <label for="login_password" class="form-label fw-bold small text-dark mb-0">비밀번호</label>
-                <a href="<?= smartcms_h(smartcms_base_url('/member/forgot/')) ?>" class="small text-decoration-none fw-bold">비밀번호 찾기</a>
+                <a href="<?= smartcms_h(smartcms_base_url('/member/forgot/')) ?>" class="small text-decoration-none fw-bold">비밀번호 초기화 요청</a>
               </div>
               <input class="form-control py-2" id="login_password" name="login_password" type="password"
                      placeholder="••••••••" autocomplete="new-password" required>

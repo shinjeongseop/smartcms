@@ -12,10 +12,10 @@ if (smartcms_current_user()) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
-    $message = '입력하신 이메일로 가입한 계정이 있다면 관리자에게 비밀번호 초기화를 요청해 주세요.';
+    $message = '해당 이메일로 가입된 계정이 확인되면, 관리자 확인 후 비밀번호 초기화를 진행합니다.';
 }
 
-$SMARTCMS_HEAD = ['title' => '비밀번호 찾기'];
+$SMARTCMS_HEAD = ['title' => '비밀번호 초기화 요청'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
@@ -37,14 +37,14 @@ require SMARTCMS_ROOT . '/head.php';
             </div>
             <div>
               <p class="text-uppercase small fw-bold text-white-50 mb-1">Account Help</p>
-              <h1 class="h3 fw-bold mb-0">비밀번호 찾기</h1>
+              <h1 class="h3 fw-bold mb-0">비밀번호 초기화 요청</h1>
             </div>
           </div>
         </header>
 
         <div class="card-body p-4 p-md-5">
           <p class="text-body-secondary mb-4 fw-medium">
-            보안을 위해 자동 재설정 링크 대신 관리자 확인 후 비밀번호 초기화를 진행합니다.
+            보안을 위해 자동 재설정 링크는 제공하지 않습니다. 가입 이메일을 입력하면 관리자 확인 후 비밀번호 초기화 요청을 처리합니다.
           </p>
 
           <form class="d-grid gap-4" method="post" autocomplete="on">
@@ -54,7 +54,7 @@ require SMARTCMS_ROOT . '/head.php';
               <input class="form-control py-2" id="email" name="email" type="email" value="<?= smartcms_h($email) ?>" placeholder="name@example.com" autocomplete="email" required>
             </div>
             <div class="d-grid pt-2">
-              <button type="submit" class="btn btn-primary px-4 py-2 fw-bold shadow-sm">초기화 요청 안내 받기</button>
+              <button type="submit" class="btn btn-primary px-4 py-2 fw-bold shadow-sm">초기화 요청하기</button>
             </div>
           </form>
 
