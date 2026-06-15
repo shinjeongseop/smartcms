@@ -1,0 +1,74 @@
+<?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/../../common/auth.php';
+
+$message = '';
+$email = trim((string)($_POST['email'] ?? ''));
+
+if (smartcms_current_user()) {
+    smartcms_redirect('/member/password/');
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    smartcms_verify_csrf_or_fail();
+    $message = '입력하신 이메일로 가입한 계정이 있다면 관리자에게 비밀번호 초기화를 요청해 주세요.';
+}
+
+$SMARTCMS_HEAD = ['title' => '비밀번호 찾기'];
+require SMARTCMS_ROOT . '/head.php';
+?>
+
+<section class="container-fluid container-xxl py-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5">
+      <?php if ($message !== ''): ?>
+        <aside class="alert alert-info d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
+          <i class="bi bi-info-circle-fill fs-5"></i>
+          <div class="fw-medium small"><?= smartcms_h($message) ?></div>
+        </aside>
+      <?php endif; ?>
+
+      <article class="card border shadow-lg overflow-hidden">
+        <header class="card-header bg-primary text-white p-4 p-md-5">
+          <div class="d-flex align-items-center gap-4">
+            <div class="badge bg-white text-primary p-3 rounded-3 shadow-sm">
+              <i class="bi bi-key-fill fs-4"></i>
+            </div>
+            <div>
+              <p class="text-uppercase small fw-bold text-white-50 mb-1">Account Help</p>
+              <h1 class="h3 fw-bold mb-0">비밀번호 찾기</h1>
+            </div>
+          </div>
+        </header>
+
+        <div class="card-body p-4 p-md-5">
+          <p class="text-body-secondary mb-4 fw-medium">
+            보안을 위해 자동 재설정 링크 대신 관리자 확인 후 비밀번호 초기화를 진행합니다.
+          </p>
+
+          <form class="d-grid gap-4" method="post" autocomplete="on">
+            <?= smartcms_csrf_input() ?>
+            <div>
+              <label for="email" class="form-label fw-bold small text-dark">가입 이메일</label>
+              <input class="form-control py-2" id="email" name="email" type="email" value="<?= smartcms_h($email) ?>" placeholder="name@example.com" autocomplete="email" required>
+            </div>
+            <div class="d-grid pt-2">
+              <button type="submit" class="btn btn-primary px-4 py-2 fw-bold shadow-sm">초기화 요청 안내 받기</button>
+            </div>
+          </form>
+
+          <footer class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-5 pt-4 border-top">
+            <p class="text-body-secondary small mb-0 fw-medium">비밀번호를 기억하셨나요?</p>
+            <a href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>" class="btn btn-light border text-primary px-4 py-2 fw-bold shadow-none">로그인으로 돌아가기</a>
+          </footer>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<?php
+$SMARTCMS_FOOT = [];
+require SMARTCMS_ROOT . '/foot.php';
+?>

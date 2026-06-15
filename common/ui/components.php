@@ -84,3 +84,24 @@ if (!function_exists('smartcms_user_avatar_markup')) {
         return '<span class="rounded-circle d-inline-flex align-items-center justify-content-center bg-primary text-white shadow-sm ' . smartcms_h($size_class) . ' ' . smartcms_h($fallback_text_class) . '">' . smartcms_h($label) . '</span>';
     }
 }
+
+if (!function_exists('smartcms_pagination_window')) {
+    function smartcms_pagination_window(int $current_page, int $total_pages, int $radius = 2): array
+    {
+        $total_pages = max(1, $total_pages);
+        $current_page = max(1, min($current_page, $total_pages));
+        $radius = max(1, $radius);
+        $start = max(1, $current_page - $radius);
+        $end = min($total_pages, $current_page + $radius);
+
+        if ($current_page <= $radius + 1) {
+            $end = min($total_pages, ($radius * 2) + 1);
+        }
+
+        if ($current_page >= $total_pages - $radius) {
+            $start = max(1, $total_pages - ($radius * 2));
+        }
+
+        return range($start, $end);
+    }
+}

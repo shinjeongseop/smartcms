@@ -67,7 +67,7 @@ try {
     $users = smartcms_fetch_all($query, $params);
 } catch (Throwable $e) {
     $users = [];
-    $message = '회원 목록을 불러오는 중 오류 발생: ' . $e->getMessage();
+    $message = '회원 목록을 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
     $message_type = 'error';
 }
 
@@ -108,7 +108,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
             </div>
             <?php if ($search !== ''): ?>
                 <div class="col-auto">
-                    <a href="?" class="btn btn-light border btn-sm rounded-pill px-3 shadow-none">필터 초기화</a>
+                    <a href="?" class="btn btn-light border btn-sm rounded-2 px-3 shadow-none">필터 초기화</a>
                 </div>
             <?php endif; ?>
         </form>
@@ -119,13 +119,13 @@ require SMARTCMS_ROOT . '/admin/head.php';
 <section class="card border shadow-sm overflow-hidden">
     <header class="card-header bg-white border-bottom py-3 px-4 d-flex align-items-center justify-content-between">
         <h5 class="card-title mb-0 fw-bold text-dark">전체 회원 목록</h5>
-        <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold">
+        <span class="badge bg-primary-subtle text-primary rounded-2 px-3 py-2 fw-semibold">
             총 <?= number_format($total_users) ?>명
         </span>
     </header>
     
     <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0 text-nowrap">
+        <table class="table table-hover align-middle mb-0 text-nowrap sc-admin-stack-table">
             <thead class="table-light">
                 <tr class="small text-uppercase fw-bold text-secondary">
                     <th scope="col" class="ps-4 py-3">ID</th>
@@ -139,18 +139,18 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <tbody class="table-group-divider">
                 <?php foreach ($users as $user): ?>
                     <tr>
-                        <td class="ps-4 text-secondary small">#<?= (int)$user['id'] ?></td>
-                        <td>
+                        <td class="ps-4 text-secondary small" data-label="ID">#<?= (int)$user['id'] ?></td>
+                        <td data-label="회원 정보">
                             <div class="d-flex align-items-center gap-3">
                                 <?= smartcms_user_avatar_markup($user, 'sc-admin-avatar-36', 'fw-bold small') ?>
                                 <div class="lh-sm flex-grow-1 min-w-0">
                                     <input type="text" name="name" form="form-user-<?= (int)$user['id'] ?>" class="form-control form-control-sm fw-bold text-dark mb-2" value="<?= smartcms_h($user['name']) ?>" maxlength="80" aria-label="이름">
                                     <input type="text" name="nickname" form="form-user-<?= (int)$user['id'] ?>" class="form-control form-control-sm text-secondary mb-2" value="<?= smartcms_h((string)($user['nickname'] ?? '')) ?>" maxlength="80" placeholder="닉네임 (선택)" aria-label="닉네임">
-                                    <div class="text-xs text-secondary text-truncate"><?= smartcms_h($user['email']) ?></div>
+                                    <div class="small text-secondary text-truncate"><?= smartcms_h($user['email']) ?></div>
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td data-label="권한 설정">
                             <form class="d-flex gap-2 align-items-center" method="post" id="form-user-<?= (int)$user['id'] ?>">
                                 <?= smartcms_csrf_input() ?>
                                 <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
@@ -171,19 +171,19 @@ require SMARTCMS_ROOT . '/admin/head.php';
                                 </select>
                             </form>
                         </td>
-                        <td>
+                        <td data-label="상태">
                             <?php if ($user['status'] === 'active'): ?>
-                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1 small">정상</span>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-2 px-2 py-1 small">정상</span>
                             <?php else: ?>
-                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1 small">차단</span>
+                                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-2 px-2 py-1 small">차단</span>
                             <?php endif; ?>
                         </td>
-                        <td class="text-secondary small">
+                        <td class="text-secondary small" data-label="가입일">
                             <time datetime="<?= date('Y-m-d', strtotime($user['created_at'])) ?>">
                                 <?= smartcms_h(date('Y-m-d', strtotime($user['created_at']))) ?>
                             </time>
                         </td>
-                        <td class="text-end pe-4">
+                        <td class="text-end pe-4" data-label="액션">
                             <button type="submit" form="form-user-<?= (int)$user['id'] ?>" class="btn btn-primary btn-sm px-3 shadow-none">저장</button>
                         </td>
                     </tr>

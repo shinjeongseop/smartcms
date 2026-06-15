@@ -25,13 +25,13 @@ body {
 }
 
 .sc-avatar-72 {
-  width: 72px;
-  height: 72px;
+  width: 4.5rem;
+  height: 4.5rem;
 }
 
 .sc-avatar-32 {
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
 }
 
 img.sc-avatar-72,
@@ -74,8 +74,8 @@ h6,
 
 /* Custom Scrollbar for modern browsers */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 0.5rem;
+  height: 0.5rem;
 }
 
 ::-webkit-scrollbar-track {
@@ -84,7 +84,7 @@ h6,
 
 ::-webkit-scrollbar-thumb {
   background: #d1d5db;
-  border-radius: 4px;
+  border-radius: 0.25rem;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -102,5 +102,21 @@ h6,
 }
 
 .jodit-wysiwyg {
-  min-height: 320px;
+  min-height: 20rem;
+}
+
+.sc-col-5 {
+  width: 5rem;
+}
+
+.sc-col-6 {
+  width: 6.25rem;
+}
+
+.sc-col-7 {
+  width: 7.5rem;
+}
+
+.sc-col-9 {
+  width: 9.375rem;
 }

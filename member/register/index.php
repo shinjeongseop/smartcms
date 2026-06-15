@@ -103,10 +103,10 @@ require SMARTCMS_ROOT . '/head.php';
               <label for="password" class="form-label fw-bold small text-dark">비밀번호 <span class="text-primary">*</span></label>
               <input class="form-control py-2" id="password" name="password" type="password"
                      placeholder="8자 이상의 비밀번호" minlength="8" autocomplete="new-password" required>
-              <div class="form-text text-xs ps-2 pt-1 opacity-75">영문, 숫자, 특수문자 조합을 권장합니다.</div>
+              <div class="form-text small ps-2 pt-1 opacity-75">영문, 숫자, 특수문자 조합을 권장합니다.</div>
             </div>
             <div class="d-grid pt-2">
-              <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">회원가입 완료하기</button>
+              <button type="submit" class="btn btn-primary rounded-2 px-4 py-2 fw-bold shadow-sm">회원가입 완료하기</button>
             </div>
           </form>
 
@@ -114,7 +114,7 @@ require SMARTCMS_ROOT . '/head.php';
             <p class="text-body-secondary small mb-0 fw-medium">
               이미 계정이 있으신가요?
             </p>
-            <a href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>" class="btn btn-light border text-primary rounded-pill px-4 py-2 fw-bold shadow-none">로그인</a>
+            <a href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>" class="btn btn-light border text-primary rounded-2 px-4 py-2 fw-bold shadow-none">로그인</a>
           </footer>
         </div>
       </article>

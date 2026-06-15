@@ -44,7 +44,7 @@ try {
         ];
     }
 } catch (Throwable $e) {
-    $message = '커뮤니티 데이터를 불러오지 못했습니다: ' . $e->getMessage();
+    $message = '커뮤니티 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
 }
 
 $SMARTCMS_HEAD = [
@@ -61,14 +61,14 @@ require SMARTCMS_ROOT . '/head.php';
   <div class="container-xxl">
     <div class="row align-items-center g-5 m-0">
       <div class="col-lg-7 text-center text-lg-start">
-        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 mb-3 fw-semibold">v2.1 Semantic & Bootstrap</span>
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-2 px-3 py-2 mb-3 fw-semibold">v2.1 Semantic & Bootstrap</span>
         <h1 class="display-4 fw-bold mb-3 lh-sm text-emphasis">더 가볍고, 더 똑똑한<br>차세대 커뮤니티 CMS</h1>
         <p class="lead mb-4 text-body-secondary">
           HTML5 시맨틱 마크업과 부트스트랩 5의 표준 컴포넌트를 결합했습니다.<br class="d-none d-md-block">
           유지보수가 쉽고 구조가 명확한 현대적인 CMS를 경험해보세요.
         </p>
         <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
-          <a class="btn btn-primary rounded-pill px-4 py-2 fw-semibold shadow-sm" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">시작하기</a>
+          <a class="btn btn-primary rounded-2 px-4 py-2 fw-semibold shadow-sm" href="<?= smartcms_h(smartcms_base_url('/board/')) ?>">시작하기</a>
         </div>
       </div>
       <div class="col-lg-5 d-none d-lg-block">
@@ -129,7 +129,7 @@ require SMARTCMS_ROOT . '/head.php';
               <?php endif; ?>
             </div>
           </div>
-          <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>" class="btn btn-light btn-sm rounded-pill px-3 flex-shrink-0 fw-bold shadow-none border text-primary">전체보기</a>
+          <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>" class="btn btn-light btn-sm rounded-2 px-3 flex-shrink-0 fw-bold shadow-none border text-primary">전체보기</a>
         </div>
       </article>
     </div>
@@ -139,15 +139,15 @@ require SMARTCMS_ROOT . '/head.php';
         <div class="card-body p-4 d-flex align-items-center">
           <div class="row row-cols-3 g-2 text-center w-100">
             <div>
-              <div class="text-xs text-body-secondary text-uppercase mb-1 fw-bold">Posts</div>
+              <div class="small text-body-secondary text-uppercase mb-1 fw-bold">Posts</div>
               <div class="h5 fw-bold mb-0"><?= number_format(array_sum($board_counts)) ?></div>
             </div>
             <div>
-              <div class="text-xs text-body-secondary text-uppercase mb-1 fw-bold">Boards</div>
+              <div class="small text-body-secondary text-uppercase mb-1 fw-bold">Boards</div>
               <div class="h5 fw-bold mb-0"><?= number_format(count($boards)) ?></div>
             </div>
             <div>
-              <div class="text-xs text-body-secondary text-uppercase mb-1 fw-bold">7 Days</div>
+              <div class="small text-body-secondary text-uppercase mb-1 fw-bold">7 Days</div>
               <div class="h5 fw-bold mb-0"><?= number_format(count($recent_posts)) ?></div>
             </div>
           </div>
@@ -197,7 +197,7 @@ require SMARTCMS_ROOT . '/head.php';
                       </div>
                       <div class="col-8 col-sm-9 col-md-10 min-w-0">
                         <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                          <span class="badge text-bg-light text-secondary rounded-pill small border"><?= smartcms_h($post['board_name']) ?></span>
+                          <span class="badge text-bg-light text-secondary rounded-2 small border"><?= smartcms_h($post['board_name']) ?></span>
                           <time class="small text-body-secondary fw-medium" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
                             <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                           </time>
@@ -233,9 +233,9 @@ require SMARTCMS_ROOT . '/head.php';
                   <div class="d-flex align-items-center justify-content-between gap-3">
                     <div>
                       <h3 class="h6 fw-bold mb-1 text-primary text-uppercase"><?= smartcms_h($board['board_name']) ?></h3>
-                      <p class="text-xs text-body-secondary mb-0"><?= smartcms_h($widget['summary']) ?></p>
+                      <p class="small text-body-secondary mb-0"><?= smartcms_h($widget['summary']) ?></p>
                     </div>
-                    <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" class="btn btn-light btn-sm rounded-pill px-3 flex-shrink-0 fw-bold shadow-none border text-primary">전체보기</a>
+                    <a href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" class="btn btn-light btn-sm rounded-2 px-3 flex-shrink-0 fw-bold shadow-none border text-primary">전체보기</a>
                   </div>
                 </header>
                 <?php $is_gallery_widget = (string)($widget['skin_meta']['skin'] ?? '') === 'gallery'; ?>
@@ -287,7 +287,7 @@ require SMARTCMS_ROOT . '/head.php';
                                 </div>
                                 <div class="col-9 min-w-0">
                                   <span class="text-truncate fw-medium d-block"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></span>
-                                  <time class="text-xs text-body-secondary" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
+                                  <time class="small text-body-secondary" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
                                     <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                                   </time>
                                 </div>
@@ -295,7 +295,7 @@ require SMARTCMS_ROOT . '/head.php';
                             <?php else: ?>
                               <div class="d-flex justify-content-between align-items-center gap-2">
                                 <span class="text-truncate fw-medium"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></span>
-                                <time class="text-xs text-body-secondary flex-shrink-0" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
+                                <time class="small text-body-secondary flex-shrink-0" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
                                   <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                                 </time>
                               </div>
@@ -327,10 +327,10 @@ require SMARTCMS_ROOT . '/head.php';
             <p class="small text-body-secondary mb-3">level <?= smartcms_h($user['level']) ?> · <?= smartcms_h($user['email']) ?></p>
             <div class="row g-2">
               <div class="col-6">
-                <a class="btn btn-light btn-sm w-100 rounded-pill border shadow-none" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지</a>
+                <a class="btn btn-light btn-sm w-100 rounded-2 border shadow-none" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지</a>
               </div>
               <div class="col-6">
-                <a class="btn btn-secondary btn-sm w-100 rounded-pill shadow-none" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
+                <a class="btn btn-secondary btn-sm w-100 rounded-2 shadow-none" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">로그아웃</a>
               </div>
             </div>
           </div>
@@ -341,7 +341,7 @@ require SMARTCMS_ROOT . '/head.php';
             <h2 class="h5 fw-bold mb-2">커뮤니티 로그인</h2>
             <p class="small text-white-50 mb-4">가입 후 글쓰기와 댓글 참여가 가능합니다. 지금 시작하세요!</p>
             <div class="d-grid gap-2">
-              <a class="btn btn-light text-primary fw-bold rounded-pill shadow-sm" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인</a>
+              <a class="btn btn-light text-primary fw-bold rounded-2 shadow-sm" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>">로그인</a>
             </div>
           </div>
         </article>
@@ -363,7 +363,7 @@ require SMARTCMS_ROOT . '/head.php';
                   <span class="text-primary fw-bold fs-5 lh-1 mt-1"><?= (int)$idx + 1 ?></span>
                   <div class="flex-grow-1 overflow-hidden">
                     <strong class="d-block text-truncate mb-1 text-dark"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></strong>
-                    <div class="d-flex flex-wrap gap-2 text-xs text-body-secondary fw-medium">
+                    <div class="d-flex flex-wrap gap-2 small text-body-secondary fw-medium">
                       <span>조회 <?= number_format((int)$post['view_count']) ?></span>
                       <span class="opacity-50">|</span>
                       <span><?= smartcms_h($post['board_name']) ?></span>
@@ -380,11 +380,11 @@ require SMARTCMS_ROOT . '/head.php';
 
       <section class="card border shadow-sm">
         <div class="card-body p-4 text-center">
-          <h3 class="text-xs fw-bold mb-3 text-uppercase text-body-secondary">전체 게시판</h3>
+          <h3 class="small fw-bold mb-3 text-uppercase text-body-secondary">전체 게시판</h3>
           <div class="d-flex flex-wrap justify-content-center gap-2">
             <?php foreach ($boards as $board_item): ?>
               <?php if ((string)$board_item['status'] === 'hidden') continue; ?>
-              <a href="<?= smartcms_h(smartcms_board_url((string)$board_item['board_key'])) ?>" class="btn btn-light btn-sm rounded-pill border text-xs fw-bold py-1 px-3 shadow-none">
+              <a href="<?= smartcms_h(smartcms_board_url((string)$board_item['board_key'])) ?>" class="btn btn-light btn-sm rounded-2 border small fw-bold py-1 px-3 shadow-none">
                 <?= smartcms_h($board_item['board_name']) ?>
               </a>
             <?php endforeach; ?>

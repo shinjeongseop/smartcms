@@ -77,13 +77,13 @@ require SMARTCMS_ROOT . '/head.php';
             <div>
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <label for="password" class="form-label fw-bold small text-dark mb-0">비밀번호</label>
-                <a href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>" class="text-xs text-decoration-none fw-bold">비밀번호 찾기</a>
+                <a href="<?= smartcms_h(smartcms_base_url('/member/forgot/')) ?>" class="small text-decoration-none fw-bold">비밀번호 찾기</a>
               </div>
               <input class="form-control py-2" id="password" name="password" type="password"
                      placeholder="••••••••" autocomplete="current-password" required>
             </div>
             <div class="d-grid pt-2">
-              <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">로그인하기</button>
+              <button type="submit" class="btn btn-primary rounded-2 px-4 py-2 fw-bold shadow-sm">로그인하기</button>
             </div>
           </form>
 
@@ -91,7 +91,7 @@ require SMARTCMS_ROOT . '/head.php';
             <p class="text-body-secondary small mb-0 fw-medium">
               계정이 아직 없으신가요?
             </p>
-            <a href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>" class="btn btn-light border text-primary rounded-pill px-4 py-2 fw-bold shadow-none">회원가입</a>
+            <a href="<?= smartcms_h(smartcms_base_url('/member/register/')) ?>" class="btn btn-light border text-primary rounded-2 px-4 py-2 fw-bold shadow-none">회원가입</a>
           </footer>
         </div>
       </article>

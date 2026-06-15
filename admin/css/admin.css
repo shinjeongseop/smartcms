@@ -4,7 +4,7 @@ body.smartcms-admin-page {
 
 /* Layout */
 :root {
-  --sc-sidebar-width: 260px;
+  --sc-sidebar-width: 16.25rem;
 }
 
 @media (min-width: 768px) {
@@ -30,42 +30,42 @@ body.smartcms-admin-page {
 }
 
 .sc-admin-avatar-34 {
-  width: 34px;
-  height: 34px;
+  width: 2.125rem;
+  height: 2.125rem;
 }
 
 .sc-admin-avatar-36 {
-  width: 36px;
-  height: 36px;
+  width: 2.25rem;
+  height: 2.25rem;
 }
 
 .sc-admin-avatar-40 {
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 .sc-admin-select-role {
-  width: 110px;
+  width: 6.875rem;
 }
 
 .sc-admin-select-level {
-  width: 70px;
+  width: 4.375rem;
 }
 
 .sc-admin-select-status {
-  width: 90px;
+  width: 5.625rem;
 }
 
 .sc-admin-select-page-level {
-  width: 100px;
+  width: 6.25rem;
 }
 
 .sc-admin-input-board-name {
-  width: 140px;
+  width: 8.75rem;
 }
 
 .sc-admin-input-confirm {
-  width: 200px;
+  width: 12.5rem;
 }
 
 .sc-admin-time-xs {
@@ -82,20 +82,19 @@ body.smartcms-admin-page {
 }
 
 .sc-admin-dot-6 {
-  width: 6px;
-  height: 6px;
+  width: 0.375rem;
+  height: 0.375rem;
   display: inline-block;
 }
 
 .sc-admin-dot-8 {
-  width: 8px;
-  height: 8px;
+  width: 0.5rem;
+  height: 0.5rem;
   display: inline-block;
 }
 
 .sc-admin-workspace {
   min-width: 0;
-}
 }
 
 /* Sidebar Customizations */
@@ -117,27 +116,27 @@ body.smartcms-admin-page {
 
 /* Topbar Customizations */
 .sc-admin-topbar .navbar {
-  backdrop-filter: saturate(200%) blur(6px);
+  backdrop-filter: saturate(200%) blur(0.375rem);
   background-color: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Card Patterns */
 .sc-admin-card {
-  border: none;
+  border: 1px solid var(--bs-border-color);
   border-radius: 0.5rem;
-  box-shadow: 0 2px 6px 0 rgba(67, 89, 113, 0.12);
+  box-shadow: var(--bs-box-shadow-sm);
   background-color: #fff;
 }
 
 .sc-stat-card {
-  border: none;
+  border: 1px solid var(--bs-border-color);
   border-radius: 0.5rem;
-  box-shadow: 0 2px 6px 0 rgba(67, 89, 113, 0.12);
+  box-shadow: var(--bs-box-shadow-sm);
   transition: transform 0.2s ease;
 }
 
 .sc-stat-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-0.3125rem);
 }
 
 /* Auth Pages (Login) */
@@ -145,15 +144,49 @@ body.smartcms-admin-auth {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
   background-color: #f5f5f9;
 }
 
 .form-signin {
-  max-width: 400px;
+  max-width: 25rem;
   padding: 2.5rem;
   background: #fff;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 10px 0 rgba(67, 89, 113, 0.1);
+  box-shadow: var(--bs-box-shadow-sm);
+}
+
+@media (max-width: 767.98px) {
+  .sc-admin-stack-table thead {
+    display: none;
+  }
+
+  .sc-admin-stack-table,
+  .sc-admin-stack-table tbody,
+  .sc-admin-stack-table tr,
+  .sc-admin-stack-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .sc-admin-stack-table tr {
+    border-bottom: 1px solid var(--bs-border-color);
+    padding: 0.75rem 1rem;
+  }
+
+  .sc-admin-stack-table td {
+    border: 0;
+    padding: 0.35rem 0;
+    white-space: normal;
+  }
+
+  .sc-admin-stack-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--bs-secondary-color);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
 }

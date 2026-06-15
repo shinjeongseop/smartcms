@@ -16,7 +16,7 @@
           </div>
           <div class="col-6 col-lg-2"><h3 class="h6 fw-bold text-white mb-3 text-uppercase">Support</h3>
             <ul class="list-unstyled small d-grid gap-2 fw-medium">
-              <li><a href="#" class="text-decoration-none text-reset text-primary fw-bold">개인정보처리방침</a></li>
+              <li><a href="<?= smartcms_h(smartcms_base_url('/privacy/')) ?>" class="text-decoration-none text-reset text-primary fw-bold">개인정보처리방침</a></li>
             </ul>
           </div>
           <div class="col-6 col-lg-2"><h3 class="h6 fw-bold text-white mb-3 text-uppercase">Admin</h3>

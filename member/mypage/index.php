@@ -81,8 +81,7 @@ require SMARTCMS_ROOT . '/head.php';
         <div class="card-body p-4 p-md-5">
           <section class="mb-5">
             <h2 class="h6 fw-bold text-uppercase text-primary mb-4">아바타 변경</h2>
-            <form method="post" enctype="multipart/form-data" class="card border bg-light-subtle shadow-none">
-              <div class="card-body p-4">
+            <form method="post" enctype="multipart/form-data" class="border rounded-3 bg-light-subtle p-4">
                 <?= smartcms_csrf_input() ?>
                 <div class="row g-3 align-items-end">
                   <div class="col-12 col-md-8">
@@ -90,7 +89,7 @@ require SMARTCMS_ROOT . '/head.php';
                     <input class="form-control" type="file" name="avatar_file" id="avatar_file" accept="image/jpeg,image/png,image/gif,image/webp">
                   </div>
                   <div class="col-12 col-md-4 d-flex justify-content-md-end">
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm w-100">
+                    <button type="submit" class="btn btn-primary rounded-2 px-4 py-2 fw-bold shadow-sm w-100">
                       <i class="bi bi-upload me-2"></i>아바타 저장
                     </button>
                   </div>
@@ -98,14 +97,12 @@ require SMARTCMS_ROOT . '/head.php';
                     <div class="form-text small text-secondary mb-0">JPG, PNG, GIF, WEBP 형식만 가능하며 최대 2MB까지 업로드할 수 있습니다.</div>
                   </div>
                 </div>
-              </div>
             </form>
           </section>
 
           <section class="mb-5">
             <h2 class="h6 fw-bold text-uppercase text-primary mb-4">프로필 정보</h2>
-            <form method="post" class="card border bg-light-subtle shadow-none">
-              <div class="card-body p-4">
+            <form method="post" class="border rounded-3 bg-light-subtle p-4">
                 <?= smartcms_csrf_input() ?>
                 <input type="hidden" name="action" value="profile">
                 <div class="row g-3 align-items-end">
@@ -122,7 +119,7 @@ require SMARTCMS_ROOT . '/head.php';
                     <input class="form-control" type="text" name="company_name" id="company_name" value="<?= smartcms_h($profile_values['company_name']) ?>" maxlength="120" placeholder="선택 입력">
                   </div>
                   <div class="col-12">
-                    <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
+                    <button type="submit" class="btn btn-primary rounded-2 px-4 py-2 fw-bold shadow-sm">
                       <i class="bi bi-save me-2"></i>프로필 저장
                     </button>
                   </div>
@@ -130,7 +127,6 @@ require SMARTCMS_ROOT . '/head.php';
                     <div class="form-text small text-secondary mb-0">이름과 닉네임은 각각 따로 저장됩니다. 닉네임은 비워두면 표시되지 않습니다.</div>
                   </div>
                 </div>
-              </div>
             </form>
           </section>
 
@@ -165,10 +161,10 @@ require SMARTCMS_ROOT . '/head.php';
           </section>
 
           <footer class="d-flex gap-3 flex-wrap pt-4 border-top">
-            <a class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>">
+            <a class="btn btn-primary rounded-2 px-4 py-2 fw-bold shadow-sm" href="<?= smartcms_h(smartcms_base_url('/member/password/')) ?>">
               <i class="bi bi-shield-lock me-2"></i>비밀번호 변경
             </a>
-            <a class="btn btn-light border text-danger rounded-pill px-4 py-2 fw-bold shadow-none" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">
+            <a class="btn btn-light border text-danger rounded-2 px-4 py-2 fw-bold shadow-none" href="<?= smartcms_h(smartcms_base_url('/member/logout/')) ?>">
               <i class="bi bi-box-arrow-right me-2"></i>로그아웃
             </a>
           </footer>

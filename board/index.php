@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common/board.php';
+require_once __DIR__ . '/../common/ui/components.php';
 $board_key    = smartcms_board_key((string)($_GET['board'] ?? ''));
 $board        = $board_key !== '' ? smartcms_board_find($board_key) : null;
 $boards       = [];
@@ -38,7 +39,7 @@ try {
         $search_posts = $search_pagination['items'];
     }
 } catch (Throwable $e) {
-    $message = '게시판을 불러오지 못했습니다: ' . $e->getMessage();
+    $message = '게시판을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
     $message_type = 'error';
 }
 
@@ -68,7 +69,7 @@ require SMARTCMS_ROOT . '/head.php';
             <h1 class="h4 fw-bold mb-2">"<?= smartcms_h($keyword) ?>" 검색 결과</h1>
             <p class="text-secondary mb-0">게시글 제목과 본문에서 찾은 글을 보여줍니다.</p>
           </div>
-          <a class="btn btn-light border rounded-pill px-4 fw-bold text-secondary" href="/board/">검색 초기화</a>
+          <a class="btn btn-light border rounded-2 px-4 fw-bold text-secondary" href="/board/">검색 초기화</a>
         </div>
       </section>
     <?php endif; ?>
@@ -81,7 +82,7 @@ require SMARTCMS_ROOT . '/head.php';
             <p class="small text-secondary mb-0">총 <?= number_format((int)$search_pagination['total']) ?>건</p>
           </div>
           <?php if ((int)$search_pagination['pages'] > 1): ?>
-            <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-semibold">
+            <span class="badge bg-primary-subtle text-primary rounded-2 px-3 py-2 fw-semibold">
               <?= (int)$search_pagination['page'] ?> / <?= (int)$search_pagination['pages'] ?>
             </span>
           <?php endif; ?>
@@ -92,12 +93,12 @@ require SMARTCMS_ROOT . '/head.php';
             <a class="list-group-item list-group-item-action p-4 d-flex flex-column flex-md-row align-items-md-center gap-3"
                href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
               <div class="d-flex align-items-center gap-2 flex-shrink-0">
-                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-bold"><?= smartcms_h($post['board_name']) ?></span>
+                <span class="badge bg-primary-subtle text-primary rounded-2 px-3 py-2 fw-bold"><?= smartcms_h($post['board_name']) ?></span>
                 <?php if ((int)$post['is_notice'] === 1): ?>
-                  <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1 small">공지</span>
+                  <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-2 px-2 py-1 small">공지</span>
                 <?php endif; ?>
                 <?php if ((int)$post['is_secret'] === 1): ?>
-                  <span class="badge bg-dark rounded-pill px-2 py-1 small"><i class="bi bi-lock-fill me-1"></i>비밀</span>
+                  <span class="badge bg-dark rounded-2 px-2 py-1 small"><i class="bi bi-lock-fill me-1"></i>비밀</span>
                 <?php endif; ?>
               </div>
 
@@ -129,14 +130,14 @@ require SMARTCMS_ROOT . '/head.php';
           <div class="card-footer bg-white border-top py-4">
             <nav aria-label="검색 결과 페이지">
               <ul class="pagination pagination-sm justify-content-center mb-0 gap-1">
-                <?php for ($i = 1; $i <= (int)$search_pagination['pages']; $i++): ?>
+                <?php foreach (smartcms_pagination_window((int)$search_pagination['page'], (int)$search_pagination['pages']) as $i): ?>
                   <li class="page-item <?= $i === (int)$search_pagination['page'] ? 'active' : '' ?>">
                     <a class="page-link rounded-circle border shadow-sm"
                        href="?q=<?= rawurlencode((string)$search_pagination['keyword']) ?>&page=<?= $i ?>">
                       <?= $i ?>
                     </a>
                   </li>
-                <?php endfor; ?>
+                <?php endforeach; ?>
               </ul>
             </nav>
           </div>

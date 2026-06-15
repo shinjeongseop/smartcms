@@ -75,20 +75,20 @@ require SMARTCMS_ROOT . '/head.php';
             <div>
               <label for="new_password" class="form-label fw-bold small text-dark">새 비밀번호</label>
               <input class="form-control py-2" id="new_password" name="new_password" type="password" minlength="8" required placeholder="8자 이상의 새 비밀번호">
-              <div class="form-text text-xs ps-2 pt-1 opacity-75">영문, 숫자, 특수문자 조합을 권장합니다.</div>
+              <div class="form-text small ps-2 pt-1 opacity-75">영문, 숫자, 특수문자 조합을 권장합니다.</div>
             </div>
             <div>
               <label for="confirm_password" class="form-label fw-bold small text-dark">새 비밀번호 확인</label>
               <input class="form-control py-2" id="confirm_password" name="confirm_password" type="password" minlength="8" required placeholder="새 비밀번호를 한 번 더 입력하세요.">
             </div>
             <div class="d-grid pt-2">
-              <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">비밀번호 변경 완료</button>
+              <button type="submit" class="btn btn-primary rounded-2 px-4 py-2 fw-bold shadow-sm">비밀번호 변경 완료</button>
             </div>
           </form>
 
           <footer class="d-flex flex-wrap justify-content-between align-items-center gap-3 mt-5 pt-4 border-top">
             <p class="text-body-secondary small mb-0 fw-medium">변경 후에는 다시 로그인할 필요가 없습니다.</p>
-            <a class="btn btn-light border text-primary rounded-pill px-4 py-2 fw-bold shadow-none" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지로 돌아가기</a>
+            <a class="btn btn-light border text-primary rounded-2 px-4 py-2 fw-bold shadow-none" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>">마이페이지로 돌아가기</a>
           </footer>
         </div>
       </article>

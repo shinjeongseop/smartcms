@@ -114,7 +114,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
     <section class="card border shadow-sm h-100">
       <header class="card-header bg-white border-bottom p-4 d-flex align-items-center justify-content-between">
         <h2 class="h5 mb-0 fw-bold text-dark">최근 가입 회원</h2>
-        <a href="/admin/users/" class="btn btn-light border btn-sm rounded-pill px-3 fw-bold shadow-none text-primary">전체보기</a>
+        <a href="/admin/users/" class="btn btn-light border btn-sm rounded-2 px-3 fw-bold shadow-none text-primary">전체보기</a>
       </header>
       <div class="card-body p-0">
         <div class="table-responsive">
@@ -135,9 +135,9 @@ require SMARTCMS_ROOT . '/admin/head.php';
                       <div class="lh-sm">
                         <div class="fw-bold text-dark small mb-1"><?= smartcms_h(smartcms_user_display_name($u)) ?></div>
                         <?php if (trim((string)($u['nickname'] ?? '')) !== '' && trim((string)($u['nickname'] ?? '')) !== trim((string)($u['name'] ?? ''))): ?>
-                          <div class="text-xs text-secondary fw-medium mb-1">이름: <?= smartcms_h($u['name']) ?></div>
+                          <div class="small text-secondary fw-medium mb-1">이름: <?= smartcms_h($u['name']) ?></div>
                         <?php endif; ?>
-                        <div class="text-xs text-secondary opacity-75 fw-medium"><?= smartcms_h($u['email']) ?></div>
+                        <div class="small text-secondary opacity-75 fw-medium"><?= smartcms_h($u['email']) ?></div>
                       </div>
                     </div>
                   </td>
@@ -159,7 +159,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
     <section class="card border shadow-sm h-100">
       <header class="card-header bg-white border-bottom p-4 d-flex align-items-center justify-content-between">
         <h2 class="h5 mb-0 fw-bold text-dark">최근 시스템 활동</h2>
-        <a href="/admin/logs/" class="btn btn-light border btn-sm rounded-pill px-3 fw-bold shadow-none text-secondary">로그 전체보기</a>
+        <a href="/admin/logs/" class="btn btn-light border btn-sm rounded-2 px-3 fw-bold shadow-none text-secondary">로그 전체보기</a>
       </header>
       <div class="card-body p-0">
         <div class="list-group list-group-flush">
@@ -174,12 +174,12 @@ require SMARTCMS_ROOT . '/admin/head.php';
                     'page_view' => 'info'
                 ][$log['access_type']] ?? 'secondary';
                 ?>
-                <div class="badge bg-<?= $log_theme ?>-subtle text-<?= $log_theme ?> p-2.5 rounded-3 me-3 shadow-sm border border-<?= $log_theme ?>-subtle">
+                <div class="badge bg-<?= $log_theme ?>-subtle text-<?= $log_theme ?> p-2 rounded-3 me-3 shadow-sm border border-<?= $log_theme ?>-subtle">
                   <i class="bi bi-record-circle fs-5"></i>
                 </div>
                 <div class="lh-sm">
                   <div class="fw-bold small text-dark mb-1"><?= smartcms_h($log['access_type']) ?></div>
-                  <div class="text-xs text-secondary fw-medium"><?= smartcms_h($log['target_type']) ?> · Status: <?= (int)$log['status_code'] ?></div>
+                  <div class="small text-secondary fw-medium"><?= smartcms_h($log['target_type']) ?> · Status: <?= (int)$log['status_code'] ?></div>
                 </div>
               </div>
               <time class="small text-secondary fw-bold opacity-75" datetime="<?= date('Y-m-d H:i:s', strtotime($log['created_at'])) ?>"><?= date('H:i', strtotime($log['created_at'])) ?></time>

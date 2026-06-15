@@ -18,7 +18,7 @@ $board_skin_meta = fn(array $item): array => smartcms_board_skin_meta($item);
         <article class="card h-100 border shadow-sm bg-white overflow-hidden <?= $skin_meta['header_class'] ?>">
           <div class="card-body p-4 p-lg-5">
             <div class="d-flex align-items-start justify-content-between mb-3">
-              <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-3 py-2 fw-bold">
+              <span class="badge <?= $skin_meta['badge_class'] ?> rounded-2 px-3 py-2 fw-bold">
                 <?= smartcms_h($board['board_key']) ?>
               </span>
               <div class="<?= $skin_meta['accent'] === 'dark' ? 'text-dark' : 'text-' . $skin_meta['accent'] ?> opacity-25">

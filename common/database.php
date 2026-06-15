@@ -51,7 +51,7 @@ function smartcms_db_check(array $db): array
         ]);
         return ['ok' => true, 'message' => 'DB 연결에 성공했습니다.'];
     } catch (Throwable $e) {
-        return ['ok' => false, 'message' => $e->getMessage()];
+        return ['ok' => false, 'message' => 'DB 연결에 실패했습니다. 입력 정보를 확인하세요.'];
     }
 }
 

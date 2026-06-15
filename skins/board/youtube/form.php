@@ -14,12 +14,12 @@ $show_submit_icon = $show_submit_icon ?? true;
         <div class="row g-4">
           <div class="col-12">
             <label for="title" class="form-label fw-bold text-dark">제목 <span class="text-primary">*</span></label>
-            <input class="form-control py-2.5" id="title" name="title" value="<?= smartcms_h($form_values['title'] ?? '') ?>" placeholder="게시글 제목을 입력하세요." required>
+            <input class="form-control py-2" id="title" name="title" value="<?= smartcms_h($form_values['title'] ?? '') ?>" placeholder="게시글 제목을 입력하세요." required>
           </div>
 
           <div class="col-12">
             <label for="link_url_1" class="form-label fw-bold text-dark">유튜브 주소 <span class="text-danger">*</span></label>
-            <input class="form-control py-2.5" id="link_url_1" name="link_url_1" type="text" value="<?= smartcms_h($form_values['link_url_1'] ?? '') ?>" placeholder="https://www.youtube.com/watch?v=...">
+            <input class="form-control py-2" id="link_url_1" name="link_url_1" type="text" value="<?= smartcms_h($form_values['link_url_1'] ?? '') ?>" placeholder="https://www.youtube.com/watch?v=...">
             <div class="form-text">유튜브 공유 링크 또는 youtu.be 단축 링크를 넣어주세요.</div>
             <input type="hidden" name="link_url_2" value="<?= smartcms_h($form_values['link_url_2'] ?? '') ?>">
           </div>
@@ -70,10 +70,10 @@ $show_submit_icon = $show_submit_icon ?? true;
 
           <div class="col-12 pt-3">
             <div class="d-flex flex-wrap gap-2">
-              <button class="btn <?= $skin_meta['button_class'] ?> rounded-pill px-5 py-2 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?>" type="submit">
+              <button class="btn <?= $skin_meta['button_class'] ?> rounded-2 px-5 py-2 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?>" type="submit">
                 <?php if ($show_submit_icon): ?><i class="bi bi-check2-circle me-1"></i><?php endif; ?><?= smartcms_h($submit_label ?? '저장하기') ?>
               </button>
-              <a class="btn btn-light border rounded-pill px-4 py-2 fw-bold shadow-none text-secondary" href="<?= smartcms_h($back_url) ?>">
+              <a class="btn btn-light border rounded-2 px-4 py-2 fw-bold shadow-none text-secondary" href="<?= smartcms_h($back_url) ?>">
                 <?= smartcms_h($back_label ?? '취소하고 목록으로') ?>
               </a>
             </div>
@@ -92,7 +92,7 @@ $show_submit_icon = $show_submit_icon ?? true;
               <form method="post" class="m-0">
                 <?= smartcms_csrf_input() ?>
                 <input type="hidden" name="action" value="hide">
-                <button class="btn btn-danger rounded-pill px-4 py-2 fw-bold shadow-sm" type="submit">지금 숨기기</button>
+                <button class="btn btn-danger rounded-2 px-4 py-2 fw-bold shadow-sm" type="submit">지금 숨기기</button>
               </form>
             </div>
           </div>

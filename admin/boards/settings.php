@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $board = smartcms_fetch_one("SELECT * FROM " . smartcms_table('boards') . " WHERE board_key = :key", ['key' => $board_key]);
         $permission = smartcms_fetch_one("SELECT * FROM " . smartcms_table('board_permissions') . " WHERE board_key = :key", ['key' => $board_key]);
     } catch (Throwable $e) {
-        $message = '설정 저장 중 오류가 발생했습니다: ' . $e->getMessage();
+        $message = '설정 저장 중 오류가 발생했습니다. 입력값과 게시판 상태를 확인하세요.';
         $message_type = 'error';
     }
 }

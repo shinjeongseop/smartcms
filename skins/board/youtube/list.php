@@ -17,11 +17,11 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
             </div>
           </div>
           <div class="col-12 col-lg-auto">
-            <button class="btn btn-danger rounded-pill px-4 w-100 shadow-none fw-bold" type="submit">검색</button>
+            <button class="btn btn-danger rounded-2 px-4 w-100 shadow-none fw-bold" type="submit">검색</button>
           </div>
           <?php if ($pagination['keyword'] !== ''): ?>
             <div class="col-12 col-lg-auto">
-              <a class="btn btn-light border rounded-pill px-4 w-100 shadow-none fw-bold text-secondary"
+              <a class="btn btn-light border rounded-2 px-4 w-100 shadow-none fw-bold text-secondary"
                  href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">초기화</a>
             </div>
           <?php endif; ?>
@@ -59,11 +59,11 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                   <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
                     <div class="d-flex flex-wrap align-items-center gap-2">
                       <?php if ((int)$post['is_notice'] === 1): ?>
-                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1 fw-bold">공지</span>
+                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-2 px-2 py-1 fw-bold">공지</span>
                       <?php else: ?>
-                        <span class="badge bg-light text-secondary border rounded-pill px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
+                        <span class="badge bg-light text-secondary border rounded-2 px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
                       <?php endif; ?>
-                      <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-2 py-1 fw-bold">YouTube</span>
+                      <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-2 px-2 py-1 fw-bold">YouTube</span>
                     </div>
                     <time class="small text-secondary fw-medium" datetime="<?= date('Y-m-d H:i:s', strtotime((string)$post['created_at'])) ?>">
                       <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
@@ -87,7 +87,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                     <?php endif; ?>
                   </div>
                   <div class="mt-auto">
-                    <a class="btn btn-primary btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm"
+                    <a class="btn btn-primary btn-sm rounded-2 px-3 py-2 fw-bold shadow-sm"
                        href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                       자세히
                     </a>
@@ -110,7 +110,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
       <footer class="card-footer bg-white p-4 p-lg-5 border-top">
         <nav aria-label="게시글 페이지 목록">
           <ul class="pagination pagination-sm justify-content-center mb-0 gap-1">
-            <?php for ($i = 1; $i <= (int)$pagination['pages']; $i++): ?>
+            <?php foreach (smartcms_pagination_window((int)$pagination['page'], (int)$pagination['pages']) as $i): ?>
               <li class="page-item <?= $i === (int)$pagination['page'] ? 'active' : '' ?>">
                 <a class="page-link border-0 rounded-circle px-3 py-2 fw-bold shadow-none"
                    href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])
@@ -119,7 +119,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                   <?= $i ?>
                 </a>
               </li>
-            <?php endfor; ?>
+            <?php endforeach; ?>
           </ul>
         </nav>
       </footer>
@@ -127,7 +127,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
 
     <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
       <footer class="card-footer bg-white border-top p-4 p-lg-5 text-end">
-        <a class="btn btn-primary rounded-pill px-4 fw-bold shadow-sm"
+        <a class="btn btn-primary rounded-2 px-4 fw-bold shadow-sm"
            href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">
           새글
         </a>

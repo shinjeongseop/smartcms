@@ -26,11 +26,11 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
             </div>
           </div>
           <div class="col-12 col-lg-auto">
-            <button class="btn <?= $layout === 'cards' ? 'btn-dark' : 'btn-secondary' ?> rounded-pill px-4 w-100 shadow-none fw-bold" type="submit">검색</button>
+            <button class="btn <?= $layout === 'cards' ? 'btn-dark' : 'btn-secondary' ?> rounded-2 px-4 w-100 shadow-none fw-bold" type="submit">검색</button>
           </div>
           <?php if ($pagination['keyword'] !== ''): ?>
             <div class="col-12 col-lg-auto">
-              <a class="btn btn-light border rounded-pill px-4 w-100 shadow-none fw-bold text-secondary"
+              <a class="btn btn-light border rounded-2 px-4 w-100 shadow-none fw-bold text-secondary"
                  href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">초기화</a>
             </div>
           <?php endif; ?>
@@ -69,15 +69,15 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
                       <div class="d-flex flex-wrap align-items-center gap-2">
                         <?php if ((int)$post['is_notice'] === 1): ?>
-                          <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-2 py-1 fw-bold">공지</span>
+                          <span class="badge <?= $skin_meta['badge_class'] ?> rounded-2 px-2 py-1 fw-bold">공지</span>
                         <?php else: ?>
-                          <span class="badge bg-light text-secondary border rounded-pill px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
+                          <span class="badge bg-light text-secondary border rounded-2 px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
                         <?php endif; ?>
                         <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?>
-                          <span class="badge bg-light text-secondary border rounded-pill px-2 py-1 fw-bold">첨부</span>
+                          <span class="badge bg-light text-secondary border rounded-2 px-2 py-1 fw-bold">첨부</span>
                         <?php endif; ?>
                         <?php if ((int)$post['comment_count'] > 0): ?>
-                          <span class="badge bg-light text-primary border rounded-pill px-2 py-1 fw-bold"><?= (int)$post['comment_count'] ?></span>
+                          <span class="badge bg-light text-primary border rounded-2 px-2 py-1 fw-bold"><?= (int)$post['comment_count'] ?></span>
                         <?php endif; ?>
                       </div>
                       <time class="small text-secondary fw-medium" datetime="<?= date('Y-m-d H:i:s', strtotime((string)$post['created_at'])) ?>">
@@ -98,7 +98,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                       <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-eye"></i><?= number_format((int)$post['view_count']) ?></span>
                     </div>
                     <div class="mt-auto">
-                      <a class="btn btn-primary btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm"
+                      <a class="btn btn-primary btn-sm rounded-2 px-3 py-2 fw-bold shadow-sm"
                          href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                         자세히
                       </a>
@@ -140,13 +140,13 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                 <div class="card-body <?= $gallery_mode ? 'p-2 p-lg-3' : 'p-4' ?> d-flex flex-column gap-2">
                   <div class="d-flex align-items-center justify-content-between gap-2">
                     <?php if ((int)$post['is_notice'] === 1): ?>
-                      <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill px-2 py-1 fw-bold">공지</span>
+                      <span class="badge <?= $skin_meta['badge_class'] ?> rounded-2 px-2 py-1 fw-bold">공지</span>
                     <?php else: ?>
-                      <span class="badge bg-light text-secondary border rounded-pill px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
+                      <span class="badge bg-light text-secondary border rounded-2 px-2 py-1 fw-bold">#<?= (int)$post['id'] ?></span>
                     <?php endif; ?>
                     <div class="d-flex align-items-center gap-2 text-secondary small">
                       <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?><i class="bi bi-paperclip <?= $accent_text ?>"></i><?php endif; ?>
-                      <?php if ($gallery_mode && (int)$post['comment_count'] > 0): ?><span class="badge bg-light text-primary border rounded-pill"><?= (int)$post['comment_count'] ?></span><?php endif; ?>
+                      <?php if ($gallery_mode && (int)$post['comment_count'] > 0): ?><span class="badge bg-light text-primary border rounded-2"><?= (int)$post['comment_count'] ?></span><?php endif; ?>
                     </div>
                   </div>
                     <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm stretched-link d-block text-truncate"
@@ -165,7 +165,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                   </div>
                   <?php if (!$gallery_mode && (int)$post['comment_count'] > 0): ?>
                     <div>
-                      <span class="badge bg-light text-primary border rounded-pill small"><?= (int)$post['comment_count'] ?>개의 댓글</span>
+                      <span class="badge bg-light text-primary border rounded-2 small"><?= (int)$post['comment_count'] ?>개의 댓글</span>
                     </div>
                   <?php endif; ?>
                 </div>
@@ -187,11 +187,11 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
         <table class="table table-hover align-middle mb-0 text-nowrap">
           <thead class="table-light">
             <tr class="text-uppercase small fw-bold text-secondary">
-              <th scope="col" class="ps-4 ps-lg-5 py-3 text-nowrap" style="width: 80px;">번호</th>
+              <th scope="col" class="ps-4 ps-lg-5 py-3 text-nowrap sc-col-5">번호</th>
               <th scope="col" class="py-3 text-nowrap">제목</th>
-              <th scope="col" class="d-none d-md-table-cell py-3 text-nowrap" style="width: 150px;">작성자</th>
-              <th scope="col" class="d-none d-lg-table-cell py-3 text-center text-nowrap" style="width: 100px;">조회</th>
-              <th scope="col" class="d-none d-md-table-cell pe-4 pe-lg-5 py-3 text-end text-nowrap" style="width: 120px;">날짜</th>
+              <th scope="col" class="d-none d-md-table-cell py-3 text-nowrap sc-col-9">작성자</th>
+              <th scope="col" class="d-none d-lg-table-cell py-3 text-center text-nowrap sc-col-6">조회</th>
+              <th scope="col" class="d-none d-md-table-cell pe-4 pe-lg-5 py-3 text-end text-nowrap sc-col-7">날짜</th>
             </tr>
           </thead>
           <tbody class="table-group-divider">
@@ -199,7 +199,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
               <tr class="<?= (int)$post['is_notice'] === 1 ? 'table-' . $accent . ' opacity-90' : '' ?>">
                 <td class="ps-4 ps-lg-5 text-secondary small">
                   <?php if ((int)$post['is_notice'] === 1): ?>
-                    <span class="badge <?= $skin_meta['badge_class'] ?> rounded-pill">공지</span>
+                    <span class="badge <?= $skin_meta['badge_class'] ?> rounded-2">공지</span>
                   <?php else: ?>
                     <?= (int)$post['id'] ?>
                   <?php endif; ?>
@@ -212,7 +212,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                       <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
                     </a>
                     <?php if ((int)$post['comment_count'] > 0): ?>
-                      <span class="badge bg-light text-primary border rounded-pill small"><?= (int)$post['comment_count'] ?></span>
+                      <span class="badge bg-light text-primary border rounded-2 small"><?= (int)$post['comment_count'] ?></span>
                     <?php endif; ?>
                     <?php if ((int)($post['attachment_count'] ?? 0) > 0): ?>
                       <i class="bi bi-paperclip text-muted small"></i>
@@ -249,7 +249,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
       <footer class="card-footer bg-white p-4 p-lg-5 border-top">
         <nav aria-label="게시글 페이지 목록">
           <ul class="pagination pagination-sm justify-content-center mb-0 gap-1">
-            <?php for ($i = 1; $i <= (int)$pagination['pages']; $i++): ?>
+            <?php foreach (smartcms_pagination_window((int)$pagination['page'], (int)$pagination['pages']) as $i): ?>
               <li class="page-item <?= $i === (int)$pagination['page'] ? 'active' : '' ?>">
                 <a class="page-link border-0 rounded-circle px-3 py-2 fw-bold shadow-none"
                    href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])
@@ -258,7 +258,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
                   <?= $i ?>
                 </a>
               </li>
-            <?php endfor; ?>
+            <?php endforeach; ?>
           </ul>
         </nav>
       </footer>
@@ -266,7 +266,7 @@ $thumb_config = smartcms_board_thumbnail_config($board, 'list');
 
     <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
       <footer class="card-footer bg-white border-top p-4 p-lg-5 text-end">
-        <a class="btn <?= smartcms_h((string)$skin_meta['button_class']) ?> rounded-pill px-4 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?>"
+        <a class="btn <?= smartcms_h((string)$skin_meta['button_class']) ?> rounded-2 px-4 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?>"
            href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">
           새글
         </a>

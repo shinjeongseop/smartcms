@@ -56,7 +56,7 @@ $boards = [];
 try {
     $boards = smartcms_board_list(true);
 } catch (Throwable $e) {
-    $message = '게시판 목록을 불러오지 못했습니다: ' . $e->getMessage();
+    $message = '게시판 목록을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
     $message_type = 'error';
 }
 
@@ -123,12 +123,12 @@ require SMARTCMS_ROOT . '/admin/head.php';
       <article class="card border shadow-sm overflow-hidden">
         <header class="card-header bg-white border-bottom py-4 px-4 d-flex align-items-center justify-content-between">
           <h2 class="h5 mb-0 fw-bold text-dark">운영 중인 게시판</h2>
-          <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-bold">
+          <span class="badge bg-primary-subtle text-primary rounded-2 px-3 py-2 fw-bold">
             총 <?= count($boards) ?>개 활성
           </span>
         </header>
         <div class="table-responsive">
-          <table class="table table-hover align-middle mb-0 text-nowrap">
+          <table class="table table-hover align-middle mb-0 text-nowrap sc-admin-stack-table">
             <thead class="table-light">
               <tr class="small text-uppercase fw-bold text-secondary">
                 <th scope="col" class="ps-4 py-3">게시판 정보</th>
@@ -141,32 +141,32 @@ require SMARTCMS_ROOT . '/admin/head.php';
             <tbody class="table-group-divider">
               <?php foreach ($boards as $board): ?>
                 <tr>
-                  <td class="ps-4 py-3">
+                  <td class="ps-4 py-3" data-label="게시판 정보">
                     <div class="d-flex align-items-center gap-3">
-                      <div class="p-2.5 bg-primary-subtle text-primary rounded shadow-sm"><i class="bi bi-chat-dots fs-5"></i></div>
+                      <div class="p-2 bg-primary-subtle text-primary rounded shadow-sm"><i class="bi bi-chat-dots fs-5"></i></div>
                       <div>
                         <div class="fw-bold text-dark mb-1"><?= smartcms_h($board['board_name']) ?></div>
-                        <a class="text-xs text-primary text-decoration-none fw-bold opacity-75" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" target="_blank">
+                        <a class="small text-primary text-decoration-none fw-bold opacity-75" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" target="_blank">
                           <i class="bi bi-box-arrow-up-right me-1"></i>/board/<?= smartcms_h($board['board_key']) ?>
                         </a>
                       </div>
                     </div>
                   </td>
-                  <td class="py-3">
+                  <td class="py-3" data-label="스킨">
                     <select class="form-select form-select-sm fw-bold" name="skin" form="board-update-<?= smartcms_h($board['board_key']) ?>">
                       <?php foreach (smartcms_board_skin_options() as $skin_key => $skin_label): ?>
                         <option value="<?= smartcms_h($skin_key) ?>" <?= (string)$board['skin'] === $skin_key ? 'selected' : '' ?>><?= smartcms_h($skin_label) ?></option>
                       <?php endforeach; ?>
                     </select>
                   </td>
-                  <td class="py-3">
+                  <td class="py-3" data-label="권한 요약">
                     <div class="d-flex gap-2">
                       <span class="badge bg-light text-dark border fw-bold px-2 py-1 small">목록 <?= $board['board_list_level'] ?></span>
                       <span class="badge bg-light text-dark border fw-bold px-2 py-1 small">보기 <?= $board['board_view_level'] ?></span>
                       <span class="badge bg-light text-dark border fw-bold px-2 py-1 small">쓰기 <?= $board['board_write_level'] ?></span>
                     </div>
                   </td>
-                  <td class="py-3">
+                  <td class="py-3" data-label="상태">
                     <div class="d-flex align-items-center gap-2">
                       <?php
                         $status_badge_class = match ((string)$board['status']) {
@@ -180,7 +180,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
                       <span class="small fw-bold text-capitalize text-dark"><?= $board['status'] ?></span>
                     </div>
                   </td>
-                  <td class="text-end pe-4 py-3">
+                  <td class="text-end pe-4 py-3" data-label="관리">
                     <form id="board-update-<?= smartcms_h($board['board_key']) ?>" class="d-inline-flex gap-2 align-items-center" method="post">
                       <?= smartcms_csrf_input() ?>
                       <input type="hidden" name="action" value="update">

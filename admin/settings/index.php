@@ -71,7 +71,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
         <div class="col-12 col-md-6">
           <label for="author_display_mode" class="form-label fw-bold small text-secondary text-uppercase mb-2">게시판 글쓴이 표시 정책</label>
-          <select class="form-select py-2.5 fw-bold" id="author_display_mode" name="author_display_mode">
+          <select class="form-select py-2 fw-bold" id="author_display_mode" name="author_display_mode">
             <?php foreach (smartcms_board_author_display_options() as $mode_key => $mode_label): ?>
               <option value="<?= smartcms_h($mode_key) ?>" <?= (string)($settings['author_display_mode'] ?? 'name') === $mode_key ? 'selected' : '' ?>><?= smartcms_h($mode_label) ?></option>
             <?php endforeach; ?>
@@ -81,13 +81,13 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
         <div class="col-12 col-md-6">
           <label for="site_name" class="form-label fw-bold small text-secondary text-uppercase mb-2">공식 사이트 이름</label>
-          <input class="form-control py-2.5 fw-bold" id="site_name" name="site_name" value="<?= smartcms_h($settings['site_name'] ?? 'smartcms') ?>" required>
+          <input class="form-control py-2 fw-bold" id="site_name" name="site_name" value="<?= smartcms_h($settings['site_name'] ?? 'smartcms') ?>" required>
           <div class="form-text text-muted small mt-2 fw-medium">브라우저 탭 타이틀과 로고 영역에 표시될 프로젝트 이름입니다.</div>
         </div>
 
         <div class="col-12 col-md-6">
           <label for="upload_max_mb" class="form-label fw-bold small text-secondary text-uppercase mb-2">첨부파일 단일 최대 용량 (MB)</label>
-          <input class="form-control py-2.5 fw-bold" id="upload_max_mb" name="upload_max_mb" type="number" min="1" max="100" value="<?= smartcms_h($settings['upload_max_mb'] ?? '10') ?>" required>
+          <input class="form-control py-2 fw-bold" id="upload_max_mb" name="upload_max_mb" type="number" min="1" max="100" value="<?= smartcms_h($settings['upload_max_mb'] ?? '10') ?>" required>
           <div class="form-text text-muted small mt-2 fw-medium">게시판 파일 업로드 시 적용되는 용량 제한입니다. (서버 설정 범위 내)</div>
         </div>
 
@@ -103,7 +103,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
         <div class="col-12 col-md-4">
           <label for="default_member_level" class="form-label fw-bold small text-secondary text-uppercase mb-2">신규 회원 가입 레벨</label>
-          <select class="form-select py-2.5 fw-bold" id="default_member_level" name="default_member_level">
+          <select class="form-select py-2 fw-bold" id="default_member_level" name="default_member_level">
             <?php for ($level = 1; $level <= 10; $level++): ?>
               <option value="<?= $level ?>" <?= $level === (int)($settings['default_member_level'] ?? 2) ? 'selected' : '' ?>>Level <?= $level ?><?= $level == 2 ? ' (System Default)' : '' ?></option>
             <?php endfor; ?>
@@ -112,7 +112,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
 
         <div class="col-12 col-md-4">
           <label for="admin_level" class="form-label fw-bold small text-secondary text-uppercase mb-2">관리자 최소 인증 레벨</label>
-          <select class="form-select py-2.5 fw-bold" id="admin_level" name="admin_level">
+          <select class="form-select py-2 fw-bold" id="admin_level" name="admin_level">
             <?php for ($level = 8; $level <= 10; $level++): ?>
               <option value="<?= $level ?>" <?= $level === (int)($settings['admin_level'] ?? 8) ? 'selected' : '' ?>>Level <?= $level ?><?= $level == 8 ? ' (Admin Base)' : '' ?></option>
             <?php endfor; ?>
@@ -130,7 +130,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
         </div>
 
         <footer class="col-12 mt-5 pt-3">
-          <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow-sm py-3 w-100 w-md-auto">
+          <button type="submit" class="btn btn-primary btn-lg rounded-2 px-5 fw-bold shadow-sm py-3 w-100 w-auto">
             <i class="bi bi-cloud-check me-2"></i>모든 시스템 설정 저장
           </button>
         </footer>

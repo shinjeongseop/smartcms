@@ -82,7 +82,7 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
     <!-- [NAV] 메인 네비게이션 -->
     <nav class="navbar bg-white border-top p-0 mt-3" aria-label="메인 메뉴">
       <div class="container-xxl">
-        <button class="btn btn-light border rounded-pill d-md-none my-2 px-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#siteNavOffcanvas" aria-controls="siteNavOffcanvas" aria-label="메뉴 열기">
+        <button class="btn btn-light border rounded-2 d-md-none my-2 px-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#siteNavOffcanvas" aria-controls="siteNavOffcanvas" aria-label="메뉴 열기">
           <i class="bi bi-list fs-4 lh-1"></i>
         </button>
         <div class="d-none d-md-block w-100">

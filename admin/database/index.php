@@ -105,7 +105,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
           <form method="post">
             <?= smartcms_csrf_input() ?>
             <input type="hidden" name="action" value="backup">
-            <button class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm py-2.5" type="submit">
+            <button class="btn btn-primary rounded-2 px-5 fw-bold shadow-sm py-2" type="submit">
               <i class="bi bi-download me-2"></i>SQL 백업 다운로드
             </button>
           </form>
@@ -133,7 +133,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
               <input class="form-control py-2 fw-bold" id="backup_file" name="backup_file" type="file" accept=".sql" required>
             </div>
             <div class="pt-2">
-              <button class="btn btn-dark rounded-pill px-5 fw-bold shadow-sm py-2.5" type="submit">
+              <button class="btn btn-dark rounded-2 px-5 fw-bold shadow-sm py-2" type="submit">
                 <i class="bi bi-arrow-repeat me-2"></i>SQL 복구 실행
               </button>
             </div>
@@ -153,21 +153,42 @@ require SMARTCMS_ROOT . '/admin/head.php';
                 <h2 class="h5 fw-bold mb-1 text-danger">시스템 데이터 초기화 (Dangerous Area)</h2>
               </div>
             </div>
-            <form class="d-flex flex-column flex-md-row gap-2 align-items-md-end" method="post">
-              <?= smartcms_csrf_input() ?>
-              <input type="hidden" name="action" value="reset">
+            <div class="d-flex flex-column flex-md-row gap-2 align-items-md-end">
               <div>
                 <label for="confirm_text" class="form-label fw-bold small text-danger text-uppercase">확인 문구 입력</label>
                 <input class="form-control border-danger-subtle py-2 px-3 fw-bold sc-admin-input-confirm" id="confirm_text" name="confirm_text" placeholder="RESET SMARTCMS" required>
               </div>
-              <button class="btn btn-danger rounded-pill px-4 py-2 fw-bold shadow-sm" type="submit">지금 즉시 초기화</button>
-            </form>
+              <button class="btn btn-danger px-4 py-2 fw-bold shadow-sm" type="button" data-bs-toggle="modal" data-bs-target="#databaseResetModal">초기화 확인</button>
+            </div>
           </div>
         </div>
       </section>
     </div>
   </div>
 </section>
+
+<div class="modal fade" id="databaseResetModal" tabindex="-1" aria-labelledby="databaseResetModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <form class="modal-content border-danger" method="post">
+      <?= smartcms_csrf_input() ?>
+      <input type="hidden" name="action" value="reset">
+      <div class="modal-header bg-danger text-white">
+        <h2 class="modal-title h5" id="databaseResetModalLabel">데이터베이스 초기화 최종 확인</h2>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="닫기"></button>
+      </div>
+      <div class="modal-body">
+        <p class="fw-bold text-danger mb-3">이 작업은 되돌릴 수 없습니다.</p>
+        <p class="text-secondary small mb-4">관리 테이블과 게시판 데이터가 삭제됩니다. 계속하려면 아래 확인 문구를 다시 입력하세요.</p>
+        <label for="confirm_text_modal" class="form-label fw-bold small text-danger text-uppercase">확인 문구</label>
+        <input class="form-control border-danger-subtle py-2 px-3 fw-bold" id="confirm_text_modal" name="confirm_text" placeholder="RESET SMARTCMS" required>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light border fw-bold" data-bs-dismiss="modal">취소</button>
+        <button class="btn btn-danger fw-bold" type="submit">지금 즉시 초기화</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <?php
 $SMARTCMS_FOOT = [];

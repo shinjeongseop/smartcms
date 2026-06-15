@@ -43,11 +43,11 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
 <?php if (!$is_login_page): $admin = smartcms_current_user(); ?>
   <div class="d-flex min-vh-100">
     <!-- [SIDEBAR] 어드민 사이드바 -->
-    <aside class="offcanvas-md offcanvas-start sc-admin-sidebar flex-column bg-white border-end p-3 flex-shrink-0 shadow-sm" tabindex="-1" id="adminSidebarOffcanvas">
+    <aside class="offcanvas-md offcanvas-start sc-admin-sidebar flex-column bg-white border-end p-3 flex-shrink-0 shadow-sm" tabindex="-1" id="adminSidebarOffcanvas" aria-labelledby="adminSidebarTitle">
       <header class="d-flex align-items-center justify-content-between mb-4 px-2">
         <a class="navbar-brand d-inline-flex align-items-center gap-2 fw-bold text-primary text-decoration-none" href="/admin/dashboard/">
           <span class="badge bg-primary-subtle text-primary rounded p-2 lh-1 shadow-sm"><i class="bi bi-app-indicator fs-4"></i></span>
-          <span class="fs-4">smartcms</span>
+          <span class="fs-4" id="adminSidebarTitle">smartcms</span>
         </a>
         <button type="button" class="btn-close d-md-none" data-bs-dismiss="offcanvas" data-bs-target="#adminSidebarOffcanvas" aria-label="Close"></button>
       </header>
@@ -55,7 +55,7 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
       <nav class="nav nav-pills flex-column gap-1 mb-auto" aria-label="관리자 메뉴">
         <p class="text-uppercase small fw-bold text-secondary opacity-50 mb-3 px-2 sc-admin-menu-eyebrow">Admin Menu</p>
         <?php foreach (smartcms_admin_nav_items() as $key => $item): ?>
-          <a class="nav-link d-flex align-items-center gap-2 py-2.5 px-3 rounded-2 <?= $key === $active_menu ? 'active fw-bold' : 'text-secondary' ?>" href="<?= smartcms_h($item['href']) ?>">
+          <a class="nav-link d-flex align-items-center gap-2 py-2 px-3 rounded-2 <?= $key === $active_menu ? 'active fw-bold' : 'text-secondary' ?>" href="<?= smartcms_h($item['href']) ?>">
             <i class="bi <?= smartcms_h($item['icon']) ?> fs-5"></i>
             <span class="fw-medium"><?= smartcms_h($item['label']) ?></span>
           </a>
@@ -99,7 +99,7 @@ if (!in_array('/admin/css/admin.css', $stylesheets, true)) {
             <h1 class="h5 fw-bold mb-0 text-dark d-sm-none"><?= smartcms_h($page_heading) ?></h1>
           </div>
           <div class="d-flex gap-2">
-            <a class="btn btn-light border btn-sm rounded-pill px-3 fw-bold shadow-none" href="/">
+            <a class="btn btn-light border btn-sm rounded-2 px-3 fw-bold shadow-none" href="/">
               <i class="bi bi-house me-1"></i><span class="d-none d-sm-inline">사이트 홈</span>
             </a>
           </div>

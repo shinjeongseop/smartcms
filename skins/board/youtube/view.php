@@ -15,9 +15,9 @@ $image_columns = max(1, (int)$thumb_config['columns']);
     <header class="d-flex align-items-start justify-content-between gap-3 mb-4">
       <div>
         <div class="mb-2">
-          <?php if ((int)$post['is_notice'] === 1): ?><span class="badge bg-<?= smartcms_h($accent) ?> rounded-pill me-1 px-3">공지</span><?php endif; ?>
-          <?php if ((int)$post['is_secret'] === 1): ?><span class="badge bg-dark rounded-pill me-1 px-3"><i class="bi bi-lock-fill me-1"></i>비밀글</span><?php endif; ?>
-          <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3">YouTube</span>
+          <?php if ((int)$post['is_notice'] === 1): ?><span class="badge bg-<?= smartcms_h($accent) ?> rounded-2 me-1 px-3">공지</span><?php endif; ?>
+          <?php if ((int)$post['is_secret'] === 1): ?><span class="badge bg-dark rounded-2 me-1 px-3"><i class="bi bi-lock-fill me-1"></i>비밀글</span><?php endif; ?>
+          <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-2 px-3">YouTube</span>
         </div>
         <h2 class="fs-5 fw-bold mb-0 text-dark"><?= smartcms_h($post['title']) ?></h2>
       </div>
@@ -53,7 +53,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
              href="<?= smartcms_h($link_url) ?>"
              target="_blank"
              rel="noopener noreferrer">
-            <span class="badge text-bg-light border text-body-secondary rounded-pill">링크 <?= (int)$index + 1 ?></span>
+            <span class="badge text-bg-light border text-body-secondary rounded-2">링크 <?= (int)$index + 1 ?></span>
             <span><?= smartcms_h($link_url) ?></span>
           </a>
         <?php endforeach; ?>
@@ -106,10 +106,10 @@ $image_columns = max(1, (int)$thumb_config['columns']);
       <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
         <div class="d-flex flex-wrap gap-2">
           <?php if ($user && smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
-            <a class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">새글</a>
+            <a class="btn btn-danger rounded-2 px-4 fw-bold shadow-sm" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">새글</a>
           <?php endif; ?>
           <?php if ($can_manage_post): ?>
-            <a class="btn btn-light border rounded-pill px-4 fw-bold shadow-none text-secondary"
+            <a class="btn btn-light border rounded-2 px-4 fw-bold shadow-none text-secondary"
                href="<?= smartcms_h(smartcms_base_url('/board/edit/')
                    . '?board=' . rawurlencode((string)$board['board_key'])
                    . '&id=' . rawurlencode((string)$post['id'])) ?>">
@@ -118,11 +118,11 @@ $image_columns = max(1, (int)$thumb_config['columns']);
             <form class="d-inline" method="post">
               <?= smartcms_csrf_input() ?>
               <input type="hidden" name="action" value="post_delete">
-              <button class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm" type="submit">삭제</button>
+              <button class="btn btn-danger rounded-2 px-4 fw-bold shadow-sm" type="submit">삭제</button>
             </form>
           <?php endif; ?>
         </div>
-        <a class="btn btn-light border rounded-pill px-4 fw-bold shadow-none text-secondary"
+        <a class="btn btn-light border rounded-2 px-4 fw-bold shadow-none text-secondary"
            href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>">
           목록
         </a>
@@ -144,7 +144,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
           <article class="p-3 bg-light rounded-3 border-start border-primary border-4 shadow-none">
             <header class="d-flex justify-content-between align-items-center gap-2 mb-2">
               <span class="fw-bold text-dark"><i class="bi bi-person me-1"></i><?= smartcms_h(smartcms_board_author_display_name($board, $comment)) ?></span>
-              <time class="text-secondary small fw-medium"><?= smartcms_h($comment['created_at']) ?></time>
+              <time class="text-secondary small fw-medium" datetime="<?= smartcms_h((string)$comment['created_at']) ?>"><?= smartcms_h($comment['created_at']) ?></time>
             </header>
             <div class="mb-0 text-dark fw-medium lh-base fs-6">
               <?= nl2br(smartcms_h((int)$comment['is_hidden'] === 1 ? '⚠️ 관리자에 의해 숨김 처리된 댓글입니다.' : $comment['content'])) ?>
@@ -154,7 +154,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
                 <?= smartcms_csrf_input() ?>
                 <input type="hidden" name="action" value="comment_hide">
                 <input type="hidden" name="comment_id" value="<?= smartcms_h($comment['id']) ?>">
-                <button class="btn btn-danger btn-sm rounded-pill px-3 shadow-none fw-bold" type="submit">댓글 숨김</button>
+                <button class="btn btn-danger btn-sm rounded-2 px-3 shadow-none fw-bold" type="submit">댓글 숨김</button>
               </form>
             <?php endif; ?>
           </article>
@@ -177,7 +177,7 @@ $image_columns = max(1, (int)$thumb_config['columns']);
             <textarea class="form-control py-3" id="content" name="content" rows="4" required placeholder="상대방을 존중하는 따뜻한 댓글을 남겨주세요."></textarea>
           </div>
           <div class="text-end">
-            <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-sm">댓글 등록</button>
+            <button type="submit" class="btn btn-primary rounded-2 px-5 py-2 fw-bold shadow-sm">댓글 등록</button>
           </div>
         </form>
       </section>
