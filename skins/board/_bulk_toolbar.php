@@ -9,7 +9,7 @@ $board_bulk_targets = is_array($board_bulk_targets ?? null) ? $board_bulk_target
 $board_bulk_target_label = '대상 게시판 선택';
 ?>
 <div class="border-bottom bg-body-tertiary px-4 py-3">
-  <form id="<?= smartcms_h($board_bulk_form_id) ?>" class="row g-2 align-items-center" method="post" data-board-bulk-form>
+  <form id="<?= smartcms_h($board_bulk_form_id) ?>" class="row g-2 align-items-center" method="post" action="<?= smartcms_h(smartcms_board_index_url((string)$board['board_key'])) ?>" data-board-bulk-form>
     <?= smartcms_csrf_input() ?>
     <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
     <input type="hidden" name="page" value="<?= (int)($pagination['page'] ?? 1) ?>">

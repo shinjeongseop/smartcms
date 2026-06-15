@@ -15,6 +15,11 @@ function smartcms_board_url(string $board_key, string $path = '/board/'): string
     return smartcms_base_url($path) . '?board=' . rawurlencode($board_key);
 }
 
+function smartcms_board_index_url(string $board_key): string
+{
+    return smartcms_base_url('/board/index.php') . '?board=' . rawurlencode($board_key);
+}
+
 function smartcms_board_skin_template(?array $board, string $template): string
 {
     $skin = $board ? preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($board['skin'] ?? 'default')) : 'default';
