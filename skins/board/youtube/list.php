@@ -20,6 +20,7 @@ if ($board_bulk_can_manage && !empty($boards) && is_array($boards)) {
     $board_bulk_targets[] = $candidate;
   }
 }
+$board_list_keyword = (string)($pagination['keyword'] ?? '');
 
 if (!isset($SMARTCMS_FOOT['scripts']) || !is_array($SMARTCMS_FOOT['scripts'])) {
   $SMARTCMS_FOOT['scripts'] = [];
@@ -62,6 +63,7 @@ if (!in_array('/common/js/board-bulk-actions.js', $SMARTCMS_FOOT['scripts'], tru
           <?php $video = smartcms_board_youtube_link_data($post); ?>
           <?php $thumb_url = $video['thumb_url'] ?? null; ?>
           <?php $excerpt = smartcms_board_excerpt((string)($post['content'] ?? $post['excerpt'] ?? ''), 90); ?>
+          <?php $excerpt_highlight = smartcms_board_highlight_text($excerpt, $board_list_keyword); ?>
           <article class="card border shadow-sm bg-white overflow-hidden position-relative">
             <?php if ($board_bulk_can_manage): ?>
               <div class="position-absolute top-0 start-0 p-3 z-3">
@@ -104,10 +106,10 @@ if (!in_array('/common/js/board-bulk-actions.js', $SMARTCMS_FOOT['scripts'], tru
                   <a class="text-decoration-none fw-bold text-dark fs-5 lh-sm d-block text-break"
                      href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <?php if ((int)$post['is_secret'] === 1): ?><i class="bi bi-lock-fill small me-1"></i><?php endif; ?>
-                    <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
+                    <?= smartcms_board_highlight_text(smartcms_board_truncate_title((string)$post['title']), $board_list_keyword) ?>
                   </a>
                   <?php if ($excerpt !== ''): ?>
-                    <p class="mb-0 text-secondary small lh-base"><?= smartcms_h($excerpt) ?></p>
+                    <p class="mb-0 text-secondary small lh-base"><?= $excerpt_highlight ?></p>
                   <?php endif; ?>
                   <div class="d-flex flex-wrap gap-2 small text-secondary fw-medium">
                     <span class="d-inline-flex align-items-center gap-1"><i class="bi bi-person"></i><?= smartcms_h(smartcms_board_author_display_name($board, $post)) ?></span>

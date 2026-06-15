@@ -746,6 +746,35 @@ function smartcms_board_truncate_title(string $title): string
     return trim(strip_tags($title));
 }
 
+function smartcms_board_highlight_text(string $text, string $keyword): string
+{
+    $text = smartcms_h($text);
+    $keyword = trim($keyword);
+    if ($keyword === '') {
+        return $text;
+    }
+
+    $terms = preg_split('/\s+/u', $keyword) ?: [];
+    $terms = array_values(array_unique(array_filter(array_map('trim', $terms), static fn(string $term): bool => $term !== '')));
+    if (!$terms) {
+        return $text;
+    }
+
+    usort($terms, static fn(string $a, string $b): int => strlen($b) <=> strlen($a));
+
+    foreach ($terms as $term) {
+        $escaped_term = smartcms_h($term);
+        if ($escaped_term === '') {
+            continue;
+        }
+
+        $pattern = '/' . preg_quote($escaped_term, '/') . '/iu';
+        $text = preg_replace($pattern, '<mark class="bg-warning-subtle text-dark px-1 rounded">' . $escaped_term . '</mark>', $text) ?? $text;
+    }
+
+    return $text;
+}
+
 function smartcms_board_post_url(string $board_key, int $post_id): string
 {
     return smartcms_board_url($board_key, '/board/view/') . '&id=' . rawurlencode((string)$post_id);

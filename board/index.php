@@ -114,7 +114,7 @@ require SMARTCMS_ROOT . '/head.php';
             <a class="list-group-item list-group-item-action p-4 d-flex flex-column flex-md-row align-items-md-center gap-3"
                href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
               <div class="d-flex align-items-center gap-2 flex-shrink-0">
-                <span class="badge bg-primary-subtle text-primary rounded-2 px-3 py-2 fw-bold"><?= smartcms_h($post['board_name']) ?></span>
+                <span class="badge bg-primary-subtle text-primary rounded-2 px-3 py-2 fw-bold"><?= smartcms_board_highlight_text((string)$post['board_name'], $keyword) ?></span>
                 <?php if ((int)$post['is_notice'] === 1): ?>
                   <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-2 px-2 py-1 small">공지</span>
                 <?php endif; ?>
@@ -125,10 +125,10 @@ require SMARTCMS_ROOT . '/head.php';
 
               <div class="flex-grow-1 min-w-0">
                 <div class="fw-bold text-dark text-truncate mb-1">
-                  <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
+                  <?= smartcms_board_highlight_text(smartcms_board_truncate_title((string)$post['title']), $keyword) ?>
                 </div>
                 <div class="small text-secondary text-truncate">
-                  <?= smartcms_h(smartcms_board_author_display_name(null, $post)) ?> · <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                  <?= smartcms_board_highlight_text(smartcms_board_author_display_name(null, $post), $keyword) ?> · <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                 </div>
               </div>
 
