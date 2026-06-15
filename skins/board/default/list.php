@@ -227,9 +227,9 @@ if (!in_array('/common/js/board-bulk-actions.js', $SMARTCMS_FOOT['scripts'], tru
           <thead class="table-light">
             <tr class="text-uppercase small fw-bold text-secondary">
               <?php if ($board_bulk_can_manage): ?>
-                <th scope="col" class="ps-4 ps-lg-5 py-3 text-nowrap sc-col-4">선택</th>
+                <th scope="col" class="ps-3 ps-lg-4 py-3 text-nowrap sc-col-4">선택</th>
               <?php endif; ?>
-              <th scope="col" class="ps-4 ps-lg-5 py-3 text-nowrap sc-col-5">번호</th>
+              <th scope="col" class="ps-3 ps-lg-4 py-3 text-nowrap sc-col-5">번호</th>
               <th scope="col" class="py-3 text-nowrap">제목</th>
               <th scope="col" class="d-none d-md-table-cell py-3 text-nowrap sc-col-9">작성자</th>
               <th scope="col" class="d-none d-lg-table-cell py-3 text-center text-nowrap sc-col-6">조회</th>
@@ -240,13 +240,13 @@ if (!in_array('/common/js/board-bulk-actions.js', $SMARTCMS_FOOT['scripts'], tru
             <?php foreach ($posts as $post): ?>
               <tr class="<?= (int)$post['is_notice'] === 1 ? 'table-' . $accent . ' opacity-90' : '' ?>">
                 <?php if ($board_bulk_can_manage): ?>
-                  <td class="ps-4 ps-lg-5 align-middle">
-                    <div class="d-flex align-items-center justify-content-center h-100">
+                  <td class="ps-3 ps-lg-4 align-middle">
+                    <div class="d-flex align-items-center justify-content-start h-100">
                       <input class="form-check-input m-0" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
                     </div>
                   </td>
                 <?php endif; ?>
-                <td class="ps-4 ps-lg-5 text-secondary small">
+                <td class="ps-3 ps-lg-4 text-secondary small">
                   <?php if ((int)$post['is_notice'] === 1): ?>
                     <span class="badge <?= $skin_meta['badge_class'] ?> rounded-2">공지</span>
                   <?php else: ?>
