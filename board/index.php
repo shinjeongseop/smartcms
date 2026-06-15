@@ -27,6 +27,20 @@ if ($search_requested && $keyword_length < 2) {
 try {
     if ($board) {
         $user = smartcms_require_board_access($board, 'list');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            smartcms_verify_csrf_or_fail();
+            $bulk_action = strtolower(trim((string)($_POST['bulk_action'] ?? '')));
+            if (in_array($bulk_action, ['delete', 'move', 'copy'], true)) {
+                $selected_ids = smartcms_board_post_ids((array)($_POST['post_ids'] ?? []));
+                $target_board_key = smartcms_board_key((string)($_POST['target_board'] ?? ''));
+                $result = smartcms_board_bulk_action_posts($board, $user, $selected_ids, $bulk_action, $target_board_key !== '' ? $target_board_key : null);
+                smartcms_flash_set('message', $result['message']);
+                smartcms_flash_set('message_type', $result['ok'] ? 'success' : 'error');
+                smartcms_redirect(smartcms_board_url((string)$board['board_key'])
+                    . ($keyword !== '' ? '&q=' . rawurlencode($keyword) : '')
+                    . '&page=' . $page);
+            }
+        }
         $board_keyword = ($search_requested && $keyword_length < 2) ? '' : $keyword;
         $pagination = smartcms_board_posts((int)$board['id'], $page, (int)$board['items_per_page'], $board_keyword);
         $posts = $pagination['items'];
@@ -42,6 +56,9 @@ try {
     $message = '게시판을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.';
     $message_type = 'error';
 }
+
+$message = (string)smartcms_flash_get('message', $message);
+$message_type = (string)smartcms_flash_get('message_type', $message_type);
 
 $page_title = $board ? (string)$board['board_name'] : '게시판';
 
@@ -67,7 +84,7 @@ require SMARTCMS_ROOT . '/head.php';
           <div>
             <p class="text-uppercase small fw-semibold text-primary mb-2">Search Result</p>
             <h1 class="h4 fw-bold mb-2">"<?= smartcms_h($keyword) ?>" 검색 결과</h1>
-            <p class="text-secondary mb-0">게시글 제목과 본문에서 찾은 글을 보여줍니다.</p>
+            <p class="text-secondary mb-0">게시판 이름, 작성자, 제목, 본문에서 찾은 글을 보여줍니다.</p>
           </div>
           <a class="btn btn-light border rounded-2 px-4 fw-bold text-secondary" href="/board/">검색 초기화</a>
         </div>

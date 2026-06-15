@@ -915,12 +915,14 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
         $where .= " AND (
             p.title LIKE :keyword_title
             OR p.content LIKE :keyword_content
+            OR b.board_name LIKE :keyword_board
             OR p.author_name LIKE :keyword_author
             OR u.nickname LIKE :keyword_author
         )";
         $like = '%' . $keyword . '%';
         $params['keyword_title'] = $like;
         $params['keyword_content'] = $like;
+        $params['keyword_board'] = $like;
         $params['keyword_author'] = $like;
     }
 
@@ -947,6 +949,7 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
     if ($keyword !== '') {
         $stmt->bindValue('keyword_title', '%' . $keyword . '%', PDO::PARAM_STR);
         $stmt->bindValue('keyword_content', '%' . $keyword . '%', PDO::PARAM_STR);
+        $stmt->bindValue('keyword_board', '%' . $keyword . '%', PDO::PARAM_STR);
         $stmt->bindValue('keyword_author', '%' . $keyword . '%', PDO::PARAM_STR);
     }
     $stmt->bindValue('limit', $per_page, PDO::PARAM_INT);
@@ -1243,6 +1246,240 @@ function smartcms_board_delete_post(array $board, array $post, array $user): arr
     return ['ok' => true, 'message' => '글을 삭제했습니다.'];
 }
 
+function smartcms_board_delete_post_core(array $board, array $post): array
+{
+    $files = smartcms_board_files((int)$post['id']);
+    $db = smartcms_db();
+    $db->beginTransaction();
+
+    try {
+        smartcms_execute(
+            "DELETE FROM " . smartcms_table('board_comments') . " WHERE post_id = :post_id AND board_id = :board_id",
+            [
+                'post_id' => (int)$post['id'],
+                'board_id' => (int)$board['id'],
+            ]
+        );
+        smartcms_execute(
+            "DELETE FROM " . smartcms_table('board_files') . " WHERE post_id = :post_id AND board_id = :board_id",
+            [
+                'post_id' => (int)$post['id'],
+                'board_id' => (int)$board['id'],
+            ]
+        );
+        smartcms_execute(
+            "DELETE FROM " . smartcms_table('board_posts') . " WHERE id = :id AND board_id = :board_id",
+            [
+                'id' => (int)$post['id'],
+                'board_id' => (int)$board['id'],
+            ]
+        );
+
+        $db->commit();
+    } catch (Throwable $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+
+        return ['ok' => false, 'message' => '글 삭제 중 오류가 발생했습니다.'];
+    }
+
+    foreach ($files as $file) {
+        $path = SMARTCMS_ROOT . '/' . ltrim((string)$file['file_path'], '/');
+        smartcms_image_delete_thumbnail_cache_for_source($path);
+        if (is_file($path)) {
+            @unlink($path);
+        }
+    }
+
+    smartcms_board_delete_editor_images((string)($post['content'] ?? ''));
+    return ['ok' => true, 'message' => '글을 삭제했습니다.'];
+}
+
+function smartcms_board_move_post_to_board(array $source_board, array $post, array $target_board, array $user): array
+{
+    if (!smartcms_board_can_manage_post($source_board, $post, $user)) {
+        return ['ok' => false, 'message' => '글 이동 권한이 없습니다.'];
+    }
+
+    if ((int)($source_board['id'] ?? 0) === (int)($target_board['id'] ?? 0)) {
+        return ['ok' => false, 'message' => '이동할 대상 게시판이 현재 게시판과 같습니다.'];
+    }
+
+    if (!smartcms_has_level((int)($target_board['board_write_level'] ?? 8), $user)) {
+        return ['ok' => false, 'message' => '대상 게시판에 글을 쓸 권한이 없습니다.'];
+    }
+
+    $db = smartcms_db();
+    $db->beginTransaction();
+    $content = (string)($post['content'] ?? '');
+    $editor_result = smartcms_board_copy_editor_content_to_board($content, $source_board, $target_board, false);
+    $content = (string)$editor_result['content'];
+
+    try {
+        smartcms_execute(
+            "UPDATE " . smartcms_table('board_posts') . "
+             SET board_id = :target_board_id, content = :content
+             WHERE id = :id AND board_id = :source_board_id",
+            [
+                'target_board_id' => (int)$target_board['id'],
+                'source_board_id' => (int)$source_board['id'],
+                'id' => (int)$post['id'],
+                'content' => $content,
+            ]
+        );
+
+        smartcms_execute(
+            "UPDATE " . smartcms_table('board_comments') . "
+             SET board_id = :target_board_id
+             WHERE post_id = :post_id AND board_id = :source_board_id",
+            [
+                'target_board_id' => (int)$target_board['id'],
+                'source_board_id' => (int)$source_board['id'],
+                'post_id' => (int)$post['id'],
+            ]
+        );
+
+        smartcms_execute(
+            "UPDATE " . smartcms_table('board_files') . "
+             SET board_id = :target_board_id
+             WHERE post_id = :post_id AND board_id = :source_board_id",
+            [
+                'target_board_id' => (int)$target_board['id'],
+                'source_board_id' => (int)$source_board['id'],
+                'post_id' => (int)$post['id'],
+            ]
+        );
+
+        $db->commit();
+    } catch (Throwable $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+
+        return ['ok' => false, 'message' => '글 이동 중 오류가 발생했습니다.'];
+    }
+
+    smartcms_board_audit($source_board, $post, $user, 'post_move', '게시글을 이동했습니다.');
+    return ['ok' => true, 'message' => '선택한 글을 이동했습니다.'];
+}
+
+function smartcms_board_copy_post_to_board(array $source_board, array $post, array $target_board, array $user): array
+{
+    if (!smartcms_board_can_manage_post($source_board, $post, $user)) {
+        return ['ok' => false, 'message' => '글 복사 권한이 없습니다.'];
+    }
+
+    if (!smartcms_has_level((int)($target_board['board_write_level'] ?? 8), $user)) {
+        return ['ok' => false, 'message' => '대상 게시판에 글을 쓸 권한이 없습니다.'];
+    }
+
+    $db = smartcms_db();
+    $db->beginTransaction();
+    $source_files = smartcms_board_files((int)$post['id']);
+    $content = (string)($post['content'] ?? '');
+    $editor_result = smartcms_board_copy_editor_content_to_board($content, $source_board, $target_board, true);
+    $content = (string)$editor_result['content'];
+
+    try {
+        smartcms_execute(
+            "INSERT INTO " . smartcms_table('board_posts') . "
+             (board_id, parent_id, category, title, link_url, link_url_1, link_url_2, content, content_mode, excerpt, author_id, author_name, is_notice, is_secret, is_hidden)
+             VALUES (:board_id, NULL, NULL, :title, :link_url, :link_url_1, :link_url_2, :content, :content_mode, :excerpt, :author_id, :author_name, :is_notice, :is_secret, 0)",
+            [
+                'board_id' => (int)$target_board['id'],
+                'title' => (string)$post['title'],
+                'link_url' => $post['link_url'] !== null ? (string)$post['link_url'] : null,
+                'link_url_1' => $post['link_url_1'] !== null ? (string)$post['link_url_1'] : null,
+                'link_url_2' => $post['link_url_2'] !== null ? (string)$post['link_url_2'] : null,
+                'content' => $content,
+                'content_mode' => smartcms_board_normalize_content_mode((string)($post['content_mode'] ?? 'text')),
+                'excerpt' => smartcms_board_excerpt($content),
+                'author_id' => (int)($post['author_id'] ?? 0) ?: null,
+                'author_name' => (string)($post['author_name'] ?? ''),
+                'is_notice' => (int)($post['is_notice'] ?? 0) === 1 ? 1 : 0,
+                'is_secret' => (int)($post['is_secret'] ?? 0) === 1 ? 1 : 0,
+            ]
+        );
+
+        $target_post_id = (int)$db->lastInsertId();
+        $copied_files = smartcms_board_copy_post_files($source_files, $target_board, $target_post_id, (int)$user['id']);
+        if ($copied_files > 0) {
+            smartcms_execute(
+                "UPDATE " . smartcms_table('board_posts') . " SET attachment_count = :count WHERE id = :id",
+                ['count' => $copied_files, 'id' => $target_post_id]
+            );
+        }
+
+        $db->commit();
+    } catch (Throwable $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+
+        return ['ok' => false, 'message' => '글 복사 중 오류가 발생했습니다.'];
+    }
+
+    smartcms_board_audit($source_board, $post, $user, 'post_copy', '게시글을 복사했습니다.');
+    return ['ok' => true, 'message' => '선택한 글을 복사했습니다.'];
+}
+
+function smartcms_board_bulk_action_posts(array $source_board, array $user, array $post_ids, string $action, ?string $target_board_key = null): array
+{
+    $post_ids = smartcms_board_post_ids($post_ids);
+    if (!$post_ids) {
+        return ['ok' => false, 'message' => '선택한 글이 없습니다.'];
+    }
+
+    if (!smartcms_has_level((int)($source_board['board_manage_level'] ?? 8), $user)) {
+        return ['ok' => false, 'message' => '선택한 글을 관리할 권한이 없습니다.'];
+    }
+
+    $posts = smartcms_board_posts_by_ids((int)$source_board['id'], $post_ids);
+    if (count($posts) !== count($post_ids)) {
+        return ['ok' => false, 'message' => '선택한 글 중 일부를 찾지 못했습니다.'];
+    }
+
+    $count = 0;
+    $action = strtolower(trim($action));
+
+    if ($action === 'delete') {
+        foreach ($posts as $post) {
+            $result = smartcms_board_delete_post_core($source_board, $post);
+            if (!$result['ok']) {
+                return $result;
+            }
+            $count++;
+        }
+
+        smartcms_board_audit($source_board, null, $user, 'post_bulk_delete', '선택한 글 ' . $count . '개를 삭제했습니다.');
+        return ['ok' => true, 'message' => '선택한 글 ' . $count . '개를 삭제했습니다.'];
+    }
+
+    if ($target_board_key === null || trim($target_board_key) === '') {
+        return ['ok' => false, 'message' => '대상 게시판을 선택하세요.'];
+    }
+
+    $target_board = smartcms_board_find($target_board_key);
+    if (!$target_board || (string)($target_board['status'] ?? '') === 'disabled') {
+        return ['ok' => false, 'message' => '대상 게시판을 찾을 수 없습니다.'];
+    }
+
+    foreach ($posts as $post) {
+        $result = $action === 'move'
+            ? smartcms_board_move_post_to_board($source_board, $post, $target_board, $user)
+            : ($action === 'copy' ? smartcms_board_copy_post_to_board($source_board, $post, $target_board, $user) : ['ok' => false, 'message' => '지원하지 않는 작업입니다.']);
+        if (!$result['ok']) {
+            return $result;
+        }
+        $count++;
+    }
+
+    $audit_action = $action === 'move' ? 'post_bulk_move' : 'post_bulk_copy';
+    smartcms_board_audit($source_board, null, $user, $audit_action, '선택한 글 ' . $count . '개를 ' . ($action === 'move' ? '이동' : '복사') . '했습니다.');
+    return ['ok' => true, 'message' => '선택한 글 ' . $count . '개를 ' . ($action === 'move' ? '이동' : '복사') . '했습니다.'];
+}
+
 function smartcms_board_hide_comment(array $board, array $post, array $user, int $comment_id): array
 {
     if (!smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user)) {
@@ -1399,6 +1636,189 @@ function smartcms_board_popular_posts(int $limit = 5): array
     $stmt->execute();
 
     return $stmt->fetchAll();
+}
+
+function smartcms_board_bulk_target_options(array $source_board, array $user): array
+{
+    $targets = [];
+    foreach (smartcms_board_list() as $candidate) {
+        if ((int)($candidate['id'] ?? 0) === (int)($source_board['id'] ?? 0)) {
+            continue;
+        }
+
+        if ((string)($candidate['status'] ?? '') === 'disabled') {
+            continue;
+        }
+
+        if (!smartcms_has_level((int)($candidate['board_write_level'] ?? 8), $user)) {
+            continue;
+        }
+
+        $targets[] = $candidate;
+    }
+
+    return $targets;
+}
+
+function smartcms_board_post_ids(array $post_ids): array
+{
+    $ids = [];
+    foreach ($post_ids as $post_id) {
+        $post_id = (int)$post_id;
+        if ($post_id > 0) {
+            $ids[$post_id] = $post_id;
+        }
+    }
+
+    return array_values($ids);
+}
+
+function smartcms_board_posts_by_ids(int $board_id, array $post_ids): array
+{
+    $post_ids = smartcms_board_post_ids($post_ids);
+    if (!$post_ids) {
+        return [];
+    }
+
+    $placeholders = [];
+    $params = ['board_id' => $board_id];
+    foreach ($post_ids as $index => $post_id) {
+        $key = 'post_id_' . $index;
+        $placeholders[] = ':' . $key;
+        $params[$key] = $post_id;
+    }
+
+    $stmt = smartcms_db()->prepare(
+        "SELECT p.id, p.board_id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.content, p.content_mode, p.excerpt, p.author_id, p.author_name, p.is_notice, p.is_secret, p.is_hidden, p.view_count, p.comment_count, p.attachment_count, p.created_at, p.updated_at,
+                b.board_key, b.board_name, b.board_write_level, b.author_display_mode
+         FROM " . smartcms_table('board_posts') . " p
+         INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
+         WHERE p.board_id = :board_id AND p.is_hidden = 0 AND p.id IN (" . implode(', ', $placeholders) . ")
+         ORDER BY p.is_notice DESC, p.id ASC"
+    );
+    $stmt->execute($params);
+
+    return $stmt->fetchAll();
+}
+
+function smartcms_board_copy_editor_content_to_board(string $content, array $source_board, array $target_board, bool $duplicate_same_board = true): array
+{
+    $content = (string)$content;
+    $source_dir = realpath(smartcms_board_editor_upload_dir($source_board)) ?: smartcms_board_editor_upload_dir($source_board);
+    $source_dir = rtrim(str_replace('\\', '/', $source_dir), '/');
+    $target_dir = smartcms_board_editor_upload_dir($target_board);
+    if (!is_dir($target_dir)) {
+        mkdir($target_dir, 0755, true);
+    }
+    $target_dir = rtrim(str_replace('\\', '/', $target_dir), '/');
+
+    $source_key = smartcms_board_key((string)($source_board['board_key'] ?? ''));
+    $target_key = smartcms_board_key((string)($target_board['board_key'] ?? ''));
+    if ($source_key === $target_key && !$duplicate_same_board) {
+        return ['content' => $content, 'files' => []];
+    }
+
+    $replace_map = [];
+    $copied_paths = [];
+    foreach (smartcms_image_extract_sources_from_html($content) as $source_url) {
+        if (isset($replace_map[$source_url])) {
+            continue;
+        }
+
+        $source_path = smartcms_image_source_path_from_url($source_url);
+        if ($source_path === null) {
+            continue;
+        }
+
+        $normalized = rtrim(str_replace('\\', '/', $source_path), '/');
+        if (!str_starts_with($normalized, $source_dir . '/')) {
+            continue;
+        }
+
+        if (!is_file($source_path)) {
+            continue;
+        }
+
+        $extension = strtolower(pathinfo($source_path, PATHINFO_EXTENSION));
+        $stored_name = date('YmdHis') . '_' . bin2hex(random_bytes(8));
+        if ($extension !== '') {
+            $stored_name .= '.' . $extension;
+        }
+
+        $target_path = $target_dir . '/' . $stored_name;
+        if (!copy($source_path, $target_path)) {
+            continue;
+        }
+
+        $replace_map[$source_url] = smartcms_board_editor_upload_url($target_board, $stored_name);
+        $copied_paths[] = $source_path;
+    }
+
+    if (!$replace_map) {
+        return ['content' => $content, 'files' => []];
+    }
+
+    return [
+        'content' => strtr($content, $replace_map),
+        'files' => array_values(array_unique($copied_paths)),
+    ];
+}
+
+function smartcms_board_copy_post_files(array $source_files, array $target_board, int $target_post_id, int $uploaded_by): int
+{
+    if (!$source_files) {
+        return 0;
+    }
+
+    $copied = 0;
+    $upload_root = SMARTCMS_ROOT . '/uploads/board';
+    if (!is_dir($upload_root)) {
+        mkdir($upload_root, 0755, true);
+    }
+
+    foreach ($source_files as $file) {
+        $source_path = SMARTCMS_ROOT . '/' . ltrim((string)$file['file_path'], '/');
+        if (!is_file($source_path)) {
+            continue;
+        }
+
+        $extension = strtolower(pathinfo((string)$file['stored_name'], PATHINFO_EXTENSION));
+        $stored_name = date('YmdHis') . '_' . bin2hex(random_bytes(8));
+        if ($extension !== '') {
+            $stored_name .= '.' . $extension;
+        }
+
+        $target_path = $upload_root . '/' . $stored_name;
+        if (!copy($source_path, $target_path)) {
+            continue;
+        }
+
+        smartcms_execute(
+            "INSERT INTO " . smartcms_table('board_files') . "
+             (board_id, post_id, comment_id, original_name, stored_name, file_path, file_size, mime_type, download_count, uploaded_by)
+             VALUES (:board_id, :post_id, NULL, :original_name, :stored_name, :file_path, :file_size, :mime_type, 0, :uploaded_by)",
+            [
+                'board_id' => (int)$target_board['id'],
+                'post_id' => $target_post_id,
+                'original_name' => (string)$file['original_name'],
+                'stored_name' => $stored_name,
+                'file_path' => 'uploads/board/' . $stored_name,
+                'file_size' => (int)($file['file_size'] ?? 0),
+                'mime_type' => (string)($file['mime_type'] ?? null),
+                'uploaded_by' => $uploaded_by,
+            ]
+        );
+        $copied++;
+    }
+
+    if ($copied > 0) {
+        smartcms_execute(
+            "UPDATE " . smartcms_table('board_posts') . " SET attachment_count = attachment_count + :count WHERE id = :id",
+            ['count' => $copied, 'id' => $target_post_id]
+        );
+    }
+
+    return $copied;
 }
 
 function smartcms_board_post_counts(): array
