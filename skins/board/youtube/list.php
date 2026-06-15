@@ -25,8 +25,9 @@ $board_list_keyword = (string)($pagination['keyword'] ?? '');
 if (!isset($SMARTCMS_FOOT['scripts']) || !is_array($SMARTCMS_FOOT['scripts'])) {
   $SMARTCMS_FOOT['scripts'] = [];
 }
-if (!in_array('/common/js/board-bulk-actions.js', $SMARTCMS_FOOT['scripts'], true)) {
-  $SMARTCMS_FOOT['scripts'][] = '/common/js/board-bulk-actions.js';
+$board_bulk_actions_js = '/common/js/board-bulk-actions.js?v=' . filemtime(SMARTCMS_ROOT . '/common/js/board-bulk-actions.js');
+if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
+  $SMARTCMS_FOOT['scripts'][] = $board_bulk_actions_js;
 }
 ?>
 <section class="board-list-container">
