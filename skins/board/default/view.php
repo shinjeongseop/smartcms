@@ -10,6 +10,7 @@ $image_files = smartcms_board_image_files($files);
 $attachment_files = array_values(array_filter($files, static fn(array $file): bool => !smartcms_board_file_is_image($file)));
 $thumb_config = smartcms_board_thumbnail_config($board, 'view');
 $image_columns = max(1, (int)$thumb_config['columns']);
+$audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id'], 5);
 ?>
 <article class="card border shadow-sm bg-white overflow-hidden mb-4">
   <div class="card-body p-4 p-lg-5">
@@ -115,6 +116,33 @@ $image_columns = max(1, (int)$thumb_config['columns']);
         </a>
       </div>
     </footer>
+
+    <?php if ($audit_logs): ?>
+      <section class="mt-4">
+        <div class="card border shadow-sm bg-white">
+          <div class="card-header bg-white border-bottom py-3 px-4">
+            <h3 class="fs-6 fw-bold mb-0 text-dark">이동/복사 기록</h3>
+          </div>
+          <div class="list-group list-group-flush">
+            <?php foreach ($audit_logs as $log): ?>
+              <div class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 py-3 px-4">
+                <div class="d-flex flex-column gap-1">
+                  <div class="fw-semibold text-dark">
+                    <span class="badge bg-light text-secondary border rounded-2 me-2">#<?= smartcms_h((string)$log['id']) ?></span>
+                    <?= smartcms_h(smartcms_board_audit_action_label((string)$log['action'])) ?>
+                  </div>
+                  <div class="text-secondary small"><?= smartcms_h((string)$log['message']) ?></div>
+                </div>
+                <div class="text-md-end small text-secondary fw-medium">
+                  <div><?= smartcms_h(smartcms_board_audit_actor_name($log)) ?></div>
+                  <div><?= smartcms_h((string)$log['created_at']) ?></div>
+                </div>
+              </div>
+            <?php endforeach; ?>
+          </div>
+        </div>
+      </section>
+    <?php endif; ?>
   </div>
 </article>
 

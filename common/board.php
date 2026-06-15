@@ -1404,6 +1404,7 @@ function smartcms_board_move_post_to_board(array $source_board, array $post, arr
     }
 
     smartcms_board_audit($source_board, $post, $user, 'post_move', '게시글을 이동했습니다.');
+    smartcms_board_audit($target_board, ['id' => (int)$post['id']], $user, 'post_move', '다른 게시판에서 이동되었습니다.');
     return ['ok' => true, 'message' => '선택한 글을 이동했습니다.'];
 }
 
@@ -1464,6 +1465,7 @@ function smartcms_board_copy_post_to_board(array $source_board, array $post, arr
     }
 
     smartcms_board_audit($source_board, $post, $user, 'post_copy', '게시글을 복사했습니다.');
+    smartcms_board_audit($target_board, ['id' => $target_post_id], $user, 'post_copy', '다른 게시판에서 복사되었습니다.');
     return ['ok' => true, 'message' => '선택한 글을 복사했습니다.'];
 }
 
@@ -1564,6 +1566,78 @@ function smartcms_board_audit(array $board, ?array $post, ?array $user, string $
     } catch (Throwable) {
         // Audit logging should not break content operations.
     }
+}
+
+function smartcms_board_post_audit_logs(int $board_id, int $post_id, int $limit = 10): array
+{
+    if ($board_id < 1 || $post_id < 1 || $limit < 1) {
+        return [];
+    }
+
+    $stmt = smartcms_db()->prepare(
+        "SELECT
+            l.id,
+            l.board_id,
+            l.post_id,
+            l.user_id,
+            l.action,
+            l.message,
+            l.ip_hash,
+            l.user_agent,
+            l.created_at,
+            u.name AS user_name,
+            u.nickname AS user_nickname,
+            u.email AS user_email
+         FROM " . smartcms_table('board_audit_logs') . " l
+         LEFT JOIN " . smartcms_table('users') . " u ON u.id = l.user_id
+         WHERE l.board_id = :board_id
+           AND l.post_id = :post_id
+           AND l.action IN ('post_move', 'post_copy')
+         ORDER BY l.created_at DESC, l.id DESC
+         LIMIT :limit"
+    );
+    $stmt->bindValue('board_id', $board_id, PDO::PARAM_INT);
+    $stmt->bindValue('post_id', $post_id, PDO::PARAM_INT);
+    $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll();
+}
+
+function smartcms_board_audit_action_label(string $action): string
+{
+    return match ($action) {
+        'post_move' => '이동',
+        'post_copy' => '복사',
+        default => $action,
+    };
+}
+
+function smartcms_board_audit_actor_name(?array $log): string
+{
+    if (!$log) {
+        return '알 수 없음';
+    }
+
+    $user = null;
+    if (!empty($log['user_id'])) {
+        $user = [
+            'name' => (string)($log['user_name'] ?? ''),
+            'nickname' => (string)($log['user_nickname'] ?? ''),
+        ];
+    }
+
+    $display_name = trim((string)smartcms_user_display_name($user));
+    if ($display_name !== '') {
+        return $display_name;
+    }
+
+    $email = trim((string)($log['user_email'] ?? ''));
+    if ($email !== '') {
+        return $email;
+    }
+
+    return '알 수 없음';
 }
 
 function smartcms_board_create(string $board_key, string $board_name, string $description, int $created_by, string $skin = 'default'): array
