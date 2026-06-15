@@ -197,7 +197,7 @@ function smartcms_password_reset_request(string $email): array
     );
 
     if (!$user || (string)$user['status'] !== 'active') {
-        return ['ok' => true, 'message' => '해당 이메일로 가입된 계정이 확인되면, 관리자 확인 후 비밀번호 초기화를 진행합니다.'];
+        return ['ok' => true, 'message' => '해당 이메일로 가입된 계정이 확인되면, 비밀번호 재설정 메일을 보냅니다.'];
     }
 
     $token = smartcms_password_reset_random_token();

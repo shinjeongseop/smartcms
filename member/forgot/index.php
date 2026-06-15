@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_type = $result['ok'] ? 'success' : 'error';
 }
 
-$SMARTCMS_HEAD = ['title' => '비밀번호 초기화 요청'];
+$SMARTCMS_HEAD = ['title' => '비밀번호 재설정'];
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
@@ -41,14 +41,14 @@ require SMARTCMS_ROOT . '/head.php';
             </div>
             <div>
               <p class="text-uppercase small fw-bold text-white-50 mb-1">Account Help</p>
-              <h1 class="h3 fw-bold mb-0">비밀번호 초기화 요청</h1>
+              <h1 class="h3 fw-bold mb-0">비밀번호 재설정</h1>
             </div>
           </div>
         </header>
 
         <div class="card-body p-4 p-md-5">
           <p class="text-body-secondary mb-4 fw-medium">
-            보안을 위해 자동 재설정 링크는 제공하지 않습니다. 가입 이메일을 입력하면 관리자 확인 후 비밀번호 초기화 요청을 처리합니다.
+            가입 이메일을 입력하면 비밀번호 재설정 메일을 보냅니다. 메일의 링크로 새 비밀번호를 설정해 주세요.
           </p>
 
           <form class="d-grid gap-4" method="post" autocomplete="on">
