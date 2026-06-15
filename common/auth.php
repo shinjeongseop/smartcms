@@ -213,20 +213,13 @@ function smartcms_require_login(?string $redirect_to = null): array
     }
 
     $target = $redirect_to ?? (string)smartcms_config_value('login_url', '/member/login/');
-    if ($redirect_to === null) {
-        $request_uri = (string)($_SERVER['REQUEST_URI'] ?? '');
-        $request_path = (string)(parse_url($request_uri, PHP_URL_PATH) ?: '');
-        if ($request_uri !== '' && $request_path !== '/member/login/' && $request_path !== '/admin/login/') {
-            $target .= (str_contains($target, '?') ? '&' : '?') . http_build_query(['next' => $request_uri]);
-        }
-    }
 
     smartcms_redirect($target);
 }
 
 function smartcms_member_login_next_target(string $fallback = '/'): string
 {
-    $next = trim((string)($_GET['next'] ?? ($_POST['next'] ?? '')));
+    $next = trim((string)($_POST['return_to'] ?? ''));
 
     if ($next === '') {
         $referer = (string)($_SERVER['HTTP_REFERER'] ?? '');
@@ -245,6 +238,10 @@ function smartcms_member_login_next_target(string $fallback = '/'): string
                 }
             }
         }
+    }
+
+    if ($next === '') {
+        $next = $fallback;
     }
 
     $parts = parse_url($next);

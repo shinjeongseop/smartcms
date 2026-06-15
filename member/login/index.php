@@ -8,11 +8,12 @@ $message       = '';
 $message_type  = 'info';
 $flash_message = smartcms_flash_get('message', '');
 $flash_type    = (string)smartcms_flash_get('message_type', 'info');
+$flash_return_to = (string)smartcms_flash_get('return_to', '');
 $email         = trim((string)(smartcms_flash_get('email', '') ?: ($_POST['login_email'] ?? '')));
-$next          = smartcms_member_login_next_target();
+$return_to     = smartcms_member_login_next_target($flash_return_to !== '' ? $flash_return_to : '/');
 
 if (smartcms_current_user()) {
-    smartcms_redirect($next);
+    smartcms_redirect($return_to);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -20,13 +21,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = (string)($_POST['login_password'] ?? '');
     $result = smartcms_login($email, $password);
     if ($result['ok']) {
-        smartcms_redirect($next);
+        smartcms_redirect($return_to);
     }
 
     smartcms_flash_set('message', $result['message']);
     smartcms_flash_set('message_type', 'error');
     smartcms_flash_set('email', $email);
-    smartcms_redirect('/member/login/?next=' . rawurlencode($next));
+    smartcms_flash_set('return_to', $return_to);
+    smartcms_redirect('/member/login/');
 }
 
 $message = $flash_message !== '' ? $flash_message : $message;
@@ -69,7 +71,7 @@ require SMARTCMS_ROOT . '/head.php';
 
           <form class="d-grid gap-4" method="post" autocomplete="off" autocapitalize="off" spellcheck="false">
             <?= smartcms_csrf_input() ?>
-            <input type="hidden" name="next" value="<?= smartcms_h($next) ?>">
+            <input type="hidden" name="return_to" value="<?= smartcms_h($return_to) ?>">
             <div>
               <label for="login_email" class="form-label fw-bold small text-dark">이메일 주소</label>
               <input class="form-control py-2" id="login_email" name="login_email" type="email"
