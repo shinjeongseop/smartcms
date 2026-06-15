@@ -241,7 +241,9 @@ if (!in_array('/common/js/board-bulk-actions.js', $SMARTCMS_FOOT['scripts'], tru
               <tr class="<?= (int)$post['is_notice'] === 1 ? 'table-' . $accent . ' opacity-90' : '' ?>">
                 <?php if ($board_bulk_can_manage): ?>
                   <td class="ps-4 ps-lg-5 align-middle">
-                    <input class="form-check-input m-0" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
+                    <div class="d-flex align-items-center justify-content-center h-100">
+                      <input class="form-check-input m-0" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
+                    </div>
                   </td>
                 <?php endif; ?>
                 <td class="ps-4 ps-lg-5 text-secondary small">
