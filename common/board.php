@@ -1403,8 +1403,7 @@ function smartcms_board_move_post_to_board(array $source_board, array $post, arr
         return ['ok' => false, 'message' => '글 이동 중 오류가 발생했습니다.'];
     }
 
-    smartcms_board_audit($source_board, $post, $user, 'post_move', '게시글을 이동했습니다.');
-    smartcms_board_audit($target_board, ['id' => (int)$post['id']], $user, 'post_move', '다른 게시판에서 이동되었습니다.');
+    smartcms_board_audit($target_board, ['id' => (int)$post['id']], $user, 'post_move', '게시글을 이동했습니다. 대상 게시판: ' . (string)$target_board['board_name']);
     return ['ok' => true, 'message' => '선택한 글을 이동했습니다.'];
 }
 
@@ -1464,8 +1463,7 @@ function smartcms_board_copy_post_to_board(array $source_board, array $post, arr
         return ['ok' => false, 'message' => '글 복사 중 오류가 발생했습니다.'];
     }
 
-    smartcms_board_audit($source_board, $post, $user, 'post_copy', '게시글을 복사했습니다.');
-    smartcms_board_audit($target_board, ['id' => $target_post_id], $user, 'post_copy', '다른 게시판에서 복사되었습니다.');
+    smartcms_board_audit($target_board, ['id' => $target_post_id], $user, 'post_copy', '게시글을 복사했습니다. 대상 게시판: ' . (string)$target_board['board_name']);
     return ['ok' => true, 'message' => '선택한 글을 복사했습니다.'];
 }
 
@@ -1585,10 +1583,12 @@ function smartcms_board_post_audit_logs(int $board_id, int $post_id, int $limit 
             l.ip_hash,
             l.user_agent,
             l.created_at,
+            b.board_name,
             u.name AS user_name,
             u.nickname AS user_nickname,
             u.email AS user_email
          FROM " . smartcms_table('board_audit_logs') . " l
+         LEFT JOIN " . smartcms_table('boards') . " b ON b.id = l.board_id
          LEFT JOIN " . smartcms_table('users') . " u ON u.id = l.user_id
          WHERE l.board_id = :board_id
            AND l.post_id = :post_id
