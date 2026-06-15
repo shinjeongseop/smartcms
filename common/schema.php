@@ -14,6 +14,7 @@ function smartcms_create_schema(): void
     smartcms_create_board_files_table();
     smartcms_create_board_audit_logs_table();
     smartcms_create_login_logs_table();
+    smartcms_create_password_reset_tokens_table();
     smartcms_create_access_logs_table();
     smartcms_create_site_settings_table();
 }
@@ -208,6 +209,22 @@ function smartcms_create_login_logs_table(): void
         INDEX idx_login_logs_user_created (user_id, created_at),
         INDEX idx_login_logs_email_created (email, created_at),
         INDEX idx_login_logs_result_created (result, created_at)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+}
+
+function smartcms_create_password_reset_tokens_table(): void
+{
+    smartcms_db()->exec("CREATE TABLE IF NOT EXISTS " . smartcms_table('password_reset_tokens') . " (
+        id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        user_id BIGINT UNSIGNED NOT NULL,
+        email VARCHAR(190) NOT NULL,
+        token_hash CHAR(64) NOT NULL,
+        expires_at DATETIME NOT NULL,
+        used_at DATETIME DEFAULT NULL,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE KEY uq_password_reset_tokens_hash (token_hash),
+        INDEX idx_password_reset_tokens_user (user_id, used_at, expires_at),
+        INDEX idx_password_reset_tokens_email (email, used_at, expires_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 }
 

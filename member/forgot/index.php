@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../../common/auth.php';
 
 $message = '';
+$message_type = 'info';
 $email = trim((string)($_POST['email'] ?? ''));
 
 if (smartcms_current_user()) {
@@ -12,7 +13,9 @@ if (smartcms_current_user()) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
-    $message = '해당 이메일로 가입된 계정이 확인되면, 관리자 확인 후 비밀번호 초기화를 진행합니다.';
+    $result = smartcms_password_reset_request($email);
+    $message = $result['message'];
+    $message_type = $result['ok'] ? 'success' : 'error';
 }
 
 $SMARTCMS_HEAD = ['title' => '비밀번호 초기화 요청'];
@@ -23,8 +26,9 @@ require SMARTCMS_ROOT . '/head.php';
   <div class="row justify-content-center">
     <div class="col-12 col-md-10 col-lg-8 col-xl-6 col-xxl-5">
       <?php if ($message !== ''): ?>
-        <aside class="alert alert-info d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
-          <i class="bi bi-info-circle-fill fs-5"></i>
+        <?php $alert_theme = $message_type === 'error' ? 'danger' : ($message_type === 'success' ? 'success' : 'info'); ?>
+        <aside class="alert alert-<?= smartcms_h($alert_theme) ?> d-flex align-items-center gap-2 mb-4 shadow-sm" role="alert">
+          <i class="bi <?= $alert_theme === 'danger' ? 'bi-exclamation-triangle-fill' : ($alert_theme === 'success' ? 'bi-check-circle-fill' : 'bi-info-circle-fill') ?> fs-5"></i>
           <div class="fw-medium small"><?= smartcms_h($message) ?></div>
         </aside>
       <?php endif; ?>

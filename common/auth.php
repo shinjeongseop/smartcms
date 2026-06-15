@@ -80,6 +80,198 @@ function smartcms_ensure_user_nickname_column(): void
     }
 }
 
+function smartcms_ensure_password_reset_tokens_table(): void
+{
+    static $checked = false;
+    if ($checked) {
+        return;
+    }
+    $checked = true;
+
+    try {
+        smartcms_db()->exec("CREATE TABLE IF NOT EXISTS " . smartcms_table('password_reset_tokens') . " (
+            id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            user_id BIGINT UNSIGNED NOT NULL,
+            email VARCHAR(190) NOT NULL,
+            token_hash CHAR(64) NOT NULL,
+            expires_at DATETIME NOT NULL,
+            used_at DATETIME DEFAULT NULL,
+            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE KEY uq_password_reset_tokens_hash (token_hash),
+            INDEX idx_password_reset_tokens_user (user_id, used_at, expires_at),
+            INDEX idx_password_reset_tokens_email (email, used_at, expires_at)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    } catch (Throwable $e) {
+        // Keep login-related pages usable even if schema creation is unavailable.
+    }
+}
+
+function smartcms_password_reset_token_hash(string $token): string
+{
+    return hash('sha256', $token);
+}
+
+function smartcms_password_reset_random_token(): string
+{
+    return rtrim(strtr(base64_encode(random_bytes(48)), '+/', '-_'), '=');
+}
+
+function smartcms_password_reset_from_email(): string
+{
+    $host = (string)($_SERVER['HTTP_HOST'] ?? '');
+    $host = preg_replace('/:\d+$/', '', $host);
+    if ($host === '') {
+        $host = 'localhost';
+    }
+
+    return (string)smartcms_config_value('mail_from_email', 'no-reply@' . $host);
+}
+
+function smartcms_send_mail(string $to, string $subject, string $body): bool
+{
+    if (!function_exists('mail')) {
+        return false;
+    }
+
+    $from = smartcms_password_reset_from_email();
+    $encoded_subject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $headers = [
+        'MIME-Version: 1.0',
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: smartcms <' . $from . '>',
+        'Reply-To: ' . $from,
+    ];
+
+    return @mail($to, $encoded_subject, $body, implode("\r\n", $headers));
+}
+
+function smartcms_password_reset_email_body(string $name, string $reset_url): string
+{
+    $site_name = (string)smartcms_config_value('site_name', 'smartcms');
+
+    return trim(
+        "안녕하세요, {$name}님.\n\n"
+        . "{$site_name} 비밀번호 재설정 요청이 접수되었습니다.\n"
+        . "아래 링크를 열어 새 비밀번호를 설정해 주세요.\n\n"
+        . $reset_url . "\n\n"
+        . "이 링크는 일정 시간이 지나면 만료됩니다.\n"
+        . "본인이 요청하지 않았다면 이 메일을 무시하셔도 됩니다.\n"
+    ) . "\n";
+}
+
+function smartcms_password_reset_store_token(int $user_id, string $email, string $token, int $ttl_seconds = 3600): void
+{
+    $expires_at = date('Y-m-d H:i:s', time() + max(300, $ttl_seconds));
+    smartcms_execute(
+        "DELETE FROM " . smartcms_table('password_reset_tokens') . " WHERE user_id = :user_id AND used_at IS NULL",
+        ['user_id' => $user_id]
+    );
+    smartcms_execute(
+        "INSERT INTO " . smartcms_table('password_reset_tokens') . "
+         (user_id, email, token_hash, expires_at)
+         VALUES (:user_id, :email, :token_hash, :expires_at)",
+        [
+            'user_id' => $user_id,
+            'email' => $email,
+            'token_hash' => smartcms_password_reset_token_hash($token),
+            'expires_at' => $expires_at,
+        ]
+    );
+}
+
+function smartcms_password_reset_request(string $email): array
+{
+    smartcms_ensure_password_reset_tokens_table();
+    $email = trim($email);
+
+    if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return ['ok' => false, 'message' => '올바른 이메일을 입력하세요.'];
+    }
+
+    $user = smartcms_fetch_one(
+        "SELECT id, email, name, status
+         FROM " . smartcms_table('users') . "
+         WHERE email = :email
+         LIMIT 1",
+        ['email' => $email]
+    );
+
+    if (!$user || (string)$user['status'] !== 'active') {
+        return ['ok' => true, 'message' => '해당 이메일로 가입된 계정이 확인되면, 관리자 확인 후 비밀번호 초기화를 진행합니다.'];
+    }
+
+    $token = smartcms_password_reset_random_token();
+    smartcms_password_reset_store_token((int)$user['id'], (string)$user['email'], $token);
+
+    $reset_url = smartcms_base_url('/member/reset/') . '?token=' . rawurlencode($token);
+    $subject = 'smartcms 비밀번호 재설정 안내';
+    $body = smartcms_password_reset_email_body((string)$user['name'], $reset_url);
+
+    if (!smartcms_send_mail((string)$user['email'], $subject, $body)) {
+        smartcms_execute(
+            "DELETE FROM " . smartcms_table('password_reset_tokens') . " WHERE token_hash = :token_hash",
+            ['token_hash' => smartcms_password_reset_token_hash($token)]
+        );
+        return ['ok' => false, 'message' => '비밀번호 재설정 이메일을 보내지 못했습니다. 잠시 후 다시 시도해 주세요.'];
+    }
+
+    smartcms_log_access('page_view', 'member', 'password_reset_request', 'success', 200, (int)$user['id']);
+
+    return ['ok' => true, 'message' => '비밀번호 재설정 이메일을 보냈습니다. 메일함을 확인해 주세요.'];
+}
+
+function smartcms_password_reset_token_row(string $token): ?array
+{
+    smartcms_ensure_password_reset_tokens_table();
+    $token = trim($token);
+    if ($token === '') {
+        return null;
+    }
+
+    return smartcms_fetch_one(
+        "SELECT id, user_id, email, token_hash, expires_at, used_at
+         FROM " . smartcms_table('password_reset_tokens') . "
+         WHERE token_hash = :token_hash
+           AND used_at IS NULL
+           AND expires_at > NOW()
+         LIMIT 1",
+        ['token_hash' => smartcms_password_reset_token_hash($token)]
+    );
+}
+
+function smartcms_password_reset_complete(string $token, string $new_password): array
+{
+    $row = smartcms_password_reset_token_row($token);
+    if (!$row) {
+        return ['ok' => false, 'message' => '유효하지 않거나 만료된 재설정 링크입니다.'];
+    }
+
+    if (strlen($new_password) < 8) {
+        return ['ok' => false, 'message' => '새 비밀번호는 8자 이상이어야 합니다.'];
+    }
+
+    smartcms_execute(
+        "UPDATE " . smartcms_table('users') . "
+         SET password_hash = :password_hash
+         WHERE id = :id",
+        [
+            'id' => (int)$row['user_id'],
+            'password_hash' => password_hash($new_password, PASSWORD_DEFAULT),
+        ]
+    );
+
+    smartcms_execute(
+        "UPDATE " . smartcms_table('password_reset_tokens') . "
+         SET used_at = NOW()
+         WHERE id = :id",
+        ['id' => (int)$row['id']]
+    );
+
+    smartcms_log_access('page_view', 'member', 'password_reset', 'success', 200, (int)$row['user_id']);
+
+    return ['ok' => true, 'message' => '비밀번호를 변경했습니다. 로그인해 주세요.'];
+}
+
 function smartcms_user_display_name(?array $user): string
 {
     $nickname = trim((string)($user['nickname'] ?? ''));
