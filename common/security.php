@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/http_error.php';
 
 function smartcms_security_session_start(): void
 {
@@ -49,9 +50,7 @@ function smartcms_verify_csrf_or_fail(): void
         return;
     }
 
-    http_response_code(403);
-    echo 'Invalid CSRF token.';
-    exit;
+    smartcms_render_access_denied_page('요청 보안 토큰이 올바르지 않습니다. 다시 시도해 주세요.');
 }
 
 function smartcms_flash_set(string $key, mixed $value): void

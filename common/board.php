@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/http_error.php';
 require_once __DIR__ . '/image.php';
 
 function smartcms_board_key(string $value): string
@@ -814,9 +815,7 @@ function smartcms_require_board_access(array $board, string $action): ?array
 
     if ((string)($board['status'] ?? 'active') === 'disabled' || (string)($board['permission_status'] ?? 'active') === 'disabled') {
         smartcms_log_access('permission_denied', 'board', (string)$board['board_key'], 'denied', 403, $user_id);
-        http_response_code(403);
-        echo 'Board disabled.';
-        exit;
+        smartcms_render_access_denied_page('현재 비활성화된 게시판입니다.');
     }
 
     if ($action === 'write' && !$user) {
@@ -834,9 +833,7 @@ function smartcms_require_board_access(array $board, string $action): ?array
 
     if (!smartcms_has_level($required_level, $user)) {
         smartcms_log_access('permission_denied', 'board', (string)$board['board_key'], 'denied', 403, (int)$user['id']);
-        http_response_code(403);
-        echo 'Permission denied.';
-        exit;
+        smartcms_render_access_denied_page('이 게시판을 볼 권한이 없습니다.');
     }
 
     smartcms_log_access('page_view', 'board', (string)$board['board_key'], 'success', 200, (int)$user['id']);

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/http_error.php';
 require_once __DIR__ . '/routes.php';
 require_once __DIR__ . '/settings.php';
 require_once __DIR__ . '/security.php';
@@ -134,11 +135,13 @@ function smartcms_send_mail(string $to, string $subject, string $body): bool
     }
 
     $from = smartcms_password_reset_from_email();
+    $from_name = str_replace(["\r", "\n"], '', smartcms_site_name());
     $encoded_subject = '=?UTF-8?B?' . base64_encode($subject) . '?=';
+    $encoded_from_name = '=?UTF-8?B?' . base64_encode($from_name) . '?=';
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/plain; charset=UTF-8',
-        'From: smartcms <' . $from . '>',
+        'From: ' . $encoded_from_name . ' <' . $from . '>',
         'Reply-To: ' . $from,
     ];
 
@@ -147,7 +150,7 @@ function smartcms_send_mail(string $to, string $subject, string $body): bool
 
 function smartcms_password_reset_email_body(string $name, string $reset_url): string
 {
-    $site_name = (string)smartcms_config_value('site_name', 'smartcms');
+    $site_name = smartcms_site_name();
 
     return trim(
         "안녕하세요, {$name}님.\n\n"
@@ -204,7 +207,7 @@ function smartcms_password_reset_request(string $email): array
     smartcms_password_reset_store_token((int)$user['id'], (string)$user['email'], $token);
 
     $reset_url = smartcms_base_url('/member/reset/') . '?token=' . rawurlencode($token);
-    $subject = 'smartcms 비밀번호 재설정 안내';
+    $subject = smartcms_site_name() . ' 비밀번호 재설정 안내';
     $body = smartcms_password_reset_email_body((string)$user['name'], $reset_url);
 
     if (!smartcms_send_mail((string)$user['email'], $subject, $body)) {
@@ -464,9 +467,7 @@ function smartcms_require_level(int $required_level, ?string $redirect_to = null
     }
 
     smartcms_log_access('permission_denied', 'page', null, 'denied', 403, (int)$user['id']);
-    http_response_code(403);
-    echo 'Permission denied.';
-    exit;
+    smartcms_render_access_denied_page('이 페이지를 볼 권한이 없습니다.');
 }
 
 function smartcms_page_permission_defaults(): array
@@ -511,9 +512,7 @@ function smartcms_require_page_view(string $page_key, string $page_path, string 
 
     if ((string)$permission['status'] !== 'active') {
         smartcms_log_access('permission_denied', 'page', $page_key, 'denied', 403, $user_id);
-        http_response_code(403);
-        echo 'Page disabled.';
-        exit;
+        smartcms_render_access_denied_page('현재 비활성화된 페이지입니다.');
     }
 
     if ($required_level <= 0 || ((int)$permission['allow_guest'] === 1 && !$user)) {
@@ -527,9 +526,7 @@ function smartcms_require_page_view(string $page_key, string $page_path, string 
 
     if (!smartcms_has_level($required_level, $user)) {
         smartcms_log_access('permission_denied', 'page', $page_key, 'denied', 403, (int)$user['id']);
-        http_response_code(403);
-        echo 'Permission denied.';
-        exit;
+        smartcms_render_access_denied_page('이 페이지를 볼 권한이 없습니다.');
     }
 
     smartcms_log_access('page_view', 'page', $page_key, 'success', 200, (int)$user['id']);

@@ -23,9 +23,7 @@ $board = [
 $user = smartcms_require_board_access($board, 'view');
 
 if ((int)$file['is_secret'] === 1 && (!$user || ((int)$file['author_id'] !== (int)$user['id'] && !smartcms_has_level((int)$board['board_manage_level'], $user)))) {
-    http_response_code(403);
-    echo 'Permission denied.';
-    exit;
+    smartcms_render_access_denied_page('이 첨부파일을 다운로드할 권한이 없습니다.');
 }
 
 $path = SMARTCMS_ROOT . '/' . ltrim((string)$file['file_path'], '/');

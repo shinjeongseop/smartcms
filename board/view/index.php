@@ -29,9 +29,7 @@ $can_manage_post = smartcms_board_can_manage_post($board, $post, $user);
 $can_manage_board = $user && smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user);
 
 if ((int)$post['is_secret'] === 1 && (!$user || ((int)$post['author_id'] !== (int)$user['id'] && !smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user)))) {
-    http_response_code(403);
-    echo 'Secret post.';
-    exit;
+    smartcms_render_access_denied_page('이 비밀글을 볼 권한이 없습니다.');
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
