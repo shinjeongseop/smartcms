@@ -1728,7 +1728,7 @@ function smartcms_board_posts_by_ids(int $board_id, array $post_ids): array
 
     $stmt = smartcms_db()->prepare(
         "SELECT p.id, p.board_id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.content, p.content_mode, p.excerpt, p.author_id, p.author_name, p.is_notice, p.is_secret, p.is_hidden, p.view_count, p.comment_count, p.attachment_count, p.created_at, p.updated_at,
-                b.board_key, b.board_name, b.board_write_level, b.author_display_mode
+                b.board_key, b.board_name, b.author_display_mode
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
          WHERE p.board_id = :board_id AND p.is_hidden = 0 AND p.id IN (" . implode(', ', $placeholders) . ")
