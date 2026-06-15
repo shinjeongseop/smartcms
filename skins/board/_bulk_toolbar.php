@@ -5,6 +5,10 @@ if (empty($board_bulk_can_manage)) {
 
 $board_bulk_form_id = (string)($board_bulk_form_id ?? 'boardBulkForm');
 $board_bulk_select_all_id = (string)($board_bulk_select_all_id ?? ($board_bulk_form_id . '_all'));
+$board_bulk_modal_id = $board_bulk_form_id . '_modal';
+$board_bulk_modal_title_id = $board_bulk_modal_id . '_title';
+$board_bulk_modal_body_id = $board_bulk_modal_id . '_body';
+$board_bulk_modal_submit_id = $board_bulk_modal_id . '_submit';
 $board_bulk_targets = is_array($board_bulk_targets ?? null) ? $board_bulk_targets : [];
 $board_bulk_target_label = '대상 게시판 선택';
 ?>
@@ -51,4 +55,22 @@ $board_bulk_target_label = '대상 게시판 선택';
       </div>
     </div>
   </form>
+</div>
+
+<div class="modal fade" id="<?= smartcms_h($board_bulk_modal_id) ?>" tabindex="-1" aria-labelledby="<?= smartcms_h($board_bulk_modal_title_id) ?>" aria-hidden="true" data-board-bulk-modal>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="<?= smartcms_h($board_bulk_modal_title_id) ?>">확인</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0 text-dark fw-medium" id="<?= smartcms_h($board_bulk_modal_body_id) ?>"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light border fw-bold" data-bs-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary fw-bold" id="<?= smartcms_h($board_bulk_modal_submit_id) ?>">확인</button>
+      </div>
+    </div>
+  </div>
 </div>
