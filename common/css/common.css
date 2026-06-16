@@ -105,20 +105,29 @@ h6,
   min-height: 20rem;
 }
 
-.sc-col-5 {
-  width: 5rem;
+.sc-board-table {
+  table-layout: fixed;
+  width: 100%;
 }
 
-.sc-col-6 {
-  width: 6.25rem;
+.sc-col-check {
+  width: 3.25rem;
 }
 
-.sc-col-7 {
-  width: 7.5rem;
+.sc-col-no {
+  width: 4rem;
 }
 
-.sc-col-9 {
-  width: 9.375rem;
+.sc-col-author {
+  width: 8.5rem;
+}
+
+.sc-col-views {
+  width: 5.5rem;
+}
+
+.sc-col-date {
+  width: 7rem;
 }
 
 .sc-bulk-checkbox {

@@ -223,34 +223,34 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
       </div>
     <?php else: ?>
       <div class="table-responsive pb-4 pb-lg-5">
-        <table class="table table-hover align-middle mb-0 text-nowrap">
+        <table class="table table-hover align-middle mb-0 text-nowrap sc-board-table">
           <thead class="table-light">
             <tr class="text-uppercase fw-bold text-secondary">
               <?php if ($board_bulk_can_manage): ?>
-                <th scope="col" class="ps-2 ps-lg-3 py-3 text-nowrap sc-col-4 text-center align-middle">
+                <th scope="col" class="ps-2 ps-lg-3 py-3 text-nowrap sc-col-check text-center align-middle">
                   <div class="d-flex align-items-center justify-content-center h-100">
                     <input class="form-check-input sc-bulk-checkbox" type="checkbox" id="<?= smartcms_h($board_bulk_select_all_id) ?>" data-board-bulk-select-all form="<?= smartcms_h($board_bulk_form_id) ?>" aria-label="전체 선택">
                   </div>
                 </th>
               <?php endif; ?>
-              <th scope="col" class="ps-2 ps-lg-3 py-3 text-nowrap sc-col-5">번호</th>
+              <th scope="col" class="ps-2 ps-lg-3 py-3 text-nowrap sc-col-no">번호</th>
               <th scope="col" class="ps-0 py-3 text-nowrap">제목</th>
-              <th scope="col" class="d-none d-md-table-cell py-3 text-nowrap sc-col-9">작성자</th>
-              <th scope="col" class="d-none d-lg-table-cell py-3 text-center text-nowrap sc-col-6">조회</th>
-              <th scope="col" class="d-none d-md-table-cell pe-4 pe-lg-5 py-3 text-end text-nowrap sc-col-7">날짜</th>
+              <th scope="col" class="d-none d-md-table-cell py-3 text-nowrap sc-col-author">작성자</th>
+              <th scope="col" class="d-none d-lg-table-cell py-3 text-center text-nowrap sc-col-views">조회</th>
+              <th scope="col" class="d-none d-md-table-cell pe-4 pe-lg-5 py-3 text-end text-nowrap sc-col-date">날짜</th>
             </tr>
           </thead>
           <tbody class="table-group-divider">
             <?php foreach ($posts as $post): ?>
               <tr class="<?= (int)$post['is_notice'] === 1 ? 'table-' . $accent . ' opacity-90' : '' ?>">
                 <?php if ($board_bulk_can_manage): ?>
-                  <td class="ps-2 ps-lg-3 align-middle text-center">
+                  <td class="ps-2 ps-lg-3 align-middle text-center sc-col-check">
                     <div class="d-flex align-items-center justify-content-center h-100">
                       <input class="form-check-input sc-bulk-checkbox" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
                     </div>
                   </td>
                 <?php endif; ?>
-                <td class="ps-2 ps-lg-3 text-secondary small">
+                <td class="ps-2 ps-lg-3 text-secondary small sc-col-no">
                   <?php if ((int)$post['is_notice'] === 1): ?>
                     <span class="badge <?= $skin_meta['badge_class'] ?> rounded-2">공지</span>
                   <?php else: ?>
@@ -272,13 +272,13 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
                     <?php endif; ?>
                   </div>
                 </td>
-                <td class="d-none d-md-table-cell">
+                <td class="d-none d-md-table-cell sc-col-author">
                   <span class="small text-secondary"><?= smartcms_h(smartcms_board_author_display_name($board, $post)) ?></span>
                 </td>
-                <td class="d-none d-lg-table-cell text-center text-muted small">
+                <td class="d-none d-lg-table-cell text-center text-muted small sc-col-views">
                   <?= number_format((int)$post['view_count']) ?>
                 </td>
-                <td class="d-none d-md-table-cell pe-4 pe-lg-5 text-end text-muted small">
+                <td class="d-none d-md-table-cell pe-4 pe-lg-5 text-end text-muted small sc-col-date">
                   <time datetime="<?= date('Y-m-d H:i:s', strtotime($post['created_at'])) ?>">
                     <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                   </time>
