@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../common/board.php';
+require_once __DIR__ . '/../admin/common.php';
 
 function smartcms_seed_freeboard_dummy_posts(int $target_count = 30): array
 {
@@ -122,3 +123,61 @@ if (PHP_SAPI === 'cli') {
         exit(1);
     }
 }
+
+smartcms_admin_user();
+
+$result = null;
+$target_count = 30;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    smartcms_verify_csrf_or_fail();
+    $result = smartcms_seed_freeboard_dummy_posts($target_count);
+}
+
+$page_title = '자유게시판 더미 데이터 생성';
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><?= smartcms_h($page_title) ?></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <main class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-lg-8">
+        <section class="card border-0 shadow-sm">
+          <div class="card-body p-4 p-md-5">
+            <header class="mb-4">
+              <p class="text-uppercase small fw-semibold text-primary mb-2">Seed Tool</p>
+              <h1 class="h4 fw-bold mb-2"><?= smartcms_h($page_title) ?></h1>
+              <p class="text-secondary mb-0">관리자만 실행할 수 있습니다. 버튼을 누르면 자유게시판에 더미 글을 채웁니다.</p>
+            </header>
+
+            <?php if (is_array($result)): ?>
+              <div class="alert alert-success" role="alert">
+                <div class="fw-bold mb-1"><?= smartcms_h((string)($result['message'] ?? '완료되었습니다.')) ?></div>
+                <div class="small text-success-emphasis">
+                  created=<?= (int)($result['created'] ?? 0) ?>, total=<?= (int)($result['total'] ?? 0) ?>
+                </div>
+              </div>
+            <?php endif; ?>
+
+            <div class="alert alert-warning" role="alert">
+              이 작업은 <strong>자유게시판 free</strong>에만 적용됩니다. 이미 글이 있으면 총 30개가 되도록 부족한 수만 추가합니다.
+            </div>
+
+            <form method="post" class="d-flex flex-wrap gap-2 align-items-center">
+              <?= smartcms_csrf_input() ?>
+              <button type="submit" class="btn btn-primary fw-bold">더미 30개 생성</button>
+              <a href="<?= smartcms_h(smartcms_base_url('/board/?board=free')) ?>" class="btn btn-light border fw-bold">자유게시판 보기</a>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
