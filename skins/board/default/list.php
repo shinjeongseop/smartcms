@@ -300,34 +300,22 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
 
     <?php if ((int)$pagination['pages'] > 1 || smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
       <footer class="card-footer bg-white p-4 p-lg-5 border-top">
-        <div class="d-flex flex-column flex-lg-row align-items-center justify-content-between gap-3">
-          <div class="w-100">
-            <?php if ((int)$pagination['pages'] > 1): ?>
-              <nav aria-label="게시글 페이지 목록">
-                <ul class="pagination pagination-sm justify-content-center justify-content-lg-start mb-0 gap-1">
-                  <?php foreach (smartcms_pagination_window((int)$pagination['page'], (int)$pagination['pages']) as $i): ?>
-                    <li class="page-item <?= $i === (int)$pagination['page'] ? 'active' : '' ?>">
-                      <a class="page-link border-0 rounded-circle px-3 py-2 fw-bold shadow-none"
-                         href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])
-                             . '&page=' . $i
-                             . '&q=' . rawurlencode((string)$pagination['keyword'])) ?>">
-                        <?= $i ?>
-                      </a>
-                    </li>
-                  <?php endforeach; ?>
-                </ul>
-              </nav>
-            <?php endif; ?>
-          </div>
-          <?php if (smartcms_has_level((int)($board['board_write_level'] ?? 8), $user)): ?>
-            <div class="w-100 d-flex justify-content-lg-end">
-              <a class="btn <?= smartcms_h((string)$skin_meta['button_class']) ?> rounded-2 px-4 fw-bold shadow-sm <?= smartcms_h((string)$skin_meta['button_text_class']) ?>"
-                 href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'], '/board/write/')) ?>">
-                새글
-              </a>
-            </div>
-          <?php endif; ?>
-        </div>
+        <?php if ((int)$pagination['pages'] > 1): ?>
+          <nav aria-label="게시글 페이지 목록">
+            <ul class="pagination pagination-sm justify-content-center mb-0 gap-1">
+              <?php foreach (smartcms_pagination_window((int)$pagination['page'], (int)$pagination['pages']) as $i): ?>
+                <li class="page-item <?= $i === (int)$pagination['page'] ? 'active' : '' ?>">
+                  <a class="page-link border-0 rounded-circle px-3 py-2 fw-bold shadow-none"
+                     href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])
+                         . '&page=' . $i
+                         . '&q=' . rawurlencode((string)$pagination['keyword'])) ?>">
+                    <?= $i ?>
+                  </a>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </nav>
+        <?php endif; ?>
       </footer>
     <?php endif; ?>
 
