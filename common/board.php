@@ -1050,7 +1050,7 @@ function smartcms_board_increment_view(int $post_id): void
 function smartcms_board_comments(int $post_id): array
 {
     $stmt = smartcms_db()->prepare(
-        "SELECT id, author_id, author_name, content, is_hidden, created_at, updated_at
+        "SELECT id, parent_id, author_id, author_name, content, is_hidden, created_at, updated_at
          FROM " . smartcms_table('board_comments') . "
          WHERE post_id = :post_id
          ORDER BY id ASC"
@@ -1058,6 +1058,42 @@ function smartcms_board_comments(int $post_id): array
     $stmt->execute(['post_id' => $post_id]);
 
     return $stmt->fetchAll();
+}
+
+function smartcms_board_comment_find(int $post_id, int $comment_id): ?array
+{
+    return smartcms_fetch_one(
+        "SELECT id, post_id, parent_id, author_id, author_name, content, is_hidden, created_at, updated_at
+         FROM " . smartcms_table('board_comments') . "
+         WHERE post_id = :post_id AND id = :id
+         LIMIT 1",
+        [
+            'post_id' => $post_id,
+            'id' => $comment_id,
+        ]
+    );
+}
+
+function smartcms_board_comment_tree(array $comments): array
+{
+    $grouped = [];
+    foreach ($comments as $comment) {
+        $parent_id = max(0, (int)($comment['parent_id'] ?? 0));
+        $comment['parent_id'] = $parent_id > 0 ? $parent_id : null;
+        $grouped[$parent_id][] = $comment;
+    }
+
+    $build_tree = function (int $parent_id) use (&$build_tree, $grouped): array {
+        $items = [];
+        foreach ($grouped[$parent_id] ?? [] as $comment) {
+            $comment['children'] = $build_tree((int)$comment['id']);
+            $items[] = $comment;
+        }
+
+        return $items;
+    };
+
+    return $build_tree(0);
 }
 
 function smartcms_board_files(int $post_id): array
@@ -1148,20 +1184,33 @@ function smartcms_board_count_once(string $type, int $id, int $ttl = 86400): boo
     return true;
 }
 
-function smartcms_board_create_comment(array $board, array $post, array $user, string $content): array
+function smartcms_board_create_comment(array $board, array $post, array $user, string $content, ?int $parent_id = null): array
 {
     $content = trim($content);
     if ($content === '') {
         return ['ok' => false, 'message' => '댓글 내용을 입력하세요.'];
     }
 
+    $parent_id = $parent_id !== null && $parent_id > 0 ? $parent_id : null;
+    if ($parent_id !== null) {
+        $parent_comment = smartcms_board_comment_find((int)$post['id'], $parent_id);
+        if (!$parent_comment) {
+            return ['ok' => false, 'message' => '잘못된 답글 대상입니다.'];
+        }
+
+        if ((int)($parent_comment['is_hidden'] ?? 0) === 1 && !smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user)) {
+            return ['ok' => false, 'message' => '숨김 처리된 댓글에는 답글을 달 수 없습니다.'];
+        }
+    }
+
     smartcms_execute(
         "INSERT INTO " . smartcms_table('board_comments') . "
-         (board_id, post_id, author_id, author_name, content)
-         VALUES (:board_id, :post_id, :author_id, :author_name, :content)",
+         (board_id, post_id, parent_id, author_id, author_name, content)
+         VALUES (:board_id, :post_id, :parent_id, :author_id, :author_name, :content)",
         [
             'board_id' => (int)$board['id'],
             'post_id' => (int)$post['id'],
+            'parent_id' => $parent_id,
             'author_id' => (int)$user['id'],
             'author_name' => (string)$user['name'],
             'content' => $content,

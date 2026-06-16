@@ -62,7 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         smartcms_flash_set('message_type', 'error');
         smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
       } else {
-        $result = smartcms_board_create_comment($board, $post, $user, (string)($_POST['content'] ?? ''));
+        $parent_id = (int)($_POST['parent_id'] ?? 0);
+        $result = smartcms_board_create_comment($board, $post, $user, (string)($_POST['content'] ?? ''), $parent_id > 0 ? $parent_id : null);
         smartcms_flash_set('message', $result['message']);
         smartcms_flash_set('message_type', $result['ok'] ? 'success' : 'error');
         smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
