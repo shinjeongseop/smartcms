@@ -15,6 +15,9 @@
     }
 
     var actionInput = form.querySelector('[data-board-bulk-action-input]');
+    if (!(actionInput instanceof HTMLInputElement)) {
+      actionInput = form.querySelector('input[name="bulk_action"]');
+    }
     return actionInput instanceof HTMLInputElement ? actionInput : null;
   }
 
@@ -75,6 +78,10 @@
     }
 
     actionInput.value = action;
+    if (typeof form.requestSubmit === 'function') {
+      form.requestSubmit();
+      return true;
+    }
     form.submit();
     return true;
   }
@@ -121,6 +128,10 @@
 
       actionInput.value = action;
       modal.hide();
+      if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+        return;
+      }
       form.submit();
     };
 

@@ -20,8 +20,8 @@ $search_requested = array_key_exists('q', $_GET);
 $keyword_length = function_exists('mb_strlen') ? mb_strlen($keyword) : strlen($keyword);
 
 if ($search_requested && $keyword_length < 2) {
-    $message = '검색어를 2글자 이상 입력하세요.';
-    $message_type = 'warning';
+    $keyword = '';
+    $search_requested = false;
 }
 
 try {
