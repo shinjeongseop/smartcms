@@ -120,3 +120,13 @@ h6,
 .sc-col-9 {
   width: 9.375rem;
 }
+
+.sc-bulk-checkbox {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+  flex: 0 0 auto;
+  display: block;
+  margin: 0;
+}

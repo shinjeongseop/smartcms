@@ -79,7 +79,7 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
             <article class="card h-100 border shadow-sm bg-white overflow-hidden position-relative">
               <?php if ($board_bulk_can_manage): ?>
                 <div class="position-absolute top-0 start-0 p-3 z-3">
-                  <input class="form-check-input m-0" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
+                  <input class="form-check-input sc-bulk-checkbox" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
                 </div>
               <?php endif; ?>
               <div class="row g-0 h-100">
@@ -161,7 +161,7 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
               <article class="card h-100 border shadow-sm bg-white <?= $gallery_mode ? 'rounded-3 overflow-hidden' : 'overflow-hidden' ?> position-relative">
                 <?php if ($board_bulk_can_manage): ?>
                   <div class="position-absolute top-0 start-0 p-3 z-3">
-                    <input class="form-check-input m-0" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
+                    <input class="form-check-input sc-bulk-checkbox" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
                   </div>
                 <?php endif; ?>
                 <?php if ($first_image): ?>
@@ -231,7 +231,7 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
               <?php if ($board_bulk_can_manage): ?>
                 <th scope="col" class="ps-2 ps-lg-3 py-3 text-nowrap sc-col-4 text-center align-middle">
                   <div class="d-flex align-items-center justify-content-center h-100">
-                    <input class="form-check-input m-0 align-middle" type="checkbox" id="<?= smartcms_h($board_bulk_select_all_id) ?>" data-board-bulk-select-all form="<?= smartcms_h($board_bulk_form_id) ?>" aria-label="전체 선택">
+                    <input class="form-check-input sc-bulk-checkbox" type="checkbox" id="<?= smartcms_h($board_bulk_select_all_id) ?>" data-board-bulk-select-all form="<?= smartcms_h($board_bulk_form_id) ?>" aria-label="전체 선택">
                   </div>
                 </th>
               <?php endif; ?>
@@ -248,7 +248,7 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
                 <?php if ($board_bulk_can_manage): ?>
                   <td class="ps-2 ps-lg-3 align-middle text-center">
                     <div class="d-flex align-items-center justify-content-center h-100">
-                      <input class="form-check-input m-0 align-middle" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
+                      <input class="form-check-input sc-bulk-checkbox" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
                     </div>
                   </td>
                 <?php endif; ?>

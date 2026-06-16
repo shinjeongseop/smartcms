@@ -24,7 +24,7 @@ $board_bulk_select_all_location = (string)($board_bulk_select_all_location ?? 't
 
     <?php if ($board_bulk_select_all_location !== 'header'): ?>
       <div class="form-check mb-0">
-        <input class="form-check-input align-middle" type="checkbox" id="<?= smartcms_h($board_bulk_select_all_id) ?>" data-board-bulk-select-all form="<?= smartcms_h($board_bulk_form_id) ?>" aria-label="전체 선택">
+        <input class="form-check-input sc-bulk-checkbox" type="checkbox" id="<?= smartcms_h($board_bulk_select_all_id) ?>" data-board-bulk-select-all form="<?= smartcms_h($board_bulk_form_id) ?>" aria-label="전체 선택">
         <label class="form-check-label fw-bold" for="<?= smartcms_h($board_bulk_select_all_id) ?>">전체 선택</label>
       </div>
     <?php endif; ?>
