@@ -34,6 +34,7 @@
       element: document.getElementById(modalId),
       title: document.getElementById(modalId + '_title'),
       body: document.getElementById(modalId + '_body'),
+      target: document.getElementById(modalId + '_target'),
       submit: document.getElementById(modalId + '_submit')
     };
   }
@@ -44,18 +45,9 @@
     }).length;
   }
 
-  function getTargetBoardLabel(form) {
-    var targetBoard = form.querySelector('[name="target_board"]');
-    if (!(targetBoard instanceof HTMLSelectElement) || targetBoard.selectedIndex < 0) {
-      return '';
-    }
-
-    return String(targetBoard.options[targetBoard.selectedIndex].textContent || '').trim();
-  }
-
   function openBulkModal(form, action, submitter) {
     var modalRefs = getModalRefs(form);
-    if (!(modalRefs.element instanceof HTMLElement) || !(modalRefs.title instanceof HTMLElement) || !(modalRefs.body instanceof HTMLElement) || !(modalRefs.submit instanceof HTMLButtonElement)) {
+    if (!(modalRefs.element instanceof HTMLElement) || !(modalRefs.title instanceof HTMLElement) || !(modalRefs.body instanceof HTMLElement) || !(modalRefs.target instanceof HTMLSelectElement) || !(modalRefs.submit instanceof HTMLButtonElement)) {
       return false;
     }
 
@@ -64,17 +56,27 @@
     }
 
     var actionLabel = action === 'move' ? '이동' : '복사';
-    var targetBoardLabel = getTargetBoardLabel(form) || '대상 게시판';
     var checkedCount = getCheckedCount(form);
 
     modalRefs.title.textContent = actionLabel + ' 확인';
-    modalRefs.body.textContent = '선택한 글 ' + checkedCount + '개를 "' + targetBoardLabel + '"으로 ' + actionLabel + '하시겠습니까?';
+    modalRefs.body.textContent = '선택한 글 ' + checkedCount + '개를 ' + actionLabel + '할 대상 게시판을 선택해 주세요.';
     modalRefs.submit.textContent = actionLabel;
     modalRefs.submit.className = 'btn ' + (action === 'move' ? 'btn-primary' : 'btn-secondary') + ' fw-bold';
+    modalRefs.target.value = '';
 
     var modal = window.bootstrap.Modal.getOrCreateInstance(modalRefs.element);
 
+    modalRefs.element.addEventListener('shown.bs.modal', function focusTarget() {
+      modalRefs.target.focus();
+    }, { once: true });
+
     modalRefs.submit.onclick = function () {
+      if (String(modalRefs.target.value || '').trim() === '') {
+        window.alert('대상 게시판을 선택하세요.');
+        modalRefs.target.focus();
+        return;
+      }
+
       form.dataset.boardBulkConfirmedAction = action;
       modal.hide();
       if (submitter && typeof form.requestSubmit === 'function') {
@@ -151,16 +153,6 @@
           }
 
           if (action === 'move' || action === 'copy') {
-            var targetBoard = form.querySelector('[name="target_board"]');
-            if (!(targetBoard instanceof HTMLSelectElement) || targetBoard.value.trim() === '') {
-              event.preventDefault();
-              window.alert('대상 게시판을 선택하세요.');
-              if (targetBoard instanceof HTMLSelectElement) {
-                targetBoard.focus();
-              }
-              return;
-            }
-
             event.preventDefault();
             if (openBulkModal(form, action, button)) {
               return;
