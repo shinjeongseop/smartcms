@@ -14,7 +14,7 @@ $board_bulk_modal_submit_id = $board_bulk_modal_id . '_submit';
 $board_bulk_targets = is_array($board_bulk_targets ?? null) ? $board_bulk_targets : [];
 $board_bulk_select_all_location = (string)($board_bulk_select_all_location ?? 'toolbar');
 ?>
-<div class="border-bottom bg-body-tertiary px-4 py-3">
+<div class="border-top bg-body-tertiary px-4 py-3">
   <form id="<?= smartcms_h($board_bulk_form_id) ?>" class="d-flex flex-column gap-3" method="post" action="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" data-board-bulk-form>
     <?= smartcms_csrf_input() ?>
     <input type="hidden" name="bulk_action" value="" data-board-bulk-action-input id="<?= smartcms_h($board_bulk_action_input_id) ?>">

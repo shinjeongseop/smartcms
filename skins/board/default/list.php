@@ -66,8 +66,6 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
       </div>
     </header>
 
-    <?php require SMARTCMS_ROOT . '/skins/board/_bulk_toolbar.php'; ?>
-
     <?php if ($webzine_mode): ?>
       <div class="p-4 p-lg-5">
         <div class="vstack gap-5">
@@ -299,6 +297,8 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
         </table>
       </div>
     <?php endif; ?>
+
+    <?php require SMARTCMS_ROOT . '/skins/board/_bulk_toolbar.php'; ?>
 
     <?php if ((int)$pagination['pages'] > 1): ?>
       <footer class="card-footer bg-white p-4 p-lg-5 border-top">
