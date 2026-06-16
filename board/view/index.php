@@ -35,13 +35,13 @@ if ((int)$post['is_secret'] === 1 && (!$user || ((int)$post['author_id'] !== (in
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
     $action = (string)($_POST['action'] ?? 'comment_create');
-    if ($action === 'comment_hide') {
+    if ($action === 'comment_hide' || $action === 'comment_toggle_visibility') {
         if (!$can_manage_board || !$user) {
             smartcms_flash_set('message', '댓글 숨김 권한이 없습니다.');
             smartcms_flash_set('message_type', 'error');
             smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));
         } else {
-            $result = smartcms_board_hide_comment($board, $post, $user, (int)($_POST['comment_id'] ?? 0));
+            $result = smartcms_board_toggle_comment_visibility($board, $post, $user, (int)($_POST['comment_id'] ?? 0));
             smartcms_flash_set('message', $result['message']);
             smartcms_flash_set('message_type', $result['ok'] ? 'success' : 'error');
             smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$post['id']));

@@ -1586,23 +1586,42 @@ function smartcms_board_bulk_action_posts(array $source_board, array $user, arra
 
 function smartcms_board_hide_comment(array $board, array $post, array $user, int $comment_id): array
 {
+    return smartcms_board_toggle_comment_visibility($board, $post, $user, $comment_id, true);
+}
+
+function smartcms_board_toggle_comment_visibility(array $board, array $post, array $user, int $comment_id, ?bool $force_hidden = null): array
+{
     if (!smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user)) {
         return ['ok' => false, 'message' => '댓글 숨김 권한이 없습니다.'];
     }
 
+    $comment = smartcms_board_comment_find((int)$post['id'], $comment_id);
+    if (!$comment) {
+        return ['ok' => false, 'message' => '댓글을 찾을 수 없습니다.'];
+    }
+
+    $current_hidden = (int)($comment['is_hidden'] ?? 0) === 1;
+    $next_hidden = $force_hidden !== null ? $force_hidden : !$current_hidden;
+
     smartcms_execute(
         "UPDATE " . smartcms_table('board_comments') . "
-         SET is_hidden = 1
+         SET is_hidden = :is_hidden
          WHERE id = :id AND post_id = :post_id AND board_id = :board_id",
         [
+            'is_hidden' => $next_hidden ? 1 : 0,
             'id' => $comment_id,
             'post_id' => (int)$post['id'],
             'board_id' => (int)$board['id'],
         ]
     );
 
-    smartcms_board_audit($board, $post, $user, 'comment_hide', '댓글을 숨김 처리했습니다.');
-    return ['ok' => true, 'message' => '댓글을 숨김 처리했습니다.'];
+    if ($next_hidden) {
+        smartcms_board_audit($board, $post, $user, 'comment_hide', '댓글을 숨김 처리했습니다.');
+        return ['ok' => true, 'message' => '댓글을 숨김 처리했습니다.'];
+    }
+
+    smartcms_board_audit($board, $post, $user, 'comment_unhide', '댓글 숨김을 해제했습니다.');
+    return ['ok' => true, 'message' => '댓글 숨김을 해제했습니다.'];
 }
 
 function smartcms_board_audit(array $board, ?array $post, ?array $user, string $action, string $message): void
@@ -1670,6 +1689,8 @@ function smartcms_board_audit_action_label(string $action): string
     return match ($action) {
         'post_move' => '이동',
         'post_copy' => '복사',
+        'comment_hide' => '댓글 숨김',
+        'comment_unhide' => '댓글 숨김 해제',
         default => $action,
     };
 }

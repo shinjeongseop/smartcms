@@ -10,15 +10,23 @@ $render_comments = static function (array $items, int $depth = 0) use (&$render_
         $reply_form_id = 'commentReplyForm_' . $comment_id;
         $is_hidden = (int)($comment['is_hidden'] ?? 0) === 1;
         $can_reply = $can_comment && $user && (!$is_hidden || $can_manage_board);
+        $author_profile = null;
+        $author_id = (int)($comment['author_id'] ?? 0);
+        if ($author_id > 0) {
+            $author_profile = smartcms_board_user_profile_by_id($author_id);
+        }
+        $avatar_user = $author_profile ?: ['name' => (string)($comment['author_name'] ?? ''), 'nickname' => (string)($comment['author_name'] ?? '')];
+        $avatar_markup = smartcms_user_avatar_markup($avatar_user, 'sc-avatar-32', 'fw-bold small');
         $item_class = $depth === 0
-            ? 'p-3 bg-light rounded-3 border-start border-primary border-4 shadow-none'
-            : 'p-3 bg-white rounded-3 border border-primary-subtle shadow-sm ms-4 ms-md-5';
+            ? 'p-3 bg-white rounded-3 border shadow-sm'
+            : 'p-3 bg-body-tertiary rounded-3 border border-primary-subtle ms-4 ms-md-5';
         ?>
         <article class="<?= smartcms_h($item_class) ?>">
           <header class="d-flex justify-content-between align-items-center gap-2 mb-2">
-            <span class="fw-bold text-dark">
-              <i class="bi bi-person me-1"></i><?= smartcms_h(smartcms_board_author_display_name($board, $comment)) ?>
-            </span>
+            <div class="d-flex align-items-center gap-2 min-w-0">
+              <span class="flex-shrink-0"><?= $avatar_markup ?></span>
+              <span class="fw-bold text-dark text-truncate"><?= smartcms_h(smartcms_board_author_display_name($board, $comment)) ?></span>
+            </div>
             <time class="text-secondary small fw-medium" datetime="<?= smartcms_h((string)$comment['created_at']) ?>"><?= smartcms_h($comment['created_at']) ?></time>
           </header>
           <div class="mb-0 text-dark fw-medium lh-base fs-6">
@@ -26,21 +34,23 @@ $render_comments = static function (array $items, int $depth = 0) use (&$render_
           </div>
           <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
             <?php if ($can_reply): ?>
-              <button class="btn btn-link p-0 text-decoration-none shadow-none"
+              <button class="btn btn-sm btn-light border rounded-pill px-3 py-1 fw-semibold text-<?= smartcms_h($accent === 'dark' ? 'dark' : $accent) ?> shadow-none"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#<?= smartcms_h($reply_form_id) ?>"
                       aria-expanded="false"
                       aria-controls="<?= smartcms_h($reply_form_id) ?>">
-                <span class="badge text-bg-<?= smartcms_h($accent === 'dark' ? 'secondary' : $accent) ?> rounded-2 px-2 py-1 fw-semibold">댓글</span>
+                댓글
               </button>
             <?php endif; ?>
-            <?php if ($can_manage_board && !$is_hidden): ?>
+            <?php if ($can_manage_board): ?>
               <form method="post" class="mb-0">
                 <?= smartcms_csrf_input() ?>
-                <input type="hidden" name="action" value="comment_hide">
+                <input type="hidden" name="action" value="comment_toggle_visibility">
                 <input type="hidden" name="comment_id" value="<?= smartcms_h($comment['id']) ?>">
-                <button class="btn btn-danger btn-sm rounded-2 px-3 shadow-none fw-bold" type="submit">댓글 숨김</button>
+                <button class="btn btn-sm btn-light border rounded-pill px-3 py-1 fw-semibold shadow-none <?= $is_hidden ? 'text-primary' : 'text-danger' ?>" type="submit">
+                  <?= $is_hidden ? '숨김 해제' : '댓글 숨김' ?>
+                </button>
               </form>
             <?php endif; ?>
           </div>
