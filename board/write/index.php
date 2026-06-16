@@ -53,6 +53,10 @@ $active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], 
     ? (string)$board['board_key']
     : 'boards';
 $SMARTCMS_HEAD = ['title' => '새 글 작성', 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
+$board_form_stylesheet = smartcms_board_skin_stylesheet($board, 'form');
+if ($board_form_stylesheet !== null) {
+    $SMARTCMS_HEAD['stylesheets'][] = $board_form_stylesheet;
+}
 $use_editor = (int)($board['use_editor'] ?? 1) === 1;
 if ($use_editor) {
     $SMARTCMS_HEAD['stylesheets'][] = '/common/vendor/jodit/jodit.min.css';

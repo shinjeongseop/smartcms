@@ -80,6 +80,10 @@ $active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], 
     ? (string)$board['board_key']
     : 'boards';
 $SMARTCMS_HEAD = ['title' => (string)$post['title'], 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
+$board_view_stylesheet = smartcms_board_skin_stylesheet($board, 'view');
+if ($board_view_stylesheet !== null) {
+    $SMARTCMS_HEAD['stylesheets'][] = $board_view_stylesheet;
+}
 require SMARTCMS_ROOT . '/head.php';
 ?>
 

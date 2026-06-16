@@ -31,6 +31,18 @@ function smartcms_board_skin_template(?array $board, string $template): string
     return SMARTCMS_ROOT . '/skins/board/default/' . $template . '.php';
 }
 
+function smartcms_board_skin_stylesheet(?array $board, string $template): ?string
+{
+    $template_path = smartcms_board_skin_template($board, $template);
+    $style_path = dirname($template_path) . '/style.css';
+
+    if (!is_file($style_path)) {
+        return null;
+    }
+
+    return str_replace('\\', '/', str_replace(SMARTCMS_ROOT, '', $style_path));
+}
+
 function smartcms_board_skin_meta(?array $board): array
 {
     $skin = strtolower(preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($board['skin'] ?? 'default')));

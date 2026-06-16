@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+.sc-board-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.sc-col-check {
+  width: 3.25rem;
+}
+
+.sc-col-no {
+  width: 4rem;
+}
+
+.sc-col-author {
+  width: 8.5rem;
+}
+
+.sc-col-views {
+  width: 5.5rem;
+}
+
+.sc-col-date {
+  width: 7rem;
+}

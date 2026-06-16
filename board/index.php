@@ -70,6 +70,12 @@ $active_menu = $board
     ? 'board:' . (string)$board['board_key']
     : 'boards';
 $SMARTCMS_HEAD = ['title' => $page_title, 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
+if ($board) {
+    $board_list_stylesheet = smartcms_board_skin_stylesheet($board, 'list');
+    if ($board_list_stylesheet !== null) {
+        $SMARTCMS_HEAD['stylesheets'][] = $board_list_stylesheet;
+    }
+}
 require SMARTCMS_ROOT . '/head.php';
 ?>
 
