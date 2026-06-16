@@ -173,6 +173,6 @@ require SMARTCMS_ROOT . '/head.php';
 </div>
 
 <?php
-$SMARTCMS_FOOT = [];
+$SMARTCMS_FOOT = is_array($SMARTCMS_FOOT ?? null) ? $SMARTCMS_FOOT : [];
 require SMARTCMS_ROOT . '/foot.php';
 ?>
