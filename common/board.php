@@ -1096,6 +1096,45 @@ function smartcms_board_comment_tree(array $comments): array
     return $build_tree(0);
 }
 
+function smartcms_board_comment_files(int $comment_id): array
+{
+    $stmt = smartcms_db()->prepare(
+        "SELECT id, original_name, stored_name, file_path, file_size, mime_type, download_count, created_at
+         FROM " . smartcms_table('board_files') . "
+         WHERE comment_id = :comment_id
+         ORDER BY id ASC"
+    );
+    $stmt->execute(['comment_id' => $comment_id]);
+
+    return $stmt->fetchAll();
+}
+
+function smartcms_board_comment_collect_descendant_ids(array $comments, int $comment_id): array
+{
+    $children_map = [];
+    foreach ($comments as $comment) {
+        $parent_id = (int)($comment['parent_id'] ?? 0);
+        if ($parent_id > 0) {
+            $children_map[$parent_id][] = (int)$comment['id'];
+        }
+    }
+
+    $ids = [];
+    $stack = [$comment_id];
+    while ($stack) {
+        $current = array_pop($stack);
+        if (isset($ids[$current])) {
+            continue;
+        }
+        $ids[$current] = true;
+        foreach ($children_map[$current] ?? [] as $child_id) {
+            $stack[] = $child_id;
+        }
+    }
+
+    return array_map('intval', array_keys($ids));
+}
+
 function smartcms_board_files(int $post_id): array
 {
     $stmt = smartcms_db()->prepare(
@@ -1624,6 +1663,104 @@ function smartcms_board_toggle_comment_visibility(array $board, array $post, arr
     return ['ok' => true, 'message' => '댓글 숨김을 해제했습니다.'];
 }
 
+function smartcms_board_delete_comment(array $board, array $post, array $user, int $comment_id): array
+{
+    if (!smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user)) {
+        return ['ok' => false, 'message' => '댓글 삭제 권한이 없습니다.'];
+    }
+
+    $comment = smartcms_board_comment_find((int)$post['id'], $comment_id);
+    if (!$comment) {
+        return ['ok' => false, 'message' => '댓글을 찾을 수 없습니다.'];
+    }
+
+    $all_comments = smartcms_board_comments((int)$post['id']);
+    $delete_ids = smartcms_board_comment_collect_descendant_ids($all_comments, $comment_id);
+    $delete_count = count($delete_ids);
+    if ($delete_count < 1) {
+        return ['ok' => false, 'message' => '삭제할 댓글이 없습니다.'];
+    }
+
+    $db = smartcms_db();
+    $db->beginTransaction();
+    $comment_files = [];
+
+    try {
+        $placeholders = [];
+        $params = [
+            'post_id' => (int)$post['id'],
+            'board_id' => (int)$board['id'],
+        ];
+        foreach ($delete_ids as $index => $delete_id) {
+            $key = 'id_' . $index;
+            $placeholders[] = ':' . $key;
+            $params[$key] = $delete_id;
+        }
+
+        $comment_files = smartcms_fetch_all(
+            "SELECT id, original_name, stored_name, file_path, file_size, mime_type, download_count, created_at
+             FROM " . smartcms_table('board_files') . "
+             WHERE board_id = :board_id
+               AND post_id = :post_id
+               AND comment_id IN (" . implode(', ', $placeholders) . ")",
+            $params
+        );
+
+        smartcms_execute(
+            "DELETE FROM " . smartcms_table('board_files') . "
+             WHERE board_id = :board_id
+               AND post_id = :post_id
+               AND comment_id IN (" . implode(', ', $placeholders) . ")",
+            $params
+        );
+
+        smartcms_execute(
+            "DELETE FROM " . smartcms_table('board_comments') . "
+             WHERE board_id = :board_id
+               AND post_id = :post_id
+               AND id IN (" . implode(', ', $placeholders) . ")",
+            $params
+        );
+
+        smartcms_execute(
+            "UPDATE " . smartcms_table('board_posts') . "
+             SET comment_count = GREATEST(comment_count - :count, 0)
+             WHERE id = :id AND board_id = :board_id",
+            [
+                'count' => $delete_count,
+                'id' => (int)$post['id'],
+                'board_id' => (int)$board['id'],
+            ]
+        );
+
+        $db->commit();
+    } catch (Throwable $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+
+        return ['ok' => false, 'message' => '댓글 삭제 중 오류가 발생했습니다.'];
+    }
+
+    foreach ($comment_files as $file) {
+        $path = SMARTCMS_ROOT . '/' . ltrim((string)$file['file_path'], '/');
+        smartcms_image_delete_thumbnail_cache_for_source($path);
+        if (is_file($path)) {
+            @unlink($path);
+        }
+    }
+
+    smartcms_board_audit(
+        $board,
+        $post,
+        $user,
+        'comment_delete',
+        $delete_count > 1 ? '댓글과 답글 ' . $delete_count . '개를 삭제했습니다.' : '댓글을 삭제했습니다.'
+    );
+
+    return ['ok' => true, 'message' => $delete_count > 1 ? '댓글과 답글 ' . $delete_count . '개를 삭제했습니다.' : '댓글을 삭제했습니다.'];
+}
+
 function smartcms_board_audit(array $board, ?array $post, ?array $user, string $action, string $message): void
 {
     try {
@@ -1691,6 +1828,7 @@ function smartcms_board_audit_action_label(string $action): string
         'post_copy' => '복사',
         'comment_hide' => '댓글 숨김',
         'comment_unhide' => '댓글 숨김 해제',
+        'comment_delete' => '댓글 삭제',
         default => $action,
     };
 }

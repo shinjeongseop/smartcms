@@ -49,7 +49,15 @@ $render_comments = static function (array $items, int $depth = 0) use (&$render_
                 <input type="hidden" name="action" value="comment_toggle_visibility">
                 <input type="hidden" name="comment_id" value="<?= smartcms_h($comment['id']) ?>">
                 <button class="btn btn-sm btn-light border rounded-pill px-3 py-1 fw-semibold shadow-none <?= $is_hidden ? 'text-primary' : 'text-danger' ?>" type="submit">
-                  <?= $is_hidden ? '숨김 해제' : '댓글 숨김' ?>
+                  <i class="bi <?= $is_hidden ? 'bi-eye-fill' : 'bi-eye-slash-fill' ?> me-1"></i><?= $is_hidden ? '숨김 해제' : '댓글 숨김' ?>
+                </button>
+              </form>
+              <form method="post" class="mb-0" onsubmit="return confirm('댓글을 삭제할까요? 답글도 함께 삭제됩니다.');">
+                <?= smartcms_csrf_input() ?>
+                <input type="hidden" name="action" value="comment_delete">
+                <input type="hidden" name="comment_id" value="<?= smartcms_h($comment['id']) ?>">
+                <button class="btn btn-sm btn-danger rounded-pill px-3 py-1 fw-semibold shadow-none" type="submit">
+                  <i class="bi bi-trash3-fill me-1"></i>삭제
                 </button>
               </form>
             <?php endif; ?>
