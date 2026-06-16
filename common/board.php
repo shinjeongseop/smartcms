@@ -229,7 +229,7 @@ function smartcms_board_user_profile_by_id(int $user_id): ?array
 
     smartcms_ensure_user_nickname_column();
     $cache[$user_id] = smartcms_fetch_one(
-        "SELECT id, name, nickname
+        "SELECT id, name, nickname, avatar_path
          FROM " . smartcms_table('users') . "
          WHERE id = :id
          LIMIT 1",
