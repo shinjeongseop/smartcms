@@ -26,13 +26,13 @@ $render_comments = static function (array $items, int $depth = 0) use (&$render_
           </div>
           <div class="d-flex flex-wrap align-items-center gap-2 mt-3">
             <?php if ($can_reply): ?>
-              <button class="btn btn-link p-0 text-decoration-none fw-semibold text-<?= smartcms_h($accent) ?> shadow-none"
+              <button class="btn btn-link p-0 text-decoration-none shadow-none"
                       type="button"
                       data-bs-toggle="collapse"
                       data-bs-target="#<?= smartcms_h($reply_form_id) ?>"
                       aria-expanded="false"
                       aria-controls="<?= smartcms_h($reply_form_id) ?>">
-                답글
+                <span class="badge text-bg-<?= smartcms_h($accent === 'dark' ? 'secondary' : $accent) ?> rounded-2 px-2 py-1 fw-semibold">댓글</span>
               </button>
             <?php endif; ?>
             <?php if ($can_manage_board && !$is_hidden): ?>
@@ -51,10 +51,10 @@ $render_comments = static function (array $items, int $depth = 0) use (&$render_
                 <input type="hidden" name="action" value="comment_create">
                 <input type="hidden" name="parent_id" value="<?= smartcms_h($comment_id) ?>">
                 <div>
-                  <textarea class="form-control py-3" name="content" rows="3" required placeholder="답글을 입력하세요."></textarea>
+                  <textarea class="form-control py-3" name="content" rows="3" required placeholder="댓글을 입력하세요."></textarea>
                 </div>
                 <div class="text-end">
-                  <button type="submit" class="btn btn-primary rounded-2 px-4 py-2 fw-bold shadow-sm">답글 등록</button>
+                  <button type="submit" class="btn btn-primary rounded-2 px-4 py-2 fw-bold shadow-sm">댓글 등록</button>
                 </div>
               </form>
             </div>
