@@ -9,29 +9,34 @@ $board_bulk_modal_id = $board_bulk_form_id . '_modal';
 $board_bulk_modal_title_id = $board_bulk_modal_id . '_title';
 $board_bulk_modal_body_id = $board_bulk_modal_id . '_body';
 $board_bulk_modal_target_id = $board_bulk_modal_id . '_target';
+$board_bulk_action_input_id = $board_bulk_form_id . '_action';
 $board_bulk_modal_submit_id = $board_bulk_modal_id . '_submit';
 $board_bulk_targets = is_array($board_bulk_targets ?? null) ? $board_bulk_targets : [];
+$board_bulk_select_all_location = (string)($board_bulk_select_all_location ?? 'toolbar');
 ?>
 <div class="border-bottom bg-body-tertiary px-4 py-3">
   <form id="<?= smartcms_h($board_bulk_form_id) ?>" class="d-flex flex-wrap justify-content-between align-items-center gap-3" method="post" action="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" data-board-bulk-form>
     <?= smartcms_csrf_input() ?>
+    <input type="hidden" name="bulk_action" value="" data-board-bulk-action-input id="<?= smartcms_h($board_bulk_action_input_id) ?>">
     <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
     <input type="hidden" name="page" value="<?= (int)($pagination['page'] ?? 1) ?>">
     <input type="hidden" name="q" value="<?= smartcms_h((string)($pagination['keyword'] ?? '')) ?>">
 
-    <div class="form-check mb-0">
-      <input class="form-check-input" type="checkbox" id="<?= smartcms_h($board_bulk_select_all_id) ?>" data-board-bulk-select-all>
-      <label class="form-check-label fw-bold" for="<?= smartcms_h($board_bulk_select_all_id) ?>">전체 선택</label>
-    </div>
+    <?php if ($board_bulk_select_all_location !== 'header'): ?>
+      <div class="form-check mb-0">
+        <input class="form-check-input" type="checkbox" id="<?= smartcms_h($board_bulk_select_all_id) ?>" data-board-bulk-select-all form="<?= smartcms_h($board_bulk_form_id) ?>" aria-label="전체 선택">
+        <label class="form-check-label fw-bold" for="<?= smartcms_h($board_bulk_select_all_id) ?>">전체 선택</label>
+      </div>
+    <?php endif; ?>
 
     <div class="d-flex flex-wrap gap-2 ms-auto">
-      <button type="submit" class="btn btn-danger fw-bold" name="bulk_action" value="delete" data-board-bulk-action="delete">
+      <button type="button" class="btn btn-danger fw-bold" data-board-bulk-action="delete">
         선택삭제
       </button>
-      <button type="submit" class="btn btn-primary fw-bold" name="bulk_action" value="move" data-board-bulk-action="move" <?= $board_bulk_targets ? '' : 'disabled' ?>>
+      <button type="button" class="btn btn-primary fw-bold" data-board-bulk-action="move" <?= $board_bulk_targets ? '' : 'disabled' ?>>
         이동
       </button>
-      <button type="submit" class="btn btn-secondary fw-bold" name="bulk_action" value="copy" data-board-bulk-action="copy" <?= $board_bulk_targets ? '' : 'disabled' ?>>
+      <button type="button" class="btn btn-secondary fw-bold" data-board-bulk-action="copy" <?= $board_bulk_targets ? '' : 'disabled' ?>>
         복사
       </button>
     </div>

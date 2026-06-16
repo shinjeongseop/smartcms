@@ -9,8 +9,31 @@
     });
   }
 
+  function getActionInput(form) {
+    if (!(form instanceof HTMLFormElement)) {
+      return null;
+    }
+
+    var actionInput = form.querySelector('[data-board-bulk-action-input]');
+    return actionInput instanceof HTMLInputElement ? actionInput : null;
+  }
+
+  function getSelectAll(form) {
+    if (!(form instanceof HTMLFormElement) || !form.id) {
+      return null;
+    }
+
+    var selectAll = document.querySelector('[data-board-bulk-select-all][form="' + form.id + '"]');
+    if (selectAll instanceof HTMLInputElement) {
+      return selectAll;
+    }
+
+    selectAll = form.querySelector('[data-board-bulk-select-all]');
+    return selectAll instanceof HTMLInputElement ? selectAll : null;
+  }
+
   function syncSelectAll(form) {
-    var selectAll = form.querySelector('[data-board-bulk-select-all]');
+    var selectAll = getSelectAll(form);
     if (!(selectAll instanceof HTMLInputElement)) {
       return;
     }
@@ -45,7 +68,22 @@
     }).length;
   }
 
-  function openBulkModal(form, action, submitter) {
+  function submitBulkForm(form, action) {
+    var actionInput = getActionInput(form);
+    if (!(actionInput instanceof HTMLInputElement)) {
+      return false;
+    }
+
+    actionInput.value = action;
+    form.submit();
+    return true;
+  }
+
+  function confirmDelete() {
+    return window.confirm('선택한 글을 삭제하시겠습니까?');
+  }
+
+  function openBulkModal(form, action) {
     var modalRefs = getModalRefs(form);
     if (!(modalRefs.element instanceof HTMLElement) || !(modalRefs.title instanceof HTMLElement) || !(modalRefs.body instanceof HTMLElement) || !(modalRefs.target instanceof HTMLSelectElement) || !(modalRefs.submit instanceof HTMLButtonElement)) {
       return false;
@@ -55,8 +93,12 @@
       return false;
     }
 
-    var actionLabel = action === 'move' ? '이동' : '복사';
     var checkedCount = getCheckedCount(form);
+    var actionLabel = action === 'move' ? '이동' : '복사';
+    var actionInput = getActionInput(form);
+    if (!(actionInput instanceof HTMLInputElement)) {
+      return false;
+    }
 
     modalRefs.title.textContent = actionLabel + ' 확인';
     modalRefs.body.textContent = '선택한 글 ' + checkedCount + '개를 ' + actionLabel + '할 대상 게시판을 선택해 주세요.';
@@ -77,12 +119,8 @@
         return;
       }
 
-      form.dataset.boardBulkConfirmedAction = action;
+      actionInput.value = action;
       modal.hide();
-      if (submitter && typeof form.requestSubmit === 'function') {
-        form.requestSubmit(submitter);
-        return;
-      }
       form.submit();
     };
 
@@ -95,133 +133,61 @@
     return true;
   }
 
-  function confirmDelete() {
-    return window.confirm('선택한 글을 삭제하시겠습니까?');
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-board-bulk-form]').forEach(function (form) {
       if (!(form instanceof HTMLFormElement) || !form.id) {
         return;
       }
 
-      var selectAll = form.querySelector('[data-board-bulk-select-all]');
-      var items = getFormItems(form);
+      var selectAll = getSelectAll(form);
       var actionButtons = Array.from(form.querySelectorAll('[data-board-bulk-action]')).filter(function (button) {
         return button instanceof HTMLButtonElement;
       });
 
       if (selectAll instanceof HTMLInputElement) {
         selectAll.addEventListener('change', function () {
-          items.forEach(function (item) {
+          getFormItems(form).forEach(function (item) {
             item.checked = selectAll.checked;
           });
           syncSelectAll(form);
         });
       }
 
-      items.forEach(function (item) {
+      getFormItems(form).forEach(function (item) {
         item.addEventListener('change', function () {
           syncSelectAll(form);
         });
       });
 
       actionButtons.forEach(function (button) {
-        button.addEventListener('click', function (event) {
-          var action = String(button.value || '');
+        button.addEventListener('click', function () {
+          var action = String(button.getAttribute('data-board-bulk-action') || '');
           var checkedCount = getCheckedCount(form);
 
           if (checkedCount === 0) {
-            event.preventDefault();
             window.alert('선택한 글이 없습니다.');
             return;
           }
 
           if (action === 'delete') {
-            event.preventDefault();
             if (!confirmDelete()) {
               return;
             }
 
-            form.dataset.boardBulkConfirmedAction = action;
-            if (typeof form.requestSubmit === 'function') {
-              form.requestSubmit(button);
-              return;
+            if (!submitBulkForm(form, action)) {
+              window.alert('삭제를 처리할 수 없습니다.');
             }
-            form.submit();
             return;
           }
 
           if (action === 'move' || action === 'copy') {
-            event.preventDefault();
-            if (openBulkModal(form, action, button)) {
+            if (openBulkModal(form, action)) {
               return;
             }
 
-            if (!window.confirm('선택한 글을 ' + (action === 'move' ? '이동' : '복사') + '하시겠습니까?')) {
-              return;
-            }
-
-            form.dataset.boardBulkConfirmedAction = action;
-            if (typeof form.requestSubmit === 'function') {
-              form.requestSubmit(button);
-              return;
-            }
-            form.submit();
+            window.alert('대상 게시판 선택 창을 열 수 없습니다.');
           }
         });
-      });
-
-      form.addEventListener('submit', function (event) {
-        var submitter = event.submitter;
-        var action = submitter && submitter.value ? String(submitter.value) : '';
-        var checkedCount = getCheckedCount(form);
-
-        if (checkedCount === 0) {
-          event.preventDefault();
-          window.alert('선택한 글이 없습니다.');
-          return;
-        }
-
-        if (action === 'move' || action === 'copy') {
-          if (String(form.dataset.boardBulkConfirmedAction || '') === action) {
-            delete form.dataset.boardBulkConfirmedAction;
-            return;
-          }
-
-          event.preventDefault();
-          if (!openBulkModal(form, action, submitter instanceof HTMLButtonElement ? submitter : null)) {
-            if (!window.confirm('선택한 글을 ' + (action === 'move' ? '이동' : '복사') + '하시겠습니까?')) {
-              return;
-            }
-            form.dataset.boardBulkConfirmedAction = action;
-            if (submitter && typeof form.requestSubmit === 'function') {
-              form.requestSubmit(submitter);
-              return;
-            }
-            form.submit();
-          }
-          return;
-        }
-
-        if (action === 'delete') {
-          if (String(form.dataset.boardBulkConfirmedAction || '') === action) {
-            delete form.dataset.boardBulkConfirmedAction;
-            return;
-          }
-
-          event.preventDefault();
-          if (!confirmDelete()) {
-            return;
-          }
-
-          form.dataset.boardBulkConfirmedAction = action;
-          if (submitter && typeof form.requestSubmit === 'function') {
-            form.requestSubmit(submitter);
-            return;
-          }
-          form.submit();
-        }
       });
 
       syncSelectAll(form);
