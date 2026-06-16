@@ -15,21 +15,23 @@ $board_bulk_targets = is_array($board_bulk_targets ?? null) ? $board_bulk_target
 $board_bulk_select_all_location = (string)($board_bulk_select_all_location ?? 'toolbar');
 ?>
 <div class="border-bottom bg-body-tertiary px-4 py-3">
-  <form id="<?= smartcms_h($board_bulk_form_id) ?>" class="d-flex flex-wrap justify-content-between align-items-center gap-3" method="post" action="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" data-board-bulk-form>
+  <form id="<?= smartcms_h($board_bulk_form_id) ?>" class="d-flex flex-column gap-3" method="post" action="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" data-board-bulk-form>
     <?= smartcms_csrf_input() ?>
     <input type="hidden" name="bulk_action" value="" data-board-bulk-action-input id="<?= smartcms_h($board_bulk_action_input_id) ?>">
     <input type="hidden" name="board" value="<?= smartcms_h($board['board_key']) ?>">
     <input type="hidden" name="page" value="<?= (int)($pagination['page'] ?? 1) ?>">
     <input type="hidden" name="q" value="<?= smartcms_h((string)($pagination['keyword'] ?? '')) ?>">
 
-    <?php if ($board_bulk_select_all_location !== 'header'): ?>
-      <div class="form-check mb-0">
-        <input class="form-check-input sc-bulk-checkbox" type="checkbox" id="<?= smartcms_h($board_bulk_select_all_id) ?>" data-board-bulk-select-all form="<?= smartcms_h($board_bulk_form_id) ?>" aria-label="전체 선택">
-        <label class="form-check-label fw-bold" for="<?= smartcms_h($board_bulk_select_all_id) ?>">전체 선택</label>
-      </div>
-    <?php endif; ?>
+    <div class="d-flex flex-wrap align-items-center gap-3">
+      <?php if ($board_bulk_select_all_location !== 'header'): ?>
+        <div class="form-check mb-0">
+          <input class="form-check-input sc-bulk-checkbox" type="checkbox" id="<?= smartcms_h($board_bulk_select_all_id) ?>" data-board-bulk-select-all form="<?= smartcms_h($board_bulk_form_id) ?>" aria-label="전체 선택">
+          <label class="form-check-label fw-bold" for="<?= smartcms_h($board_bulk_select_all_id) ?>">전체 선택</label>
+        </div>
+      <?php endif; ?>
+    </div>
 
-    <div class="d-flex flex-wrap gap-2 ms-auto">
+    <div class="d-flex flex-wrap gap-2 align-self-start">
       <button type="button" class="btn btn-danger fw-bold" data-board-bulk-action="delete">
         선택삭제
       </button>

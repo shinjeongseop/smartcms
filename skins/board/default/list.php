@@ -227,7 +227,7 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
       <div class="table-responsive pb-4 pb-lg-5">
         <table class="table table-hover align-middle mb-0 text-nowrap">
           <thead class="table-light">
-            <tr class="text-uppercase small fw-bold text-secondary">
+            <tr class="text-uppercase fw-bold text-secondary">
               <?php if ($board_bulk_can_manage): ?>
                 <th scope="col" class="ps-2 ps-lg-3 py-3 text-nowrap sc-col-4 text-center align-middle">
                   <div class="d-flex align-items-center justify-content-center h-100">
