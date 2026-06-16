@@ -144,11 +144,4 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
 </article>
 
 <!-- [COMMENTS] 댓글 섹션 -->
-<section class="card border shadow-sm bg-white mt-4 overflow-hidden">
-  <div class="card-body p-4 p-lg-5">
-    <div class="d-flex align-items-center gap-2 mb-5">
-      <i class="bi bi-chat-left-text-fill fs-4 text-primary"></i>
-      <h2 class="fs-5 fw-bold mb-0 text-dark">전체 댓글 <span class="text-primary ms-1"><?= count($comments) ?></span></h2>
-    </div>
-
 <?php require SMARTCMS_ROOT . '/skins/board/_comments.php'; ?>
