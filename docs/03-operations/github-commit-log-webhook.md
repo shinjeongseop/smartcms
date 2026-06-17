@@ -18,7 +18,7 @@ return [
     'webhooks' => [
         'github_commit_log' => [
             'token' => '여기에_긴_비밀값',
-            'board_key' => 'notice',
+            'board_key' => 'releases',
             'author_name' => 'GitHub Actions',
         ],
     ],
@@ -29,7 +29,7 @@ return [
 
 - `SMARTCMS_WEBHOOK_URL`: 예: `https://example.com/webhooks/github-commit-log/`
 - `SMARTCMS_WEBHOOK_TOKEN`: 서버 설정의 `token`과 같은 값
-- `SMARTCMS_WEBHOOK_BOARD_KEY`: 자동 등록할 게시판 키, 예: `notice`
+- `SMARTCMS_WEBHOOK_BOARD_KEY`: 자동 등록할 게시판 키, 예: `releases`
 - `SMARTCMS_WEBHOOK_AUTHOR_NAME`: 작성자 표시명, 기본값은 `GitHub Actions`
 
 ## 요청 형식
@@ -38,7 +38,7 @@ return [
 
 ```json
 {
-  "board_key": "changelog",
+  "board_key": "releases",
   "repository": "shinjeongseop/smartcms",
   "branch": "main",
   "before": "abc1234",

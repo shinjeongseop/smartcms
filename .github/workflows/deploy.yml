@@ -29,7 +29,7 @@ jobs:
           from textwrap import dedent
 
           token = os.environ.get("SMARTCMS_WEBHOOK_TOKEN", "").strip()
-          board_key = os.environ.get("SMARTCMS_WEBHOOK_BOARD_KEY", "").strip() or "notice"
+          board_key = os.environ.get("SMARTCMS_WEBHOOK_BOARD_KEY", "").strip() or "releases"
           author_name = os.environ.get("SMARTCMS_WEBHOOK_AUTHOR_NAME", "").strip() or "GitHub Actions"
 
           if not token:
