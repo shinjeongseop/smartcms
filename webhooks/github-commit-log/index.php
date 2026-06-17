@@ -75,7 +75,11 @@ if ($request_token === '' || !hash_equals($expected_token, $request_token)) {
     ]);
 }
 
-smartcms_create_schema();
+try {
+    smartcms_create_schema();
+} catch (Throwable $e) {
+    // 필요한 테이블이 이미 있으면 계속 진행한다.
+}
 
 $raw_input = file_get_contents('php://input');
 $payload = is_string($raw_input) && trim($raw_input) !== ''
