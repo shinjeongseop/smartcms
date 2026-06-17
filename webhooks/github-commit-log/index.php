@@ -29,6 +29,18 @@ function smartcms_webhook_setting(string $config_key, string $env_key, string $d
         return $value;
     }
 
+    $path = explode('.', $config_key, 2);
+    if (count($path) === 2) {
+        $group = trim($path[0]);
+        $name = trim($path[1]);
+        if ($group !== '' && $name !== '' && isset($webhook_local_config[$group]) && is_array($webhook_local_config[$group])) {
+            $value = trim((string)($webhook_local_config[$group][$name] ?? ''));
+            if ($value !== '') {
+                return $value;
+            }
+        }
+    }
+
     $value = trim((string)smartcms_config_value($config_key, ''));
     if ($value !== '') {
         return $value;
