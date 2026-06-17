@@ -158,18 +158,6 @@ jobs:
 
           title = f"커밋 {len(commits)}건 자동 등록"
 
-          content_lines = []
-          content_lines.append("깃허브 액션 커밋 자동 등록")
-          if repo:
-              content_lines.append(f"- 저장소: {repo}")
-          if branch:
-              content_lines.append(f"- 브랜치: {branch}")
-          if before or after:
-              content_lines.append(f"- 변경 범위: {before or '-'} → {after or '-'}")
-          if compare_url:
-              content_lines.append(f"- 비교 링크: {compare_url}")
-          content_lines.append(f"- 커밋 수: {len(commits)}")
-          content_lines.append("")
           content_lines.append("커밋 상세")
 
           for index, commit in enumerate(commits, start=1):
@@ -184,6 +172,7 @@ jobs:
                   lines.append(f"   - 작성자: {author}")
               if timestamp:
                   lines.append(f"   - 시각: {timestamp}")
+              lines.append("   - 설명: 이 시각에 반영된 변경 사항입니다.")
               content_lines.extend(lines)
               if index != len(commits):
                   content_lines.append("")

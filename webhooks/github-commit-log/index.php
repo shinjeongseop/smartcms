@@ -159,22 +159,6 @@ try {
     $title = function_exists('mb_substr') ? mb_substr($title, 0, 255, 'UTF-8') : substr($title, 0, 255);
 
     $content_lines = [];
-    $content_lines[] = '커밋 로그 자동 등록';
-    if ($repository !== '') {
-        $content_lines[] = '- 저장소: `' . $repository . '`';
-    }
-    if ($branch !== '') {
-        $content_lines[] = '- 브랜치: `' . $branch . '`';
-    }
-    if ($before !== '' || $after !== '') {
-        $content_lines[] = '- 변경 범위: `' . ($before !== '' ? $before : '-') . ' → ' . ($after !== '' ? $after : '-') . '`';
-    }
-    if ($compare_url !== '') {
-        $content_lines[] = '- 비교 링크: ' . $compare_url;
-    }
-    $content_lines[] = '- 커밋 수: `' . $commit_count . '`';
-    $content_lines[] = '- 요약: 최근 커밋을 순서대로 정리한 기록입니다.';
-    $content_lines[] = '';
     $content_lines[] = '커밋 상세';
 
     $max_items = 20;
