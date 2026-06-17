@@ -155,66 +155,61 @@ try {
     );
 
     $commit_count = count($commits);
-    $title = trim((string)($payload['title'] ?? ''));
-    if ($title === '') {
-        $first_commit = is_array($commits[0] ?? null) ? $commits[0] : [];
-        $title = trim((string)($first_commit['message'] ?? ''));
-    }
-    if ($title === '') {
-        $title = trim(($branch !== '' ? '[' . $branch . '] ' : '') . '커밋 ' . $commit_count . '건 자동 등록');
-    }
-    if ($title === '') {
-        $title = '커밋 자동 등록';
-    }
+    $title = '커밋 ' . $commit_count . '건 자동 등록';
     $title = function_exists('mb_substr') ? mb_substr($title, 0, 255, 'UTF-8') : substr($title, 0, 255);
 
-    $content = trim((string)($payload['content'] ?? ''));
-    if ($content === '') {
-        $content_lines = [];
-        $content_lines[] = 'GitHub Actions 커밋 자동 등록';
-        if ($repository !== '') {
-            $content_lines[] = '- 저장소: `' . $repository . '`';
-        }
-        if ($branch !== '') {
-            $content_lines[] = '- 브랜치: `' . $branch . '`';
-        }
-        if ($before !== '' || $after !== '') {
-            $content_lines[] = '- 범위: `' . ($before !== '' ? $before : '-') . ' → ' . ($after !== '' ? $after : '-') . '`';
-        }
-        if ($compare_url !== '') {
-            $content_lines[] = '- 비교 링크: ' . $compare_url;
-        }
-        $content_lines[] = '- 커밋 수: `' . $commit_count . '`';
-        $content_lines[] = '';
-        $content_lines[] = '커밋 목록';
-
-        $max_items = 20;
-        foreach (array_slice($commits, 0, $max_items) as $commit) {
-            if (!is_array($commit)) {
-                continue;
-            }
-
-            $sha = substr(trim((string)($commit['sha'] ?? '')), 0, 7);
-            $message = trim((string)($commit['message'] ?? ''));
-            $author = trim((string)($commit['author'] ?? ''));
-            $line = '- ';
-            if ($sha !== '') {
-                $line .= '`' . $sha . '` ';
-            }
-            $line .= $message !== '' ? $message : '메시지 없음';
-            if ($author !== '') {
-                $line .= ' - ' . $author;
-            }
-            $content_lines[] = $line;
-        }
-
-        if ($commit_count > $max_items) {
-            $content_lines[] = '- 외 ' . ($commit_count - $max_items) . '건 생략';
-        }
-
-        $content = implode("\n", $content_lines);
+    $content_lines = [];
+    $content_lines[] = '커밋 로그 자동 등록';
+    if ($repository !== '') {
+        $content_lines[] = '- 저장소: `' . $repository . '`';
     }
-    $content = trim($content);
+    if ($branch !== '') {
+        $content_lines[] = '- 브랜치: `' . $branch . '`';
+    }
+    if ($before !== '' || $after !== '') {
+        $content_lines[] = '- 변경 범위: `' . ($before !== '' ? $before : '-') . ' → ' . ($after !== '' ? $after : '-') . '`';
+    }
+    if ($compare_url !== '') {
+        $content_lines[] = '- 비교 링크: ' . $compare_url;
+    }
+    $content_lines[] = '- 커밋 수: `' . $commit_count . '`';
+    $content_lines[] = '- 요약: 최근 커밋을 순서대로 정리한 기록입니다.';
+    $content_lines[] = '';
+    $content_lines[] = '커밋 상세';
+
+    $max_items = 20;
+    foreach (array_slice($commits, 0, $max_items) as $index => $commit) {
+        if (!is_array($commit)) {
+            continue;
+        }
+
+        $sha = substr(trim((string)($commit['sha'] ?? '')), 0, 7);
+        $message = trim((string)($commit['message'] ?? ''));
+        $author = trim((string)($commit['author'] ?? ''));
+        $timestamp = trim((string)($commit['timestamp'] ?? ''));
+
+        $content_lines[] = ($index + 1) . '. 커밋 메시지: ' . ($message !== '' ? $message : '메시지 없음');
+        if ($sha !== '') {
+            $content_lines[] = '   - SHA: ' . $sha;
+        }
+        if ($author !== '') {
+            $content_lines[] = '   - 작성자: ' . $author;
+        }
+        if ($timestamp !== '') {
+            $content_lines[] = '   - 시각: ' . $timestamp;
+        }
+        $content_lines[] = '   - 설명: 이 시각에 반영된 변경 사항입니다.';
+        if ($index < min($max_items, count($commits)) - 1) {
+            $content_lines[] = '';
+        }
+    }
+
+    if ($commit_count > $max_items) {
+        $content_lines[] = '';
+        $content_lines[] = '- 외 ' . ($commit_count - $max_items) . '건 생략';
+    }
+
+    $content = trim(implode("\n", $content_lines));
     $result = smartcms_board_create_post($board, null, $title, '', '', $content, 'text', false, false, $author_name);
     if (empty($result['ok'])) {
         smartcms_webhook_json_response(500, [

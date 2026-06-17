@@ -156,18 +156,16 @@ jobs:
                       }
                   )
 
-          title = commits[0]["message"].strip() if commits else ""
-          if not title:
-              title = f"[{branch}] 커밋 {len(commits)}건 자동 등록"
+          title = f"커밋 {len(commits)}건 자동 등록"
 
           content_lines = []
-          content_lines.append("GitHub Actions 커밋 자동 등록")
+          content_lines.append("깃허브 액션 커밋 자동 등록")
           if repo:
               content_lines.append(f"- 저장소: {repo}")
           if branch:
               content_lines.append(f"- 브랜치: {branch}")
           if before or after:
-              content_lines.append(f"- 범위: {before or '-'} → {after or '-'}")
+              content_lines.append(f"- 변경 범위: {before or '-'} → {after or '-'}")
           if compare_url:
               content_lines.append(f"- 비교 링크: {compare_url}")
           content_lines.append(f"- 커밋 수: {len(commits)}")
@@ -179,7 +177,7 @@ jobs:
               message = commit["message"].strip() or "메시지 없음"
               author = commit["author"].strip()
               timestamp = commit["timestamp"].strip()
-              lines = [f"{index}. {message}"]
+              lines = [f"{index}. 커밋 메시지: {message}"]
               if sha:
                   lines.append(f"   - SHA: {sha}")
               if author:
