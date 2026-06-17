@@ -207,10 +207,10 @@ jobs:
           with open(payload_path, "w", encoding="utf-8") as handle:
               json.dump(payload, handle, ensure_ascii=False, indent=2)
 
-          subprocess.run(
+          completed = subprocess.run(
               [
                   "curl",
-                  "-fsS",
+                  "-sS",
                   "-X",
                   "POST",
                   "-H",
@@ -221,6 +221,18 @@ jobs:
                   f"@{payload_path}",
                   webhook_url,
               ],
-              check=True,
+              capture_output=True,
+              text=True,
           )
+          if completed.stdout.strip():
+              print(completed.stdout.strip())
+          if completed.returncode != 0:
+              if completed.stderr.strip():
+                  print(completed.stderr.strip())
+              raise subprocess.CalledProcessError(
+                  completed.returncode,
+                  completed.args,
+                  output=completed.stdout,
+                  stderr=completed.stderr,
+              )
           PY
