@@ -11,26 +11,26 @@
 
 ## 서버 설정
 
-`config.local.php` 또는 동등한 서버 전용 설정에 아래 값을 둔다.
+배포 워크플로가 GitHub Secrets를 사용해 `config.local.php`를 생성한다. 서버는 이 파일을 통해 웹훅 설정을 읽는다.
 
 ```php
 return [
     'webhooks' => [
         'github_commit_log' => [
             'token' => '여기에_긴_비밀값',
+            'board_key' => 'notice',
             'author_name' => 'GitHub Actions',
         ],
     ],
 ];
 ```
 
-`board_key`는 요청 본문에서 전달하거나, 서버 설정에 넣어도 된다.
-
 ## GitHub Actions secrets
 
 - `SMARTCMS_WEBHOOK_URL`: 예: `https://example.com/webhooks/github-commit-log/`
 - `SMARTCMS_WEBHOOK_TOKEN`: 서버 설정의 `token`과 같은 값
-- `SMARTCMS_WEBHOOK_BOARD_KEY`: 자동 등록할 게시판 키, 예: `notice` 또는 `changelog`
+- `SMARTCMS_WEBHOOK_BOARD_KEY`: 자동 등록할 게시판 키, 예: `notice`
+- `SMARTCMS_WEBHOOK_AUTHOR_NAME`: 작성자 표시명, 기본값은 `GitHub Actions`
 
 ## 요청 형식
 

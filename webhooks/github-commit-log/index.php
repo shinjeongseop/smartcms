@@ -47,7 +47,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
 
 $expected_token = smartcms_webhook_setting(
     'webhooks.github_commit_log.token',
-    'SMARTCMS_GITHUB_WEBHOOK_TOKEN'
+    'SMARTCMS_WEBHOOK_TOKEN'
 );
 if ($expected_token === '') {
     smartcms_webhook_json_response(500, [
@@ -81,7 +81,7 @@ $board_key = $payload_board_key !== ''
     ? $payload_board_key
     : smartcms_board_key(smartcms_webhook_setting(
         'webhooks.github_commit_log.board_key',
-        'SMARTCMS_GITHUB_WEBHOOK_BOARD_KEY'
+        'SMARTCMS_WEBHOOK_BOARD_KEY'
     ));
 if ($board_key === '') {
     smartcms_webhook_json_response(400, [
@@ -113,7 +113,7 @@ $after = trim((string)($payload['after'] ?? ''));
 $compare_url = trim((string)($payload['compare_url'] ?? ''));
 $author_name = smartcms_webhook_setting(
     'webhooks.github_commit_log.author_name',
-    'SMARTCMS_GITHUB_WEBHOOK_AUTHOR_NAME',
+    'SMARTCMS_WEBHOOK_AUTHOR_NAME',
     'GitHub Actions'
 );
 

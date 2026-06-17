@@ -16,6 +16,40 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Generate runtime config
+        if: ${{ secrets.SMARTCMS_WEBHOOK_TOKEN != '' }}
+        env:
+          SMARTCMS_WEBHOOK_TOKEN: ${{ secrets.SMARTCMS_WEBHOOK_TOKEN }}
+          SMARTCMS_WEBHOOK_BOARD_KEY: ${{ secrets.SMARTCMS_WEBHOOK_BOARD_KEY }}
+          SMARTCMS_WEBHOOK_AUTHOR_NAME: ${{ secrets.SMARTCMS_WEBHOOK_AUTHOR_NAME }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          from textwrap import dedent
+
+          token = os.environ.get("SMARTCMS_WEBHOOK_TOKEN", "").strip()
+          board_key = os.environ.get("SMARTCMS_WEBHOOK_BOARD_KEY", "").strip() or "notice"
+          author_name = os.environ.get("SMARTCMS_WEBHOOK_AUTHOR_NAME", "").strip() or "GitHub Actions"
+
+          if not token:
+              raise SystemExit("SMARTCMS_WEBHOOK_TOKEN is required")
+
+          config = dedent(f"""\
+          <?php
+          return [
+              'webhooks' => [
+                  'github_commit_log' => [
+                      'token' => {token!r},
+                      'board_key' => {board_key!r},
+                      'author_name' => {author_name!r},
+                  ],
+              ],
+          ];
+          """)
+          Path("config.local.php").write_text(config, encoding="utf-8")
+          PY
+
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -30,7 +64,6 @@ jobs:
             **/.github/**
             **/docs/**
             **/node_modules/**
-            config.local.php
             install.lock
             README.md
 
