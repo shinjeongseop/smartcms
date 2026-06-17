@@ -1,75 +1,101 @@
 # GitHub Commit Log Webhook
 
-`main` 브랜치에 push가 일어날 때, GitHub Actions가 SmartCMS 게시판에 커밋 로그를 자동 등록하는 기능이다.
+GitHub `push` 이벤트를 SmartCMS 게시판에 자동 등록하는 운영 문서다.
 
-## 동작 흐름
+## 구조
 
-1. GitHub Actions가 `push` 이벤트를 받는다.
-2. 최근 커밋 목록과 비교 링크를 JSON으로 만든다.
-3. `POST /webhooks/github-commit-log/` 로 전송한다.
-4. SmartCMS가 비밀 토큰을 확인한 뒤 필요한 스키마를 보강하고 게시판 글을 생성한다.
+1. GitHub Actions가 `main` push를 받는다.
+2. 워크플로가 커밋 목록과 비교 링크를 만든다.
+3. 워크플로가 `config.local.php`와 `webhook.local.php`를 생성한다.
+4. FTP로 SmartCMS 서버에 배포한다.
+5. `POST /webhooks/github-commit-log/index.php`로 JSON payload를 전송한다.
+6. 서버는 토큰을 확인하고 `releases` 게시판에 글을 만든다.
 
-## 서버 설정
+## 관련 파일
 
-배포 워크플로가 GitHub Secrets를 사용해 두 개의 런타임 설정 파일을 생성한다.
+- [`.github/workflows/deploy.yml`](/D:/smartcms/.github/workflows/deploy.yml)
+- [`webhooks/github-commit-log/index.php`](/D:/smartcms/webhooks/github-commit-log/index.php)
+- [`common/board.php`](/D:/smartcms/common/board.php)
+- [`common/config.php`](/D:/smartcms/common/config.php)
 
-- `config.local.php`: DB 연결 정보
-- `webhook.local.php`: 웹훅 토큰과 게시판 설정
+## 설정
 
-서버는 `config.local.php`를 기존 공통 설정과 합쳐서 읽고, `webhook.local.php`를 통해 웹훅 전용 설정을 읽는다.
+### GitHub Secrets
+
+- `SMARTCMS_DB_HOST`
+- `SMARTCMS_DB_NAME`
+- `SMARTCMS_DB_USER`
+- `SMARTCMS_DB_PASS`
+- `SMARTCMS_WEBHOOK_URL`
+- `SMARTCMS_WEBHOOK_TOKEN`
+- `SMARTCMS_WEBHOOK_BOARD_KEY`
+- `SMARTCMS_WEBHOOK_AUTHOR_NAME`
+
+### 런타임 파일
+
+워크플로가 배포 시 다음 파일을 생성한다.
+
+- `config.local.php`
+- `webhook.local.php`
+
+`config.local.php`
 
 ```php
+<?php
 return [
     'table_prefix' => 'sc_',
     'db' => [
         'host' => 'localhost',
         'name' => 'smartcms',
         'user' => 'smartcms',
-        'pass' => '여기에_비밀값',
+        'pass' => '비밀값',
         'charset' => 'utf8mb4',
     ],
+];
+```
+
+`webhook.local.php`
+
+```php
+<?php
+return [
     'github_commit_log' => [
-        'token' => '여기에_긴_비밀값',
+        'token' => '비밀값',
         'board_key' => 'releases',
         'author_name' => 'GitHub Actions',
     ],
 ];
 ```
 
-## GitHub Actions secrets
-
-- `SMARTCMS_WEBHOOK_URL`: 예: `https://example.com/webhooks/github-commit-log/`
-- `SMARTCMS_WEBHOOK_TOKEN`: 서버 설정의 `token`과 같은 값
-- `SMARTCMS_WEBHOOK_BOARD_KEY`: 자동 등록할 게시판 키, 예: `releases`
-- `SMARTCMS_WEBHOOK_AUTHOR_NAME`: 작성자 표시명, 기본값은 `GitHub Actions`
-
-## 요청 형식
-
-`Content-Type: application/json`
-
-```json
-{
-  "board_key": "releases",
-  "repository": "shinjeongseop/smartcms",
-  "branch": "main",
-  "before": "abc1234",
-  "after": "def5678",
-  "compare_url": "https://github.com/shinjeongseop/smartcms/compare/abc1234...def5678",
-  "author_name": "GitHub Actions",
-  "commits": [
-    {
-      "sha": "def5678",
-      "message": "fix: update comment avatar",
-      "author": "Codex",
-      "timestamp": "2026-06-17T10:00:00+09:00"
-    }
-  ]
-}
-```
-
 ## 게시글 규칙
 
-- 제목은 첫 번째 커밋 메시지를 사용한다.
-- 본문은 저장소, 브랜치, 비교 링크, 커밋 수를 먼저 적고, 아래에 커밋 전체를 줄바꿈으로 나열한다.
-- 각 커밋은 `번호`, `메시지`, `SHA`, `작성자`, `시각` 순으로 읽기 쉽게 분리한다.
-- 커밋 본문은 GitHub Actions가 넘긴 전체 내용을 그대로 사용하고, 엔드포인트는 보조 형식도 지원한다.
+- 제목은 첫 번째 커밋 메시지다.
+- 본문은 저장소, 브랜치, 비교 링크, 커밋 수를 먼저 적는다.
+- 이후 커밋 전체를 줄바꿈으로 읽기 쉽게 적는다.
+- 작성자 기본값은 `GitHub Actions`다.
+
+## 권한 규칙
+
+- 자동 등록은 로그인 없이 웹훅 토큰만으로 처리한다.
+- 게시판 화면에서 사람이 직접 글을 쓰는 경우는 기존 로그인/권한 정책을 따른다.
+- 관리자 전용 화면 권한과 자동 등록 웹훅은 분리한다.
+
+## 실패 코드
+
+- `401`: 웹훅 토큰 불일치
+- `404`: 게시판 키 오류 또는 게시판 미존재
+- `500`: PHP 오류, DB 오류, `table_prefix` 누락, 설정 파일 구조 불일치
+
+## 점검 순서
+
+1. `SMARTCMS_WEBHOOK_URL`이 최신 서버 주소인지 확인한다.
+2. `SMARTCMS_WEBHOOK_TOKEN`이 서버와 일치하는지 확인한다.
+3. `SMARTCMS_WEBHOOK_BOARD_KEY`가 `releases`인지 확인한다.
+4. 운영 DB가 `sc_` 접두사를 쓰면 `config.local.php`에도 반영한다.
+5. GitHub Actions 로그의 `Publish commit log to SmartCMS board` 단계 응답을 확인한다.
+
+## 운영 메모
+
+- 웹훅은 사람 로그인과 독립적이다.
+- GitHub Actions의 작성자 표시는 환경변수 `SMARTCMS_WEBHOOK_AUTHOR_NAME`으로 바꿀 수 있다.
+- `releases` 게시판의 자동 등록이 멈추면, 먼저 웹훅 응답 코드와 GitHub Actions 로그를 본다.
