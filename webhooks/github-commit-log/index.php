@@ -173,10 +173,14 @@ try {
         }
 
         $message = trim((string)($commit['message'] ?? ''));
+        $short_sha = substr(trim((string)($commit['short_sha'] ?? $commit['sha'] ?? '')), 0, 7);
         $files = isset($commit['files']) && is_array($commit['files']) ? $commit['files'] : [];
         $files = array_values(array_filter(array_map('trim', $files), static fn(string $file): bool => $file !== ''));
 
         $content_lines[] = ($index + 1) . '. 해결 내용: ' . ($message !== '' ? $message : '메시지 없음');
+        if ($short_sha !== '') {
+            $content_lines[] = '   - SHA: ' . $short_sha;
+        }
         if ($files) {
             $content_lines[] = '   - 수정 파일: ' . implode(', ', $files);
         } else {
