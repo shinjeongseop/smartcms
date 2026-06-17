@@ -39,6 +39,7 @@ jobs:
           config = dedent(f"""\
           <?php
           return [
+              'table_prefix' => 'sc_',
               'db' => [
                   'host' => {host!r},
                   'name' => {name!r},

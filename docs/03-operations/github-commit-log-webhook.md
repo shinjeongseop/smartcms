@@ -20,6 +20,7 @@
 
 ```php
 return [
+    'table_prefix' => 'sc_',
     'db' => [
         'host' => 'localhost',
         'name' => 'smartcms',
