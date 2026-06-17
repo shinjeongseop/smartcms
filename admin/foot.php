@@ -14,7 +14,7 @@ if (!$is_login_page) {
         <div class="d-flex gap-3">
           <a href="<?= smartcms_h(smartcms_base_url('/')) ?>" class="text-decoration-none text-secondary">사이트 홈</a>
           <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>" class="text-decoration-none text-secondary">문서</a>
-          <a href="<?= smartcms_h(smartcms_base_url('/admin/dashboard/')) ?>" class="text-decoration-none text-secondary text-primary fw-bold">smartcms 2.0</a>
+          <a href="<?= smartcms_h(smartcms_base_url('/admin/dashboard/')) ?>" class="text-decoration-none text-secondary text-primary fw-bold">smartcms <?= smartcms_h(smartcms_version()) ?></a>
         </div>
       </div>
     </footer>

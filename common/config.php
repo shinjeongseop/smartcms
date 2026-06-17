@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 define('SMARTCMS_ROOT', dirname(__DIR__));
+require_once __DIR__ . '/version.php';
 
 function smartcms_config(): array
 {

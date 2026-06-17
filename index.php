@@ -61,7 +61,7 @@ require SMARTCMS_ROOT . '/head.php';
   <div class="container-xxl">
     <div class="row align-items-center g-5 m-0">
       <div class="col-lg-7 text-center text-lg-start">
-        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-2 px-3 py-2 mb-3 fw-semibold">v2.1 Semantic & Bootstrap</span>
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-2 px-3 py-2 mb-3 fw-semibold"><?= smartcms_h(smartcms_version_tag()) ?> Semantic & Bootstrap</span>
         <h1 class="display-4 fw-bold mb-3 lh-sm text-emphasis">더 가볍고, 더 똑똑한<br>차세대 커뮤니티 CMS</h1>
         <p class="lead mb-4 text-body-secondary">
           HTML5 시맨틱 마크업과 부트스트랩 5의 표준 컴포넌트를 결합했습니다.<br class="d-none d-md-block">
