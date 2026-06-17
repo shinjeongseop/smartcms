@@ -32,14 +32,28 @@ function validate_column_type($type) {
   return false;
 }
 
-function build_column_def($conn, $colName, $type, $nullAllow, $default, $comment) {
+function is_datetime_like_type($type) {
+  $type = strtoupper(trim($type));
+  return strpos($type, 'DATETIME') !== false || strpos($type, 'TIMESTAMP') !== false;
+}
+
+function build_column_def($conn, $colName, $type, $nullAllow, $default, $onUpdateCurrentTimestamp, $comment) {
   $def = db_escape_identifier($colName) . ' ' . $type;
   $def .= $nullAllow ? ' NULL' : ' NOT NULL';
 
   if ($default !== null && $default !== '') {
-    $def .= " DEFAULT '" . mysqli_real_escape_string($conn, $default) . "'";
+    $defaultUpper = strtoupper(trim((string)$default));
+    if (preg_match('/^CURRENT_TIMESTAMP(?:\(\d+\))?$/i', $defaultUpper) || $defaultUpper === 'NOW()') {
+      $def .= ' DEFAULT ' . $defaultUpper;
+    } else {
+      $def .= " DEFAULT '" . mysqli_real_escape_string($conn, $default) . "'";
+    }
   } elseif ($nullAllow) {
     $def .= ' DEFAULT NULL';
+  }
+
+  if ($onUpdateCurrentTimestamp) {
+    $def .= ' ON UPDATE CURRENT_TIMESTAMP';
   }
 
   if ($comment) {
@@ -56,9 +70,17 @@ if ($action === 'add') {
 
   $nullAllow = !empty($input['null_allow']);
   $default = $input['default'] ?? null;
+  $onUpdateCurrentTimestamp = !empty($input['on_update_current_timestamp']);
   $comment = $input['comment'] ?? '';
+  if ($onUpdateCurrentTimestamp && !is_datetime_like_type($type)) {
+    db_close($conn);
+    json_error('ON UPDATE CURRENT_TIMESTAMP는 DATETIME 또는 TIMESTAMP 컬럼에서만 사용할 수 있습니다.');
+  }
+  if ($onUpdateCurrentTimestamp && ($default === null || trim((string)$default) === '')) {
+    $default = 'CURRENT_TIMESTAMP';
+  }
 
-  $colDef = build_column_def($conn, $column, $type, $nullAllow, $default, $comment);
+  $colDef = build_column_def($conn, $column, $type, $nullAllow, $default, $onUpdateCurrentTimestamp, $comment);
   $sql = "ALTER TABLE " . db_escape_identifier($table) . " ADD COLUMN " . $colDef;
 
   $result = mysqli_query($conn, $sql);
@@ -74,9 +96,17 @@ if ($action === 'modify') {
 
   $nullAllow = !empty($input['null_allow']);
   $default = $input['default'] ?? null;
+  $onUpdateCurrentTimestamp = !empty($input['on_update_current_timestamp']);
   $comment = $input['comment'] ?? '';
+  if ($onUpdateCurrentTimestamp && !is_datetime_like_type($type)) {
+    db_close($conn);
+    json_error('ON UPDATE CURRENT_TIMESTAMP는 DATETIME 또는 TIMESTAMP 컬럼에서만 사용할 수 있습니다.');
+  }
+  if ($onUpdateCurrentTimestamp && ($default === null || trim((string)$default) === '')) {
+    $default = 'CURRENT_TIMESTAMP';
+  }
 
-  $colDef = build_column_def($conn, $newName, $type, $nullAllow, $default, $comment);
+  $colDef = build_column_def($conn, $newName, $type, $nullAllow, $default, $onUpdateCurrentTimestamp, $comment);
   $sql = "ALTER TABLE " . db_escape_identifier($table)
     . " CHANGE COLUMN " . db_escape_identifier($column) . " " . $colDef;
 

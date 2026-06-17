@@ -526,7 +526,15 @@ const DBAdmin = (() => {
     'TEXT','MEDIUMTEXT','LONGTEXT','DATE','DATETIME','TIMESTAMP','FLOAT','DOUBLE',
     'DECIMAL(10,2)','BOOLEAN','JSON','BLOB'];
 
-  function buildColumnModal({ title, colName = '', colType = 'VARCHAR(255)', isNull = true, defaultVal = '', comment = '' }) {
+  function buildColumnModal({
+    title,
+    colName = '',
+    colType = 'VARCHAR(255)',
+    isNull = true,
+    defaultVal = '',
+    comment = '',
+    onUpdateCurrentTimestamp = false,
+  }) {
     return `
       <div class="modal__header">
         <h2 class="modal__title">${Common.escapeHtml(title)}</h2>
@@ -557,7 +565,14 @@ const DBAdmin = (() => {
             </div>
             <div class="field">
               <label class="field__label">DEFAULT</label>
-              <input type="text" class="input" name="default" value="${Common.escapeHtml(defaultVal)}" placeholder="비워두면 NULL">
+              <input type="text" class="input" name="default" value="${Common.escapeHtml(defaultVal)}" placeholder="비워두면 NULL, ON UPDATE 사용 시 CURRENT_TIMESTAMP 권장">
+            </div>
+            <div class="field form-grid__full">
+              <label class="check-row">
+                <input type="checkbox" name="on_update_current_timestamp" value="1" ${onUpdateCurrentTimestamp ? 'checked' : ''}>
+                <span class="field__label">ON UPDATE CURRENT_TIMESTAMP</span>
+              </label>
+              <div class="help-text">TIMESTAMP / DATETIME 컬럼의 수정 시각 자동 갱신에 사용합니다.</div>
             </div>
             <div class="field form-grid__full">
               <label class="field__label">COMMENT</label>
@@ -585,6 +600,7 @@ const DBAdmin = (() => {
         type: finalType,
         null_allow: fd.null_allow === '1',
         default: fd.default || null,
+        on_update_current_timestamp: fd.on_update_current_timestamp === '1',
         comment: fd.comment || '',
       };
       if (action === 'modify') payload.new_name = fd.column;
@@ -604,12 +620,14 @@ const DBAdmin = (() => {
     bindColumnForm('add', db, table);
   }
 
-  async function openModifyColumnModal(db, table, column, colType, isNull, defaultVal, comment) {
+  async function openModifyColumnModal(db, table, column, colType, isNull, defaultVal, extra, comment) {
     els.commonModalDialog.className = 'modal__dialog modal__dialog--lg';
     els.commonModalContent.innerHTML = buildColumnModal({
       title: `컬럼 수정 — ${column}`,
       colName: column, colType, isNull: isNull === 'YES',
-      defaultVal, comment,
+      defaultVal,
+      comment,
+      onUpdateCurrentTimestamp: /on update current_timestamp/i.test(extra || ''),
     });
     commonModal.open();
     bindColumnForm('modify', db, table, column);
@@ -634,7 +652,7 @@ const DBAdmin = (() => {
     document.querySelectorAll('.btn-modify-column').forEach((btn) => {
       btn.addEventListener('click', () => openModifyColumnModal(
         btn.dataset.db, btn.dataset.table, btn.dataset.column,
-        btn.dataset.type, btn.dataset.null, btn.dataset.default, btn.dataset.comment,
+        btn.dataset.type, btn.dataset.null, btn.dataset.default, btn.dataset.extra, btn.dataset.comment,
       ));
     });
     document.querySelectorAll('.btn-drop-column').forEach((btn) => {

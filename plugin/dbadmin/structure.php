@@ -62,6 +62,7 @@ db_close($conn);
                   data-db="<?= h($db) ?>" data-table="<?= h($table) ?>"
                   data-column="<?= h($col['field']) ?>" data-type="<?= h($col['type']) ?>"
                   data-null="<?= h($col['null']) ?>" data-default="<?= h($col['default'] ?? '') ?>"
+                  data-extra="<?= h($col['extra']) ?>"
                   data-comment="<?= h($col['comment']) ?>">수정</button>
                 <button type="button" class="button button--xs button--danger btn-drop-column"
                   data-db="<?= h($db) ?>" data-table="<?= h($table) ?>"
