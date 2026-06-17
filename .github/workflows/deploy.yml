@@ -158,6 +158,7 @@ jobs:
 
           title = f"커밋 {len(commits)}건 자동 등록"
 
+          content_lines = []
           content_lines.append("커밋 상세")
 
           for index, commit in enumerate(commits, start=1):
