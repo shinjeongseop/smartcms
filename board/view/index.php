@@ -88,9 +88,7 @@ if (smartcms_board_should_count_view($board, $post, $user) && smartcms_board_cou
 $comments = smartcms_board_comments((int)$post['id']);
 $files = smartcms_board_files((int)$post['id']);
 
-$active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
-    ? (string)$board['board_key']
-    : 'boards';
+$active_menu = 'board:' . (string)$board['board_key'];
 $SMARTCMS_HEAD = ['title' => (string)$post['title'], 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
 $board_view_stylesheet = smartcms_board_skin_stylesheet($board, 'view');
 if ($board_view_stylesheet !== null) {

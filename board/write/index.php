@@ -49,9 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_redirect('/board/view/?board=' . rawurlencode((string)$board['board_key']) . '&id=' . rawurlencode((string)$result['post_id']));
 }
 
-$active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
-    ? (string)$board['board_key']
-    : 'boards';
+$active_menu = 'board:' . (string)$board['board_key'];
 $SMARTCMS_HEAD = ['title' => '새 글 작성', 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
 $board_form_stylesheet = smartcms_board_skin_stylesheet($board, 'form');
 if ($board_form_stylesheet !== null) {

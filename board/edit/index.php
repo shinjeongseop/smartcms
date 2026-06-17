@@ -84,9 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $existing_files = smartcms_board_files((int)$post['id']);
 
-$active_menu = in_array((string)$board['board_key'], ['notice', 'free', 'qna'], true)
-    ? (string)$board['board_key']
-    : 'boards';
+$active_menu = 'board:' . (string)$board['board_key'];
 $SMARTCMS_HEAD = ['title' => '게시글 수정', 'body_class' => 'bg-light', 'active_menu' => $active_menu, 'main_class' => 'flex-grow-1 pb-5'];
 $use_editor = (int)($board['use_editor'] ?? 1) === 1;
 if ($use_editor) {
