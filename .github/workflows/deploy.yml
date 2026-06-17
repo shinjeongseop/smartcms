@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -31,3 +33,90 @@ jobs:
             config.local.php
             install.lock
             README.md
+
+      - name: Publish commit log to SmartCMS board
+        if: ${{ secrets.SMARTCMS_WEBHOOK_URL != '' && secrets.SMARTCMS_WEBHOOK_TOKEN != '' }}
+        continue-on-error: true
+        env:
+          SMARTCMS_WEBHOOK_URL: ${{ secrets.SMARTCMS_WEBHOOK_URL }}
+          SMARTCMS_WEBHOOK_TOKEN: ${{ secrets.SMARTCMS_WEBHOOK_TOKEN }}
+          SMARTCMS_WEBHOOK_BOARD_KEY: ${{ secrets.SMARTCMS_WEBHOOK_BOARD_KEY }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+          GITHUB_SERVER_URL: ${{ github.server_url }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+
+          before = os.environ["GITHUB_EVENT_BEFORE"]
+          after = os.environ["GITHUB_SHA"]
+          repo = os.environ["GITHUB_REPOSITORY"]
+          branch = os.environ["GITHUB_REF_NAME"]
+          server_url = os.environ["GITHUB_SERVER_URL"].rstrip("/")
+          is_initial_push = before and set(before) == {"0"}
+          compare_url = (
+              f"{server_url}/{repo}/commit/{after}"
+              if is_initial_push
+              else f"{server_url}/{repo}/compare/{before}...{after}"
+          )
+          board_key = os.environ["SMARTCMS_WEBHOOK_BOARD_KEY"]
+          webhook_url = os.environ["SMARTCMS_WEBHOOK_URL"]
+          webhook_token = os.environ["SMARTCMS_WEBHOOK_TOKEN"]
+
+          log_format = "%H%x1f%s%x1f%an%x1f%ad"
+          git_range = after if is_initial_push else f"{before}..{after}"
+          output = subprocess.check_output(
+              ["git", "log", git_range, f"--format={log_format}", "--date=iso-strict"],
+              text=True,
+          ).strip()
+
+          commits = []
+          if output:
+              for line in output.splitlines():
+                  sha, message, author, timestamp = line.split("\x1f")
+                  commits.append(
+                      {
+                          "sha": sha,
+                          "message": message,
+                          "author": author,
+                          "timestamp": timestamp,
+                      }
+                  )
+
+          payload = {
+              "board_key": board_key,
+              "repository": repo,
+              "branch": branch,
+              "before": before,
+              "after": after,
+              "compare_url": compare_url,
+              "author_name": "GitHub Actions",
+              "title": f"[{branch}] 커밋 {len(commits)}건 자동 등록",
+              "commits": commits,
+          }
+
+          payload_path = "commit-log-payload.json"
+          with open(payload_path, "w", encoding="utf-8") as handle:
+              json.dump(payload, handle, ensure_ascii=False, indent=2)
+
+          subprocess.run(
+              [
+                  "curl",
+                  "-fsS",
+                  "-X",
+                  "POST",
+                  "-H",
+                  "Content-Type: application/json",
+                  "-H",
+                  f"X-SmartCMS-Webhook-Token: {webhook_token}",
+                  "--data",
+                  f"@{payload_path}",
+                  webhook_url,
+              ],
+              check=True,
+          )
+          PY

@@ -2176,7 +2176,7 @@ function smartcms_board_post_counts(): array
     return $counts;
 }
 
-function smartcms_board_create_post(array $board, array $user, string $title, string $link_url_1, string $link_url_2, string $content, string $content_mode = 'text', bool $is_notice = false, bool $is_secret = false): array
+function smartcms_board_create_post(array $board, ?array $user, string $title, string $link_url_1, string $link_url_2, string $content, string $content_mode = 'text', bool $is_notice = false, bool $is_secret = false, string $author_name = ''): array
 {
     smartcms_ensure_board_posts_content_mode_column();
     smartcms_ensure_board_posts_link_column();
@@ -2185,6 +2185,13 @@ function smartcms_board_create_post(array $board, array $user, string $title, st
     $link_url_2 = smartcms_board_normalize_link_url($link_url_2);
     $content = trim($content);
     $content_mode = smartcms_board_normalize_content_mode($content_mode);
+    $author_name = trim($author_name);
+    $author_id = $user !== null ? (int)($user['id'] ?? 0) : null;
+    $author_name = $user !== null ? trim((string)($user['name'] ?? $author_name)) : $author_name;
+    if ($author_name === '') {
+        $author_name = 'smartcms';
+    }
+    $author_name = function_exists('mb_substr') ? mb_substr($author_name, 0, 80, 'UTF-8') : substr($author_name, 0, 80);
     if ($title === '' || $content === '') {
         return ['ok' => false, 'message' => '제목과 내용을 입력하세요.'];
     }
@@ -2202,8 +2209,8 @@ function smartcms_board_create_post(array $board, array $user, string $title, st
             'content' => $content,
             'content_mode' => $content_mode,
             'excerpt' => smartcms_board_excerpt($content),
-            'author_id' => (int)$user['id'],
-            'author_name' => (string)$user['name'],
+            'author_id' => $author_id,
+            'author_name' => $author_name,
             'is_notice' => $is_notice ? 1 : 0,
             'is_secret' => $is_secret ? 1 : 0,
         ]
