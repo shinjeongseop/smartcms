@@ -143,11 +143,6 @@ try {
         ]);
     }
 
-    $repository = trim((string)($payload['repository'] ?? ''));
-    $branch = trim((string)($payload['branch'] ?? ''));
-    $before = trim((string)($payload['before'] ?? ''));
-    $after = trim((string)($payload['after'] ?? ''));
-    $compare_url = trim((string)($payload['compare_url'] ?? ''));
     $author_name = smartcms_webhook_setting(
         'github_commit_log.author_name',
         'SMARTCMS_WEBHOOK_AUTHOR_NAME',
@@ -155,7 +150,17 @@ try {
     );
 
     $commit_count = count($commits);
-    $title = '커밋 ' . $commit_count . '건 자동 등록';
+    if ($commit_count === 1) {
+        $first_message = trim((string)($commits[0]['message'] ?? ''));
+        $title = $first_message !== '' ? $first_message : '커밋 로그';
+    } elseif ($commit_count > 1) {
+        $first_message = trim((string)($commits[0]['message'] ?? ''));
+        $title = $first_message !== ''
+            ? $first_message . ' 외 ' . ($commit_count - 1) . '건 변경'
+            : '커밋 로그';
+    } else {
+        $title = '커밋 로그';
+    }
     $title = function_exists('mb_substr') ? mb_substr($title, 0, 255, 'UTF-8') : substr($title, 0, 255);
 
     $content_lines = [];
@@ -167,22 +172,16 @@ try {
             continue;
         }
 
-        $sha = substr(trim((string)($commit['sha'] ?? '')), 0, 7);
         $message = trim((string)($commit['message'] ?? ''));
-        $author = trim((string)($commit['author'] ?? ''));
-        $timestamp = trim((string)($commit['timestamp'] ?? ''));
+        $files = isset($commit['files']) && is_array($commit['files']) ? $commit['files'] : [];
+        $files = array_values(array_filter(array_map('trim', $files), static fn(string $file): bool => $file !== ''));
 
-        $content_lines[] = ($index + 1) . '. 커밋 메시지: ' . ($message !== '' ? $message : '메시지 없음');
-        if ($sha !== '') {
-            $content_lines[] = '   - SHA: ' . $sha;
+        $content_lines[] = ($index + 1) . '. 해결 내용: ' . ($message !== '' ? $message : '메시지 없음');
+        if ($files) {
+            $content_lines[] = '   - 수정 파일: ' . implode(', ', $files);
+        } else {
+            $content_lines[] = '   - 수정 파일: 없음';
         }
-        if ($author !== '') {
-            $content_lines[] = '   - 작성자: ' . $author;
-        }
-        if ($timestamp !== '') {
-            $content_lines[] = '   - 시각: ' . $timestamp;
-        }
-        $content_lines[] = '   - 설명: 이 시각에 반영된 변경 사항입니다.';
         if ($index < min($max_items, count($commits)) - 1) {
             $content_lines[] = '';
         }

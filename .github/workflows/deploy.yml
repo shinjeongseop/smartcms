@@ -136,7 +136,7 @@ jobs:
           )
           board_key = board_key or "releases"
 
-          log_format = "%H%x1f%s%x1f%an%x1f%ad"
+          log_format = "%H%x1f%s"
           git_range = after if is_initial_push else f"{before}..{after}"
           output = subprocess.check_output(
               ["git", "log", git_range, f"--format={log_format}", "--date=iso-strict"],
@@ -146,34 +146,41 @@ jobs:
           commits = []
           if output:
               for line in output.splitlines():
-                  sha, message, author, timestamp = line.split("\x1f")
+                  sha, message = line.split("\x1f")
+                  files_output = subprocess.check_output(
+                      ["git", "show", "--pretty=format:", "--name-only", sha],
+                      text=True,
+                  ).strip()
+                  files = [item.strip() for item in files_output.splitlines() if item.strip()]
                   commits.append(
                       {
                           "sha": sha,
                           "message": message,
-                          "author": author,
-                          "timestamp": timestamp,
+                          "files": files,
                       }
                   )
 
-          title = f"커밋 {len(commits)}건 자동 등록"
+          if commits:
+              first_message = commits[0]["message"].strip() or "커밋 로그"
+              if len(commits) == 1:
+                  title = first_message
+              else:
+                  title = f"{first_message} 외 {len(commits) - 1}건 변경"
+          else:
+              title = "커밋 로그"
+          title = title[:255]
 
           content_lines = []
           content_lines.append("커밋 상세")
 
           for index, commit in enumerate(commits, start=1):
-              sha = commit["sha"][:7]
               message = commit["message"].strip() or "메시지 없음"
-              author = commit["author"].strip()
-              timestamp = commit["timestamp"].strip()
-              lines = [f"{index}. 커밋 메시지: {message}"]
-              if sha:
-                  lines.append(f"   - SHA: {sha}")
-              if author:
-                  lines.append(f"   - 작성자: {author}")
-              if timestamp:
-                  lines.append(f"   - 시각: {timestamp}")
-              lines.append("   - 설명: 이 시각에 반영된 변경 사항입니다.")
+              files = commit.get("files", [])
+              lines = [f"{index}. 해결 내용: {message}"]
+              if files:
+                  lines.append("   - 수정 파일: " + ", ".join(files))
+              else:
+                  lines.append("   - 수정 파일: 없음")
               content_lines.extend(lines)
               if index != len(commits):
                   content_lines.append("")
