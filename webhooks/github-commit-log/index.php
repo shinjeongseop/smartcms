@@ -120,6 +120,10 @@ $author_name = smartcms_webhook_setting(
 $commit_count = count($commits);
 $title = trim((string)($payload['title'] ?? ''));
 if ($title === '') {
+    $first_commit = is_array($commits[0] ?? null) ? $commits[0] : [];
+    $title = trim((string)($first_commit['message'] ?? ''));
+}
+if ($title === '') {
     $title = trim(($branch !== '' ? '[' . $branch . '] ' : '') . '커밋 ' . $commit_count . '건 자동 등록');
 }
 if ($title === '') {
@@ -127,49 +131,53 @@ if ($title === '') {
 }
 $title = function_exists('mb_substr') ? mb_substr($title, 0, 255, 'UTF-8') : substr($title, 0, 255);
 
-$content_lines = [];
-$content_lines[] = 'GitHub Actions 커밋 자동 등록';
-if ($repository !== '') {
-    $content_lines[] = '- 저장소: `' . $repository . '`';
-}
-if ($branch !== '') {
-    $content_lines[] = '- 브랜치: `' . $branch . '`';
-}
-if ($before !== '' || $after !== '') {
-    $content_lines[] = '- 범위: `' . ($before !== '' ? $before : '-') . ' → ' . ($after !== '' ? $after : '-') . '`';
-}
-if ($compare_url !== '') {
-    $content_lines[] = '- 비교 링크: ' . $compare_url;
-}
-$content_lines[] = '- 커밋 수: `' . $commit_count . '`';
-$content_lines[] = '';
-$content_lines[] = '커밋 목록';
+$content = trim((string)($payload['content'] ?? ''));
+if ($content === '') {
+    $content_lines = [];
+    $content_lines[] = 'GitHub Actions 커밋 자동 등록';
+    if ($repository !== '') {
+        $content_lines[] = '- 저장소: `' . $repository . '`';
+    }
+    if ($branch !== '') {
+        $content_lines[] = '- 브랜치: `' . $branch . '`';
+    }
+    if ($before !== '' || $after !== '') {
+        $content_lines[] = '- 범위: `' . ($before !== '' ? $before : '-') . ' → ' . ($after !== '' ? $after : '-') . '`';
+    }
+    if ($compare_url !== '') {
+        $content_lines[] = '- 비교 링크: ' . $compare_url;
+    }
+    $content_lines[] = '- 커밋 수: `' . $commit_count . '`';
+    $content_lines[] = '';
+    $content_lines[] = '커밋 목록';
 
-$max_items = 20;
-foreach (array_slice($commits, 0, $max_items) as $commit) {
-    if (!is_array($commit)) {
-        continue;
+    $max_items = 20;
+    foreach (array_slice($commits, 0, $max_items) as $commit) {
+        if (!is_array($commit)) {
+            continue;
+        }
+
+        $sha = substr(trim((string)($commit['sha'] ?? '')), 0, 7);
+        $message = trim((string)($commit['message'] ?? ''));
+        $author = trim((string)($commit['author'] ?? ''));
+        $line = '- ';
+        if ($sha !== '') {
+            $line .= '`' . $sha . '` ';
+        }
+        $line .= $message !== '' ? $message : '메시지 없음';
+        if ($author !== '') {
+            $line .= ' - ' . $author;
+        }
+        $content_lines[] = $line;
     }
 
-    $sha = substr(trim((string)($commit['sha'] ?? '')), 0, 7);
-    $message = trim((string)($commit['message'] ?? ''));
-    $author = trim((string)($commit['author'] ?? ''));
-    $line = '- ';
-    if ($sha !== '') {
-        $line .= '`' . $sha . '` ';
+    if ($commit_count > $max_items) {
+        $content_lines[] = '- 외 ' . ($commit_count - $max_items) . '건 생략';
     }
-    $line .= $message !== '' ? $message : '메시지 없음';
-    if ($author !== '') {
-        $line .= ' - ' . $author;
-    }
-    $content_lines[] = $line;
-}
 
-if ($commit_count > $max_items) {
-    $content_lines[] = '- 외 ' . ($commit_count - $max_items) . '건 생략';
+    $content = implode("\n", $content_lines);
 }
-
-$content = implode("\n", $content_lines);
+$content = trim($content);
 $result = smartcms_board_create_post($board, null, $title, '', '', $content, 'text', false, false, $author_name);
 if (empty($result['ok'])) {
     smartcms_webhook_json_response(500, [
