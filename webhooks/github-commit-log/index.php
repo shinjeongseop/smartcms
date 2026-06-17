@@ -1,13 +1,17 @@
 <?php
 declare(strict_types=1);
 
-require_once __DIR__ . '/../../common/board.php';
-require_once __DIR__ . '/../../common/schema.php';
+require_once __DIR__ . '/../../common/config.php';
 
 header('Content-Type: application/json; charset=UTF-8');
 
 $webhook_local = __DIR__ . '/../../webhook.local.php';
 $webhook_local_config = is_file($webhook_local) ? (array)require $webhook_local : [];
+
+function smartcms_webhook_board_key(string $value): string
+{
+    return preg_replace('/[^a-zA-Z0-9_-]/', '', trim($value));
+}
 
 function smartcms_webhook_json_response(int $status_code, array $payload): never
 {
@@ -76,6 +80,9 @@ if ($request_token === '' || !hash_equals($expected_token, $request_token)) {
 }
 
 try {
+    require_once __DIR__ . '/../../common/board.php';
+    require_once __DIR__ . '/../../common/schema.php';
+
     smartcms_create_schema();
 } catch (Throwable $e) {
     // 필요한 테이블이 이미 있으면 계속 진행한다.
@@ -94,10 +101,10 @@ try {
         ]);
     }
 
-    $payload_board_key = smartcms_board_key((string)($payload['board_key'] ?? ''));
+    $payload_board_key = smartcms_webhook_board_key((string)($payload['board_key'] ?? ''));
     $board_key = $payload_board_key !== ''
         ? $payload_board_key
-        : smartcms_board_key(smartcms_webhook_setting(
+        : smartcms_webhook_board_key(smartcms_webhook_setting(
             'github_commit_log.board_key',
             'SMARTCMS_WEBHOOK_BOARD_KEY'
         ));
