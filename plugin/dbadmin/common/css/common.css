@@ -1,0 +1,17 @@
+*,*::before,*::after{box-sizing:border-box}
+html{overflow-y:scroll}
+body{margin:0;background:#f4f6f9;color:#1f2937;font-family:Arial,"Malgun Gothic",sans-serif;font-size:14px;line-height:1.5}
+a{color:#1d4ed8;text-decoration:none}
+a:hover{text-decoration:underline}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.55}
+table{border-collapse:collapse;width:100%}
+th,td{vertical-align:middle}
+.is-hidden{display:none!important}
+.is-muted{color:#6b7280}
+.text-center{text-align:center}
+.cell-pre{max-width:320px;white-space:pre-wrap;word-break:break-word}
+.readonly-field{background:#f3f4f6!important;color:#6b7280}
+.sticky-action-col{position:sticky;right:0;background:#fff;z-index:2}
+thead .sticky-action-col{background:#f8fafc}
