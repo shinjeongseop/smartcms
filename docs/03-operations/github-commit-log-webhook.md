@@ -11,10 +11,22 @@
 
 ## 서버 설정
 
-배포 워크플로가 GitHub Secrets를 사용해 `webhook.local.php`를 생성한다. 서버는 이 파일을 통해 웹훅 설정을 읽는다.
+배포 워크플로가 GitHub Secrets를 사용해 두 개의 런타임 설정 파일을 생성한다.
+
+- `config.local.php`: DB 연결 정보
+- `webhook.local.php`: 웹훅 토큰과 게시판 설정
+
+서버는 `config.local.php`를 기존 공통 설정과 합쳐서 읽고, `webhook.local.php`를 통해 웹훅 전용 설정을 읽는다.
 
 ```php
 return [
+    'db' => [
+        'host' => 'localhost',
+        'name' => 'smartcms',
+        'user' => 'smartcms',
+        'pass' => '여기에_비밀값',
+        'charset' => 'utf8mb4',
+    ],
     'github_commit_log' => [
         'token' => '여기에_긴_비밀값',
         'board_key' => 'releases',

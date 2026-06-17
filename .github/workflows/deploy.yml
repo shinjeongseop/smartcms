@@ -16,6 +16,41 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Generate runtime config
+        env:
+          SMARTCMS_DB_HOST: ${{ secrets.SMARTCMS_DB_HOST }}
+          SMARTCMS_DB_NAME: ${{ secrets.SMARTCMS_DB_NAME }}
+          SMARTCMS_DB_USER: ${{ secrets.SMARTCMS_DB_USER }}
+          SMARTCMS_DB_PASS: ${{ secrets.SMARTCMS_DB_PASS }}
+        run: |
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          from textwrap import dedent
+
+          host = os.environ.get("SMARTCMS_DB_HOST", "").strip() or "localhost"
+          name = os.environ.get("SMARTCMS_DB_NAME", "").strip()
+          user = os.environ.get("SMARTCMS_DB_USER", "").strip()
+          password = os.environ.get("SMARTCMS_DB_PASS", "")
+
+          if not name or not user or not password:
+              raise SystemExit(0)
+
+          config = dedent(f"""\
+          <?php
+          return [
+              'db' => [
+                  'host' => {host!r},
+                  'name' => {name!r},
+                  'user' => {user!r},
+                  'pass' => {password!r},
+                  'charset' => 'utf8mb4',
+              ],
+          ];
+          """)
+          Path("config.local.php").write_text(config, encoding="utf-8")
+          PY
+
       - name: Generate runtime webhook config
         env:
           SMARTCMS_WEBHOOK_TOKEN: ${{ secrets.SMARTCMS_WEBHOOK_TOKEN }}
