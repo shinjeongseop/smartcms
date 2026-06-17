@@ -7,7 +7,7 @@
 1. GitHub Actions가 `push` 이벤트를 받는다.
 2. 최근 커밋 목록과 비교 링크를 JSON으로 만든다.
 3. `POST /webhooks/github-commit-log/` 로 전송한다.
-4. SmartCMS가 비밀 토큰을 확인한 뒤 게시판 글을 생성한다.
+4. SmartCMS가 비밀 토큰을 확인한 뒤 필요한 스키마를 보강하고 게시판 글을 생성한다.
 
 ## 서버 설정
 

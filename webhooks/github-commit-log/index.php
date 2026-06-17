@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../../common/board.php';
+require_once __DIR__ . '/../../common/schema.php';
 
 header('Content-Type: application/json; charset=UTF-8');
 
@@ -73,6 +74,8 @@ if ($request_token === '' || !hash_equals($expected_token, $request_token)) {
         'message' => '웹훅 인증에 실패했습니다.',
     ]);
 }
+
+smartcms_create_schema();
 
 $raw_input = file_get_contents('php://input');
 $payload = is_string($raw_input) && trim($raw_input) !== ''
