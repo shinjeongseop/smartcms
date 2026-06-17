@@ -11,16 +11,14 @@
 
 ## 서버 설정
 
-배포 워크플로가 GitHub Secrets를 사용해 `config.local.php`를 생성한다. 서버는 이 파일을 통해 웹훅 설정을 읽는다.
+배포 워크플로가 GitHub Secrets를 사용해 `webhook.local.php`를 생성한다. 서버는 이 파일을 통해 웹훅 설정을 읽는다.
 
 ```php
 return [
-    'webhooks' => [
-        'github_commit_log' => [
-            'token' => '여기에_긴_비밀값',
-            'board_key' => 'releases',
-            'author_name' => 'GitHub Actions',
-        ],
+    'github_commit_log' => [
+        'token' => '여기에_긴_비밀값',
+        'board_key' => 'releases',
+        'author_name' => 'GitHub Actions',
     ],
 ];
 ```

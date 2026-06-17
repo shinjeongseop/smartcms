@@ -5,6 +5,9 @@ require_once __DIR__ . '/../../common/board.php';
 
 header('Content-Type: application/json; charset=UTF-8');
 
+$webhook_local = __DIR__ . '/../../webhook.local.php';
+$webhook_local_config = is_file($webhook_local) ? (array)require $webhook_local : [];
+
 function smartcms_webhook_json_response(int $status_code, array $payload): never
 {
     http_response_code($status_code);
@@ -14,6 +17,13 @@ function smartcms_webhook_json_response(int $status_code, array $payload): never
 
 function smartcms_webhook_setting(string $config_key, string $env_key, string $default = ''): string
 {
+    global $webhook_local_config;
+
+    $value = trim((string)($webhook_local_config[$config_key] ?? ''));
+    if ($value !== '') {
+        return $value;
+    }
+
     $value = trim((string)smartcms_config_value($config_key, ''));
     if ($value !== '') {
         return $value;
@@ -46,7 +56,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
 }
 
 $expected_token = smartcms_webhook_setting(
-    'webhooks.github_commit_log.token',
+    'github_commit_log.token',
     'SMARTCMS_WEBHOOK_TOKEN'
 );
 if ($expected_token === '') {
@@ -80,7 +90,7 @@ $payload_board_key = smartcms_board_key((string)($payload['board_key'] ?? ''));
 $board_key = $payload_board_key !== ''
     ? $payload_board_key
     : smartcms_board_key(smartcms_webhook_setting(
-        'webhooks.github_commit_log.board_key',
+        'github_commit_log.board_key',
         'SMARTCMS_WEBHOOK_BOARD_KEY'
     ));
 if ($board_key === '') {
@@ -112,7 +122,7 @@ $before = trim((string)($payload['before'] ?? ''));
 $after = trim((string)($payload['after'] ?? ''));
 $compare_url = trim((string)($payload['compare_url'] ?? ''));
 $author_name = smartcms_webhook_setting(
-    'webhooks.github_commit_log.author_name',
+    'github_commit_log.author_name',
     'SMARTCMS_WEBHOOK_AUTHOR_NAME',
     'GitHub Actions'
 );

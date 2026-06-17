@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Generate runtime config
+      - name: Generate runtime webhook config
         env:
           SMARTCMS_WEBHOOK_TOKEN: ${{ secrets.SMARTCMS_WEBHOOK_TOKEN }}
           SMARTCMS_WEBHOOK_BOARD_KEY: ${{ secrets.SMARTCMS_WEBHOOK_BOARD_KEY }}
@@ -37,16 +37,14 @@ jobs:
           config = dedent(f"""\
           <?php
           return [
-              'webhooks' => [
-                  'github_commit_log' => [
-                      'token' => {token!r},
-                      'board_key' => {board_key!r},
-                      'author_name' => {author_name!r},
-                  ],
+              'github_commit_log' => [
+                  'token' => {token!r},
+                  'board_key' => {board_key!r},
+                  'author_name' => {author_name!r},
               ],
           ];
           """)
-          Path("config.local.php").write_text(config, encoding="utf-8")
+          Path("webhook.local.php").write_text(config, encoding="utf-8")
           PY
 
       - name: Deploy via FTP
