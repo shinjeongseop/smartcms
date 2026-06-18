@@ -116,7 +116,7 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
                    . '&id=' . rawurlencode((string)$post['id'])) ?>">
               수정
             </a>
-            <form class="d-inline" method="post">
+            <form class="d-inline" method="post" onsubmit="return confirm('이 게시글을 삭제할까요? 삭제 후에는 복구할 수 없습니다.');">
               <?= smartcms_csrf_input() ?>
               <input type="hidden" name="action" value="post_delete">
               <button class="btn btn-danger rounded-2 px-4 fw-bold shadow-sm" type="submit">삭제</button>
