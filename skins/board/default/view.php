@@ -83,13 +83,16 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
         <h3 class="fs-5 fw-bold mb-3 text-primary">첨부파일</h3>
         <div class="list-group list-group-flush rounded-3 overflow-hidden border shadow-sm bg-white">
           <?php foreach ($attachment_files as $index => $file): ?>
-            <a class="list-group-item list-group-item-action bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 p-3"
+            <a class="list-group-item list-group-item-action bg-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 p-3"
                href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$file['id'])) ?>">
-              <span class="d-flex flex-wrap align-items-center gap-2">
-                <span class="badge text-bg-light border text-body-secondary rounded-2">첨부 <?= (int)$index + 1 ?></span>
-                <span class="fw-bold text-dark text-break"><?= smartcms_h($file['original_name']) ?></span>
+              <span class="d-flex flex-column gap-1">
+                <span class="d-flex flex-wrap align-items-center gap-2">
+                  <span class="badge text-bg-light border text-body-secondary rounded-2">첨부 <?= (int)$index + 1 ?></span>
+                  <span class="fw-bold text-primary text-break"><?= smartcms_h($file['original_name']) ?></span>
+                </span>
+                <span class="small text-secondary">클릭하면 다운로드됩니다.</span>
               </span>
-              <small class="text-secondary fw-medium"><?= number_format((int)$file['file_size']) ?> bytes · 다운로드 <?= (int)$file['download_count'] ?>회</small>
+              <small class="text-secondary fw-medium text-nowrap"><?= number_format((int)$file['file_size']) ?> bytes · 다운로드 <?= (int)$file['download_count'] ?>회</small>
             </a>
           <?php endforeach; ?>
         </div>
