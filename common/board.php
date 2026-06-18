@@ -118,10 +118,10 @@ function smartcms_board_thumbnail_config(?array $board, string $context = 'list'
             'columns' => 2,
         ],
         'gallery' => [
-            'list' => [480, 480],
+            'list' => [480, 360],
             'view' => [900, 506],
             'widget' => [480, 270],
-            'latest' => [320, 320],
+            'latest' => [320, 240],
             'columns' => 2,
         ],
         'qna' => [

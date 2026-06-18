@@ -162,11 +162,11 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
                 <?php endif; ?>
                 <?php if ($first_image): ?>
                   <?php $thumb_url = smartcms_board_file_thumbnail_url($first_image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
-                  <a class="d-block bg-light overflow-hidden <?= $gallery_mode ? 'ratio ratio-1x1' : 'ratio ratio-4x3' ?>" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
+                  <a class="d-block bg-light overflow-hidden ratio ratio-4x3" href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$first_image['id']))) ?>" alt="<?= smartcms_h($first_image['original_name']) ?>">
                   </a>
                 <?php elseif ($gallery_mode): ?>
-                  <a class="d-flex align-items-center justify-content-center bg-light text-secondary ratio ratio-1x1 text-decoration-none"
+                  <a class="d-flex align-items-center justify-content-center bg-light text-secondary ratio ratio-4x3 text-decoration-none"
                      href="<?= smartcms_h(smartcms_board_post_url((string)$board['board_key'], (int)$post['id'])) ?>">
                     <span class="d-flex flex-column align-items-center gap-2">
                       <i class="bi bi-image fs-1 opacity-50"></i>
