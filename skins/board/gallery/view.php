@@ -73,16 +73,11 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
             <?php $thumb_url = smartcms_board_file_thumbnail_url($image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
             <?php $public_url = smartcms_board_file_public_url($image); ?>
             <div class="<?= $image_columns > 1 ? 'col-12 col-md-6' : 'col-12' ?>">
-              <figure class="card border shadow-sm bg-white h-100 overflow-hidden mb-0">
+              <div class="card border shadow-sm bg-white overflow-hidden h-100">
                 <a class="d-block bg-light text-decoration-none" href="<?= smartcms_h($public_url ?? '#') ?>" target="_blank" rel="noopener noreferrer">
                   <img class="img-fluid d-block w-100" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id']))) ?>" alt="<?= smartcms_h($image['original_name']) ?>">
                 </a>
-                <figcaption class="card-body p-3 small">
-                  <div class="fw-semibold text-dark text-truncate"><?= smartcms_h($image['original_name']) ?></div>
-                  <div class="text-secondary mb-2"><?= number_format((int)$image['file_size']) ?> bytes · 다운로드 <?= (int)$image['download_count'] ?>회</div>
-                  <span class="badge text-bg-light border text-body-secondary rounded-2">원본 보기</span>
-                </figcaption>
-              </figure>
+              </div>
             </div>
           <?php endforeach; ?>
         </div>
