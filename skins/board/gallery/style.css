@@ -40,3 +40,9 @@
 .sc-board-content figure {
   max-width: 100%;
 }
+
+.sc-gallery-view-image {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}

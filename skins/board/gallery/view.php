@@ -71,7 +71,7 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
             <?php $public_url = smartcms_board_file_public_url($image); ?>
             <div class="card border shadow-sm bg-white overflow-hidden">
               <a class="d-block bg-light text-decoration-none" href="<?= smartcms_h($public_url ?? '#') ?>" target="_blank" rel="noopener noreferrer">
-                <img class="img-fluid d-block w-100" src="<?= smartcms_h($public_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id']))) ?>" alt="<?= smartcms_h($image['original_name']) ?>">
+                <img class="img-fluid d-block mx-auto sc-gallery-view-image" src="<?= smartcms_h($public_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id']))) ?>" alt="<?= smartcms_h($image['original_name']) ?>">
               </a>
             </div>
           <?php endforeach; ?>
