@@ -71,7 +71,7 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
       </section>
     <?php endif; ?>
 
-    <div class="mb-5 text-break lh-lg fs-6 text-dark">
+    <div class="sc-board-content mb-5 text-break lh-lg fs-6 text-dark">
       <?= smartcms_board_render_content($post) ?>
     </div>
 

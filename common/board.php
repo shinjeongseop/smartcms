@@ -2328,7 +2328,7 @@ function smartcms_board_store_uploads(array $board, int $post_id, array $user, a
         }
 
         if (preg_match('#^image/(jpeg|png|gif|webp)$#i', $mime)) {
-            smartcms_image_resize_file($target_path, $target_path);
+            smartcms_image_resize_file_to_width($target_path, $target_path, smartcms_board_editor_image_max_width($board));
         }
 
         smartcms_execute(
