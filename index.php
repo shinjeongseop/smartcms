@@ -174,40 +174,20 @@ require SMARTCMS_ROOT . '/head.php';
           <div class="list-group list-group-flush">
             <?php if ($recent_posts): ?>
               <?php foreach ($recent_posts as $post): ?>
-                <?php $recent_image = smartcms_board_first_image_file((int)$post['id']); ?>
-                <?php $recent_youtube = $recent_image ? null : smartcms_board_youtube_link_data($post); ?>
                 <a class="list-group-item list-group-item-action p-4"
                    href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
-                  <div class="row g-3 align-items-center">
-                    <div class="col-4 col-sm-3 col-md-2">
-                      <?php if ($recent_image): ?>
-                        <?php $recent_thumb = smartcms_board_file_thumbnail_url($recent_image, 480, 360); ?>
-                        <div class="ratio ratio-4x3 rounded-3 overflow-hidden bg-light border shadow-sm">
-                          <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($recent_thumb ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$recent_image['id']))) ?>" alt="<?= smartcms_h($recent_image['original_name']) ?>">
-                        </div>
-                      <?php elseif (!empty($recent_youtube['thumb_url'])): ?>
-                        <div class="ratio ratio-4x3 rounded-3 overflow-hidden bg-light border shadow-sm">
-                          <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h((string)$recent_youtube['thumb_url']) ?>" alt="<?= smartcms_h((string)$post['title']) ?>">
-                        </div>
-                      <?php else: ?>
-                        <div class="ratio ratio-4x3 rounded-3 overflow-hidden bg-light border d-flex align-items-center justify-content-center shadow-sm">
-                          <i class="bi bi-file-earmark-text text-secondary fs-1 opacity-25"></i>
-                        </div>
-                      <?php endif; ?>
-                      </div>
-                      <div class="col-8 col-sm-9 col-md-10 min-w-0">
-                        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-                          <span class="badge text-bg-light text-secondary rounded-2 small border"><?= smartcms_h($post['board_name']) ?></span>
-                          <time class="small text-body-secondary fw-medium" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
-                            <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
-                          </time>
-                        </div>
-                        <div class="text-dark fw-semibold fs-6 text-truncate mb-1"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></div>
-                      <div class="small text-body-secondary">
-                        <span class="me-2"><i class="bi bi-person me-1"></i><?= smartcms_h(smartcms_board_author_display_name(null, $post)) ?></span>
-                        <span class="me-2"><i class="bi bi-chat-dots me-1"></i><?= number_format((int)$post['comment_count']) ?></span>
-                        <span><i class="bi bi-paperclip me-1"></i><?= number_format((int)$post['attachment_count']) ?></span>
-                      </div>
+                  <div class="d-flex flex-column gap-2">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                      <span class="badge text-bg-light text-secondary rounded-2 small border"><?= smartcms_h($post['board_name']) ?></span>
+                      <time class="small text-body-secondary fw-medium" datetime="<?= date('Y-m-d', strtotime((string)$post['created_at'])) ?>">
+                        <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
+                      </time>
+                    </div>
+                    <div class="text-dark fw-semibold fs-6 text-truncate"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></div>
+                    <div class="small text-body-secondary">
+                      <span class="me-2"><i class="bi bi-person me-1"></i><?= smartcms_h(smartcms_board_author_display_name(null, $post)) ?></span>
+                      <span class="me-2"><i class="bi bi-chat-dots me-1"></i><?= number_format((int)$post['comment_count']) ?></span>
+                      <span><i class="bi bi-paperclip me-1"></i><?= number_format((int)$post['attachment_count']) ?></span>
                     </div>
                   </div>
                 </a>

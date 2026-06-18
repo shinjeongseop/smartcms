@@ -97,6 +97,7 @@ function smartcms_create_boards_table(): void
         use_editor TINYINT(1) NOT NULL DEFAULT 1,
         use_comments TINYINT(1) NOT NULL DEFAULT 1,
         use_attachments TINYINT(1) NOT NULL DEFAULT 1,
+        exclude_from_recent_posts TINYINT(1) NOT NULL DEFAULT 0,
         status ENUM('active','hidden','disabled') NOT NULL DEFAULT 'active',
         created_by BIGINT UNSIGNED DEFAULT NULL,
         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

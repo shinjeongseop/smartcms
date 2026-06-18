@@ -146,6 +146,9 @@ require SMARTCMS_ROOT . '/admin/head.php';
                       <div class="p-2 bg-primary-subtle text-primary rounded shadow-sm"><i class="bi bi-chat-dots fs-5"></i></div>
                       <div>
                         <div class="fw-bold text-dark mb-1"><?= smartcms_h($board['board_name']) ?></div>
+                        <?php if ((int)($board['exclude_from_recent_posts'] ?? 0) === 1): ?>
+                          <span class="badge bg-warning-subtle text-warning border border-warning-subtle fw-bold px-2 py-1 small me-1">최신글 제외</span>
+                        <?php endif; ?>
                         <a class="small text-primary text-decoration-none fw-bold opacity-75" href="<?= smartcms_h(smartcms_board_url((string)$board['board_key'])) ?>" target="_blank">
                           <i class="bi bi-box-arrow-up-right me-1"></i>/board/<?= smartcms_h($board['board_key']) ?>
                         </a>

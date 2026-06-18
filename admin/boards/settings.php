@@ -5,6 +5,8 @@ require_once __DIR__ . '/../common.php';
 require_once __DIR__ . '/../../common/board.php';
 require_once __DIR__ . '/../../common/ui/components.php';
 
+smartcms_ensure_boards_recent_posts_excluded_column();
+
 $admin = smartcms_admin_user();
 $message = '';
 $message_type = 'info';
@@ -30,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             smartcms_execute(
             "UPDATE " . smartcms_table('boards') . "
              SET board_name = :name, description = :desc, skin = :skin, items_per_page = :ipp,
-                 use_editor = :editor, use_comments = :comments, use_attachments = :attachments, status = :status
+                 use_editor = :editor, use_comments = :comments, use_attachments = :attachments,
+                 exclude_from_recent_posts = :exclude_from_recent_posts, status = :status
              WHERE board_key = :key",
             [
                 'key'         => $board_key,
@@ -41,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'editor'      => (string)($_POST['use_editor'] ?? '0') === '1' ? 1 : 0,
                 'comments'    => isset($_POST['use_comments']) ? 1 : 0,
                 'attachments' => isset($_POST['use_attachments']) ? 1 : 0,
+                'exclude_from_recent_posts' => isset($_POST['exclude_from_recent_posts']) ? 1 : 0,
                 'status'      => (string)$_POST['status']
             ]
         );
@@ -191,6 +195,11 @@ require SMARTCMS_ROOT . '/admin/head.php';
                   <input class="form-check-input ms-0" type="checkbox" name="use_attachments" id="u_files" <?= $board['use_attachments'] ? 'checked' : '' ?>>
                   <label class="form-check-label fw-bold text-dark ms-3" for="u_files">멀티 첨부파일 업로드</label>
                 </div>
+                <div class="form-check form-switch p-3 bg-light rounded-3 border">
+                  <input class="form-check-input ms-0" type="checkbox" name="exclude_from_recent_posts" id="exclude_recent" <?= (int)($board['exclude_from_recent_posts'] ?? 0) === 1 ? 'checked' : '' ?>>
+                  <label class="form-check-label fw-bold text-dark ms-3" for="exclude_recent">전체 최신글 제외</label>
+                </div>
+                <div class="form-text small text-secondary">체크하면 홈의 전체 최신글 목록에서 이 게시판의 글이 노출되지 않습니다.</div>
               </div>
 
               <div class="mb-4 pt-2">

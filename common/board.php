@@ -216,6 +216,35 @@ function smartcms_ensure_boards_author_display_mode_column(): void
     }
 }
 
+function smartcms_ensure_boards_recent_posts_excluded_column(): void
+{
+    static $checked = false;
+    if ($checked) {
+        return;
+    }
+    $checked = true;
+
+    try {
+        $exists = (int)smartcms_fetch_value(
+            "SELECT COUNT(*)
+             FROM INFORMATION_SCHEMA.COLUMNS
+             WHERE TABLE_SCHEMA = DATABASE()
+               AND TABLE_NAME = :table_name
+               AND COLUMN_NAME = 'exclude_from_recent_posts'",
+            ['table_name' => smartcms_table('boards')]
+        );
+
+        if ($exists === 0) {
+            smartcms_execute(
+                "ALTER TABLE " . smartcms_table('boards') . "
+                 ADD COLUMN exclude_from_recent_posts TINYINT(1) NOT NULL DEFAULT 0 AFTER use_attachments"
+            );
+        }
+    } catch (Throwable $e) {
+        // Keep the app usable even if schema migration is not allowed.
+    }
+}
+
 function smartcms_board_user_profile_by_id(int $user_id): ?array
 {
     static $cache = [];
@@ -820,6 +849,7 @@ function smartcms_home_date(?string $value): string
 function smartcms_board_list(bool $include_disabled = false): array
 {
     smartcms_ensure_boards_author_display_mode_column();
+    smartcms_ensure_boards_recent_posts_excluded_column();
     $sql = "SELECT b.*, p.board_list_level, p.board_view_level, p.board_write_level, p.allow_guest_list, p.allow_guest_view
          FROM " . smartcms_table('boards') . " b
          LEFT JOIN " . smartcms_table('board_permissions') . " p ON p.board_key = b.board_key";
@@ -836,6 +866,7 @@ function smartcms_board_list(bool $include_disabled = false): array
 function smartcms_board_find(string $board_key): ?array
 {
     smartcms_ensure_boards_author_display_mode_column();
+    smartcms_ensure_boards_recent_posts_excluded_column();
     return smartcms_fetch_one(
         "SELECT b.*, p.board_list_level, p.board_view_level, p.board_write_level, p.board_comment_level,
                 p.board_upload_level, p.board_manage_level, p.allow_guest_list, p.allow_guest_view, p.status AS permission_status
@@ -1871,6 +1902,7 @@ function smartcms_board_create(string $board_key, string $board_name, string $de
     }
 
     smartcms_ensure_boards_author_display_mode_column();
+    smartcms_ensure_boards_recent_posts_excluded_column();
     $exists = smartcms_board_find($board_key);
     if ($exists) {
         return ['ok' => false, 'message' => '이미 존재하는 게시판 키입니다.'];
@@ -1927,11 +1959,12 @@ function smartcms_board_seed_defaults(int $created_by): array
 
 function smartcms_board_recent_posts(int $limit = 12): array
 {
+    smartcms_ensure_boards_recent_posts_excluded_column();
     $stmt = smartcms_db()->prepare(
         "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.excerpt, p.author_id, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name, b.author_display_mode
          FROM " . smartcms_table('board_posts') . " p
          INNER JOIN " . smartcms_table('boards') . " b ON b.id = p.board_id
-         WHERE p.is_hidden = 0 AND b.status <> 'disabled'
+         WHERE p.is_hidden = 0 AND b.status <> 'disabled' AND COALESCE(b.exclude_from_recent_posts, 0) = 0
          ORDER BY p.id DESC
          LIMIT :limit"
     );
