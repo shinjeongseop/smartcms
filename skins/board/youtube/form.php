@@ -18,13 +18,6 @@ $show_submit_icon = $show_submit_icon ?? true;
           </div>
 
           <div class="col-12">
-            <label for="link_url_1" class="form-label fw-bold text-dark">유튜브 주소 <span class="text-danger">*</span></label>
-            <input class="form-control py-2" id="link_url_1" name="link_url_1" type="text" value="<?= smartcms_h($form_values['link_url_1'] ?? '') ?>" placeholder="https://www.youtube.com/watch?v=...">
-            <div class="form-text">유튜브 공유 링크 또는 youtu.be 단축 링크를 넣어주세요.</div>
-            <input type="hidden" name="link_url_2" value="<?= smartcms_h($form_values['link_url_2'] ?? '') ?>">
-          </div>
-
-          <div class="col-12">
             <div class="d-flex flex-wrap gap-3">
               <?php if (smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user)): ?>
                 <div class="form-check">
@@ -58,6 +51,13 @@ $show_submit_icon = $show_submit_icon ?? true;
               <textarea class="form-control" id="content" name="content" rows="12" placeholder="영상 설명이나 소개 문구를 작성하세요."><?= smartcms_h($form_values['content'] ?? '') ?></textarea>
               <div class="form-text mt-2">설명은 본문 아래에 표시됩니다.</div>
             <?php endif; ?>
+          </div>
+
+          <div class="col-12">
+            <label for="link_url_1" class="form-label fw-bold text-dark">유튜브 주소 <span class="text-danger">*</span></label>
+            <input class="form-control py-2" id="link_url_1" name="link_url_1" type="text" value="<?= smartcms_h($form_values['link_url_1'] ?? '') ?>" placeholder="https://www.youtube.com/watch?v=...">
+            <div class="form-text">유튜브 공유 링크 또는 youtu.be 단축 링크를 넣어주세요.</div>
+            <input type="hidden" name="link_url_2" value="<?= smartcms_h($form_values['link_url_2'] ?? '') ?>">
           </div>
 
           <?php if (!empty($show_attachments)): ?>

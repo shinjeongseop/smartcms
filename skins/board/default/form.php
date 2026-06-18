@@ -22,20 +22,6 @@ $show_submit_icon = $show_submit_icon ?? true;
           </div>
 
           <div class="col-12">
-            <div class="row g-3">
-              <div class="col-12 col-md-6">
-                <label for="link_url_1" class="form-label fw-bold text-dark">링크 1</label>
-                <input class="form-control py-2" id="link_url_1" name="link_url_1" type="text" value="<?= smartcms_h($form_values['link_url_1'] ?? '') ?>" placeholder="https://example.com">
-              </div>
-              <div class="col-12 col-md-6">
-                <label for="link_url_2" class="form-label fw-bold text-dark">링크 2</label>
-                <input class="form-control py-2" id="link_url_2" name="link_url_2" type="text" value="<?= smartcms_h($form_values['link_url_2'] ?? '') ?>" placeholder="https://example.com">
-              </div>
-            </div>
-            <div class="form-text">그누보드처럼 링크를 2개까지 입력할 수 있습니다.</div>
-          </div>
-
-          <div class="col-12">
             <div class="d-flex flex-wrap gap-3">
               <?php if (smartcms_has_level((int)($board['board_manage_level'] ?? 8), $user)): ?>
                 <div class="form-check">
@@ -70,6 +56,20 @@ $show_submit_icon = $show_submit_icon ?? true;
               <textarea class="form-control" id="content" name="content" rows="16" placeholder="자유롭게 내용을 작성해주세요." required><?= smartcms_h($form_values['content'] ?? '') ?></textarea>
               <div class="form-text mt-2">이 게시판은 일반 텍스트 모드로 작성됩니다.</div>
             <?php endif; ?>
+          </div>
+
+          <div class="col-12">
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <label for="link_url_1" class="form-label fw-bold text-dark">링크 1</label>
+                <input class="form-control py-2" id="link_url_1" name="link_url_1" type="text" value="<?= smartcms_h($form_values['link_url_1'] ?? '') ?>" placeholder="https://example.com">
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="link_url_2" class="form-label fw-bold text-dark">링크 2</label>
+                <input class="form-control py-2" id="link_url_2" name="link_url_2" type="text" value="<?= smartcms_h($form_values['link_url_2'] ?? '') ?>" placeholder="https://example.com">
+              </div>
+            </div>
+            <div class="form-text">그누보드처럼 링크를 2개까지 입력할 수 있습니다.</div>
           </div>
 
           <?php if (!empty($existing_files)): ?>
