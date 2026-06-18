@@ -202,6 +202,54 @@ function smartcms_image_resize_file(string $source_path, string $target_path, in
     return $saved;
 }
 
+/*
+이름 : smartcms_image_resize_file_to_width
+용도 : 이미지 파일을 비율 유지로 지정된 최대 너비에 맞춰 축소하여 다른 파일로 저장
+*/
+function smartcms_image_resize_file_to_width(string $source_path, string $target_path, int $max_width = 1024, int $quality = 85): bool
+{
+    $image = smartcms_image_load_resource($source_path);
+    if (!$image) {
+        return false;
+    }
+
+    $src_w = (int)$image[1];
+    $src_h = (int)$image[2];
+    $src_type = (int)$image[3];
+
+    if ($src_w <= $max_width) {
+        if ($source_path === $target_path) {
+            return true;
+        }
+
+        return copy($source_path, $target_path);
+    }
+
+    $ratio = $max_width / $src_w;
+    $dst_w = max(1, (int)round($src_w * $ratio));
+    $dst_h = max(1, (int)round($src_h * $ratio));
+
+    $dst = imagecreatetruecolor($dst_w, $dst_h);
+    if ($dst === false) {
+        imagedestroy($image[0]);
+        return false;
+    }
+
+    if ($src_type === 3) {
+        imagealphablending($dst, false);
+        imagesavealpha($dst, true);
+        $transparent = imagecolorallocatealpha($dst, 0, 0, 0, 127);
+        imagefill($dst, 0, 0, $transparent);
+    }
+
+    imagecopyresampled($dst, $image[0], 0, 0, 0, 0, $dst_w, $dst_h, $src_w, $src_h);
+    $saved = smartcms_image_save_resource($dst, $target_path, $quality, 2);
+    imagedestroy($image[0]);
+    imagedestroy($dst);
+
+    return $saved;
+}
+
 function smartcms_image_thumbnail_cache_path(string $source_path, int $max_width, int $max_height): string
 {
     $real = realpath($source_path) ?: $source_path;

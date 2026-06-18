@@ -93,61 +93,70 @@ function smartcms_board_thumbnail_config(?array $board, string $context = 'list'
 {
     $skin = strtolower(preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($board['skin'] ?? 'default')));
     $context = strtolower(trim($context));
-    $context = in_array($context, ['list', 'view', 'widget'], true) ? $context : 'list';
+    $context = in_array($context, ['list', 'view', 'widget', 'latest'], true) ? $context : 'list';
 
     $map = [
         'default' => [
             'list' => [640, 360],
             'view' => [900, 506],
             'widget' => [480, 270],
+            'latest' => [320, 240],
             'columns' => 1,
         ],
         'table' => [
             'list' => [640, 360],
             'view' => [900, 506],
             'widget' => [480, 270],
+            'latest' => [320, 240],
             'columns' => 1,
         ],
         'card' => [
             'list' => [640, 360],
             'view' => [900, 506],
             'widget' => [480, 270],
+            'latest' => [320, 240],
             'columns' => 2,
         ],
         'gallery' => [
             'list' => [480, 480],
             'view' => [900, 506],
             'widget' => [480, 270],
+            'latest' => [320, 320],
             'columns' => 2,
         ],
         'qna' => [
             'list' => [640, 360],
             'view' => [900, 506],
             'widget' => [480, 270],
+            'latest' => [320, 240],
             'columns' => 1,
         ],
         'notice' => [
             'list' => [640, 360],
             'view' => [900, 506],
             'widget' => [480, 270],
+            'latest' => [320, 240],
             'columns' => 1,
         ],
         'faq' => [
             'list' => [640, 360],
             'view' => [900, 506],
             'widget' => [480, 270],
+            'latest' => [320, 240],
             'columns' => 2,
         ],
         'webzine' => [
             'list' => [640, 360],
             'view' => [900, 506],
             'widget' => [480, 270],
+            'latest' => [320, 240],
             'columns' => 1,
         ],
         'youtube' => [
             'list' => [640, 360],
             'view' => [960, 540],
             'widget' => [480, 270],
+            'latest' => [320, 180],
             'columns' => 1,
         ],
     ];
@@ -706,6 +715,12 @@ function smartcms_board_editor_upload_url(array $board, string $stored_name): st
     }
 
     return smartcms_base_url('/uploads/board/editor/' . rawurlencode($board_key) . '/' . rawurlencode($stored_name));
+}
+
+function smartcms_board_editor_image_max_width(array $board): int
+{
+    $view_config = smartcms_board_thumbnail_config($board, 'view');
+    return max(640, (int)($view_config['width'] ?? 900));
 }
 
 function smartcms_board_editor_image_paths(string $html): array

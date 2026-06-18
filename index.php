@@ -28,6 +28,7 @@ try {
         }
 
         $skin_meta = smartcms_board_skin_meta($board);
+        $thumb_config = smartcms_board_thumbnail_config($board, 'latest');
         $summary = trim((string)($board['description'] ?? ''));
         if ($summary === '') {
             $summary = (string)($skin_meta['skin'] ?? '') === 'gallery'
@@ -40,6 +41,7 @@ try {
             'board' => $board,
             'skin_meta' => $skin_meta,
             'summary' => $summary,
+            'thumb_config' => $thumb_config,
             'posts' => smartcms_board_recent_posts_by_key((string)$board['board_key'], $limit),
         ];
     }
@@ -228,13 +230,14 @@ require SMARTCMS_ROOT . '/head.php';
                   </div>
                 </header>
                 <?php $is_gallery_widget = (string)($widget['skin_meta']['skin'] ?? '') === 'gallery'; ?>
+                <?php $widget_thumb_config = $widget['thumb_config'] ?? ['width' => 320, 'height' => 240]; ?>
                 <?php if ($is_gallery_widget): ?>
                   <div class="card-body p-4">
                     <?php if ($widget['posts']): ?>
                       <div class="row row-cols-2 g-3">
                         <?php foreach ($widget['posts'] as $post): ?>
                           <?php $gallery_image = smartcms_board_first_image_file((int)$post['id']); ?>
-                          <?php $gallery_thumb = $gallery_image ? smartcms_board_file_thumbnail_url($gallery_image, 640, 640) : null; ?>
+                          <?php $gallery_thumb = $gallery_image ? smartcms_board_file_thumbnail_url($gallery_image, (int)$widget_thumb_config['width'], (int)$widget_thumb_config['height']) : null; ?>
                           <div class="col">
                             <a class="card border-0 shadow-sm h-100 text-decoration-none overflow-hidden rounded-4" href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                               <div class="ratio ratio-1x1 bg-light">
@@ -261,13 +264,13 @@ require SMARTCMS_ROOT . '/head.php';
                 <?php else: ?>
                   <div class="card-body p-4">
                     <div class="list-group list-group-flush small">
-                      <?php if ($widget['posts']): ?>
-                        <?php foreach ($widget['posts'] as $post): ?>
+                    <?php if ($widget['posts']): ?>
+                      <?php foreach ($widget['posts'] as $post): ?>
                           <?php $widget_image = smartcms_board_first_image_file((int)$post['id']); ?>
                           <a class="list-group-item list-group-item-action bg-white px-0 py-2"
                             href="<?= smartcms_h(smartcms_board_post_url((string)$post['board_key'], (int)$post['id'])) ?>">
                             <?php if ($widget_image): ?>
-                              <?php $widget_thumb = smartcms_board_file_thumbnail_url($widget_image, 480, 360); ?>
+                              <?php $widget_thumb = smartcms_board_file_thumbnail_url($widget_image, (int)$widget_thumb_config['width'], (int)$widget_thumb_config['height']); ?>
                               <div class="row g-2 align-items-center">
                                 <div class="col-3">
                                   <div class="ratio ratio-4x3 rounded-2 overflow-hidden bg-light border">
