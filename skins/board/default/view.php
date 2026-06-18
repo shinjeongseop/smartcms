@@ -55,10 +55,10 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
             <?php $thumb_url = smartcms_board_file_thumbnail_url($image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
             <div class="<?= $image_columns > 1 ? 'col-12 col-md-6' : 'col-12' ?>">
               <figure class="card border shadow-sm bg-white h-100 overflow-hidden mb-0">
-                <a class="d-block ratio ratio-16x9 bg-light text-decoration-none"
+                <a class="d-block bg-light text-decoration-none p-3 p-md-4"
                    href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id'])) ?>"
                    target="_blank" rel="noopener">
-                  <img class="w-100 h-100 object-fit-cover" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id']))) ?>" alt="<?= smartcms_h($image['original_name']) ?>">
+                  <img class="img-fluid d-block mx-auto rounded-3" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id']))) ?>" alt="<?= smartcms_h($image['original_name']) ?>">
                 </a>
                 <figcaption class="card-body p-3 small">
                   <div class="fw-semibold text-dark text-truncate"><?= smartcms_h($image['original_name']) ?></div>
