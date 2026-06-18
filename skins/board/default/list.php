@@ -76,7 +76,7 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
             <?php $excerpt_highlight = smartcms_board_highlight_text($excerpt, $board_list_keyword); ?>
             <article class="card h-100 border shadow-sm bg-white overflow-hidden position-relative">
               <?php if ($board_bulk_can_manage): ?>
-                <div class="position-absolute top-0 start-0 p-3 z-3">
+                <div class="p-3 pb-0">
                   <input class="form-check-input sc-bulk-checkbox" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
                 </div>
               <?php endif; ?>
@@ -158,7 +158,7 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
               <?php $first_image = smartcms_board_first_image_file((int)$post['id']); ?>
               <article class="card h-100 border shadow-sm bg-white <?= $gallery_mode ? 'rounded-3 overflow-hidden' : 'overflow-hidden' ?> position-relative">
                 <?php if ($board_bulk_can_manage): ?>
-                  <div class="position-absolute top-0 start-0 p-3 z-3">
+                  <div class="p-3 pb-0">
                     <input class="form-check-input sc-bulk-checkbox" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
                   </div>
                 <?php endif; ?>

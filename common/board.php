@@ -802,6 +802,16 @@ function smartcms_board_file_thumbnail_url(array $file, int $max_width = 480, in
     return smartcms_image_thumbnail_url_from_relative($relative_path, $max_width, $max_height, $quality);
 }
 
+function smartcms_board_file_public_url(array $file): ?string
+{
+    $relative_path = trim((string)($file['file_path'] ?? ''));
+    if ($relative_path === '') {
+        return null;
+    }
+
+    return smartcms_asset_url('/' . ltrim(str_replace('\\', '/', $relative_path), '/'));
+}
+
 function smartcms_board_truncate_title(string $title): string
 {
     return trim(strip_tags($title));

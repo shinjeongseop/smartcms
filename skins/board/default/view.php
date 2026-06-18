@@ -53,16 +53,22 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
         <div class="row g-3">
           <?php foreach ($image_files as $image): ?>
             <?php $thumb_url = smartcms_board_file_thumbnail_url($image, (int)$thumb_config['width'], (int)$thumb_config['height']); ?>
+            <?php $public_url = smartcms_board_file_public_url($image); ?>
+            <?php $image_href = $public_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id'])); ?>
             <div class="<?= $image_columns > 1 ? 'col-12 col-md-6' : 'col-12' ?>">
               <figure class="card border shadow-sm bg-white h-100 overflow-hidden mb-0">
                 <a class="d-block bg-light text-decoration-none p-3 p-md-4"
-                   href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id'])) ?>"
+                   href="<?= smartcms_h($image_href) ?>"
                    target="_blank" rel="noopener">
                   <img class="img-fluid d-block mx-auto rounded-3" src="<?= smartcms_h($thumb_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id']))) ?>" alt="<?= smartcms_h($image['original_name']) ?>">
                 </a>
                 <figcaption class="card-body p-3 small">
                   <div class="fw-semibold text-dark text-truncate"><?= smartcms_h($image['original_name']) ?></div>
-                  <div class="text-secondary"><?= number_format((int)$image['file_size']) ?> bytes · 다운로드 <?= (int)$image['download_count'] ?>회</div>
+                  <div class="text-secondary mb-2"><?= number_format((int)$image['file_size']) ?> bytes · 다운로드 <?= (int)$image['download_count'] ?>회</div>
+                  <a class="btn btn-sm btn-light border fw-bold text-secondary shadow-none"
+                     href="<?= smartcms_h(smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id'])) ?>">
+                    다운로드
+                  </a>
                 </figcaption>
               </figure>
             </div>
