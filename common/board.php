@@ -2337,10 +2337,6 @@ function smartcms_board_store_uploads(array $board, int $post_id, array $user, a
             return ['ok' => false, 'message' => '첨부파일 저장에 실패했습니다.', 'count' => $stored_count];
         }
 
-        if (preg_match('#^image/(jpeg|png|gif|webp)$#i', $mime)) {
-            smartcms_image_resize_file_to_width($target_path, $target_path, smartcms_board_editor_image_max_width($board));
-        }
-
         smartcms_execute(
             "INSERT INTO " . smartcms_table('board_files') . "
              (board_id, post_id, original_name, stored_name, file_path, file_size, mime_type, uploaded_by)

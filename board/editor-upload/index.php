@@ -123,8 +123,6 @@ foreach ($names as $index => $name) {
         exit;
     }
 
-    smartcms_image_resize_file_to_width($target_path, $target_path, smartcms_board_editor_image_max_width($board));
-
     $stored_urls[] = smartcms_board_editor_upload_url($board, $stored_name);
 }
 
