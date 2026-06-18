@@ -375,3 +375,71 @@ function smartcms_image_delete_thumbnail_cache_from_html(string $html, array $si
 
     return $deleted;
 }
+
+function smartcms_image_cleanup_thumbnail_cache(string $mode = 'legacy'): array
+{
+    $cache_root = SMARTCMS_ROOT . '/uploads/thumbnails';
+    $mode = $mode === 'all' ? 'all' : 'legacy';
+    $deleted = 0;
+    $removed_dirs = [];
+
+    if (!is_dir($cache_root)) {
+        return ['deleted' => 0, 'removed_dirs' => []];
+    }
+
+    $remove_dir = static function (string $path) use (&$remove_dir, &$deleted): bool {
+        $items = scandir($path);
+        if ($items === false) {
+            return false;
+        }
+
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+
+            $current = $path . DIRECTORY_SEPARATOR . $item;
+            if (is_dir($current)) {
+                $remove_dir($current);
+                if (@rmdir($current)) {
+                    $deleted++;
+                }
+                continue;
+            }
+
+            if (is_file($current) && @unlink($current)) {
+                $deleted++;
+            }
+        }
+
+        return true;
+    };
+
+    $entries = scandir($cache_root);
+    if ($entries === false) {
+        return ['deleted' => 0, 'removed_dirs' => []];
+    }
+
+    foreach ($entries as $entry) {
+        if ($entry === '.' || $entry === '..') {
+            continue;
+        }
+
+        $target = $cache_root . DIRECTORY_SEPARATOR . $entry;
+        if (!is_dir($target)) {
+            continue;
+        }
+
+        if ($mode === 'legacy' && $entry === 'v2') {
+            continue;
+        }
+
+        $remove_dir($target);
+        if (@rmdir($target)) {
+            $deleted++;
+        }
+        $removed_dirs[] = $entry;
+    }
+
+    return ['deleted' => $deleted, 'removed_dirs' => $removed_dirs];
+}

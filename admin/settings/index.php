@@ -9,29 +9,42 @@ $message_type = 'info';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     smartcms_verify_csrf_or_fail();
-    $site_name = trim((string)($_POST['site_name'] ?? 'smartcms'));
-    $default_member_level = max(1, min(10, (int)($_POST['default_member_level'] ?? 2)));
-    $admin_level = max(1, min(10, (int)($_POST['admin_level'] ?? 8)));
-    $upload_max_mb = max(1, min(100, (int)($_POST['upload_max_mb'] ?? 10)));
-    $author_display_mode = smartcms_board_normalize_author_display_mode((string)($_POST['author_display_mode'] ?? 'name'));
+    $action = (string)($_POST['action'] ?? 'save');
 
-    if ($admin_level < 8) {
-        $message = '관리자 기준 레벨은 8 이상을 권장하며, 현재는 8 미만으로 저장할 수 없습니다.';
-        $message_type = 'error';
-    } elseif ($site_name === '') {
-        $message = '사이트 이름을 정확히 입력하세요.';
-        $message_type = 'error';
-    } else {
-        smartcms_save_settings([
-            'site_name' => $site_name,
-            'allow_registration' => isset($_POST['allow_registration']) ? '1' : '0',
-            'default_member_level' => (string)$default_member_level,
-            'admin_level' => (string)$admin_level,
-            'upload_max_mb' => (string)$upload_max_mb,
-            'author_display_mode' => $author_display_mode,
-        ]);
-        $message = '시스템 환경 설정이 성공적으로 저장되었습니다.';
+    if ($action === 'cleanup_thumbnail_cache') {
+        $result = smartcms_image_cleanup_thumbnail_cache('legacy');
+        $deleted = (int)($result['deleted'] ?? 0);
+        $removed_dirs = $result['removed_dirs'] ?? [];
+        $message = '썸네일 캐시 정리가 완료되었습니다. 삭제 항목: ' . $deleted . '개';
+        if (is_array($removed_dirs) && $removed_dirs) {
+            $message .= ' / 대상: ' . implode(', ', $removed_dirs);
+        }
         $message_type = 'success';
+    } else {
+        $site_name = trim((string)($_POST['site_name'] ?? 'smartcms'));
+        $default_member_level = max(1, min(10, (int)($_POST['default_member_level'] ?? 2)));
+        $admin_level = max(1, min(10, (int)($_POST['admin_level'] ?? 8)));
+        $upload_max_mb = max(1, min(100, (int)($_POST['upload_max_mb'] ?? 10)));
+        $author_display_mode = smartcms_board_normalize_author_display_mode((string)($_POST['author_display_mode'] ?? 'name'));
+
+        if ($admin_level < 8) {
+            $message = '관리자 기준 레벨은 8 이상을 권장하며, 현재는 8 미만으로 저장할 수 없습니다.';
+            $message_type = 'error';
+        } elseif ($site_name === '') {
+            $message = '사이트 이름을 정확히 입력하세요.';
+            $message_type = 'error';
+        } else {
+            smartcms_save_settings([
+                'site_name' => $site_name,
+                'allow_registration' => isset($_POST['allow_registration']) ? '1' : '0',
+                'default_member_level' => (string)$default_member_level,
+                'admin_level' => (string)$admin_level,
+                'upload_max_mb' => (string)$upload_max_mb,
+                'author_display_mode' => $author_display_mode,
+            ]);
+            $message = '시스템 환경 설정이 성공적으로 저장되었습니다.';
+            $message_type = 'success';
+        }
     }
 }
 
@@ -130,9 +143,14 @@ require SMARTCMS_ROOT . '/admin/head.php';
         </div>
 
         <footer class="col-12 mt-5 pt-3 sc-admin-action-bar">
-          <button type="submit" class="btn btn-primary btn-lg rounded-2 px-5 fw-bold shadow-sm py-3">
-            <i class="bi bi-cloud-check me-2"></i>모든 시스템 설정 저장
-          </button>
+          <div class="d-flex flex-column flex-md-row gap-2 justify-content-between">
+            <button type="submit" name="action" value="cleanup_thumbnail_cache" class="btn btn-light border rounded-2 px-4 fw-bold text-secondary shadow-none">
+              썸네일 캐시 정리
+            </button>
+            <button type="submit" name="action" value="save" class="btn btn-primary btn-lg rounded-2 px-5 fw-bold shadow-sm py-3">
+              <i class="bi bi-cloud-check me-2"></i>모든 시스템 설정 저장
+            </button>
+          </div>
         </footer>
       </form>
     </div>
