@@ -376,18 +376,24 @@ function smartcms_image_delete_thumbnail_cache_from_html(string $html, array $si
     return $deleted;
 }
 
+function smartcms_image_thumbnail_cache_root(): string
+{
+    return SMARTCMS_ROOT . '/uploads/thumbnails/v2';
+}
+
 function smartcms_image_cleanup_thumbnail_cache(string $mode = 'legacy'): array
 {
     $cache_root = SMARTCMS_ROOT . '/uploads/thumbnails';
     $mode = $mode === 'all' ? 'all' : 'legacy';
-    $deleted = 0;
+    $deleted_files = 0;
+    $deleted_dirs = 0;
     $removed_dirs = [];
 
     if (!is_dir($cache_root)) {
-        return ['deleted' => 0, 'removed_dirs' => []];
+        return ['deleted_files' => 0, 'deleted_dirs' => 0, 'removed_dirs' => [], 'cache_root' => smartcms_image_thumbnail_cache_root(), 'mode' => $mode];
     }
 
-    $remove_dir = static function (string $path) use (&$remove_dir, &$deleted): bool {
+    $remove_dir = static function (string $path) use (&$remove_dir, &$deleted_files, &$deleted_dirs): bool {
         $items = scandir($path);
         if ($items === false) {
             return false;
@@ -402,13 +408,13 @@ function smartcms_image_cleanup_thumbnail_cache(string $mode = 'legacy'): array
             if (is_dir($current)) {
                 $remove_dir($current);
                 if (@rmdir($current)) {
-                    $deleted++;
+                    $deleted_dirs++;
                 }
                 continue;
             }
 
             if (is_file($current) && @unlink($current)) {
-                $deleted++;
+                $deleted_files++;
             }
         }
 
@@ -436,10 +442,16 @@ function smartcms_image_cleanup_thumbnail_cache(string $mode = 'legacy'): array
 
         $remove_dir($target);
         if (@rmdir($target)) {
-            $deleted++;
+            $deleted_dirs++;
         }
         $removed_dirs[] = $entry;
     }
 
-    return ['deleted' => $deleted, 'removed_dirs' => $removed_dirs];
+    return [
+        'deleted_files' => $deleted_files,
+        'deleted_dirs' => $deleted_dirs,
+        'removed_dirs' => $removed_dirs,
+        'cache_root' => smartcms_image_thumbnail_cache_root(),
+        'mode' => $mode,
+    ];
 }

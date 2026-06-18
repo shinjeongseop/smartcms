@@ -13,12 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'cleanup_thumbnail_cache') {
         $result = smartcms_image_cleanup_thumbnail_cache('legacy');
-        $deleted = (int)($result['deleted'] ?? 0);
+        $deleted_files = (int)($result['deleted_files'] ?? 0);
+        $deleted_dirs = (int)($result['deleted_dirs'] ?? 0);
         $removed_dirs = $result['removed_dirs'] ?? [];
-        $message = '썸네일 캐시 정리가 완료되었습니다. 삭제 항목: ' . $deleted . '개';
+        $message = '썸네일 캐시 정리가 완료되었습니다. 삭제 파일 ' . $deleted_files . '개, 삭제 폴더 ' . $deleted_dirs . '개';
         if (is_array($removed_dirs) && $removed_dirs) {
             $message .= ' / 대상: ' . implode(', ', $removed_dirs);
         }
+        $message .= ' / 생성 위치: /uploads/thumbnails/v2/{가로}x{세로}/';
         $message_type = 'success';
     } else {
         $site_name = trim((string)($_POST['site_name'] ?? 'smartcms'));
@@ -73,6 +75,16 @@ require SMARTCMS_ROOT . '/admin/head.php';
     <div class="card-body p-4 p-lg-5">
       <form class="row g-4" method="post">
         <?= smartcms_csrf_input() ?>
+
+        <div class="col-12">
+          <div class="alert alert-light border small mb-0">
+            <div class="fw-bold text-dark mb-1">썸네일 생성 위치</div>
+            <div class="text-secondary">
+              생성된 썸네일은 <code class="text-dark">/uploads/thumbnails/v2/{가로}x{세로}/</code> 아래에 저장됩니다.
+              예: <code class="text-dark">/uploads/thumbnails/v2/320x240/</code>
+            </div>
+          </div>
+        </div>
 
         <div class="col-12">
           <div class="d-flex align-items-center gap-2 mb-1">
