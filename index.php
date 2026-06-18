@@ -183,8 +183,17 @@ require SMARTCMS_ROOT . '/head.php';
                         <?= smartcms_h(smartcms_home_date((string)$post['created_at'])) ?>
                       </time>
                     </div>
-                    <div class="text-dark fw-semibold fs-6 text-truncate"><?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?></div>
-                    <div class="small text-body-secondary">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                      <div class="text-dark fw-semibold fs-6 text-truncate flex-grow-1 min-w-0">
+                        <?= smartcms_h(smartcms_board_truncate_title((string)$post['title'])) ?>
+                      </div>
+                      <div class="d-none d-md-flex align-items-center gap-3 small text-body-secondary flex-shrink-0 text-md-end">
+                        <span><i class="bi bi-person me-1"></i><?= smartcms_h(smartcms_board_author_display_name(null, $post)) ?></span>
+                        <span><i class="bi bi-chat-dots me-1"></i><?= number_format((int)$post['comment_count']) ?></span>
+                        <span><i class="bi bi-paperclip me-1"></i><?= number_format((int)$post['attachment_count']) ?></span>
+                      </div>
+                    </div>
+                    <div class="d-md-none small text-body-secondary">
                       <span class="me-2"><i class="bi bi-person me-1"></i><?= smartcms_h(smartcms_board_author_display_name(null, $post)) ?></span>
                       <span class="me-2"><i class="bi bi-chat-dots me-1"></i><?= number_format((int)$post['comment_count']) ?></span>
                       <span><i class="bi bi-paperclip me-1"></i><?= number_format((int)$post['attachment_count']) ?></span>
