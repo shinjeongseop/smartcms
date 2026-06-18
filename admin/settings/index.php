@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = (string)($_POST['action'] ?? 'save');
 
     if ($action === 'cleanup_thumbnail_cache') {
-        $result = smartcms_image_cleanup_thumbnail_cache('legacy');
+        $result = smartcms_image_cleanup_thumbnail_cache('all');
         $deleted_files = (int)($result['deleted_files'] ?? 0);
         $deleted_dirs = (int)($result['deleted_dirs'] ?? 0);
         $removed_dirs = $result['removed_dirs'] ?? [];
