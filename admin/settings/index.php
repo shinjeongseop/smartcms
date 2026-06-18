@@ -142,7 +142,7 @@ require SMARTCMS_ROOT . '/admin/head.php';
           </div>
         </div>
 
-        <footer class="col-12 mt-5 pt-3 sc-admin-action-bar">
+        <footer class="col-12 mt-5 pt-3 sc-admin-action-bar" id="thumbnail-cache">
           <div class="d-flex flex-column flex-md-row gap-2 justify-content-between">
             <button type="submit" name="action" value="cleanup_thumbnail_cache" class="btn btn-light border rounded-2 px-4 fw-bold text-secondary shadow-none">
               썸네일 캐시 정리

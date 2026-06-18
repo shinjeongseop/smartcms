@@ -59,6 +59,7 @@ if (!function_exists('smartcms_admin_nav_items')) {
             'logs'      => ['label' => '접속 로그', 'href' => '/admin/logs/', 'icon' => 'bi-activity'],
             'database'  => ['label' => 'DB 관리', 'href' => '/admin/database/', 'icon' => 'bi-database-fill'],
             'settings'  => ['label' => '환경 설정', 'href' => '/admin/settings/', 'icon' => 'bi-gear-fill'],
+            'cache'     => ['label' => '썸네일 캐시 정리', 'href' => '/admin/settings/#thumbnail-cache', 'icon' => 'bi-trash3-fill'],
         ];
     }
 }
