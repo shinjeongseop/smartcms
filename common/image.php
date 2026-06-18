@@ -254,7 +254,8 @@ function smartcms_image_thumbnail_cache_path(string $source_path, int $max_width
 {
     $real = realpath($source_path) ?: $source_path;
     $relative = str_starts_with($real, SMARTCMS_ROOT) ? ltrim(substr($real, strlen(SMARTCMS_ROOT)), '/\\') : basename($real);
-    $dir = SMARTCMS_ROOT . '/uploads/thumbnails/' . $max_width . 'x' . $max_height;
+    $cache_version = 'v2';
+    $dir = SMARTCMS_ROOT . '/uploads/thumbnails/' . $cache_version . '/' . $max_width . 'x' . $max_height;
     if (!is_dir($dir)) {
         mkdir($dir, 0755, true);
     }
