@@ -67,7 +67,7 @@ if (!in_array($board_bulk_actions_js, $SMARTCMS_FOOT['scripts'], true)) {
           <?php $excerpt_highlight = smartcms_board_highlight_text($excerpt, $board_list_keyword); ?>
           <article class="card border shadow-sm bg-white overflow-hidden position-relative">
             <?php if ($board_bulk_can_manage): ?>
-              <div class="p-3 pb-0">
+              <div class="p-3 pb-3 mb-2">
                 <input class="form-check-input sc-bulk-checkbox" type="checkbox" name="post_ids[]" value="<?= (int)$post['id'] ?>" form="<?= smartcms_h($board_bulk_form_id) ?>" data-board-bulk-item aria-label="게시글 <?= (int)$post['id'] ?> 선택">
               </div>
             <?php endif; ?>
