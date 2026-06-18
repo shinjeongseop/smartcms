@@ -6,7 +6,6 @@ $accent_text = $accent === 'dark' ? 'text-dark' : 'text-' . $accent;
 $post_links = smartcms_board_post_links($post);
 $image_files = smartcms_board_image_files($files);
 $attachment_files = array_values(array_filter($files, static fn(array $file): bool => !smartcms_board_file_is_image($file)));
-$image_columns = max(1, (int)smartcms_board_thumbnail_config($board, 'list')['columns']);
 $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id'], 5);
 ?>
 <article class="card border shadow-sm bg-white overflow-hidden mb-4">
@@ -67,15 +66,13 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
 
     <?php if ($image_files): ?>
       <section class="mb-5">
-        <div class="row g-4">
+        <div class="vstack gap-4">
           <?php foreach ($image_files as $image): ?>
             <?php $public_url = smartcms_board_file_public_url($image); ?>
-            <div class="<?= $image_columns > 1 ? 'col-12 col-md-6' : 'col-12' ?>">
-              <div class="card border shadow-sm bg-white overflow-hidden h-100">
-                <a class="d-block bg-light text-decoration-none" href="<?= smartcms_h($public_url ?? '#') ?>" target="_blank" rel="noopener noreferrer">
-                  <img class="img-fluid d-block w-100" src="<?= smartcms_h($public_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id']))) ?>" alt="<?= smartcms_h($image['original_name']) ?>">
-                </a>
-              </div>
+            <div class="card border shadow-sm bg-white overflow-hidden">
+              <a class="d-block bg-light text-decoration-none" href="<?= smartcms_h($public_url ?? '#') ?>" target="_blank" rel="noopener noreferrer">
+                <img class="img-fluid d-block w-100" src="<?= smartcms_h($public_url ?? (smartcms_base_url('/board/download/') . '?file=' . rawurlencode((string)$image['id']))) ?>" alt="<?= smartcms_h($image['original_name']) ?>">
+              </a>
             </div>
           <?php endforeach; ?>
         </div>
