@@ -34,19 +34,6 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
       <span class="d-flex align-items-center gap-1"><i class="bi bi-chat-dots fs-6 <?= $accent_text ?>"></i>댓글 <?= count($comments) ?></span>
     </div>
 
-    <?php if ($youtube['embed_url'] !== null): ?>
-      <section class="mb-5">
-        <div class="ratio ratio-16x9 bg-dark rounded-3 overflow-hidden shadow-sm">
-          <iframe
-            src="<?= smartcms_h($youtube['embed_url']) ?>"
-            title="<?= smartcms_h($post['title']) ?>"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-            loading="lazy"></iframe>
-        </div>
-      </section>
-    <?php endif; ?>
-
     <?php if ($post_links): ?>
       <div class="mb-5 vstack gap-2">
         <?php foreach ($post_links as $index => $link_url): ?>
@@ -77,6 +64,19 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
               <small class="text-secondary fw-medium">클릭하면 다운로드됩니다. · <?= number_format((int)$file['file_size']) ?> bytes · 다운로드 <?= (int)$file['download_count'] ?>회</small>
             </a>
           <?php endforeach; ?>
+        </div>
+      </section>
+    <?php endif; ?>
+
+    <?php if ($youtube['embed_url'] !== null): ?>
+      <section class="mb-5">
+        <div class="ratio ratio-16x9 bg-dark rounded-3 overflow-hidden shadow-sm">
+          <iframe
+            src="<?= smartcms_h($youtube['embed_url']) ?>"
+            title="<?= smartcms_h($post['title']) ?>"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading="lazy"></iframe>
         </div>
       </section>
     <?php endif; ?>
