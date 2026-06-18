@@ -58,9 +58,10 @@ $audit_logs = smartcms_board_post_audit_logs((int)$board['id'], (int)$post['id']
                href="<?= smartcms_h($download_url) ?>">
               <span class="d-flex flex-wrap align-items-center gap-2">
                 <span class="badge text-bg-light border text-body-secondary rounded-2">첨부 <?= (int)$index + 1 ?></span>
-                <span class="fw-semibold text-success text-break"><?= smartcms_h($download_url) ?></span>
+                <span class="fw-semibold text-success text-break">다운로드 주소</span>
               </span>
-              <small class="text-secondary fw-medium"><?= number_format((int)$file['file_size']) ?> bytes · 다운로드 <?= (int)$file['download_count'] ?>회</small>
+              <span class="small text-success text-break"><?= smartcms_h($download_url) ?></span>
+              <small class="text-secondary fw-medium">클릭하면 다운로드됩니다. · <?= number_format((int)$file['file_size']) ?> bytes · 다운로드 <?= (int)$file['download_count'] ?>회</small>
             </a>
           <?php endforeach; ?>
         </div>
