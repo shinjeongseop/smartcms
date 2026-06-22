@@ -62,10 +62,10 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
       </div>
 
       <div class="row align-items-center g-3 py-4">
-        <div class="col-12 col-md-3 text-center text-md-start">
+        <div class="col-12 col-md-3 col-lg-2 text-center text-md-start">
           <a class="navbar-brand fs-2 fw-bold text-primary m-0" href="<?= $brand_url ?>"><?= smartcms_h($site_name) ?></a>
         </div>
-        <div class="col-12 col-md-9 col-lg-7 col-xl-7 mx-md-auto">
+        <div class="col-12 col-md-6 col-lg-8">
           <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" role="search" data-search-min-length="2">
             <div class="input-group input-group-lg">
               <span class="input-group-text bg-white border-end-0">
@@ -78,7 +78,7 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
             </div>
           </form>
         </div>
-        <div class="col-lg-auto d-none d-lg-flex justify-content-end gap-2">
+        <div class="col-md-3 col-lg-2 d-none d-md-flex justify-content-end gap-2">
           <?php if ($user): ?>
             <a class="btn btn-light border rounded-2 d-inline-flex align-items-center justify-content-center sc-icon-button" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>" title="마이페이지" aria-label="마이페이지">
               <i class="bi bi-person"></i>
