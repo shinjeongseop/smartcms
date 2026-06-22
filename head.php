@@ -39,12 +39,13 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
   ?>
 
   <!-- [HEADER] 상단 유틸리티 및 브랜드 -->
-  <header class="bg-white border-bottom shadow-sm">
+  <header class="bg-white border-bottom sc-site-header">
     <div class="container-xxl">
-      <div class="d-flex flex-wrap align-items-center justify-content-between py-2 small border-bottom mb-3 text-secondary">
+      <div class="d-flex flex-wrap align-items-center justify-content-between py-2 small border-bottom text-secondary sc-site-utility">
         <div class="d-none d-md-flex gap-3">
           <a href="<?= $brand_url ?>" class="link-secondary text-decoration-none">커뮤니티 홈</a>
           <a href="<?= smartcms_h(smartcms_base_url('/board/')) ?>" class="link-secondary text-decoration-none">전체글</a>
+          <a href="<?= smartcms_h(smartcms_base_url('/board/?board=notice')) ?>" class="link-secondary text-decoration-none">공지사항</a>
         </div>
         <div class="d-flex gap-3 ms-auto">
           <?php if ($user): ?>
@@ -60,32 +61,48 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
         </div>
       </div>
 
-      <div class="row align-items-center g-3 py-3">
+      <div class="row align-items-center g-3 py-4">
         <div class="col-12 col-md-3 text-center text-md-start">
-          <a class="navbar-brand fs-2 fw-bold text-primary" href="<?= $brand_url ?>"><?= smartcms_h($site_name) ?></a>
+          <a class="navbar-brand fs-2 fw-bold text-primary m-0" href="<?= $brand_url ?>"><?= smartcms_h($site_name) ?></a>
         </div>
-        <div class="col-12 col-md-9 col-lg-8 col-xl-7 mx-md-auto">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-7 mx-md-auto">
           <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" role="search" data-search-min-length="2">
             <div class="input-group input-group-lg">
-              <span class="input-group-text">
+              <span class="input-group-text bg-white border-end-0">
                 <i class="bi bi-search text-primary"></i>
               </span>
-              <input type="search" name="q" class="form-control" placeholder="궁금한 것을 검색해보세요" aria-label="게시판 검색">
+              <input type="search" name="q" class="form-control border-start-0 ps-0" placeholder="궁금한 것을 검색해보세요" aria-label="게시판 검색">
               <button class="btn btn-primary" type="submit">
                 검색
               </button>
             </div>
           </form>
         </div>
+        <div class="col-lg-auto d-none d-lg-flex justify-content-end gap-2">
+          <?php if ($user): ?>
+            <a class="btn btn-light border rounded-2 d-inline-flex align-items-center justify-content-center sc-icon-button" href="<?= smartcms_h(smartcms_base_url('/member/mypage/')) ?>" title="마이페이지" aria-label="마이페이지">
+              <i class="bi bi-person"></i>
+            </a>
+          <?php else: ?>
+            <a class="btn btn-light border rounded-2 d-inline-flex align-items-center justify-content-center sc-icon-button" href="<?= smartcms_h(smartcms_base_url('/member/login/')) ?>" title="로그인" aria-label="로그인">
+              <i class="bi bi-person"></i>
+            </a>
+          <?php endif; ?>
+        </div>
       </div>
     </div>
 
     <!-- [NAV] 메인 네비게이션 -->
-    <nav class="navbar bg-white border-top p-0 mt-3" aria-label="메인 메뉴">
+    <nav class="navbar bg-white border-top p-0" aria-label="메인 메뉴">
       <div class="container-xxl">
-        <button class="btn btn-light border rounded-2 d-md-none my-2 px-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#siteNavOffcanvas" aria-controls="siteNavOffcanvas" aria-label="메뉴 열기">
+        <button class="btn btn-light border rounded-2 d-md-none my-2 d-inline-flex align-items-center justify-content-center sc-icon-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#siteNavOffcanvas" aria-controls="siteNavOffcanvas" aria-label="메뉴 열기">
           <i class="bi bi-list fs-4 lh-1"></i>
         </button>
+        <?php if ($user && (int)$user['level'] >= 8): ?>
+          <a class="btn btn-light border rounded-2 d-md-none ms-auto my-2 fw-bold text-primary" href="<?= smartcms_h(smartcms_base_url('/admin/')) ?>">
+            <i class="bi bi-grid me-1"></i>관리자
+          </a>
+        <?php endif; ?>
         <div class="d-none d-md-block w-100">
           <ul class="nav w-100">
             <?php foreach ($site_nav as $key => $item):
@@ -99,9 +116,9 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
               </li>
             <?php endforeach; ?>
             <?php if ($user && (int)$user['level'] >= 8): ?>
-              <li class="nav-item ms-lg-auto">
-                <a class="nav-link py-3 px-4 text-primary fw-bold" href="<?= smartcms_h(smartcms_base_url('/admin/')) ?>">
-                  <i class="bi bi-speedometer2 me-1"></i>관리자
+              <li class="nav-item ms-lg-auto py-2">
+                <a class="btn btn-light border rounded-2 px-3 fw-bold text-primary" href="<?= smartcms_h(smartcms_base_url('/admin/')) ?>">
+                  <i class="bi bi-grid me-1"></i>관리자
                 </a>
               </li>
             <?php endif; ?>

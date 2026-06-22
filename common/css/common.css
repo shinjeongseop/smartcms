@@ -46,6 +46,37 @@ span.sc-avatar-32 {
   flex: 0 0 auto;
 }
 
+.sc-site-header {
+  box-shadow: 0 0.0625rem 0.1875rem rgba(15, 23, 42, 0.06);
+}
+
+.sc-site-utility {
+  min-height: 2.5rem;
+}
+
+.sc-icon-button,
+.sc-home-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  flex: 0 0 auto;
+}
+
+.sc-home-hero .lead {
+  max-width: 44rem;
+  line-height: 1.75;
+}
+
+.sc-home-hero h1 {
+  max-width: 48rem;
+}
+
+@media (max-width: 767.98px) {
+  .sc-home-hero .display-5 {
+    font-size: 2rem;
+  }
+}
+
 /* Heading Improvements */
 h1,
 h2,
