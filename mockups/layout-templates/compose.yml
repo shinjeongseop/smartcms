@@ -1,0 +1,7 @@
+services:
+  smartcms-layouts:
+    build: .
+    container_name: smartcms-layout-templates
+    ports:
+      - "8088:80"
+    restart: unless-stopped

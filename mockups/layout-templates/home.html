@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="SmartCMS 메인 홈 레이아웃 목업">
+  <title>스마트CMS 커뮤니티</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/lucide.min.js" defer></script>
+  <script src="/app.js" defer></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-700 antialiased">
+  <header class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+      <div class="flex min-h-10 items-center justify-between border-b border-slate-100 text-xs text-slate-500">
+        <nav class="hidden items-center gap-4 md:flex" aria-label="유틸리티 메뉴">
+          <a class="hover:text-slate-950" href="#">커뮤니티 홈</a>
+          <a class="hover:text-slate-950" href="#latest">전체글</a>
+          <a class="hover:text-slate-950" href="#gallery">자료실</a>
+        </nav>
+        <div class="ml-auto flex items-center gap-4">
+          <a class="font-semibold text-slate-700 hover:text-brand-700" href="#">로그인</a>
+          <a class="hover:text-slate-950" href="#">회원가입</a>
+        </div>
+      </div>
+
+      <div class="grid items-center gap-5 py-6 md:grid-cols-[12rem_minmax(0,1fr)] lg:grid-cols-[14rem_minmax(0,44rem)_1fr]">
+        <a class="text-center text-3xl font-black text-brand-500 md:text-left" href="/home.html" aria-label="스마트CMS 홈">스마트CMS</a>
+        <form class="flex min-w-0" role="search">
+          <label class="sr-only" for="site-search">통합 검색</label>
+          <div class="flex min-w-0 flex-1 items-center rounded-l-lg border border-r-0 border-slate-300 bg-white pl-4 focus-within:border-brand-500 focus-within:ring-2 focus-within:ring-brand-100">
+            <i class="size-5 shrink-0 text-brand-600" data-lucide="search"></i>
+            <input class="min-w-0 flex-1 border-0 bg-transparent px-3 py-3 text-sm text-slate-950 placeholder:text-slate-400 focus:outline-none" id="site-search" name="q" type="search" placeholder="궁금한 것을 검색해보세요">
+          </div>
+          <button class="rounded-r-lg bg-brand-500 px-5 text-sm font-bold text-white hover:bg-brand-600" type="submit">검색</button>
+        </form>
+        <div class="hidden justify-end gap-2 lg:flex" aria-label="빠른 메뉴">
+          <button class="icon-button" type="button" title="알림"><i class="size-5" data-lucide="bell"></i><span class="sr-only">알림</span></button>
+          <button class="icon-button" type="button" title="내 메뉴"><i class="size-5" data-lucide="user-round"></i><span class="sr-only">내 메뉴</span></button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="border-t border-slate-200" aria-label="주 메뉴">
+      <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+        <div class="flex min-h-14 items-center justify-between">
+          <button class="icon-button md:hidden" type="button" data-mobile-nav-toggle aria-expanded="false" aria-controls="mobile-nav" title="메뉴">
+            <i class="size-6" data-lucide="menu"></i><span class="sr-only">메뉴 열기</span>
+          </button>
+          <ul class="hidden h-14 items-stretch md:flex">
+            <li><a class="flex h-full items-center border-b-2 border-brand-500 px-5 text-sm font-bold text-brand-700" href="/home.html" aria-current="page">홈</a></li>
+            <li><a class="flex h-full items-center border-b-2 border-transparent px-5 text-sm font-semibold text-slate-700 hover:border-slate-300" href="#latest">최신글</a></li>
+            <li><a class="flex h-full items-center border-b-2 border-transparent px-5 text-sm font-semibold text-slate-700 hover:border-slate-300" href="#boards">게시판</a></li>
+            <li><a class="flex h-full items-center border-b-2 border-transparent px-5 text-sm font-semibold text-slate-700 hover:border-slate-300" href="#gallery">갤러리</a></li>
+          </ul>
+          <a class="secondary-button ml-auto" href="/admin.html"><i class="size-4 text-brand-600" data-lucide="layout-dashboard"></i>관리자 목업</a>
+        </div>
+        <ul class="hidden space-y-1 border-t border-slate-100 py-3 md:hidden" id="mobile-nav" data-mobile-nav>
+          <li><a class="block rounded-lg bg-brand-50 px-3 py-2 text-sm font-bold text-brand-700" href="/home.html">홈</a></li>
+          <li><a class="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-50" href="#latest">최신글</a></li>
+          <li><a class="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-50" href="#boards">게시판</a></li>
+          <li><a class="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-slate-50" href="#gallery">갤러리</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="border-b border-slate-200 bg-white" aria-labelledby="home-heading">
+      <div class="mx-auto grid max-w-screen-xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(20rem,.65fr)] lg:px-8 lg:py-12">
+        <div class="self-center">
+          <span class="mb-3 inline-flex rounded-lg border border-brand-100 bg-brand-50 px-3 py-1.5 text-xs font-bold text-brand-700">SMARTCMS 2.0 COMMUNITY</span>
+          <h1 class="max-w-3xl text-3xl font-black leading-tight text-slate-950 sm:text-4xl" id="home-heading">정보가 모이고, 사람과 경험이 이어지는 커뮤니티</h1>
+          <p class="mt-4 max-w-2xl text-base leading-7 text-slate-600">공지사항부터 프로젝트 노하우, 자유로운 의견까지 한곳에서 빠르게 찾고 나눌 수 있습니다.</p>
+          <div class="mt-6 flex flex-wrap gap-3">
+            <a class="primary-button" href="#latest"><i class="size-4" data-lucide="arrow-down"></i>최신글 보기</a>
+            <a class="secondary-button" href="#boards">게시판 둘러보기</a>
+          </div>
+        </div>
+        <aside class="surface rounded-lg p-5" aria-label="커뮤니티 요약">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div>
+              <p class="meta-label">Community pulse</p>
+              <h2 class="mt-1 text-lg font-bold text-slate-950">오늘도 활발하게 운영 중입니다</h2>
+            </div>
+            <span class="inline-flex size-10 items-center justify-center rounded-lg bg-brand-50 text-brand-700"><i class="size-5" data-lucide="activity"></i></span>
+          </div>
+          <dl class="mt-4 grid grid-cols-3 divide-x divide-slate-100 text-center">
+            <div><dt class="text-xs font-semibold text-slate-500">게시물</dt><dd class="mt-1 text-xl font-black text-slate-950">1,248</dd></div>
+            <div><dt class="text-xs font-semibold text-slate-500">게시판</dt><dd class="mt-1 text-xl font-black text-slate-950">8</dd></div>
+            <div><dt class="text-xs font-semibold text-slate-500">오늘</dt><dd class="mt-1 text-xl font-black text-brand-700">24</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </section>
+
+    <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
+      <section class="surface mb-6 flex flex-col gap-4 rounded-lg p-4 sm:flex-row sm:items-center sm:justify-between" aria-label="공지사항">
+        <div class="flex min-w-0 items-center gap-3">
+          <span class="inline-flex size-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700"><i class="size-5" data-lucide="megaphone"></i></span>
+          <div class="min-w-0">
+            <p class="meta-label text-brand-700">Notice</p>
+            <a class="mt-1 block truncate text-sm font-bold text-slate-950 hover:text-brand-700" href="#">2026년 6월 서비스 점검 및 신규 기능 업데이트 안내</a>
+          </div>
+        </div>
+        <a class="secondary-button shrink-0" href="#">전체 공지</a>
+      </section>
+
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)]">
+        <div class="min-w-0 space-y-6">
+          <article class="surface overflow-hidden rounded-lg" id="latest">
+            <header class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+              <div>
+                <p class="meta-label text-brand-700">Latest updates</p>
+                <h2 class="section-title mt-1">전체 최신글</h2>
+              </div>
+              <div class="flex" role="tablist" aria-label="게시글 정렬">
+                <button class="border-b-2 border-brand-500 px-3 py-2 text-sm font-bold text-brand-700" type="button" role="tab" aria-selected="true" data-tab-target="recent">최신순</button>
+                <button class="border-b-2 border-transparent px-3 py-2 text-sm font-bold text-slate-500" type="button" role="tab" aria-selected="false" data-tab-target="popular">인기순</button>
+              </div>
+            </header>
+            <div data-tab-panel="recent">
+              <a class="block border-b border-slate-100 px-5 py-4 hover:bg-slate-50" href="#">
+                <div class="flex flex-wrap items-center gap-2 text-xs"><span class="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 font-bold text-slate-600">공지사항</span><time class="text-slate-500">방금 전</time></div>
+                <h3 class="mt-2 truncate font-bold text-slate-950">스마트CMS 프로젝트 게시판 사용 가이드를 공개합니다</h3>
+                <div class="mt-2 flex flex-wrap gap-4 text-xs text-slate-500"><span>관리자</span><span>댓글 12</span><span>조회 284</span></div>
+              </a>
+              <a class="block border-b border-slate-100 px-5 py-4 hover:bg-slate-50" href="#">
+                <div class="flex flex-wrap items-center gap-2 text-xs"><span class="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 font-bold text-slate-600">개발 노하우</span><time class="text-slate-500">18분 전</time></div>
+                <h3 class="mt-2 truncate font-bold text-slate-950">PHP 8 환경에서 안정적인 업로드 처리를 구성한 방법</h3>
+                <div class="mt-2 flex flex-wrap gap-4 text-xs text-slate-500"><span>김개발</span><span>댓글 8</span><span>첨부 2</span></div>
+              </a>
+              <a class="block border-b border-slate-100 px-5 py-4 hover:bg-slate-50" href="#">
+                <div class="flex flex-wrap items-center gap-2 text-xs"><span class="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 font-bold text-slate-600">자유게시판</span><time class="text-slate-500">1시간 전</time></div>
+                <h3 class="mt-2 truncate font-bold text-slate-950">모바일 관리자 화면 개선 이후 사용 후기를 남겨주세요</h3>
+                <div class="mt-2 flex flex-wrap gap-4 text-xs text-slate-500"><span>박기획</span><span>댓글 21</span><span>조회 431</span></div>
+              </a>
+              <a class="block px-5 py-4 hover:bg-slate-50" href="#">
+                <div class="flex flex-wrap items-center gap-2 text-xs"><span class="rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 font-bold text-slate-600">질문답변</span><time class="text-slate-500">2시간 전</time></div>
+                <h3 class="mt-2 truncate font-bold text-slate-950">게시판별 권한 레벨을 어떻게 구성하면 좋을까요?</h3>
+                <div class="mt-2 flex flex-wrap gap-4 text-xs text-slate-500"><span>이운영</span><span>댓글 5</span><span>조회 92</span></div>
+              </a>
+            </div>
+            <div class="hidden" data-tab-panel="popular">
+              <a class="block border-b border-slate-100 px-5 py-4 hover:bg-slate-50" href="#"><p class="meta-label text-amber-700">이번 주 인기</p><h3 class="mt-2 font-bold text-slate-950">관리자가 반드시 확인해야 할 보안 체크리스트 10가지</h3><p class="mt-2 text-xs text-slate-500">조회 1,842 · 댓글 34</p></a>
+              <a class="block px-5 py-4 hover:bg-slate-50" href="#"><p class="meta-label text-amber-700">꾸준한 관심</p><h3 class="mt-2 font-bold text-slate-950">SmartGrid 공통 설정을 정리하면서 배운 점</h3><p class="mt-2 text-xs text-slate-500">조회 1,291 · 댓글 19</p></a>
+            </div>
+            <footer class="border-t border-slate-200 px-5 py-4 text-right"><a class="text-sm font-bold text-brand-700 hover:text-brand-600" href="#">전체글 보기</a></footer>
+          </article>
+
+          <section class="grid gap-6 md:grid-cols-2" id="boards" aria-label="게시판 요약">
+            <article class="surface overflow-hidden rounded-lg">
+              <header class="border-b border-slate-200 px-5 py-4"><p class="meta-label text-brand-700">Knowledge</p><h2 class="section-title mt-1">개발 노하우</h2></header>
+              <ul class="divide-y divide-slate-100">
+                <li><a class="flex items-center justify-between gap-3 px-5 py-3 text-sm font-semibold hover:bg-slate-50" href="#"><span class="truncate">CSRF 토큰 적용 범위 정리</span><time class="shrink-0 text-xs text-slate-400">06.21</time></a></li>
+                <li><a class="flex items-center justify-between gap-3 px-5 py-3 text-sm font-semibold hover:bg-slate-50" href="#"><span class="truncate">Docker 배포 환경 점검표</span><time class="shrink-0 text-xs text-slate-400">06.20</time></a></li>
+                <li><a class="flex items-center justify-between gap-3 px-5 py-3 text-sm font-semibold hover:bg-slate-50" href="#"><span class="truncate">공통 페이지네이션 구성하기</span><time class="shrink-0 text-xs text-slate-400">06.18</time></a></li>
+              </ul>
+            </article>
+            <article class="surface overflow-hidden rounded-lg">
+              <header class="border-b border-slate-200 px-5 py-4"><p class="meta-label text-brand-700">Community</p><h2 class="section-title mt-1">자유게시판</h2></header>
+              <ul class="divide-y divide-slate-100">
+                <li><a class="flex items-center justify-between gap-3 px-5 py-3 text-sm font-semibold hover:bg-slate-50" href="#"><span class="truncate">이번 주 작업 공유합니다</span><time class="shrink-0 text-xs text-slate-400">06.22</time></a></li>
+                <li><a class="flex items-center justify-between gap-3 px-5 py-3 text-sm font-semibold hover:bg-slate-50" href="#"><span class="truncate">새 에디터 사용감 어떤가요?</span><time class="shrink-0 text-xs text-slate-400">06.21</time></a></li>
+                <li><a class="flex items-center justify-between gap-3 px-5 py-3 text-sm font-semibold hover:bg-slate-50" href="#"><span class="truncate">서비스 점검 후기</span><time class="shrink-0 text-xs text-slate-400">06.19</time></a></li>
+              </ul>
+            </article>
+          </section>
+
+          <section class="surface overflow-hidden rounded-lg" id="gallery" aria-labelledby="gallery-heading">
+            <header class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4"><div><p class="meta-label text-brand-700">Gallery</p><h2 class="section-title mt-1" id="gallery-heading">프로젝트 갤러리</h2></div><a class="text-sm font-bold text-brand-700" href="#">전체보기</a></header>
+            <div class="grid gap-4 p-5 sm:grid-cols-3">
+              <article><img class="aspect-[4/3] w-full rounded-lg object-cover" src="/assets/team-workshop.jpg" alt="회의 중인 프로젝트 팀" loading="lazy"><h3 class="mt-3 text-sm font-bold text-slate-950">2026 상반기 워크숍</h3><p class="mt-1 text-xs text-slate-500">사진 18장</p></article>
+              <article><img class="aspect-[4/3] w-full rounded-lg object-cover" src="/assets/dashboard-review.jpg" alt="노트북에 표시된 분석 대시보드" loading="lazy"><h3 class="mt-3 text-sm font-bold text-slate-950">대시보드 리뉴얼</h3><p class="mt-1 text-xs text-slate-500">사진 9장</p></article>
+              <article><img class="aspect-[4/3] w-full rounded-lg object-cover" src="/assets/operations-sprint.jpg" alt="테이블에서 협업하는 팀원들" loading="lazy"><h3 class="mt-3 text-sm font-bold text-slate-950">운영팀 스프린트</h3><p class="mt-1 text-xs text-slate-500">사진 12장</p></article>
+            </div>
+          </section>
+        </div>
+
+        <aside class="space-y-6" aria-label="사이드바">
+          <section class="surface rounded-lg p-5">
+            <div class="flex items-center justify-between"><div><p class="meta-label">Member</p><h2 class="section-title mt-1">커뮤니티에 참여하세요</h2></div><span class="inline-flex size-10 items-center justify-center rounded-lg bg-brand-50 text-brand-700"><i class="size-5" data-lucide="users"></i></span></div>
+            <p class="mt-3 text-sm leading-6 text-slate-600">로그인하면 댓글, 북마크, 알림 기능을 사용할 수 있습니다.</p>
+            <div class="mt-5 grid grid-cols-2 gap-2"><a class="primary-button" href="#">로그인</a><a class="secondary-button" href="#">회원가입</a></div>
+          </section>
+          <section class="surface overflow-hidden rounded-lg">
+            <header class="border-b border-slate-200 px-5 py-4"><p class="meta-label text-brand-700">Trending</p><h2 class="section-title mt-1">인기글</h2></header>
+            <ol class="divide-y divide-slate-100">
+              <li class="flex gap-3 px-5 py-4"><span class="text-lg font-black text-brand-600">01</span><a class="text-sm font-bold leading-6 text-slate-800 hover:text-brand-700" href="#">보안 업데이트 전 꼭 확인할 항목</a></li>
+              <li class="flex gap-3 px-5 py-4"><span class="text-lg font-black text-slate-300">02</span><a class="text-sm font-bold leading-6 text-slate-800 hover:text-brand-700" href="#">모바일 게시판 사용성 개선 사례</a></li>
+              <li class="flex gap-3 px-5 py-4"><span class="text-lg font-black text-slate-300">03</span><a class="text-sm font-bold leading-6 text-slate-800 hover:text-brand-700" href="#">관리자 권한 레벨 운영 원칙</a></li>
+            </ol>
+          </section>
+          <section class="rounded-lg border border-amber-200 bg-amber-50 p-5" aria-labelledby="schedule-heading">
+            <div class="flex items-center gap-2 text-amber-800"><i class="size-5" data-lucide="calendar-clock"></i><h2 class="font-bold" id="schedule-heading">이번 주 일정</h2></div>
+            <dl class="mt-4 space-y-3 text-sm"><div class="flex justify-between gap-3"><dt class="font-semibold text-slate-700">정기 점검</dt><dd class="text-slate-500">6월 24일</dd></div><div class="flex justify-between gap-3"><dt class="font-semibold text-slate-700">운영 회의</dt><dd class="text-slate-500">6월 26일</dd></div></dl>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto flex max-w-screen-xl flex-col gap-4 px-4 py-8 text-sm text-slate-500 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+      <div><a class="font-black text-brand-600" href="/home.html">스마트CMS</a><p class="mt-1">정보와 경험이 이어지는 커뮤니티 플랫폼</p></div>
+      <nav class="flex flex-wrap gap-4" aria-label="하단 메뉴"><a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">고객지원</a></nav>
+    </div>
+  </footer>
+</body>
+</html>
