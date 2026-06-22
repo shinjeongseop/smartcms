@@ -67,7 +67,7 @@ $stylesheets = (array)($SMARTCMS_HEAD['stylesheets'] ?? []);
         </div>
         <div class="col-12 col-md-6 col-lg-8">
           <form action="<?= smartcms_h(smartcms_base_url('/board/')) ?>" method="get" role="search" data-search-min-length="2">
-            <div class="input-group input-group-lg">
+            <div class="input-group input-group-sm">
               <span class="input-group-text bg-white border-end-0">
                 <i class="bi bi-search text-primary"></i>
               </span>
