@@ -180,7 +180,7 @@ require SMARTCMS_ROOT . '/head.php';
             <div class="col-12 <?= $is_gallery_widget ? '' : 'col-md-6' ?>">
               <article class="card border shadow-sm h-100">
                 <header class="card-header bg-white border-bottom p-3 p-lg-4 d-flex align-items-start justify-content-between gap-3">
-                  <div class="min-w-0">
+                  <div class="flex-grow-1 overflow-hidden">
                     <p class="small text-uppercase fw-bold text-primary mb-1"><?= smartcms_h((string)($widget['skin_meta']['skin'] ?? 'Board')) ?></p>
                     <h2 class="h5 fw-bold text-dark mb-1"><?= smartcms_h($board['board_name']) ?></h2>
                     <p class="small text-body-secondary mb-0 text-truncate"><?= smartcms_h($widget['summary']) ?></p>
