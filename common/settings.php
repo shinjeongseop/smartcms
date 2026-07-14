@@ -35,18 +35,6 @@ function smartcms_settings_all(): array
     return $settings;
 }
 
-function smartcms_ensure_settings_table(): void
-{
-    smartcms_db()->exec("CREATE TABLE IF NOT EXISTS " . smartcms_table('site_settings') . " (
-        id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        setting_key VARCHAR(120) NOT NULL,
-        setting_value TEXT NOT NULL,
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        UNIQUE KEY uq_site_settings_key (setting_key)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-}
-
 function smartcms_setting(string $key, mixed $default = null): mixed
 {
     $settings = smartcms_settings_all();
@@ -71,8 +59,6 @@ function smartcms_site_name(): string
 
 function smartcms_save_settings(array $values): void
 {
-    smartcms_ensure_settings_table();
-
     foreach ($values as $key => $value) {
         smartcms_execute(
             "INSERT INTO " . smartcms_table('site_settings') . " (setting_key, setting_value)

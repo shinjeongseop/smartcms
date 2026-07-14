@@ -196,64 +196,6 @@ function smartcms_board_author_display_mode(?array $board): string
     return smartcms_board_normalize_author_display_mode((string)smartcms_setting('author_display_mode', 'name'));
 }
 
-function smartcms_ensure_boards_author_display_mode_column(): void
-{
-    static $checked = false;
-    if ($checked) {
-        return;
-    }
-    $checked = true;
-
-    try {
-        $exists = (int)smartcms_fetch_value(
-            "SELECT COUNT(*)
-             FROM INFORMATION_SCHEMA.COLUMNS
-             WHERE TABLE_SCHEMA = DATABASE()
-               AND TABLE_NAME = :table_name
-               AND COLUMN_NAME = 'author_display_mode'",
-            ['table_name' => smartcms_table('boards')]
-        );
-
-        if ($exists === 0) {
-            smartcms_execute(
-                "ALTER TABLE " . smartcms_table('boards') . "
-                 ADD COLUMN author_display_mode ENUM('name','nickname','name_nickname') NOT NULL DEFAULT 'name' AFTER display_type"
-            );
-        }
-    } catch (Throwable $e) {
-        // Keep the app usable even if schema migration is not allowed.
-    }
-}
-
-function smartcms_ensure_boards_recent_posts_excluded_column(): void
-{
-    static $checked = false;
-    if ($checked) {
-        return;
-    }
-    $checked = true;
-
-    try {
-        $exists = (int)smartcms_fetch_value(
-            "SELECT COUNT(*)
-             FROM INFORMATION_SCHEMA.COLUMNS
-             WHERE TABLE_SCHEMA = DATABASE()
-               AND TABLE_NAME = :table_name
-               AND COLUMN_NAME = 'exclude_from_recent_posts'",
-            ['table_name' => smartcms_table('boards')]
-        );
-
-        if ($exists === 0) {
-            smartcms_execute(
-                "ALTER TABLE " . smartcms_table('boards') . "
-                 ADD COLUMN exclude_from_recent_posts TINYINT(1) NOT NULL DEFAULT 0 AFTER use_attachments"
-            );
-        }
-    } catch (Throwable $e) {
-        // Keep the app usable even if schema migration is not allowed.
-    }
-}
-
 function smartcms_board_user_profile_by_id(int $user_id): ?array
 {
     static $cache = [];
@@ -265,7 +207,6 @@ function smartcms_board_user_profile_by_id(int $user_id): ?array
         return $cache[$user_id];
     }
 
-    smartcms_ensure_user_nickname_column();
     $cache[$user_id] = smartcms_fetch_one(
         "SELECT id, name, nickname, avatar_path
          FROM " . smartcms_table('users') . "
@@ -303,35 +244,6 @@ function smartcms_board_author_display_name(?array $board, array $post): string
     }
 
     return $name !== '' ? $name : ($nickname !== '' ? $nickname : $author_name);
-}
-
-function smartcms_ensure_board_posts_content_mode_column(): void
-{
-    static $checked = false;
-    if ($checked) {
-        return;
-    }
-    $checked = true;
-
-    try {
-        $exists = (int)smartcms_fetch_value(
-            "SELECT COUNT(*)
-             FROM INFORMATION_SCHEMA.COLUMNS
-             WHERE TABLE_SCHEMA = DATABASE()
-               AND TABLE_NAME = :table_name
-               AND COLUMN_NAME = 'content_mode'",
-            ['table_name' => smartcms_table('board_posts')]
-        );
-
-        if ($exists === 0) {
-            smartcms_execute(
-                "ALTER TABLE " . smartcms_table('board_posts') . "
-                 ADD COLUMN content_mode ENUM('text','editor') NOT NULL DEFAULT 'text' AFTER content"
-            );
-        }
-    } catch (Throwable $e) {
-        // Keep the app usable even if schema migration is not allowed.
-    }
 }
 
 function smartcms_board_normalize_link_url(string $value): string
@@ -513,64 +425,6 @@ function smartcms_board_post_links(array $post): array
     }
 
     return $links;
-}
-
-function smartcms_ensure_board_posts_link_column(): void
-{
-    static $checked = false;
-    if ($checked) {
-        return;
-    }
-    $checked = true;
-
-    try {
-        $table_name = smartcms_table('board_posts');
-        $columns = ['link_url', 'link_url_1', 'link_url_2'];
-        $existing = [];
-        foreach ($columns as $column) {
-            $existing[$column] = (int)smartcms_fetch_value(
-                "SELECT COUNT(*)
-                 FROM INFORMATION_SCHEMA.COLUMNS
-                 WHERE TABLE_SCHEMA = DATABASE()
-                   AND TABLE_NAME = :table_name
-                   AND COLUMN_NAME = :column_name",
-                [
-                    'table_name' => $table_name,
-                    'column_name' => $column,
-                ]
-            );
-        }
-
-        if ($existing['link_url'] === 0) {
-            smartcms_execute(
-                "ALTER TABLE " . $table_name . "
-                 ADD COLUMN link_url VARCHAR(500) DEFAULT NULL AFTER title"
-            );
-        }
-        if ($existing['link_url_1'] === 0) {
-            smartcms_execute(
-                "ALTER TABLE " . $table_name . "
-                 ADD COLUMN link_url_1 VARCHAR(500) DEFAULT NULL AFTER link_url"
-            );
-        }
-        if ($existing['link_url_2'] === 0) {
-            smartcms_execute(
-                "ALTER TABLE " . $table_name . "
-                 ADD COLUMN link_url_2 VARCHAR(500) DEFAULT NULL AFTER link_url_1"
-            );
-        }
-
-        if ($existing['link_url'] === 1 && $existing['link_url_1'] === 1) {
-            smartcms_execute(
-                "UPDATE " . $table_name . "
-                 SET link_url_1 = COALESCE(NULLIF(link_url_1, ''), link_url)
-                 WHERE (link_url_1 IS NULL OR link_url_1 = '')
-                   AND link_url IS NOT NULL AND link_url <> ''"
-            );
-        }
-    } catch (Throwable $e) {
-        // Keep the app usable even if schema migration is not allowed.
-    }
 }
 
 function smartcms_board_sanitize_editor_html(string $html): string
@@ -873,8 +727,6 @@ function smartcms_home_date(?string $value): string
 
 function smartcms_board_list(bool $include_disabled = false): array
 {
-    smartcms_ensure_boards_author_display_mode_column();
-    smartcms_ensure_boards_recent_posts_excluded_column();
     $sql = "SELECT b.*, p.board_list_level, p.board_view_level, p.board_write_level, p.allow_guest_list, p.allow_guest_view
          FROM " . smartcms_table('boards') . " b
          LEFT JOIN " . smartcms_table('board_permissions') . " p ON p.board_key = b.board_key";
@@ -890,8 +742,6 @@ function smartcms_board_list(bool $include_disabled = false): array
 
 function smartcms_board_find(string $board_key): ?array
 {
-    smartcms_ensure_boards_author_display_mode_column();
-    smartcms_ensure_boards_recent_posts_excluded_column();
     return smartcms_fetch_one(
         "SELECT b.*, p.board_list_level, p.board_view_level, p.board_write_level, p.board_comment_level,
                 p.board_upload_level, p.board_manage_level, p.allow_guest_list, p.allow_guest_view, p.status AS permission_status
@@ -1079,8 +929,6 @@ function smartcms_board_search_posts(string $keyword, int $page = 1, int $per_pa
 
 function smartcms_board_post_find(int $board_id, int $post_id): ?array
 {
-    smartcms_ensure_board_posts_content_mode_column();
-    smartcms_ensure_board_posts_link_column();
     return smartcms_fetch_one(
         "SELECT p.id, p.board_id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.content, p.content_mode, p.author_id, p.author_name, p.is_notice, p.is_secret, p.view_count, p.comment_count, p.created_at, p.updated_at,
                 b.author_display_mode
@@ -1323,8 +1171,6 @@ function smartcms_board_create_comment(array $board, array $post, array $user, s
 
 function smartcms_board_update_post(array $board, array $post, array $user, string $title, string $link_url_1, string $link_url_2, string $content, string $content_mode, bool $is_notice, bool $is_secret): array
 {
-    smartcms_ensure_board_posts_content_mode_column();
-    smartcms_ensure_board_posts_link_column();
     if (!smartcms_board_can_manage_post($board, $post, $user)) {
         return ['ok' => false, 'message' => '글 수정 권한이 없습니다.'];
     }
@@ -1926,8 +1772,6 @@ function smartcms_board_create(string $board_key, string $board_name, string $de
         return ['ok' => false, 'message' => '게시판 키와 이름을 입력하세요.'];
     }
 
-    smartcms_ensure_boards_author_display_mode_column();
-    smartcms_ensure_boards_recent_posts_excluded_column();
     $exists = smartcms_board_find($board_key);
     if ($exists) {
         return ['ok' => false, 'message' => '이미 존재하는 게시판 키입니다.'];
@@ -1984,7 +1828,6 @@ function smartcms_board_seed_defaults(int $created_by): array
 
 function smartcms_board_recent_posts(int $limit = 12): array
 {
-    smartcms_ensure_boards_recent_posts_excluded_column();
     $stmt = smartcms_db()->prepare(
         "SELECT p.id, p.title, p.link_url, p.link_url_1, p.link_url_2, p.excerpt, p.author_id, p.author_name, p.comment_count, p.attachment_count, p.created_at, b.board_key, b.board_name, b.author_display_mode
          FROM " . smartcms_table('board_posts') . " p
@@ -2236,8 +2079,6 @@ function smartcms_board_post_counts(): array
 
 function smartcms_board_create_post(array $board, ?array $user, string $title, string $link_url_1, string $link_url_2, string $content, string $content_mode = 'text', bool $is_notice = false, bool $is_secret = false, string $author_name = ''): array
 {
-    smartcms_ensure_board_posts_content_mode_column();
-    smartcms_ensure_board_posts_link_column();
     $title = trim($title);
     $link_url_1 = smartcms_board_normalize_link_url($link_url_1);
     $link_url_2 = smartcms_board_normalize_link_url($link_url_2);

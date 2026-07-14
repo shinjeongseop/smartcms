@@ -45,7 +45,7 @@ git clone https://github.com/shinjeongseop/dbadmin.git
 │       ├── config.php
 │       ├── db.php
 │       ├── common.php
-│       └── schema.php
+│       └── db.php
 ├── index.php
 ├── login.php
 ├── app.js
@@ -121,11 +121,7 @@ define('MYADMIN_ADMIN_PASSWORD', 'your_admin_password');
 - `export.php`
 - `import.php`
 - `structure.php`
-- `table_ddl.php`
-- `column_ddl.php`
-- `index_ddl.php`
-- `fk_ddl.php`
-- `sql.php`
+- `structure.php`
 - `app.js`
 - `ui.js`
 - `style.css`
@@ -137,7 +133,7 @@ define('MYADMIN_ADMIN_PASSWORD', 'your_admin_password');
 1. `config/config.php`가 서버별 값으로 생성됐는지 확인합니다.
 2. `MYADMIN_PLUGIN_URL`이 실제 설치 경로와 같은지 확인합니다.
 3. 브라우저에서 메인 페이지와 로그인 페이지가 열리는지 확인합니다.
-4. DB 목록, 테이블 목록, SQL 실행기까지 정상 응답하는지 확인합니다.
+4. DB 목록, 테이블 목록, 구조 조회가 정상 응답하는지 확인합니다.
 
 ---
 
@@ -151,44 +147,22 @@ define('MYADMIN_ADMIN_PASSWORD', 'your_admin_password');
 - **CSV 내보내기** — 현재 검색·정렬 상태 그대로 다운로드 (UTF-8 BOM, Excel 호환)
 - **CSV 가져오기** — 헤더 자동 매칭, AUTO_INCREMENT 컬럼 자동 제외
 
-### 테이블 관리 (Table DDL)
-- 테이블 생성 (InnoDB, 코멘트 지원)
-- 테이블 이름 변경
-- 테이블 삭제 (confirm 확인)
-
-### 컬럼 관리 (Column DDL)
-- 컬럼 추가 — 타입 / NULL / DEFAULT / COMMENT 지정
-- 컬럼 수정 — 이름·타입·속성 변경 (CHANGE COLUMN)
-- 컬럼 삭제 (confirm 확인)
-
-### 인덱스 관리 (Index DDL)
-- 인덱스 목록 조회 (PRIMARY / UNIQUE / INDEX 구분 표시)
-- 인덱스 생성 — 복수 컬럼 선택, UNIQUE 옵션
-- 인덱스 삭제
-
 ### 외래키 관리 (Foreign Key)
 - 외래키 목록 시각화
-- 외래키 추가 — 참조 테이블·컬럼 선택, ON DELETE / ON UPDATE 동작 설정
-- 외래키 삭제
 - 참조 테이블 클릭으로 바로 이동
 
 ### 구조 보기 (Structure)
 - 컬럼 메타 정보 (타입 / NULL / KEY / DEFAULT / EXTRA / COMMENT)
 - 인덱스 섹션
 - 외래키 섹션
-
-### SQL 실행기
-- 직접 SQL 입력 및 실행
-- SELECT → 결과 테이블 출력
-- INSERT / UPDATE / DELETE / DDL → 영향 행 수 출력
-- 위험 패턴 차단 (SHUTDOWN, GRANT, DROP FILE 등)
+- 읽기 전용 조회 화면
 
 ### 보안
 - 세션 기반 로그인 (비밀번호 인증)
 - 모든 식별자 backtick escape 처리
 - 모든 값 `mysqli_real_escape_string` 처리
 - 컬럼 타입 whitelist 검증
-- SQL 실행기 위험 패턴 필터
+- 읽기 전용 동작
 
 ---
 
@@ -206,7 +180,7 @@ dbadmin/
 │       ├── config.php      # 호환 진입점
 │       ├── db.php          # DB 연결 헬퍼
 │       ├── common.php      # 요청/응답 헬퍼
-│       └── schema.php      # 테이블 스키마 헬퍼
+│       └── db.php          # DB 연결 헬퍼
 ├── head.php                # 공통 head
 ├── foot.php                # 공통 footer/script
 ├── index.php               # 메인 페이지
@@ -223,12 +197,7 @@ dbadmin/
 ├── delete.php              # 행 삭제 API
 ├── export.php              # CSV 내보내기
 ├── import.php              # CSV 가져오기
-├── structure.php           # 구조 보기 (컬럼 / 인덱스 / FK)
-├── table_ddl.php           # 테이블 DDL API
-├── column_ddl.php          # 컬럼 DDL API
-├── index_ddl.php           # 인덱스 DDL API
-├── fk_ddl.php              # 외래키 DDL API
-└── sql.php                 # SQL 실행기 API
+└── structure.php           # 구조 보기 (읽기 전용)
 ```
 
 ---
@@ -238,7 +207,7 @@ dbadmin/
 - 단일 관리자 환경을 가정하여 설계되었습니다. 다중 사용자 권한 관리는 지원하지 않습니다.
 - PK가 없는 테이블은 행 수정·삭제가 불가합니다.
 - `config/config.php`에 DB 비밀번호가 평문으로 저장됩니다. 웹서버에서 `config/` 디렉터리 직접 접근을 제한하세요.
-- SQL 실행기는 관리자 전용입니다. 공용 서버에 배포 시 충분한 접근 제어를 적용하세요.
+- 구조 조회와 행 편집 외의 관리자 기능은 제거되었습니다.
 
 ---
 

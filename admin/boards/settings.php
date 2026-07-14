@@ -5,8 +5,6 @@ require_once __DIR__ . '/../common.php';
 require_once __DIR__ . '/../../common/board.php';
 require_once __DIR__ . '/../../common/ui/components.php';
 
-smartcms_ensure_boards_recent_posts_excluded_column();
-
 $admin = smartcms_admin_user();
 $message = '';
 $message_type = 'info';

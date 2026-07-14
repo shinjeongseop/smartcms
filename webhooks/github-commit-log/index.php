@@ -93,11 +93,8 @@ if ($request_token === '' || !hash_equals($expected_token, $request_token)) {
 
 try {
     require_once __DIR__ . '/../../common/board.php';
-    require_once __DIR__ . '/../../common/schema.php';
-
-    smartcms_create_schema();
 } catch (Throwable $e) {
-    // 필요한 테이블이 이미 있으면 계속 진행한다.
+    // 필요한 공통 모듈 로드에 실패하면 이후 처리도 불가능하다.
 }
 
 try {

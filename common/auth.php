@@ -72,90 +72,6 @@ function smartcms_session_require_active(): bool
     return true;
 }
 
-function smartcms_ensure_user_avatar_column(): void
-{
-    static $checked = false;
-    if ($checked) {
-        return;
-    }
-    $checked = true;
-
-    try {
-        $exists = (int)smartcms_fetch_value(
-            "SELECT COUNT(*)
-             FROM INFORMATION_SCHEMA.COLUMNS
-             WHERE TABLE_SCHEMA = DATABASE()
-               AND TABLE_NAME = :table_name
-               AND COLUMN_NAME = 'avatar_path'",
-            ['table_name' => smartcms_table('users')]
-        );
-
-        if ($exists === 0) {
-            smartcms_execute(
-                "ALTER TABLE " . smartcms_table('users') . "
-                 ADD COLUMN avatar_path VARCHAR(255) DEFAULT NULL AFTER company_name"
-            );
-        }
-    } catch (Throwable $e) {
-        // Keep the app usable even if schema migration is not allowed.
-    }
-}
-
-function smartcms_ensure_user_nickname_column(): void
-{
-    static $checked = false;
-    if ($checked) {
-        return;
-    }
-    $checked = true;
-
-    try {
-        $exists = (int)smartcms_fetch_value(
-            "SELECT COUNT(*)
-             FROM INFORMATION_SCHEMA.COLUMNS
-             WHERE TABLE_SCHEMA = DATABASE()
-               AND TABLE_NAME = :table_name
-               AND COLUMN_NAME = 'nickname'",
-            ['table_name' => smartcms_table('users')]
-        );
-
-        if ($exists === 0) {
-            smartcms_execute(
-                "ALTER TABLE " . smartcms_table('users') . "
-                 ADD COLUMN nickname VARCHAR(80) DEFAULT NULL AFTER name"
-            );
-        }
-    } catch (Throwable $e) {
-        // Keep the app usable even if schema migration is not allowed.
-    }
-}
-
-function smartcms_ensure_password_reset_tokens_table(): void
-{
-    static $checked = false;
-    if ($checked) {
-        return;
-    }
-    $checked = true;
-
-    try {
-        smartcms_db()->exec("CREATE TABLE IF NOT EXISTS " . smartcms_table('password_reset_tokens') . " (
-            id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            user_id BIGINT UNSIGNED NOT NULL,
-            email VARCHAR(190) NOT NULL,
-            token_hash CHAR(64) NOT NULL,
-            expires_at DATETIME NOT NULL,
-            used_at DATETIME DEFAULT NULL,
-            created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            UNIQUE KEY uq_password_reset_tokens_hash (token_hash),
-            INDEX idx_password_reset_tokens_user (user_id, used_at, expires_at),
-            INDEX idx_password_reset_tokens_email (email, used_at, expires_at)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
-    } catch (Throwable $e) {
-        // Keep login-related pages usable even if schema creation is unavailable.
-    }
-}
-
 function smartcms_password_reset_token_hash(string $token): string
 {
     return hash('sha256', $token);
@@ -233,7 +149,6 @@ function smartcms_password_reset_store_token(int $user_id, string $email, string
 
 function smartcms_password_reset_request(string $email): array
 {
-    smartcms_ensure_password_reset_tokens_table();
     $email = trim($email);
 
     if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -274,7 +189,6 @@ function smartcms_password_reset_request(string $email): array
 
 function smartcms_password_reset_token_row(string $token): ?array
 {
-    smartcms_ensure_password_reset_tokens_table();
     $token = trim($token);
     if ($token === '') {
         return null;
@@ -425,8 +339,6 @@ function smartcms_current_user(): ?array
     if (!smartcms_session_require_active()) {
         return null;
     }
-    smartcms_ensure_user_avatar_column();
-    smartcms_ensure_user_nickname_column();
     $user_id = (int)($_SESSION['smartcms_user_id'] ?? 0);
     if ($user_id <= 0) {
         return null;
@@ -587,9 +499,6 @@ function smartcms_require_page_view(string $page_key, string $page_path, string 
 
 function smartcms_register_user(string $email, string $password, string $name, ?string $nickname = null, ?string $company_name = null): array
 {
-    smartcms_ensure_user_avatar_column();
-    smartcms_ensure_user_nickname_column();
-
     if (!smartcms_setting_bool('allow_registration', true)) {
         return ['ok' => false, 'message' => '현재 회원가입이 중지되어 있습니다.'];
     }
@@ -645,9 +554,6 @@ function smartcms_register_user(string $email, string $password, string $name, ?
 
 function smartcms_update_user_profile(int $user_id, string $name, ?string $nickname = null, ?string $company_name = null): array
 {
-    smartcms_ensure_user_avatar_column();
-    smartcms_ensure_user_nickname_column();
-
     $name = trim($name);
     $nickname = trim((string)$nickname);
     $company_name = trim((string)$company_name);
@@ -710,7 +616,6 @@ function smartcms_change_password(int $user_id, string $current_password, string
 
 function smartcms_login(string $email, string $password): array
 {
-    smartcms_ensure_user_avatar_column();
     $email = trim($email);
     $user = smartcms_fetch_one(
         "SELECT id, email, password_hash, name, avatar_path, role, level, status

@@ -18,10 +18,7 @@ require_once __DIR__ . '/head.php';
           </div>
           <div class="section-head">
             <label class="field__label">테이블 목록</label>
-            <div class="cluster">
-              <button class="button button--sm button--success" id="btnCreateTable">+ 생성</button>
-              <button class="button button--sm button--ghost" id="btnRefreshTables">새로고침</button>
-            </div>
+            <button class="button button--sm button--ghost" id="btnRefreshTables">새로고침</button>
           </div>
           <div id="tableList" class="table-list"></div>
         </div>
@@ -44,12 +41,6 @@ require_once __DIR__ . '/head.php';
         </header>
 
         <div class="panel__body">
-          <nav class="tabs" aria-label="DB 관리 탭">
-            <button class="tabs__button tabs__button--active" data-tab-target="tab-data" type="button">데이터</button>
-            <button class="tabs__button" data-tab-target="tab-structure" type="button">구조</button>
-            <button class="tabs__button" data-tab-target="tab-sql" type="button">SQL 실행기</button>
-          </nav>
-
           <section class="tab-panel tab-panel--active" id="tab-data">
             <div class="toolbar">
               <select id="searchColSelect" class="select select--compact">
@@ -71,27 +62,8 @@ require_once __DIR__ . '/head.php';
             <div id="dataArea"></div>
           </section>
 
-          <section class="tab-panel" id="tab-structure">
+          <section class="tab-panel mt-4" id="tab-structure">
             <div id="structureArea"></div>
-          </section>
-
-          <section class="tab-panel" id="tab-sql">
-            <div class="field">
-              <label class="field__label" for="sqlEditor">SQL</label>
-              <textarea id="sqlEditor" class="textarea sql-editor" placeholder="SELECT * FROM table_name LIMIT 100;"></textarea>
-            </div>
-            <div class="cluster section-gap">
-              <button class="button button--dark" id="btnRunSql">실행</button>
-              <button class="button button--ghost" id="btnClearSql">지우기</button>
-            </div>
-            <div id="sqlResultWrap" class="is-hidden">
-              <div id="sqlMessage" class="alert"></div>
-              <div class="data-table-wrap">
-                <table class="data-table" id="sqlResultTable">
-                  <thead></thead><tbody></tbody>
-                </table>
-              </div>
-            </div>
           </section>
         </div>
       </section>
